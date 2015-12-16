@@ -1,0 +1,1844 @@
+@font-face {
+	font-family:Lato-Regular;
+	src:url('fonts/Lato-Regular.ttf');
+}
+
+@font-face {
+	font-family:Lato-Bold;
+	src:url('fonts/Lato-Bold.ttf');
+}
+
+* {
+	padding: 0px;
+	margin: 0px;
+	border: 0px;
+	font-family:Lato-Regular;
+}
+
+.splash{ 
+	position: fixed;
+	top: 0px;
+	width: 960px;
+	height: 540px;
+	z-index: 1000;
+	background-image: url('images/splash.jpg');
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+.splash_version{ 
+	position:absolute;
+	bottom:2px;
+	left:5px;	
+	font-size:15px;
+	color: white;
+}
+
+.pageBackground{ 
+	position:absolute;
+    top:0px;
+    left:0px;
+    height:540px;
+    width:960px;
+    background-repeat: no-repeat;
+    background-position:center;
+    background-color:rgba(59,59,59,1);
+}
+
+.pageBackgroundImg{ 
+	position:absolute;
+    top:0px;
+    left:0px;
+    height:540px;
+    width:960px;
+}
+
+.pageBackgroundFade{
+	position:absolute;
+    top:0px;
+    left:0px;
+    height:540px;
+    width:960px;
+    background: rgba(10,10,10, 0.7); 
+}
+
+.page {
+	position: absolute;
+ 	left: 0px; top: 0px;
+   	width: 960px; height: 540px;
+   	color:#f9f9f9;	
+	text-align:left;
+    font-size:14px;
+}
+
+/*ALL ABOVE IS FINALISED */
+
+.imageView {
+	position: absolute;
+ 	left: 0px; top: 0px;
+   	width: 960px; height: 540px;
+   	color:#f9f9f9;	
+	background-color: black; 
+	text-align:left; 
+	z-index:8;
+}
+
+/*----------------------------------------------------------------------------------------------*/
+
+.menu {
+	position: absolute;
+ 	left: -200px; top: 0px;
+ 	height:540px; width:200px;
+	color:#f9f9f9;	
+	text-align:left; 	
+    font-size:14px;
+    /* background-color: #303030; */
+}
+
+.menu-userImage {
+	width:200px;
+	height:60px;
+	padding-top: 15px;
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+.menu-userName {
+	text-align:center;
+	padding-bottom:3px;
+}
+
+.menu-item {
+	position: relative;
+	left: 0px; top: 0px;
+	width: 155px;
+	height: 32px;
+	line-height: 29px;
+	padding-left: 45px;
+	border-bottom: 1px solid grey;
+}
+
+.menu-item-underline {
+	position: relative;
+	left: 0px; top: 0px;
+	width: 155px;
+	height: 32px;
+	line-height: 29px;
+	padding-left: 45px;
+	border-bottom: 1px solid grey;
+}
+
+.menu-seperator {
+	position: relative;
+	left: 0px; top: 0px;
+	width: 155px;
+	height: 17px;
+	line-height: 17px;
+	font-size:12px;
+	font-family:Lato-Bold;
+	padding-left: 10px;
+	border-bottom: 1px solid transparent;
+}
+
+.menu-seperator-underline {
+	position: relative;
+	left: 0px; top: 0px;
+	width: 190px;
+	height: 3px;
+	line-height: 5px;
+	padding-left: 10px;
+	border-bottom: 1px solid grey;
+}
+
+.menu-itemSelected {
+	position: relative;
+	left: 0px; top: 0px;
+	width: 155px;
+	height: 32px;
+	line-height: 29px;
+	padding-left: 45px;
+	border-bottom: 1px solid grey;
+	background-color:rgba(140,140,140,1);
+}
+
+.menu-icon {
+	position: absolute; 
+	left: 10px;
+	width: 23px;
+	height: 32px;
+	background-position: 30% 40%; 
+	background-repeat: no-repeat;
+	background-image: url('images/menu/folder-23x19.png');
+}
+
+.menu-version {
+	position:absolute;
+	padding-left:5px;
+	width:100%;
+	font-size:13px;
+	bottom:5px;
+}
+
+/*----------------------------------------------------------------------------------------------*/
+
+.GuiImagePlayerImage {
+	display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+
+/*----------------------------------------------------------------------------------------------*/
+
+.help {
+	position:absolute;
+	bottom:0px;
+	width:100%;
+	background-color:rgba(0,0,0,0.8);
+	z-index:99999
+}
+
+/*----------------------------------------------------------------------------------------------*/
+
+.ButtonShade{
+	position:absolute;
+	bottom:0px;
+	left:0px;
+	width:100%;
+	height:6%;
+	background-color:rgba(0,0,0,0.9);
+	z-index:14;
+}
+
+.RedButton{
+	position:absolute;
+	bottom:2px;
+	right:390px;
+	width:80px;
+	height:24px;
+	line-height:28px;
+	padding-left:26px;
+	background-image:url('images/help_red.png');
+	background-repeat: no-repeat;
+	background-position:left;
+	z-index:15;
+}
+
+.GreenButton{
+	position:absolute;
+	bottom:2px;
+	width:80px;
+	height:24px;
+	line-height:28px;
+	padding-left:26px;
+	background-image:url('images/help_green.png');
+	background-repeat: no-repeat;
+	background-position:left;
+	z-index:16;
+}
+
+.YellowButton{
+	position:absolute;
+	bottom:2px;
+	width:80px;
+	height:24px;
+	line-height:28px;
+	padding-left:26px;
+	background-image:url('images/help_yellow.png');
+	background-repeat: no-repeat;
+	background-position:left;
+	z-index:17;
+}
+
+.BlueButton{
+	position:absolute;
+	bottom:2px;
+	width:80px;
+	height:24px;
+	line-height:28px;
+	padding-left:26px;
+	background-image:url('images/help_blue.png');
+	background-repeat: no-repeat;
+	background-position:left;
+	z-index:18;
+}
+
+.ReturnButton{
+	position:absolute;
+	bottom:2px;
+	width:84px;
+	height:24px;
+	line-height:28px;
+	padding-left:26px;
+	background-image:url('images/icon_return_nor-18x18.png');
+	background-repeat: no-repeat;
+	background-position:left;
+	z-index:21;
+}
+
+/*----------------------------------------------------------------------------------------------*/
+
+.notification {
+	position:absolute;
+	top:195px;
+	left:355px;
+	height:150px;
+	width:250px;
+	
+	z-index:9999;
+	
+	background-image:url('images/notification.png');
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+.notificationText {
+	position:absolute;
+	top:10px;
+	left:10px;
+	height:130px;
+	width:228px;
+
+	color:white; 
+}
+
+.notificationTitle {
+	font-size:20px;
+}
+
+.counter {
+	position:absolute;
+	bottom:4px;
+	left:5px;	
+}
+
+.time {
+	position:absolute;
+	bottom:4px;
+	right:5px;
+	font-size:15px;
+	color: white;
+	z-index:22;
+}
+
+.GuiPage_NewServer12key {
+	position:absolute;
+	padding:30px;
+	top:50px;
+	left:120px;
+	width:370px;
+	height:150px;
+	text-align:center;
+	background-image:url('images/newServerBackground.png');
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+.GuiPage_NewServerQwerty {
+	position:absolute;
+	top:50px;
+	left:5px;
+	width:350px;
+	text-align:center;
+}
+
+.GuiPage_Servers_addnew {
+	position:relative;
+	top:0px;
+	left:415px;
+	width:130px;
+	height:30px;
+	margin-top:20px;
+	border: 2px solid black;
+	background-color:#303030;
+	line-height:30px;
+	text-align:center;
+}
+
+.SearchPageTitle{
+	font-size:18px;
+	position:absolute;
+	top:135px;
+	left:30px;
+}
+
+.SearchPageInput {
+	position:absolute;
+	top:90px;
+	left:40px;
+	width:600px;
+	text-align:center;
+}
+
+.SearchPageResults {
+	position:absolute;
+	top:165px;
+	left:50px;
+}
+
+.EpisodesSeriesInfo{
+	font-size:18px;
+	position:absolute;
+	top:22px;
+	left:10px;
+}
+
+.EpisodesSeriesInfoLogo{
+	position:absolute;
+	top:10px;
+	left:30px;
+	width:300px;
+	height:40px;
+	background-repeat: no-repeat;
+    background-position:left;
+}
+
+.FilmInfoLogo{
+	position:absolute;
+	top:10px;
+	left:20px;
+	width:500px;
+	height:100px;
+	background-repeat: no-repeat;
+    background-position:left;
+}
+
+.EpisodesInfo {
+	font-size:15px;
+	position:absolute;
+	top:255px;
+	left:30px;
+	height:213px;
+	width:430px;
+	overflow-y:hidden;
+}
+
+.EpisodesImage {
+	position:absolute;
+	top:70px;
+	left:15px;
+	height:180px;
+	width:470px;
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+.EpisodesOverview {
+	font-size:15px;
+	position:relative;
+	height:60px;
+	width:430px;
+	overflow-y:hidden;
+	margin: 10px 0px
+}
+
+.EpisodesSubData {	
+	font-size:14px;
+	position:absolute;
+	top:470px;
+	left:30px;
+	width:430px;
+}
+
+.MetadataItemVSmall {
+	font-size:16px;
+	position:relative;
+	vertical-align:middle;
+	text-align:left;
+	width:35px;
+	height:22px;
+    background-position:center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.MetadataItemSmall {
+	font-size:16px;
+	position:relative;
+	vertical-align:middle;
+	text-align:center;
+	width:65px;
+	height:22px;
+    background-position:left;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.MetadataItemSmallLong {
+	font-size:16px;
+	position:relative;
+	vertical-align:middle;
+	text-align:center;
+	width:90px;
+	height:22px;
+    background-position:center;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.MetadataItemFav {
+	vertical-align:middle;
+	text-align:center;
+	width:30px;
+	height:17px;
+    background-position:center;
+    background-image:url('images/favorite-18x17.png');
+    background-repeat: no-repeat;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.EpisodesList{
+	position:absolute;
+	top:85px;
+	left:510px;
+	height:420px;
+}
+
+.EpisodesAllOptions{
+	position:absolute;
+	width:430px;
+	text-align:center;
+	top:55px;
+	left:510px;
+}
+
+.EpisodeListSingle{
+	height:50px;
+	width:430px;
+	border-bottom: 1px solid grey;
+}
+
+.EpisodeListSingleImage{	
+	display:inline-block;
+	height:50px;
+	width:100px;
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+.EpisodeListSingleTitle{
+	position:absolute;
+	display:inline-block;
+	width:330px;
+	padding-top:18px;
+}
+
+.EpisodeListSingleTitleWatched{
+	width:277px;
+	position:absolute;
+	display:inline-block;
+	padding-top:18px;
+}
+
+.EpisodeListSingleTitleVirtual{
+	width:250px;
+	position:absolute;
+	display:inline-block;
+	padding-top:18px;
+}
+
+.ShowListSingleFav{
+	display:inline-block;
+	position:absolute;
+	right:50px;
+	height:50px;
+	width:53px;
+	background-image:url('images/favorite-30x26.png');
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+.ShowListSingleWatched{
+	display:inline-block;
+	position:absolute;
+	right:0px;
+	height:50px;
+	width:53px;
+	background-image:url('images/watched.png');
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+.ShowListSingleMissing{
+	display:inline-block;
+ 	position:absolute; 
+    right:0px;
+	height:50px;
+	width:80px;
+	background-image:url('images/missing.png');
+	background-repeat: no-repeat;
+    background-position:center;	
+}
+
+.ShowListSingleUnaired{
+	display:inline-block;
+ 	position:absolute; 
+    right:0px;
+	height:50px;
+	width:80px;
+	background-image:url('images/unaired.png');
+	background-repeat: no-repeat;
+    background-position:center;	
+}
+
+.EpisodeListSelected {
+	background-color:rgba(140,140,140,0.9);
+}
+
+.guiPage_Settings_Title{
+	font-size:18px;
+	position:absolute;
+	top:55px;
+	left:30px;
+}
+
+.guiPage_Settings_Settings {
+	position:absolute;
+	top:90px;
+	left: 50px;
+}
+
+.guiSettingsRow {
+	width:100px;
+}
+
+.guiSettingsTD {
+	padding:10px 0px 5px 5px;
+	border-bottom:1px solid black;
+	width:200px;
+}
+
+.GuiPage_Setting_Selected {
+	color:#27a436;
+}
+
+.GuiPage_Setting_Changing {
+	color:red;
+}
+
+.GuiPage_Setting_SubSelected {
+	color:#27a436;
+}
+
+.GuiPage_Setting_UnSelected {
+	color:white;
+}
+
+.guiSettingsTVSettings {
+	padding-top:25px;
+	padding-bottom:15px;
+	font-size:18px;
+}
+
+.guiPage_Settings_Overview {
+	position:absolute;
+	top:65px;
+	left:600px;
+	width:300px;
+	height:400px;
+	border:3px solid black;
+	background-color:#303030;
+	padding:10px;
+}
+
+#guiPage_Settings_Overview_Title {
+	font-size:18px;
+	padding-bottom:10px;
+	width:260px;
+}
+
+#guiPage_Settings_Overview_Content {
+	padding-left:5px;
+	padding-right:5px;
+	width:250px;
+}
+
+.liFix {
+	position:relative;
+	vertical-align:middle;
+}
+
+/*----------------------------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------------------------*/
+.User {
+	width: 200px;
+    height: 200px;
+    display:inline-block;
+    position:relative; 
+        
+    margin:4px;
+    border:2px solid transparent;  
+    
+    white-space:nowrap;
+    text-overflow:ellipsis; 
+    overflow: hidden; 
+    background-color: #3b3b3b;  
+    background-repeat: no-repeat;
+    background-position:center;
+    
+}
+
+.Series {
+	width: 218px;
+    height: 123px;
+    display:inline-block;
+    position:relative; 
+
+    margin:4px;
+	border:2px solid transparent; 
+    
+    white-space:nowrap;
+    text-overflow:ellipsis; 
+    overflow: hidden; 
+    
+    background-repeat: no-repeat;
+    background-position:center;
+    z-index:2;
+}
+
+.SeriesPortrait {
+	width: 90px;
+    height: 140px;
+    display:inline-block;
+    vertical-align: top;
+    position:relative; 
+
+    margin-top: 0px;
+    margin-bottom: 2px;
+    margin-right: 3px;
+    margin-left: 3px;
+    border:2px solid transparent;
+    
+    white-space:nowrap;
+    text-overflow:ellipsis; 
+    overflow: hidden; 
+    
+    background-repeat: no-repeat;
+    background-position:center;
+}
+
+.SeriesPortraitLarge {
+	width: 119px;
+    height: 178px;
+    display:inline-block;
+    position:relative; 
+
+    margin-top: 0px;
+    margin-bottom: 2px;
+    margin-right: 3px;
+    margin-left: 3px;
+    border:2px solid transparent;
+    
+    white-space:nowrap;
+    text-overflow:ellipsis; 
+    overflow: hidden; 
+    
+    background-repeat: no-repeat;
+    background-position:center;
+}
+
+/* .SelectedTV {
+	bottom:13px;
+} */
+
+.Music {
+	width: 112px;
+    height: 112px;
+    display:inline-block;
+    position:relative; 
+
+    margin:5px;
+    color:#fff;
+    border:2px solid transparent;
+    
+    white-space:nowrap;
+    text-overflow:ellipsis; 
+    overflow: hidden; 
+    
+    background-repeat: no-repeat;
+    background-position:center;
+    z-index:2;
+}
+
+.Letter {
+	width: 80px;
+    height: 80px;
+    display:inline-block;
+    position:relative; 
+
+    margin:3px;
+    color:#fff;
+    border:2px solid transparent; 
+    
+    white-space:nowrap;
+    text-overflow:ellipsis; 
+    overflow: hidden; 
+    
+    background-color:rgba(0,0,0,0.5);
+    z-index:2;
+}
+
+.Collection {
+	margin:13px;
+}
+
+.photo {	
+    position:relative; 
+    margin:2px;
+	border:2px solid transparent; 
+    background-repeat: no-repeat;
+    background-position:center;
+    z-index:2;
+}
+
+.photoSelected {	
+	border: 2px solid white;
+	width:145px;
+	height:145px;
+}
+
+.photoAlbum{
+	position:absolute;
+	width:900px;
+	left:30px;
+}
+
+.photoTable{
+	border: 2px solid transparent;
+}
+
+.photoThumbSmall{
+	border: 2px solid transparent;
+	width:135px;
+	height:135px;
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+.photoThumbLarge{
+	border: 2px solid transparent;
+	width:280px;
+	hieght:280px;
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+.photoTitle {	
+	position:absolute;
+	padding-left:3px;
+	left:0px;
+    bottom:0px;
+    width:99%;
+    text-align:left;
+    background-color:rgba(0,0,0,0.3);
+}
+
+.photoItemCount {
+	position:absolute;
+	border-radius:5px;
+	padding:3px;
+	top:1px;
+	right:1px;
+	text-align:right;
+	background-color:rgba(0,0,0,0.3);
+}
+
+.menuItem {	
+	position:absolute;
+    bottom:0px;
+    width:100%;
+    text-align:left;
+    padding-left:2px;
+    background-color:rgba(0,0,0,0.8);
+}
+
+.menuItemWithProgress {
+	position:absolute;
+    bottom:10px;
+    width:100%;
+    text-align:left;
+    padding-left:2px;
+    background-color:rgba(0,0,0,0.8);
+}
+
+.menuProgressBar {
+	width:100%;
+	height:9px;
+	position:absolute;
+	bottom:1px;
+    left:0px;
+    background-color:rgba(0,0,0,0.8);
+}
+
+.menuProgressBar_Current {
+	height:9px;
+	position:absolute;
+	bottom:1px;
+    left:0px;
+    background-color:#5AAF48;
+}
+
+.genreItemCount {
+	position:absolute;
+	top:1px;
+	right:2px;
+	width:25px;
+	height:25px;
+	line-height:25px;
+	text-align:center;
+
+	background-image:url('images/itemCount.png');
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+.favItem {
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:30px;
+	height:26px;
+	line-height:30px;
+	text-align:center;
+
+	background-image:url('images/favorite-30x26.png');
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+.watchedItem {
+	position:absolute;
+	top:0px;
+	right:0px;
+	width:25px;
+	height:25px;
+	line-height:25px;
+	text-align:center;
+
+	background-image:url('images/watched.png');
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+.moreEpisodesWatchedItem {
+	position:absolute;
+	top:0px;
+	right:0px;
+	width:18px;
+	height:18px;
+	text-align:center;
+	background-image:url('images/watchedItemPage.png');
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+.moreEpisodesFavouriteItem {
+	position:absolute;
+	top:20px;
+	right:0px;
+	width:18px;
+	height:18px;
+	text-align:center;
+	background-image:url('images/favorite-18x17.png');
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+.Selected {
+	border:2px solid white;
+	box-shadow: 0px 0px 15px 0px rgba(255,255,255,1);
+	z-index:0;
+}
+
+/*----------------------------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------------------------*/
+.guiDisplay_Series-Banner {
+	padding-top:15px;
+	padding-bottom:10px;
+	height:25px;
+	width:100%;
+	text-align:center;
+}
+
+.guiDisplay_Series-BannerItem{
+	display: inline-block;
+	font-size: 1.6em;
+	color:#dad9d9;
+}
+
+.guiDisplay_Series-BannerItemPadding{
+	padding-right:30px;
+}
+
+.guiDisplay_Series-pageContent{
+	position: absolute;
+ 	left: 0px; top: 0px;
+   	width: 960px; height: 540px;
+}
+
+.guiDisplay_Series-pageTitle2{
+	font-size:22px;
+	height:25px;
+}
+
+.guiDisplay_Series-Content2{
+	padding-top:15px;
+	min-width:500px;
+	height:200px;
+}
+/*-----------------------------------------------------------------*/
+
+.SeriesContent {
+	position:absolute;
+	top:350px;
+	left:34px;
+	width:900px;
+}
+
+.HomeOneCenter {
+	position:absolute;
+	text-align: left;
+}
+
+.SeriesCenter{
+	position:absolute;
+	top:45px;
+	left:0px;
+	width:960px;
+	text-align: center;
+}
+
+.ShowImage {
+	position:absolute;
+	bottom:40px;
+	left:780px;
+	width:140px;
+	height:200px;
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+.infoContainer {
+	position:absolute;
+	left:260px;
+	bottom:25px;
+	width:520px;
+}
+
+.guiTV_Show_MediaAlternative{
+	position:absolute;
+	bottom:25px;
+	left:20px;
+	width:210px;
+	height:100px;
+	text-align:center;
+}
+
+.mediaInfo {
+	display:inline-block;
+	height:49px;
+	width: 67px;
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+.guiFilm_Overview {
+	font-size:15px;
+	min-height:100px;
+	max-height:100px;
+	overflow-y:hidden;
+}
+
+.showItemContainer {
+	position:absolute;
+	bottom:40px;
+	width:480px;
+	left:290px;
+}
+
+
+
+.showItemContainerShort {
+	position:absolute;
+	bottom:40px;
+	width:600px;
+	left:290px;
+}
+
+.ShowOverview {
+	font-size:15px;
+	max-height:150px;
+	overflow-y:hidden;
+}
+
+.ShowImageShort {
+	position:absolute;
+	top:70px;
+	left:75px;
+	width:140px;
+	height:200px;
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+.ShowListShort{
+	position:absolute;
+	top:340px;
+	left:20px;
+	height:154px;
+}
+
+.ShowList{
+	position:absolute;
+	top:120px;
+	left:20px; 
+}
+
+.ShowAllOptionsShort{
+	position:absolute;
+	width:250px;
+	text-align:center;
+	top:300px;
+	left:20px;
+	height:204px;
+}
+
+.ShowAllOptions{
+	position:absolute;
+	width:250px;
+	text-align:center;
+	top:80px;
+	left:20px; 
+}
+
+.ShowListSingle{
+	height:50px;
+	width:250px;
+	border-bottom: 1px solid grey;
+}
+
+.FilmListSingle{
+	height:46px;
+	width:210px;
+	border-bottom: 1px solid grey;
+}
+
+.FilmListSubSingle{
+	position:relative;
+	padding-left:3px;
+	height:58px;
+	width:291px;
+	border-bottom: 1px solid grey;
+	background-repeat: no-repeat;
+    background-position:right;
+}
+
+.EpisodeSubListSingleImage{
+	position:relative;
+	height:58px;
+	width:105px;
+	border-bottom: 1px solid grey;
+	background-repeat: no-repeat;
+    background-position:right;
+    background-color:rgba(255,0,0,0);
+}
+
+.FilmListSingleImage{
+	display:inline-block;
+	height:100%;
+	width:60px;
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+.ShowListSingleImage{
+	display:inline-block;
+	height:100%;
+	width:100px;
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+.ShowListSingleTitle{
+	display:inline-block;
+	width:130px;
+	height:50px;
+	position:absolute;
+}
+
+.ShowListTextOneLine {
+	position:relative;
+	top:18px;
+}
+
+.ShowListTextOneLineFilm {
+	position:relative;
+	top:16px;
+}
+
+.itemPageWatched{
+	display:inline-block;
+	height:18px;
+	width:18px;
+	background-image:url('images/watchedItemPage.png');
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+.itemPageFavourite{
+	display:inline-block;
+	height:18px;
+	width:17px;
+	background-image:url('images/favorite-18x17.png');
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+.guiTV_Episode_EpisodeImage {
+	position:absolute;
+	top:20px;
+	right:20px;
+	height:180px;
+	width:300px;
+	background-repeat: no-repeat;
+    background-position:top right;
+}
+
+.guiTV_Episode_Options{
+	position:absolute;
+	top:125px;
+	left:20px;
+}
+
+.guiTV_Episode_SubOptions{
+	position:absolute;
+	top:124px;
+	left:235px;
+    max-height:235px;
+    width:252px;  
+    background-color:rgba(40,40,40,0);
+}
+
+.guiTV_Episode_SubOptionImages{
+	position:relative;
+	top:124px;
+	left:425px;
+    max-height:235px;
+    width:82px;  
+    background-color:rgba(40,40,40,0);
+}
+
+/*-----------------------------------------------------------------*/
+/* GuiPage_CastMember */
+
+.GuiPage_CastMember_Name {
+	font-size:24px;
+	position:absolute;
+	top:20px;
+	left:200px;
+}
+
+.GuiPage_CastMember_Details {
+	position:absolute;
+	top:70px;
+	left:200px;
+	width:200px;
+}
+
+.GuiPage_CastMember_Poster {
+	position:absolute;
+    top:20px;
+    left:20px;
+	width:160px;
+    height:240px;
+    background-repeat: no-repeat;
+    background-position:top left;
+}
+
+.GuiPage_CastMember_Bio {
+	position:absolute;
+    top:270px;
+    left:20px;
+	width:400px;
+    height:240px;
+    overflow-y:hidden;
+}
+
+.GuiPage_CastMember_List{
+	position:absolute;
+	top:20px;
+	left:440px;
+}
+
+.GuiPage_CastMember_ListSingle{
+	height:50px;
+	width:500px;
+	border-bottom: 1px solid grey;
+}
+
+.GuiPage_CastMember_ListSingleImage{	
+	display:inline-block;
+	height:50px;
+	width:90px;
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+.GuiPage_CastMember_ListSingleTitle{
+	position:absolute;
+	display:inline-block;
+	width:400px;
+	padding-top:18px;
+	padding-left:10px;
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+/*-----------------------------------------------------------------*/
+
+.guiFilm_Poster {
+	position:absolute;
+    bottom:30px;
+    right:20px;
+	width: 136px;
+    height: 200px;
+    background-repeat: no-repeat;
+    background-position:center;
+}
+
+.guiFilm_CDArt {
+	position:absolute;
+    bottom:157px;
+    right:25px;
+	width: 126px;
+    height: 126px;
+    background-repeat: no-repeat;
+    background-position:center;
+}
+
+.guiTV_Episode_Poster {
+	position:absolute;
+    bottom:40px;
+    left:20px;
+	width: 210px;
+    height: 125px;
+    background-repeat: no-repeat;
+    background-position:center;
+}
+
+.guiFilm_Title {
+	position:absolute;
+	top:110px;
+	left:250px;
+	max-width:700px;	
+	overflow: hidden; 
+	font-size:26px;	
+}
+
+.guiTV_Episode_Overview {	
+	font-size:15px;
+	width:680px;
+	min-height:100px;
+	max-height:145px;
+	overflow-y:hidden;
+}
+
+/* ---------------------------------------------------------------------------   */
+
+.videoVersions {
+	position:absolute;
+	top:200px;
+	left:355px;
+	width:250px;
+	background-color:black;
+}
+
+.videoVersionOption {
+	position:relative;
+	width:240px;
+    height:40px;
+        
+    margin:5px;
+    color:#fff;
+    
+    white-space:nowrap;
+    text-overflow:ellipsis; 
+    overflow: hidden; 
+    
+    border-bottom: 2px solid #222222;
+}
+
+.videoVersionType {
+	position:absolute;
+	top:3px;
+	right:3px;
+	width:30px;
+	height:30px;
+	line-height:30px;
+	text-align:center;
+
+	background-image:url('images/itemCount.png');
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+/* ---------------------------------------------------------------------------   */
+
+.videoToolsOptions {
+	position:absolute;
+	bottom:30px;
+	left:0px;
+	width:200px;
+	background-color:rgba(0,0,0,0.8);
+}
+
+.videoToolsOption {
+	position:relative;
+	width:192px;
+	height:40px;
+        
+    margin:5px;
+    color:#fff;
+    
+    white-space:nowrap;
+    text-overflow:ellipsis; 
+    overflow: hidden; 
+    
+    border-bottom: 2px solid #00b4ff;
+}
+
+/* ---------------------------------------------------------------------------   */
+.videoLoading {
+	padding:10px;
+	color:#fff;
+	position:absolute;
+	top:20px;
+    right:20px;
+    background-color:rgba(0,0,0,0.8);
+}
+
+.videoInfo {
+	padding:5px 10px;
+	text-align:left;
+	color:#fff;
+	position:absolute;
+	top:0px;
+    left:0px;
+    height:65px;
+    width:100%;
+    background-color:rgba(0,0,0,0.8);
+}
+
+.videoSubtitles {
+	position:absolute;
+	bottom:20px;
+	left:0px;
+	width:100%;
+	background-color:rgba(0,0,0,0);
+	text-align:center;
+}
+
+.videoTools {
+	position:absolute;
+	bottom:0px;
+	left:0px;
+	width:100%;
+	padding: 5px 10px;
+	text-align:left;
+	color: white;	
+	background-color:rgba(0,0,0,0.8);
+}
+
+.videoToolsSlider {
+	position:absolute;
+	bottom:30px;
+	left:0px;
+	height:50px;
+	width:100%;
+	padding: 5px 10px;
+	text-align:left;
+	color: white;	
+	background-color:rgba(0,0,0,0.8);
+}
+
+.videoTools_SliderBar {
+	width:900px;
+	height:10px;
+	position:absolute;
+	top:20px;
+    left:30px;
+    background-color:#fff;
+}
+
+.videoTools_SliderBarCurrent {
+	width:20px;
+	height:20px;
+	position:absolute;
+	top:15px;
+    
+    background-image:url('images/sliderPosition.png');
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+.videoTools_SliderBarCurrentTime {
+	position:absolute;
+	width:60px;
+	background-color:green;
+	text-align:center;
+}
+
+.videoInfo_Time {
+	position:absolute;
+	top:40px;
+    right:210px;
+}
+
+.videoInfo_ProgressBar {
+	width:400px;
+	height:5px;
+	position:absolute;
+	top:25px;
+    left:500px;
+    background-color:#fff;
+}
+
+.videoInfo_ProgressBar_Current {
+	position:absolute;
+	top:25px;
+    left:500px;
+	width:0px;
+	height:5px;
+    background-color:#339933;
+}
+
+.videoInfo_Details {
+	position:absolute;
+	top:7px;
+    left:20px;
+    width:460px;
+    height:53px;
+    background-repeat: no-repeat;
+    background-position:left;
+}
+
+.videoItemDetails {
+	position:absolute;
+	bottom:0px;
+    left:0px;
+    width: 100%;
+    max-height:200px;
+    text-align:left;
+	color: white;	
+	background-color:rgba(0,0,0,0.8);
+}
+
+.videoItemDetailsTitle {
+    font-size:24px;
+}
+
+.videoItemDetailsSubData {
+	font-size:16px;
+    width: 735px;
+}
+
+.videoItemDvdArt {
+	position:absolute;
+    bottom:0px;
+    right:45px;
+	width: 100px;
+    height: 130px;
+    background-repeat: no-repeat;
+    background-position: left;
+    background-color:rgba(0,0,0,0);
+}
+
+.videoItemRatings {
+	position:absolute;
+    bottom:0px;
+    right: 160px;
+	width: 53px;
+    height: 48px;
+    background-color:rgba(0,0,0,0);
+}
+
+.videoItemRatingsTomatoIcon {
+	position:absolute;
+    bottom:24px;
+    left: 0px;
+	width: 24px;
+    height: 24px;
+    background-repeat: no-repeat;
+    background-color:rgba(0,0,0,0);
+}
+
+.videoItemRatingsTomato {
+	position:absolute;
+    bottom:24px;
+    right: 0px;
+	width: 24px;
+    height: 20px;
+    color: white;
+    background-color:rgba(0,0,0,0);
+}
+
+.videoItemRatingsStarIcon {
+	position:absolute;
+    bottom:0px;
+    left: 0px;
+	width: 24px;
+    height: 24px;
+    background-repeat: no-repeat;
+    background-color:rgba(0,0,0,0);
+}
+
+.videoItemRatingsStar {
+	position:absolute;
+    bottom:0px;
+    right: 0px;
+	width: 24px;
+    height: 20px;
+	color: white;
+    background-color:rgba(0,0,0,0);
+}
+
+/* ---------------------------------------------------------------------------   */
+
+.guiMusic_Title{
+	display:inline-block;
+	font-size:22px;
+	padding-top:20px;
+	padding-left:20px;
+}
+
+.guiMusic_Subtitle{
+	display:inline-block;
+	font-size:18px;
+	padding-top:5px;
+	padding-left:30px;
+}
+
+.guiMusic_Details{
+	position:absolute;
+    top:120px;
+    left:40px;
+	width:450px;
+    height:300px; 
+}
+
+.guiMusic_Poster {
+	position:absolute;
+    bottom:130px;
+    right:30px;
+	width:325px;
+    height:290px; 
+    background-repeat:no-repeat;
+    background-position:center;
+}
+
+.guiMusic_TableTd {
+	white-space:nowrap;
+    text-overflow:ellipsis; 
+    overflow: hidden; 
+	padding-right:8px;
+	border-bottom:1px solid black;
+}
+
+.guiMusic_Globals{
+	display:block;
+	height:28px;
+	width:400px;
+	text-align:center;
+}
+
+.guiMusic_Global{
+	display:inline-block;
+	padding-right:10px;
+}
+
+.guiMusic_Options{
+	padding-left:20px;
+	padding-top:10px;
+}
+
+
+/* ---------------------------------------------------------------------------   */
+
+.guiMusicPlayerDiv {
+	position:absolute;
+	height:30px;
+	bottom:0px;
+	width:100%;
+	height:62px;
+	text-align:left;	
+	/* background-color:#303030;
+	border-top: 2px solid #087B26; */
+	display:inline-block;
+	vertical-align:middle;
+	z-index:20;
+}
+
+.guiMusicPlayerTitle {
+	position:absolute;
+	bottom:5px;
+	left:10px;
+	width:450px;
+}
+
+.guiMusicPlayerNowPlaying {
+	position:absolute;
+	bottom:5px;
+	left:410px;
+	width:80px;
+	visibility:hidden;
+}
+
+.guiMusicPlayerScreenOff {
+	position:absolute;
+	bottom:5px;
+	left:490px;
+	width:60px;
+}
+
+.guiMusicPlayerTime {
+	position:absolute;
+	bottom:5px;
+	left:560px;
+	width:100px;
+}
+
+.guiMusicPlayerPlay {
+	position:absolute;
+	bottom:5px;
+	left:665px;;
+	width:23px;
+    height:19px;
+	background-image:url('images/musicplayer/play-23x19.png');
+	background-repeat:no-repeat;
+    background-position:center;
+}
+
+.guiMusicPlayerStop {
+	position:absolute;
+	bottom:5px;
+	left:695px;
+	width:23px;
+    height:19px;
+	background-image:url('images/musicplayer/stop-23x19.png');
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+.guiMusicPlayerPrevious {
+	position:absolute;
+	bottom:5px;
+	left:725px;
+	width:23px;
+    height:19px;
+	background-image:url('images/musicplayer/skip-previous-23x19.png');
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+.guiMusicPlayerPause {
+	position:absolute;
+	bottom:5px;
+	left:755px;
+	width:23px;
+    height:19px;
+	background-image:url('images/musicplayer/pause-23x19.png');
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+.guiMusicPlayerNext {
+	position:absolute;
+	bottom:5px;
+	left:785px;
+	width:23px;
+    height:19px;
+	background-image:url('images/musicplayer/skip-next-23x19.png');
+	background-repeat: no-repeat;
+    background-position:center;
+}
+
+.red {
+	color:#27a436;
+}
+
+.green {
+	color:#27a436;
+}
+
+.BannerSelected {
+	color:#27a436;
+}
+
+.blue {
+	color:#66CCFF;
+}
+
+.offWhite {
+	color:#f9f9f9;
+}
+
+.musicPlaylist {
+	position:absolute;
+	bottom:65px;
+	right:0px;
+	height:425px;
+	width:300px;
+	background-color: #303030;
+	border-left: 2px solid #087B26;
+}
+
+#guideTable td {
+	border: 2px solid black;
+}
+
+.videoInfo_ProgressBar { 
+	height: 5px;  
+	position: relative;
+	background: #555;
+}
+
+#guiPlayer_Info_ProgressBar_Current{
+	display: block;
+	height: 100%;
+	background-color: #27a436;
+	position: relative;
+	overflow: hidden;
+}
+/* ---------------------------------------------------------------------------- */
+
+.playlistContainer12key {
+	position: absolute;
+	top:    100px;
+	left:   240px;
+	width:  430px;
+	background-color: #303030;
+	border: 2px solid #087B26;
+}
+
+.playlistContainerQwerty {
+	position: absolute;
+	top:   100px;
+	left:    5px;
+	width: 415px;
+	background-color: #303030;
+	border: 2px solid #087B26;
+}
+
+/* ---------------------------------------------------------------------------- */
+
+.screensaveroverlay {
+	position:absolute;
+	bottom:0px;
+	left:0px;
+	width:100%;
+	background-color:rgba(0,0,0,0.4);
+	text-align:center;
+	z-index: 9;
+}

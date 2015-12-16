@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>MediaBrowser 3</title>
+
+		<!-- TODO : Common API -->
+		<script language='javascript' type='text/javascript' src='$MANAGER_WIDGET/Common/jquery.js'></script>
+		<script language="javascript" type="text/javascript" src="$MANAGER_WIDGET/Common/API/Widget.js"></script>
+        <script language="javascript" type="text/javascript" src="$MANAGER_WIDGET/Common/API/Plugin.js"></script>
+        <script language="javascript" type="text/javascript" src="$MANAGER_WIDGET/Common/API/TVKeyValue.js"></script>
+        <script language="javascript" type="text/javascript" src="$MANAGER_WIDGET/Common/Util/Include.js"></script>
+        <script language="javascript" type="text/javascript" src="$MANAGER_WIDGET/Common/Util/Language.js"></script>
+        <script language="javascript" type="text/javascript" src="$MANAGER_WIDGET/Common/Plugin/Define.js"></script>
+
+		<!-- TODO : Javascript code -->	
+		<script language="javascript" type="text/javascript" src="app/javascript/Main.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Server.js"></script>	
+		<script language="javascript" type="text/javascript" src="app/javascript/Support.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Support/json2.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Support/File.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Support/FileLog.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Support/Sha1.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Support/GuiHelper.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Support/GuiNotifications.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Support/ServerVersion.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Support/srt-parser.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiPage_NewServer.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiPage_Servers.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiUsers.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiUsers_Manual.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiMainMenu.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiTV_Show.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiTV_Upcoming.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiPlayer/GuiPlayer.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiPlayer/GuiPlayer_Display.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiPlayer/lang.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiPlayer/GuiPlayer_Versions.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiPlayer/GuiPlayer_Transcoding.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiPlayer/GuiPlayer_TranscodeParams.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiMusicPlayer/GuiMusicPlayer.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiPage_ItemDetails.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiDisplay_Series.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiDisplay_Episodes.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiDisplayOneItem.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiPage_Contributors.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiPage_HomeOneItem.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiPage_HomeTwoItems.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiPage_Music.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiPage_MusicAZ.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiPage_MusicArtist.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiPage_CastMember.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiPage_Settings.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiPage_SettingsLog.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiPage_TvChannel.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiPage_TvGuide.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiPage_Photos.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiPage_PhotoNavigation.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiImagePlayer/GuiImagePlayer.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiImagePlayer/GuiImagePlayer_Screensaver.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiPage_Playlist.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiPage_AddToPlaylist.js"></script>
+		<script language="javascript" type="text/javascript" src="app/javascript/Gui/GuiPage_Search.js"></script>
+		
+		<object id="pluginPlayer" border=0 classid="clsid:SAMSUNG-INFOLINK-PLAYER"></object>
+        <object id="pluginObjectAudio" border=0 classid="clsid:SAMSUNG-INFOLINK-AUDIO"></object>
+        <object id="pluginScreen" border=0 classid="clsid:SAMSUNG-INFOLINK-SCREEN"></object>
+        <object id="pluginObjectNetwork" border=0 classid="clsid:SAMSUNG-INFOLINK-NETWORK"></object>
+        <object id='pluginObjectTVMW' border=0 classid='clsid:SAMSUNG-INFOLINK-TVMW'></object>
+        <object id='pluginObjectNNavi' border=0 classid='clsid:SAMSUNG-INFOLINK-NNAVI'></object>
+        <object id='pluginObjectTV' border=0 classid='clsid:SAMSUNG-INFOLINK-TV'></object> 
+        <object id='pluginSEF' border=0 classid='clsid:SAMSUNG-INFOLINK-SEF'></object>
+        <object id='pluginObjectTime' border=0 classid='clsid:SAMSUNG-INFOLINK-TIME'></object>
+        <object id='pluginDownload' border=0 classid='clsid:SAMSUNG-INFOLINK-DOWNLOAD'  style='width: 0; height: 0; opacity: 0;'></object>
+        
+		<!-- TODO : Style sheets code -->
+		<link rel="stylesheet" href="Main.css" type="text/css">
+	</head>
+
+	<body onload="Main.onLoad();" onunload="Main.onUnload();">
+		<!-- Anchor as focus for key events -->
+		<div id='NoKeyInput'></div>
+		<a href='javascript:void(0);' id='NoItems' onkeydown='Support.noitemskeyDown();'></a>
+		<a href='javascript:void(0);' id='ServerVersion' onkeydown='ServerVersion.keyDown();'></a>
+		<a href='javascript:void(0);' id='GuiPage_Servers' onkeydown='GuiPage_Servers.keyDown();'></a>
+		<a href='javascript:void(0);' id='GuiUsers' onkeydown='GuiUsers.keyDown();'></a>
+		<a href='javascript:void(0);' id='GuiUsers_Pwd' onkeydown='GuiUsers.keyDownPassword();'></a>
+		<a href='javascript:void(0);' id='GuiUsers_Manual' onkeydown='GuiUsers_Manual.keyDown();'></a>
+		<a href='javascript:void(0);' id='GuiUsers_Manual_Pwd' onkeydown='GuiUsers_Manual.keyDownPassword();'></a>
+		<a href='javascript:void(0);' id='GuiHelper' onkeydown='GuiHelper.keyDown();'></a>
+		<a href='javascript:void(0);' id='GuiMainMenu' onkeydown='GuiMainMenu.keyDown();'></a>
+		<a href='javascript:void(0);' id='GuiMainMenuSubMenu' onkeydown='GuiMainMenu.keyDownSubMenu();'></a>
+		<a href='javascript:void(0);' id='GuiTV_Show' onkeydown='GuiTV_Show.keyDown();' onfocus='GuiTV_Show.onFocus();'></a>
+		<a href='javascript:void(0);' id='GuiTV_Upcoming' onkeydown='GuiTV_Upcoming.keyDown();'></a>
+		<a href='javascript:void(0);' id='GuiTV_UpcomingBottom' onkeydown='GuiTV_Upcoming.bottomKeyDown();'></a>
+		<a href='javascript:void(0);' id='GuiPage_ItemDetails' onkeydown='GuiPage_ItemDetails.keyDown();'  onfocus='GuiPage_ItemDetails.onFocus();'></a>
+		<a href='javascript:void(0);' id='GuiPage_ItemDetailsSub' onkeydown='GuiPage_ItemDetails.subKeyDown();'></a>
+		<a href='javascript:void(0);' id='GuiPlayer_Versions' onkeydown='GuiPlayer_Versions.keyDown();'></a>	
+		<a href='javascript:void(0);' id='GuiPlayer' onkeydown='GuiPlayer.keyDown();'></a>
+		<a href='javascript:void(0);' id='GuiPlayer_Tools' onkeydown='GuiPlayer_Display.keyDownTools();'></a>
+		<a href='javascript:void(0);' id='GuiPlayer_ToolsSlider' onkeydown='GuiPlayer_Display.keyDownToolsSlider();'></a>
+		<a href='javascript:void(0);' id='GuiPlayer_ToolsSub' onkeydown='GuiPlayer_Display.keyDownToolsSub();'></a>
+		<a href='javascript:void(0);' id='GuiMusicPlayer' onkeydown='GuiMusicPlayer.keyDown();' onfocus='GuiMusicPlayer.onFocus();'></a>
+		<a href='javascript:void(0);' id='GuiImagePlayer' onkeydown='GuiImagePlayer.keyDown();'></a>
+		<a href='javascript:void(0);' id='GuiPlayer_Control' onkeydown='GuiPlayer_Control.keyDown();'></a>
+		<a href='javascript:void(0);' id='GuiDisplay_Series' onkeydown='GuiDisplay_Series.keyDown();' onfocus='GuiDisplay_Series.onFocus();'></a>
+		<a href='javascript:void(0);' id='GuiDisplay_Episodes' onkeydown='GuiDisplay_Episodes.keyDown();' onfocus='GuiDisplay_Episodes.onFocus();'></a>
+		<a href='javascript:void(0);' id='GuiDisplayOneItem' onkeydown='GuiDisplayOneItem.keyDown();' onfocus='GuiDisplayOneItem.onFocus();'></a>
+		<a href='javascript:void(0);' id='GuiPage_Contributors' onkeydown='GuiPage_Contributors.keyDown();' onfocus='GuiPage_Contributors.onFocus();'></a>
+		<a href='javascript:void(0);' id='GuiPage_HomeOneItem' onkeydown='GuiPage_HomeOneItem.keyDown();' onfocus='GuiPage_HomeOneItem.onFocus();'></a>
+		<a href='javascript:void(0);' id='GuiPage_HomeTwoItems' onkeydown='GuiPage_HomeTwoItems.keyDown();' onfocus='GuiPage_HomeTwoItems.onFocus();'></a>
+		<a href='javascript:void(0);' id='GuiPage_HomeTwoItemsBottom' onkeydown='GuiPage_HomeTwoItems.bottomKeyDown();'></a>	
+		<a href='javascript:void(0);' id='GuiPage_MusicArtist' onkeydown='GuiPage_MusicArtist.keyDown();'></a>
+		<a href='javascript:void(0);' id='GuiPage_MusicArtistBottom' onkeydown='GuiPage_MusicArtist.bottomKeyDown();'></a>	
+		<a href='javascript:void(0);' id='GuiPage_Music' onkeydown='GuiPage_Music.keyDown();' onfocus='GuiPage_Music.onFocus();'></a>	
+		<a href='javascript:void(0);' id='GuiPage_MusicAZ' onkeydown='GuiPage_MusicAZ.keyDown();' onfocus='GuiPage_MusicAZ.onFocus();'></a>	
+		<a href='javascript:void(0);' id='GuiPage_CastMember' onkeydown='GuiPage_CastMember.keyDown();'></a>	
+		<a href='javascript:void(0);' id='GuiPage_Settings' onkeydown='GuiPage_Settings.keyDown();' onfocus='GuiPage_Settings.onFocus();'></a>	
+		<a href='javascript:void(0);' id='GuiPage_SettingsBottom' onkeydown='GuiPage_Settings.bottomKeyDown();'></a>
+		<a href='javascript:void(0);' id='GuiPage_SettingsLog' onkeydown='GuiPage_SettingsLog.keyDown();' onfocus='GuiPage_SettingsLog.onFocus();'></a>		
+		<a href='javascript:void(0);' id='GuiPage_TvChannel' onkeydown='GuiPage_TvChannel.keyDown();'></a>
+		<a href='javascript:void(0);' id='GuiPage_TvGuide' onkeydown='GuiPage_TvGuide.keyDown();'></a>
+		<a href='javascript:void(0);' id='GuiPage_Photos' onkeydown='GuiPage_Photos.keyDown();' onfocus='GuiPage_Photos.onFocus();'></a>	
+		<a href='javascript:void(0);' id='GuiPage_PhotoNavigation' onkeydown='GuiPage_PhotoNavigation.keyDown();'></a>	
+		<a href='javascript:void(0);' id='GuiPage_Playlist' onkeydown='GuiPage_Playlist.keyDown();'></a>
+		<a href='javascript:void(0);' id='GuiPage_AddToPlaylist' onkeydown='GuiPage_AddToPlaylist.keyDown();' onfocus='GuiPage_AddToPlaylist.onFocus();'></a>
+		<a href='javascript:void(0);' id='GuiPage_Search' onkeydown='GuiPage_Search.keyDown();' onfocus='GuiPage_Search.onFocus();'></a>
+		
+		
+		<script language="javascript" type="text/javascript" src="$MANAGER_WIDGET/Common/IME/ime2.js"></script>
+		<script type="text/javascript" language="javascript" src="$MANAGER_WIDGET/Common/API/CImageViewer.js"></script>
+		<script type="text/javascript" src="$MANAGER_WIDGET/Common/af/2.0.0/loader.js"></script>
+
+		<div id='GuiImagePlayer_ScreensaverOverlay' class='screensaveroverlay'></div>
+		<div id="everything">	
+		
+			<!-- Image Viewer -->
+			<div id="imageView" class="imageView" style="visibility:hidden"></div>
+			<!-- <div id='imageView_Info' class='videoInfo' style='visibility:hidden'></div> -->
+			
+			<!-- Splash Screen -->
+			<div id="splashscreen" class="splash">
+			<div id="splashscreen_version" class="splash_version"></div>
+			</div>
+		
+			<div id="pageBackgroundHolder" class="pageBackground"></div>
+			<div id="pageBackground" style = "display:none" class="pageBackground"></div>
+			<div id="pageBackgroundFade" class="pageBackgroundFade"></div>
+			
+			<div id="page" class="page">
+				<div id='pageContent' class='guiDisplay_Series-pageContent'></div>		
+						
+				<div id="Counter" class="counter"></div>
+				<div id="Clock" class="time"></div>
+				<div id="Help" class="help" style="visibility:hidden">
+					<div id="HelpTitle" style="font-size:18px"></div>
+					<div id="HelpContent"></div>
+				</div>	
+				
+				<div id='guiPlayListContainer' style='visibility:hidden'>
+				 <div style='font-size:18px;padding-top:20px;padding-left:30px;'>Add to Playlist</div>
+				 <div id='guiPlayListExisting'></div>
+				 <div style='font-size:18px;padding-top:20px;padding-left:30px;'>Create New Playlist</div>
+				 <form style='padding-top:10px;padding-left:40px;'><input id='guiPlayListNew' style='z-index:10;' type='text' size='45' value=''/></form>
+				 <div id='guiPlayListResult'></div>
+				</div>
+				
+				<!--  Music Player -->
+				<div id='guiMusicPlayerDiv' class='guiMusicPlayerDiv' style='visibility:hidden'>
+					<div id='guiMusicPlayerTitle' class='guiMusicPlayerTitle'></div>
+					<div id='guiMusicPlayerNowPlaying' class='guiMusicPlayerNowPlaying'>Now Playing</div>	
+					<div id='guiMusicPlayerScreenOff' class='guiMusicPlayerScreenOff'> Screen</div>
+					<div id='guiMusicPlayerTime'  class='guiMusicPlayerTime'></div>	
+					<div id='guiMusicPlayerPlay' class='guiMusicPlayerPlay'></div>
+					<div id='guiMusicPlayerStop' class='guiMusicPlayerStop'></div>
+					<div id='guiMusicPlayerPrevious' class='guiMusicPlayerPrevious'></div>
+					<div id='guiMusicPlayerPause' class='guiMusicPlayerPause'></div>
+					<div id='guiMusicPlayerNext' class='guiMusicPlayerNext'></div>
+					<!--  <div id='guiMusicPlayerPlaylist' style='display:inline-block;'> Playlist </div>
+					<div id='guiMusicPlayerShowPlaylist' class='musicPlaylist' style='visibility:hidden'>
+						<div id='guiMusicPlayerShowPlaylistContent'></div>
+					</div>	 -->				
+				</div>
+				
+				<!--  Coloured remote buttons -->
+				<div id='guiButtonShade' class='ButtonShade' style="visibility:hidden"></div>
+				<div id='guiRedButton' class='RedButton' style="visibility:hidden"></div>
+				<div id='guiGreenButton' class='GreenButton' style="visibility:hidden"></div>
+				<div id='guiYellowButton' class='YellowButton' style="visibility:hidden"></div>
+				<div id='guiBlueButton' class='BlueButton' style="visibility:hidden"></div>
+				<div id='guiReturnButton' class='ReturnButton' style="visibility:hidden"></div>	
+				
+			</div>	
+			<!-- MUST KEEP OUTSIDE OF page div else its hidden during video playback -->	
+			<div id="Notifications" class="notification" style="visibility:hidden">
+				<div id="NotificationText" class="notificationText"></div>
+			</div>
+			<div id='guiPlayer_Versions_Playables' class='videoVersions' style='visibility:hidden'></div>
+			<div id='guiPlayer_Loading' class='videoLoading' style='visibility:hidden'>Loading</div>
+			
+			<div id='guiPlayer_Osd' style='opacity:0'>
+				<div id='guiPlayer_Info' class='videoInfo'>
+					<div id='guiPlayer_Info_Time'  class='videoInfo_Time'></div>	
+					<div id='guiPlayer_Info_ProgressBar'  class='videoInfo_ProgressBar'><div id='guiPlayer_Info_ProgressBar_Current'></div></div>	
+					<div id='guiPlayer_Info_Details'  class='videoInfo_Details'></div>
+				</div>
+				<div id='guiPlayer_ItemDetails' class='videoItemDetails'  style='visibility:hidden'>
+					<div id='guiPlayer_ItemDetails_Title' class='videoItemDetailsTitle'></div>
+					<div id='guiPlayer_ItemDetails_SubData' class='videoItemDetailsSubData'></div>
+					<div id='guiPlayer_ItemDetails_Overview' class='videoItemDetailsSubData'></div>
+					<div id='guiPlayer_clock' class='time'></div>
+				</div>
+				<div id='guiPlayer_ItemDetails2' class='videoItemDetails'>
+					<div id='guiPlayer_ItemDetails_Title2' class='videoItemDetailsTitle'></div>
+					<div id='guiPlayer_ItemDetails_SubData2' class='videoItemDetailsSubData'></div>
+					<div id='guiPlayer_clock2' class='time'></div>
+				</div>
+				<div id='guiPlayer_DvdArt' class='videoItemDvdArt'></div>
+				<div id='guiPlayer_Ratings' class='videoItemRatings'></div>
+			</div>
+			
+			<div id='guiPlayer_Tools' class='videoTools' style='opacity:0'></div>
+			<div id='guiPlayer_Tools_SubOptions' class='videoToolsOptions' style='visibility:hidden'></div>
+			<div id='guiPlayer_Tools_Slider' class='videoToolsSlider' style='visibility:hidden'>
+				<div id='guiPlayer_Tools_SliderBarCurrentTime' class='videoTools_SliderBarCurrentTime'></div>
+				<div id='guiPlayer_Tools_SliderBar'  class='videoTools_SliderBar'></div>
+				<div id='guiPlayer_Tools_SliderBarCurrent' class='videoTools_SliderBarCurrent'></div>
+			</div>
+			
+			<div id='guiPlayer_Subtitles' class='videoSubtitles' style='visibility:hidden'></div>
+	
+			<!--  Menu -->
+			<div id='menu' class='menu' style='visibility:hidden'>
+				<div id='menuUserImage' class='menu-userImage'></div>
+				<div id='menuUserName' class='menu-userName'></div>
+				<div id='menuItems'></div>	
+				<div id='menuVersion' class='menu-version'></div>	  
+			</div>
+		</div> <!-- Everything Div -->
+	</body>
+</html>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget>
+	<cpname itemtype="string"/>
+	<cplogo itemtype="string"/>
+	<cpauthjs itemtype="string"/>
+	<ThumbIcon itemtype="string">icon/MB3_106_87.png</ThumbIcon>
+	<BigThumbIcon itemtype="string">icon/MB3_115_95.png</BigThumbIcon>
+	<ListIcon itemtype="string">icon/MB3_85_70.png</ListIcon>
+	<BigListIcon itemtype="string">icon/MB3_95_78.png</BigListIcon>
+	<category itemtype="Video"/>
+	<autoUpdate itemtype="boolean">n</autoUpdate>
+	<ver itemtype="string">1.0.0</ver>
+	<mgrver itemtype="string"/>
+	<fullwidget itemtype="boolean">y</fullwidget>
+	<type itemtype="string">user</type>
+	<srcctl itemtype="boolean">y</srcctl>
+	<ticker itemtype="boolean">n</ticker>
+	<childlock itemtype="boolean">n</childlock>
+	<videomute itemtype="boolean">n</videomute>
+	<dcont itemtype="boolean">y</dcont>
+	<widgetname itemtype="string">Emby</widgetname>
+	<description itemtype="string">Emby for Samsung Smart TV</description>
+	<width itemtype="string">960</width>
+	<height itemtype="string">540</height>
+	<author itemtype="group"> 
+		<name itemtype="ChessDragon136"/>
+		<email itemtype="string"/>
+		<link itemtype="string"/>
+		<organization itemtype="string"/>
+	</author>
+</widget>
