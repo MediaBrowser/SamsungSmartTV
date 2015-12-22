@@ -61,7 +61,7 @@ GuiPlayer_Versions.start = function(playerData,resumeTicks,playedFromPage) {
 		
 		//Toggle D Series Transcoding in Main
 		if (Main.getModelYear() == "D" && (File.getTVProperty("TranscodeDSeries") == false)) {
-			if (result[2] == "Direct Stream") { 
+			if (result[2] == "Direct Play") { 
 				FileLog.write("Video : Playback Added - D Series")
 				this.MediaPlayback.push(result);
 			} else {
@@ -92,10 +92,10 @@ GuiPlayer_Versions.start = function(playerData,resumeTicks,playedFromPage) {
 		GuiPlayer.startPlayback(this.MediaPlayback[0],resumeTicks); //Need to change
 	} else {
 		//See how many will direct play
-		FileLog.write("Video : Multiple Playback Options - Determine Direct Stream Count")
+		FileLog.write("Video : Multiple Playback Options - Determine Direct Play Count")
 		for (var index = 0; index < this.MediaPlayback.length;index++) {
-			if (this.MediaPlayback[index][2] == "Direct Stream") {
-				FileLog.write("Video : Found Direct Stream - Added to Selections")
+			if (this.MediaPlayback[index][2] == "Direct Play") {
+				FileLog.write("Video : Found Direct Play - Added to Selections")
 				this.MediaSelections.push(this.MediaPlayback[index]);
 			}
 		}

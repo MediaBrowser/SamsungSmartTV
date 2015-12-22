@@ -1079,7 +1079,7 @@ GuiPage_Settings.setOverview = function() {
 			break;		
 		case "SubtitleMode":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Subtitle Mode";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Select the default behaviour of when subtitles are loaded<br><br>This is a server option and will affect your Emby experience on all clients";
+			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Select the default behaviour of when subtitles are loaded<br><br>Default: Subtitles matching the language preference will be loaded when the audio is in a foreign language.<br><br>Only Forced Subtitles: Only subtitles marked as forced will be loaded.<br><br>Always Play Subtitles: Subtitles matching the language preference will be loaded regardless of the audio language.<br><br>None: Subtitles will not be loaded by default.<br><br>This is a server option and will affect your Emby experience on all clients";
 			break;	
 		case "DisplayMissingEpisodes":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Display Missing Episodes within Seasons";

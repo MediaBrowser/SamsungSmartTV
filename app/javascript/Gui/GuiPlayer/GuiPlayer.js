@@ -125,9 +125,7 @@ GuiPlayer.startPlayback = function(TranscodeAlg, resumeTicksSamsung) {
 	this.playingSubtitleIndex = TranscodeAlg[5];
 	
 	//Set PlayMethod
-	if (this.playingTranscodeStatus == "Direct Stream"){
-		this.PlayMethod = "DirectStream";
-	} else if (this.playingTranscodeStatus == "Direct Play"){
+	if (this.playingTranscodeStatus == "Direct Play"){
 		this.PlayMethod = "DirectPlay";
 	} else if (this.playingTranscodeStatus == "Transcoding Audio & Video"){
 		this.PlayMethod = "Transcode";
@@ -155,7 +153,7 @@ GuiPlayer.startPlayback = function(TranscodeAlg, resumeTicksSamsung) {
 	Server.videoStarted(this.PlayerData.Id,this.playingMediaSource.Id,this.PlayMethod);
     
 	//Update URL with resumeticks
-	if (Main.getModelYear() == "D" && this.PlayMethod != "DirectStream") {
+	if (Main.getModelYear() == "D" && this.PlayMethod != "DirectPlay") {
 		FileLog.write("Playback : D Series Playback OR HTTP - Load URL");
 		var url = this.playingURL + '&StartTimeTicks=' + (resumeTicksSamsung*10000) + '|COMPONENT=HLS';
 		alert ("D Series Playback url : "+url);
@@ -165,7 +163,7 @@ GuiPlayer.startPlayback = function(TranscodeAlg, resumeTicksSamsung) {
 		FileLog.write("Playback : E+ Series Playback - Load URL");
 		var url = this.playingURL + '&StartTimeTicks=' + (resumeTicksSamsung*10000);
 		var position = 0;
-		if (this.PlayMethod == "DirectStream") {
+		if (this.PlayMethod == "DirectPlay") {
 			position = Math.round(resumeTicksSamsung / 1000);
 		}
 	    this.plugin.ResumePlay(url,position); 
@@ -187,6 +185,7 @@ GuiPlayer.stopPlayback = function() {
 
 GuiPlayer.setDisplaySize = function() {
 	var aspectRatio = (this.playingMediaSource.MediaStreams[this.playingVideoIndex] === undefined) ? "16:9" : this.playingMediaSource.MediaStreams[this.playingVideoIndex].AspectRatio;
+alert("aspectRatio "+aspectRatio);
 	if (aspectRatio == "16:9") {
 		this.plugin.SetDisplayArea(0, 0, 960, 540);
 	} else {
@@ -664,7 +663,7 @@ GuiPlayer.handlePauseKey = function() {
 GuiPlayer.handleFFKey = function() {
 	FileLog.write("Playback : Fast Forward");
     if(this.Status == "PLAYING") {
-    	if (this.PlayMethod == "DirectStream" | this.PlayMethod == "DirectPlay") {
+    	if (this.PlayMethod == "DirectPlay") {
     		document.getElementById("guiPlayer_Subtitles").style.bottom="60px";
     		if (document.getElementById("guiPlayer_Osd").style.opacity == 0) {
     			$('#guiPlayer_Osd').css('opacity',0).animate({opacity:1}, 500);
@@ -704,7 +703,7 @@ GuiPlayer.handleFFKey = function() {
 GuiPlayer.handleRWKey = function() {
 	FileLog.write("Playback : Fast Forward");
     if(this.Status == "PLAYING") {
-    	if (this.PlayMethod == "DirectStream" | this.PlayMethod == "DirectPlay") {
+    	if (this.PlayMethod == "DirectPlay") {
     		document.getElementById("guiPlayer_Subtitles").style.bottom="60px";
     		if (document.getElementById("guiPlayer_Osd").style.opacity == 0) {
     			$('#guiPlayer_Osd').css('opacity',0).animate({opacity:1}, 500);
@@ -866,7 +865,7 @@ GuiPlayer.newPlaybackPosition = function(startPositionTicks) {
 	//Update URL with resumeticks
 	this.setDisplaySize();
 	var position = Math.round(startPositionTicks / 10000000);
-	if (Main.getModelYear() == "D" && this.PlayMethod != "DirectStream") {
+	if (Main.getModelYear() == "D" && this.PlayMethod != "DirectPlay") {
 		var url = this.playingURL + '&StartTimeTicks=' + (Math.round(startPositionTicks)) + '|COMPONENT=HLS';						
 	    this.plugin.ResumePlay(url,0); //0 as if transcoding the transcode will start from the supplied starttimeticks
 	    this.updateSubtitleTime(startPositionTicks / 10000,"NewSubs");
