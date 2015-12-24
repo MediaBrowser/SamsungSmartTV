@@ -231,6 +231,11 @@ GuiPlayer.setSubtitles = function(selectedSubtitleIndex) {
 		    }catch(e){
 		        alert(e); //error in the above string(in this case,yes)!
 		    }
+
+			// subtitles may not be sorted ascending by startTime, but we require it
+			this.PlayerDataSubtitle.sort(function(a, b) {
+				return a.startTime - b.startTime;
+			});
 		}
 	}
 };
