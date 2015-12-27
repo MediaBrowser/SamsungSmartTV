@@ -231,6 +231,11 @@ GuiPlayer.setSubtitles = function(selectedSubtitleIndex) {
 		    }catch(e){
 		        alert(e); //error in the above string(in this case,yes)!
 		    }
+
+			// subtitles may not be sorted ascending by startTime, but we require it
+			this.PlayerDataSubtitle.sort(function(a, b) {
+				return a.startTime - b.startTime;
+			});
 		}
 	}
 };
@@ -376,16 +381,13 @@ GuiPlayer.setCurrentTime = function(time) {
 				this.subtitleShowingIndex++;
 			}
 			if (this.currentTime >= this.PlayerDataSubtitle[this.subtitleShowingIndex].startTime && this.currentTime < this.PlayerDataSubtitle[this.subtitleShowingIndex].endTime && document.getElementById("guiPlayer_Subtitles").innerHTML != this.PlayerDataSubtitle.text) {
-				var subtitleText = this.PlayerDataSubtitle[this.subtitleShowingIndex].text; 
+				var subtitleText = this.PlayerDataSubtitle[this.subtitleShowingIndex].text;
 				subtitleText = subtitleText.replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1<br />$2'); //support two-line subtitles
-				var start = subtitleText.substring(0, 6);
-				var end = subtitleText.substring(subtitleText.length -7, subtitleText.length -1);
-				if (start == "<br />") {
-					subtitleText = subtitleText.substring(7, subtitleText.length -1);
-				}
-				if (end == "<br />") {
-					subtitleText = subtitleText.substring(0, subtitleText.length -7);
-				}
+
+				// remove redundant breaks
+				subtitleText = subtitleText.replace(/^<br \/>/, '');
+				subtitleText = subtitleText.replace(/<br \/>$/, '');
+
 				document.getElementById("guiPlayer_Subtitles").innerHTML = subtitleText; 
 				document.getElementById("guiPlayer_Subtitles").style.visibility = "";
 			}
