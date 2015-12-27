@@ -241,48 +241,39 @@ GuiPlayer_Versions.getMainStreamIndex = function(MediaSource, MediaSourceIndex) 
 	
 	//Search Subtitles - the order of these is important.
 	//Subtitle Mode = Only Forced Subtitles
-	//If user setting not none, look for forced subtitles
+	// these are reported by the server to be always on (unless specified by the user)
 	if (SubtitlePreference != "None") {
-		for (var index = 0;index < MediaStreams.length;index++) {
-			var Stream = MediaStreams[index];
-			if (Stream.IsTextSubtitleStream) {			
-				if (Stream.IsForced == true) {
-					subtitleIndex = index;
-					break;
-				}	
-			} 
-		}
+		subtitleIndex = MediaStreams.findIndex(function(Stream) {
+			return Stream.IsTextSubtitleStream && Stream.IsForced;
+		});
 	}
 	
 	//Subtitle Mode = Default
-	//If no forced subs and user setting not none or forced only, look for subs in native language.
-	//But only if the audio is in NON-native language. (If the audio language is not specified, use the server default audio language.)
+	// display native subtitles only if the audio stream (else server default) is not in the users native language
 	if (subtitleIndex == -1) {
 		if (SubtitlePreference != "None" && SubtitlePreference != "OnlyForced") {
-			for (var index = 0;index < MediaStreams.length;index++) {
-				var Stream = MediaStreams[index];
-
-				if (Stream.IsTextSubtitleStream) {			
-					if ((MediaStreams[audioIndex].Language == null ? AudioLanguagePreferenece : MediaStreams[audioIndex].Language) != SubtitleLanguage && Stream.Language == SubtitleLanguage) {
-						subtitleIndex = index;
-						break;
-					}	
+			subtitleIndex = MediaStreams.findIndex(function(Stream) {
+				if (Stream.IsTextSubtitleStream) {
+					var audioLanguage = MediaStreams[audioIndex].Language == null ? AudioLanguagePreferenece : MediaStreams[audioIndex].Language;
+					return audioLanguage !== SubtitleLanguage && Stream.Language === SubtitleLanguage;
 				} 
-			}
+			});
 		}
 	}
 	
 	//Subtitle Mode = Always Play Subtitles
-	//If user always wants subs, play 1st one.
 	if (subtitleIndex == -1) {
-		if (SubtitlePreference == "Always") {	
-			for (var index = 0;index < MediaStreams.length;index++) {
-				var Stream = MediaStreams[index];
+		if (SubtitlePreference == "Always") {
+			// pick user native subtitle first
+			subtitleIndex = MediaStreams.findIndex(function(Stream) {
+				return Stream.IsTextSubtitleStream && Stream.Language === SubtitleLanguage;
+			});
 
-				if (Stream.IsTextSubtitleStream) {			
-					subtitleIndex = index;
-					break;
-				} 
+			// otherwise pick any available
+			if (subtitleIndex === -1) {
+				subtitleindex = MediaStreams.findIndex(function(Stream) {
+					return Stream.IsTextSubtitleStream;
+				});
 			}
 		}	
 	}
