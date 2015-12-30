@@ -192,7 +192,7 @@ GuiTV_Show.updateSelectedItems = function () {
 			var imgsrc = Server.getImageURL(this.ItemData.Items[this.selectedItem].Id,"Primary",140,200,0,false,0);
 			document.getElementById("ShowImage").style.backgroundImage="url('" + imgsrc + "')";
 			
-				if (this.ItemData.Items[this.selectedItem].UserData.UnplayedItemCount > 0){
+				if (this.ItemData.Items[this.selectedItem].UserData.UnplayedItemCount > 0 || this.ItemData.Items[this.selectedItem].LocationType == "Virtual"){
 					//CD136 Removed - Not coded correctly
 					document.getElementById("ShowImage").innerHTML = "<div class='genreItemCount'>" + this.ItemData.Items[this.selectedItem].UserData.UnplayedItemCount + "</div>";
 				} else {
