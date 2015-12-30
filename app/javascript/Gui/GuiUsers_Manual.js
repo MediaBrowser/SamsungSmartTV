@@ -25,7 +25,7 @@ GuiUsers_Manual.start = function() {
 		<p style='padding-bottom:5px'>Username</p> \
 		<form><input id='user' style='z-index:10;' type='text' size='40' value=''/></form> \
 		<p style='padding-bottom:5px'>Password</p> \
-		<form><input id='pass' style='z-index:10;' type='text' size='40' value=''/></form> \
+		<form><input id='pass' style='z-index:10;' type='password' size='40' value=''/></form> \
 		<br><span id='guiUsers_rempwd'>Remember Password </span> : <span id='guiUsers_rempwdvalue'>" + this.rememberPassword + "</span> \
 		</div>";
 	
