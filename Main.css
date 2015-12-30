@@ -687,7 +687,7 @@
     position:relative; 
 
     margin:4px;
-	border:2px solid transparent; 
+	border:2px solid rgba(0,0,0,0.8); 
     
     white-space:nowrap;
     text-overflow:ellipsis; 
@@ -856,7 +856,7 @@
 
 .menuItemWithProgress {
 	position:absolute;
-    bottom:10px;
+    bottom:9px;
     width:100%;
     text-align:left;
     padding-left:2px;
@@ -867,7 +867,7 @@
 	width:100%;
 	height:9px;
 	position:absolute;
-	bottom:1px;
+	bottom:0px;
     left:0px;
     background-color:rgba(0,0,0,0.8);
 }
@@ -875,7 +875,7 @@
 .menuProgressBar_Current {
 	height:9px;
 	position:absolute;
-	bottom:1px;
+	bottom:0px;
     left:0px;
     background-color:#5AAF48;
 }

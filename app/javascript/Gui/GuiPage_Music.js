@@ -324,7 +324,7 @@ GuiPage_Music.processSelectedItem = function() {
 			break;
 		case 2:
 			var url = Server.getCustomURL("/Songs/"+this.AlbumData.Items[this.selectedItem].Id + "/InstantMix?format=json&Limit=50&UserId="+Server.getUserID());
-			GuiMusicPlayer.start("Album",url,"GuiPage_Music",false);
+			GuiMusicPlayer.start("Album",url + "&Fields=MediaSources","GuiPage_Music",false);
 			break;
 		}
 	}
