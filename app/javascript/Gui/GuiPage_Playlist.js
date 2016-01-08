@@ -11,7 +11,7 @@ var GuiPage_Playlist = {
 		
 		startParams : [],
 		
-		topMenuItems : ["PlayAll","Delete"],
+		topMenuItems : ["PlayAll","ShuffleAll","Delete"],
 		playItems : ["PlayFrom_","Play_","View_","Remove_"]
 
 }
@@ -48,6 +48,7 @@ GuiPage_Playlist.start = function(title,url,type,playlistId) { //Type is either 
 			   <div style='margin-top:30px;margin-left:80px;'> \
 			   <div id='GuiPage_Playlist_Globals' style='display:block;width:400px;text-align:center;'> \
 			   <div id='PlayAll' style='display:inline-block;padding:10px;'>Play All</div> \
+			   <div id='ShuffleAll' style='display:inline-block;padding:10px;'>Shuffle</div> \
 			   <div id='Delete' style='display:inline-block;padding:10px;'>Delete</div></div> \
 			<div id='GuiPage_Playlist_Options' style='padding-left:20px;padding-top:10px;'></div></div>";
 		document.getElementById("Counter").innerHTML = "1/" + this.topMenuItems.length;	
@@ -73,6 +74,7 @@ GuiPage_Playlist.start = function(title,url,type,playlistId) { //Type is either 
 			   <div style='margin-top:30px;margin-left:80px;'> \
 			   <div id='GuiPage_Playlist_Globals' style='display:block;width:400px;text-align:center;'> \
 			   <div id='PlayAll' style='display:inline-block;padding:10px;'>Play All</div> \
+			   <div id='ShuffleAll' style='display:inline-block;padding:10px;'>Shuffle</div> \
 			   <div id='Delete' style='display:inline-block;padding:10px;'>Delete</div></div> \
 			<div id='GuiPage_Playlist_Options' style='padding-left:20px;padding-top:10px;max-height:400px;'>There are no items in this playlist</div></div>";
 		document.getElementById("Counter").innerHTML = "0/0";	
@@ -341,7 +343,18 @@ GuiPage_Playlist.processSelectedItem = function() {
 				}				
 			}		
 			break;
-		case 1:
+		case 1:	
+			if (this.AlbumData.Items.length > 0) {
+				var url = Server.getCustomURL("/Users/"+Server.getUserID()+"/Items?userId="+Server.getUserID()+"&Fields=MediaSources,Chapters&Limit=100&Filters=IsNotFolder&Recursive=true&SortBy=Random&ParentId="+this.startParams[3]+"&ExcludeLocationTypes=Virtual&format=json");
+				if (this.startParams[2] == "Video") {
+					Support.updateURLHistory("GuiPage_Playlist",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],0,0,null);
+					GuiPlayer.start("PlayAll",url,0,"GuiPage_Playlist");
+				} else if (this.startParams[2] == "Audio") {
+					GuiMusicPlayer.start("Album",url,"GuiPage_Playlist",false);
+				}				
+			}		
+			break;
+		case 2:
 			this.deletePlaylist(this.startParams[3]);
 			break;	
 		}
