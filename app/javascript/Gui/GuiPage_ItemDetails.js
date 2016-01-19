@@ -148,10 +148,9 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem,updateBackdrop) {
 			document.getElementById("Title").className = 'EpisodesSeriesInfo';
 		}
 		
-		
 		//Set Poster
 		if (this.ItemData.SeriesPrimaryImageTag != "") {
-			var imgsrc = Server.getImageURL(this.ItemData.SeriesId,"Primary",136,200,0,false,0);
+			var imgsrc = Server.getImageURL(this.ItemData.ParentId,"Primary",136,200,0,false,0);
 			document.getElementById("guiTV_Show_Poster").style.backgroundImage="url('" + imgsrc + "')";
 		}
 		
@@ -202,6 +201,12 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem,updateBackdrop) {
 			this.itemName = this.itemName.substring(0,42) + "...";
 		}
 		document.getElementById("guiTV_Show_Title").innerHTML = this.itemName;
+
+		//Set Film Poster
+		if (this.ItemData.ImageTags.Primary) {
+			var imgsrc = Server.getImageURL(this.ItemData.Id,"Primary",136,200,0,false,0);
+			document.getElementById("guiTV_Show_Poster").style.backgroundImage="url('" + imgsrc + "')";
+		}
 		
 		//Set Film CD
 		if (File.getUserProperty("ShowDisc")) {
@@ -209,12 +214,6 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem,updateBackdrop) {
 				var imgsrc = Server.getImageURL(this.ItemData.Id,"Disc",126,126,0,false,0);
 				document.getElementById("guiTV_Show_CDArt").style.backgroundImage="url('" + imgsrc + "')";
 			}
-		}
-			
-		//Set Film Poster
-		if (this.ItemData.ImageTags.Primary) {
-			var imgsrc = Server.getImageURL(this.ItemData.Id,"Primary",136,200,0,false,0);
-			document.getElementById("guiTV_Show_Poster").style.backgroundImage="url('" + imgsrc + "')";
 		}
 		
 		//Set Film Backdrop
@@ -1149,9 +1148,11 @@ GuiPage_ItemDetails.playTrailer = function(trailerUrl) {
 }
 
 GuiPage_ItemDetails.getMediaInfo = function() {
-	var is3D = (this.ItemData.MediaSources[0].Video3DFormat != null ? "3D" : "Not3D");
+	//this.ItemData.MediaSources[0].Video3DFormat is reported as either HalfSideBySide or HalfTopAndBottom.
+	//this.ItemData.MediaSources[0].Name is in the format 3D/Resolution/videoCodec/audioCodec. 3D/ is omitted for 2D.
 	var container = this.ItemData.MediaSources[0].Container;
 	var res = this.ItemData.MediaSources[0].Name.split("/");
+	alert("Name: "+this.ItemData.MediaSources[0].Name);
 	var videoCodec = null; var videoRatio = null; var audioCodec = null; var audioChannels = null;
 	
 	var MEDIASTREAMS = this.ItemData.MediaSources[0].MediaStreams;
@@ -1177,14 +1178,14 @@ GuiPage_ItemDetails.getMediaInfo = function() {
 		}
 	}
 
-	var items = [container,videoCodec, videoRatio, audioCodec, audioChannels, is3D, res[0]];
-	document.getElementById("guiTV_Show_MediaAlternative").innerHTML += this.processMediaInfo(items);			
+	var items = [container,videoRatio,audioCodec,res[0],audioChannels,videoCodec];
+	document.getElementById("guiTV_Show_MediaAlternative").innerHTML = this.processMediaInfo(items);			
 };
 
 GuiPage_ItemDetails.processMediaInfo = function(itemsArray) {
 	var htmlToAdd = "";
+	alert("itemsArray.length: "+itemsArray.length);
 	for (var index = 0; index < itemsArray.length; index++) {
-		alert(itemsArray[index]);
 		switch (itemsArray[index]) {
 		//Container
 		case "mkv":
@@ -1205,7 +1206,7 @@ GuiPage_ItemDetails.processMediaInfo = function(itemsArray) {
 			break;	
 		//AspectRatios	
 		case "16:9":
-			htmlToAdd += "<div class='mediaInfo' style=background-image:url(images/MediaInfo/aspect_178.png)></div>";
+			htmlToAdd += "<div class='mediaInfo' style=background-image:url(images/MediaInfo/widescreen.png)></div>";
 			break;
 		case "2.35:1":
 			htmlToAdd += "<div class='mediaInfo' style=background-image:url(images/MediaInfo/aspect_235.png)></div>";
@@ -1272,8 +1273,15 @@ GuiPage_ItemDetails.processMediaInfo = function(itemsArray) {
 			break;
 		//Specials
 		case "3D":
-			htmlToAdd += "<div class='mediaInfo' style=background-image:url(images/MediaInfo/media_3d.png)></div>";
+			if (this.ItemData.MediaSources[0].Video3DFormat == "HalfSideBySide") {
+				htmlToAdd += "<div class='mediaInfo' style=background-image:url(images/MediaInfo/media_SBS.png)></div>";
+			} else if (this.ItemData.MediaSources[0].Video3DFormat == "HalfTopAndBottom") {
+				htmlToAdd += "<div class='mediaInfo' style=background-image:url(images/MediaInfo/media_TAB.png)></div>";
+			} else {
+				htmlToAdd += "<div class='mediaInfo' style=background-image:url(images/MediaInfo/media_3d.png)></div>";
+			}
 			break;
+		//Resolution
 		case "SD":
 			htmlToAdd += "<div class='mediaInfo' style=background-image:url(images/MediaInfo/res_SD.png)></div>";
 			break;
