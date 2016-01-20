@@ -10,11 +10,11 @@ GuiNotifications.setNotification = function (Message, Title,alterHeight) {
 	
 	//Code to move based on screen (fix for GuiPage_IP)
 	if (alterHeight == true) {
-		document.getElementById("Notifications").style.top = "310px";
-		document.getElementById("Notifications").style.left = "215px";
+		document.getElementById("Notifications").style.top = "620px";
+		document.getElementById("Notifications").style.left = "430px";
 	} else {
-		document.getElementById("Notifications").style.top = "195px";
-		document.getElementById("Notifications").style.left = "355px";
+		document.getElementById("Notifications").style.top = "390px";
+		document.getElementById("Notifications").style.left = "710px";
 	}
 	
 /*	if (Message.length > 30) {

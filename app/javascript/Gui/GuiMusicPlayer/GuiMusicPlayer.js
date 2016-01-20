@@ -310,8 +310,8 @@ GuiMusicPlayer.handlePlayKey = function() {
 			//Calculate position in seconds
 		    this.pluginMusic.Play(this.videoURL);
 		}
-		document.getElementById("guiMusicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-active-23x19.png')";
-		document.getElementById("guiMusicPlayerPause").style.backgroundImage="url('images/musicplayer/pause-23x19.png')";
+		document.getElementById("guiMusicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-active-29x37.png')";
+		document.getElementById("guiMusicPlayerPause").style.backgroundImage="url('images/musicplayer/pause-32x37.png')";
 		this.Status = "PLAYING";
 	}
 }
@@ -319,8 +319,8 @@ GuiMusicPlayer.handlePlayKey = function() {
 GuiMusicPlayer.handlePauseKey = function() {
 	this.pluginMusic.Pause();
 	Server.videoPaused(this.queuedItems[this.currentPlayingItem].Id,this.queuedItems[this.currentPlayingItem].MediaSources[0].Id,this.currentTime,"DirectStream");
-	document.getElementById("guiMusicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-23x19.png')";
-	document.getElementById("guiMusicPlayerPause").style.backgroundImage="url('images/musicplayer/pause-active-23x19.png')";
+	document.getElementById("guiMusicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-29x37.png')";
+	document.getElementById("guiMusicPlayerPause").style.backgroundImage="url('images/musicplayer/pause-active-32x37.png')";
 	this.Status = "PAUSED";
 }
 
@@ -335,11 +335,11 @@ GuiMusicPlayer.stopPlayback = function() {
 	this.queuedItems.length = 0;
 	this.pluginMusic.Stop();
 	
-	document.getElementById("guiMusicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-23x19.png')";
-	document.getElementById("guiMusicPlayerPause").style.backgroundImage="url('images/musicplayer/pause-23x19.png')";
-	document.getElementById("guiMusicPlayerStop").style.backgroundImage="url('images/musicplayer/stop-active-23x19.png')";
+	document.getElementById("guiMusicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-29x37.png')";
+	document.getElementById("guiMusicPlayerPause").style.backgroundImage="url('images/musicplayer/pause-32x37.png')";
+	document.getElementById("guiMusicPlayerStop").style.backgroundImage="url('images/musicplayer/stop-active-37x37.png')";
 	setTimeout(function(){
-		document.getElementById("guiMusicPlayerStop").style.backgroundImage="url('images/musicplayer/stop-23x19.png')";
+		document.getElementById("guiMusicPlayerStop").style.backgroundImage="url('images/musicplayer/stop-37x37.png')";
 	}, 400);
 }
 
@@ -394,12 +394,12 @@ GuiMusicPlayer.handleNextKey = function() {
 		this.handlePlayKey();
 	}
 	
-	document.getElementById("guiMusicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-23x19.png')";
-	document.getElementById("guiMusicPlayerPause").style.backgroundImage="url('images/musicplayer/pause-23x19.png')";
-	document.getElementById("guiMusicPlayerNext").style.backgroundImage="url('images/musicplayer/skip-next-active-23x19.png')";
+	document.getElementById("guiMusicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-29x37.png')";
+	document.getElementById("guiMusicPlayerPause").style.backgroundImage="url('images/musicplayer/pause-32x37.png')";
+	document.getElementById("guiMusicPlayerNext").style.backgroundImage="url('images/musicplayer/skip-next-active-36x37.png')";
 	setTimeout(function(){
-		document.getElementById("guiMusicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-active-23x19.png')";
-		document.getElementById("guiMusicPlayerNext").style.backgroundImage="url('images/musicplayer/skip-next-23x19.png')";
+		document.getElementById("guiMusicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-active-29x37.png')";
+		document.getElementById("guiMusicPlayerNext").style.backgroundImage="url('images/musicplayer/skip-next-36x37.png')";
 	}, 300);
 }
 
@@ -427,12 +427,12 @@ GuiMusicPlayer.handlePreviousKey = function() {
 		this.handlePlayKey();
 	}
 	
-	document.getElementById("guiMusicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-23x19.png')";
-	document.getElementById("guiMusicPlayerPause").style.backgroundImage="url('images/musicplayer/pause-23x19.png')";
-	document.getElementById("guiMusicPlayerPrevious").style.backgroundImage="url('images/musicplayer/skip-previous-active-23x19.png')";
+	document.getElementById("guiMusicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-29x37.png')";
+	document.getElementById("guiMusicPlayerPause").style.backgroundImage="url('images/musicplayer/pause-32x37.png')";
+	document.getElementById("guiMusicPlayerPrevious").style.backgroundImage="url('images/musicplayer/skip-previous-active-36x37.png')";
 	setTimeout(function(){
-		document.getElementById("guiMusicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-active-23x19.png')";
-		document.getElementById("guiMusicPlayerPrevious").style.backgroundImage="url('images/musicplayer/skip-previous-23x19.png')";
+		document.getElementById("guiMusicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-active-29x37.png')";
+		document.getElementById("guiMusicPlayerPrevious").style.backgroundImage="url('images/musicplayer/skip-previous-36x37.png')";
 	}, 300);
 }
 GuiMusicPlayer.handleScreenKey = function() {

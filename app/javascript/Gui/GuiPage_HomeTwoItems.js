@@ -95,17 +95,17 @@ GuiPage_HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,to
 		//Set PageContent
 		document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div>" +
 				"<div id=Center class='HomeOneCenter'>" + 
-				"<p style='font-size:18px;padding-left:11px;'>"+title1+"</p><div id='TopRow' style='margin-bottom:30px'><div id=Content></div></div>" +
-				"<p style='font-size:18px;padding-left:11px;'>"+title2+"</p><div id='BottomRow'><div id=Content2></div></div>" +
+				"<p style='font-size:1.4em;padding-left:11px;'>"+title1+"</p><div id='TopRow' style='margin-bottom:50px'><div id=Content></div></div>" +
+				"<p style='font-size:1.4em;padding-left:11px;'>"+title2+"</p><div id='BottomRow'><div id=Content2></div></div>" +
 				"</div>";
 	
 		//Set isResume based on title - used in UpdateDisplayedItems
 		this.isResume = (title1 == "Resume" ||  title1 == "Continue Watching" ) ? true : false;
 		
 		//If to determine positioning of content
-		document.getElementById("Center").style.top = "70px";
-		document.getElementById("Center").style.left = "100px";
-		document.getElementById("Center").style.width = "760px";
+		document.getElementById("Center").style.top = "180px";
+		document.getElementById("Center").style.left = "230px";
+		document.getElementById("Center").style.width = "1500px";
 		
 		//Generate Banner Items
 		this.menuItems = GuiMainMenu.menuItemsHomePages;
@@ -137,13 +137,13 @@ GuiPage_HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,to
 		this.updateSelectedItems2(updateCounter2);
 		
 		//Function to generate random backdrop
-		var randomImageURL = Server.getItemTypeURL("&SortBy=Random&IncludeItemTypes=Series,Movie&Recursive=true&CollapseBoxSetItems=false&Limit=10");
+/*		var randomImageURL = Server.getItemTypeURL("&SortBy=Random&IncludeItemTypes=Series,Movie&Recursive=true&CollapseBoxSetItems=false&Limit=10");
 		var randomImageData = Server.getContent(randomImageURL);
 		if (randomImageData == null) { return; }
 			
-/*		for (var index = 0; index < randomImageData.Items.length; index++) {
+		for (var index = 0; index < randomImageData.Items.length; index++) {
 			if (randomImageData.Items[index].BackdropImageTags.length > 0) {
-				var imgsrc = Server.getBackgroundImageURL(randomImageData.Items[index ].Id,"Backdrop",960,540,0,false,0,randomImageData.Items[index ].BackdropImageTags.length);
+				var imgsrc = Server.getBackgroundImageURL(randomImageData.Items[index ].Id,"Backdrop",Main.width,Main.height,0,false,0,randomImageData.Items[index ].BackdropImageTags.length);
 				Support.fadeImage(imgsrc);
 				break;
 			}

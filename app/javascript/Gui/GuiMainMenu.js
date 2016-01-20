@@ -40,31 +40,27 @@ GuiMainMenu.start = function() {
 	if (UserData == null) { return; }
 	
 	if (UserData.PrimaryImageTag) {
-		var imgsrc = Server.getImageURL(UserData.Id,"UsersPrimary",60,60,0,false,0);
+		var imgsrc = Server.getImageURL(UserData.Id,"UsersPrimary",120,120,0,false,0);
 		document.getElementById("menuUserImage").style.backgroundImage = "url(" + imgsrc + ")";	
 	} else {
-		document.getElementById("menuUserImage").style.backgroundImage = "url(images/usernoimage.png)";
+		document.getElementById("menuUserImage").style.backgroundImage = "url(images/loginusernoimage.png)";
 	}
 	
 	//Add menu entries
 	var htmlToAdd = "";
 	for (var index = 0; index < this.menuItems.length;index++) {
-		htmlToAdd += "<div id='" + this.menuItems[index] + "' class='menu-item'><div id='menu-Icon' class='menu-icon' style='background-image:url(images/menu/" + this.menuItems[index] + "-23x19.png)'></div>" + this.menuItems[index].replace(/-/g, ' ')+ "</div>";	
+		htmlToAdd += "<div id='" + this.menuItems[index] + "' class='menu-item'><div id='menu-Icon' class='menu-icon' style='background-image:url(images/menu/" + this.menuItems[index] + "-46x37.png)'></div>" + this.menuItems[index].replace(/-/g, ' ')+ "</div>";	
 	}	
 	document.getElementById("menuItems").innerHTML = htmlToAdd;
 	
 	//Add settings and logout
 	htmlToAdd = "";
 	this.menuItems.push("Search");
-	htmlToAdd += "<div id=Search class='menu-item'><div id='menu-Icon' class='menu-icon' style='background-image:url(images/menu/Search-23x19.png)'></div>Search</div>";
+	htmlToAdd += "<div id=Search class='menu-item'><div id='menu-Icon' class='menu-icon' style='background-image:url(images/menu/Search-46x37.png)'></div>Search</div>";
 	this.menuItems.push("Settings");
-	htmlToAdd += "<div id=Settings class='menu-item'><div id='menu-Icon' class='menu-icon'style='background-image:url(images/menu/Settings-23x19.png)'></div>Settings</div>";
-	//this.menuItems.push("Contributors");
-	//htmlToAdd += "<div id=Contributors class='menu-item'><div id='menu-Icon' class='menu-icon'style='background-image:url(images/menu/Code-23x19.png)'></div>Contributors</div>";
+	htmlToAdd += "<div id=Settings class='menu-item'><div id='menu-Icon' class='menu-icon'style='background-image:url(images/menu/Settings-46x37.png)'></div>Settings</div>";
 	this.menuItems.push("Log-Out");
-	htmlToAdd += "<div id=Log-Out class='menu-item'><div id='menu-Icon' class='menu-icon' style='background-image:url(images/menu/Logout-23x19.png)'></div>Log Out</div>";	
-	//this.menuItems.push("Log-Out_Delete");
-	//htmlToAdd += "<div id=Log-Out_Delete class='menu-item'><div id='menu-Icon' class='menu-icon' style='background-image:url(images/menu/Secure-Logout-23x19.png)'></div>Log Out and Forget</div>";	
+	htmlToAdd += "<div id=Log-Out class='menu-item'><div id='menu-Icon' class='menu-icon' style='background-image:url(images/menu/Logout-46x37.png)'></div>Log Out</div>";	
 	document.getElementById("menuItems").innerHTML += htmlToAdd;
 	
 	//Function to generate random backdrop
@@ -75,7 +71,7 @@ GuiMainMenu.start = function() {
 		
 		for (var index = 0; index < randomImageData.Items.length; index++) {
 			if (randomImageData.Items[index ].BackdropImageTags.length > 0) {
-				var imgsrc = Server.getBackgroundImageURL(randomImageData.Items[index ].Id,"Backdrop",960,540,0,false,0,randomImageData.Items[index ].BackdropImageTags.length);
+				var imgsrc = Server.getBackgroundImageURL(randomImageData.Items[index ].Id,"Backdrop",Main.width,Main.height,0,false,0,randomImageData.Items[index ].BackdropImageTags.length);
 				Support.fadeImage(imgsrc);
 				break;
 			}
@@ -113,22 +109,18 @@ GuiMainMenu.requested = function(pageSelected, pageSelectedId, pageSelectedClass
 	}
 		
 	//Show Menu
+	$('.page').animate({
+		left: 350
+	}, 100, function() {
+		//animate complete.
+	});
 	document.getElementById("menu").style.visibility = "";
 	$('.menu').animate({
 		left: 0
-	}, 300, function() {
+	}, 100, function() {
 		//animate complete.
 	});
-	$('.page').animate({
-		left: 200
-	}, 300, function() {
-		//animate complete.
-	});
-/*	$('.pageBackground').animate({
-		left: 200
-	}, 300, function() {
-		//animate complete.
-	});*/
+
 
 	//Show submenu dependant on selectedMainMenuItem
 	this.updateSelectedItems();
@@ -219,18 +211,13 @@ GuiMainMenu.processSelectedItems = function() {
 	    sf.service.VideoPlayer.stop();
 	}
 	$('.menu').animate({
-		left: -200
-	}, 300, function() {
+		left: -350
+	}, 100, function() {
 		document.getElementById("menu").style.visibility = "hidden";
 	});
 	$('.page').animate({
 		left: 0
-	}, 300, function() {
-		//animate complete.
-	});
-	$('.pageBackground').animate({
-		left: 0
-	}, 300, function() {
+	}, 100, function() {
 		//animate complete.
 	});
 	setTimeout(function(){
@@ -243,13 +230,13 @@ GuiMainMenu.playSelectedItem = function() {
 	if (this.menuItems[this.selectedMainMenuItem] == "Photos") {
 		//Close the menu
 		$('.menu').animate({
-			left: -200
-		}, 300, function() {
+			left: -350
+		}, 100, function() {
 			document.getElementById("menu").style.visibility = "hidden";
 		});
 		$('.page').animate({
 			left: 0
-		}, 300, function() {
+		}, 100, function() {
 			//animate complete.
 		});
 		var userViews = Server.getUserViews();
@@ -275,18 +262,13 @@ GuiMainMenu.processReturnKey = function() {
 		
 		//Hide Menu
 		$('.menu').animate({
-			left: -200
-		}, 300, function() {
+			left: -350
+		}, 100, function() {
 			document.getElementById("menu").style.visibility = "hidden";
 		});
 		$('.page').animate({
 			left: 0
-		}, 300, function() {
-			//animate complete.
-		});
-		$('.pageBackground').animate({
-			left: 0
-		}, 300, function() {
+		}, 100, function() {
 			//animate complete.
 		});
 		

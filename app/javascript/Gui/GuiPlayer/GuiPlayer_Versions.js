@@ -37,8 +37,7 @@ GuiPlayer_Versions.start = function(playerData,resumeTicks,playedFromPage) {
 	
 	//Check if HTTP
 	if (this.PlayerData.MediaSources[0].Protocol.toLowerCase() == "http") {
-		FileLog.write("Video : Is HTTP : Generate URL Directly")
-		//var streamparams = '/master.m3u8?MediaSourceId='+this.PlayerData.MediaSources[0].Id + '&api_key=' + Server.getAuthToken();	
+		FileLog.write("Video : Is HTTP : Generate URL Directly");	
 		var streamparams = '/Stream.ts?VideoCodec=h264&Profile=high&Level=41&MaxVideoBitDepth=8&MaxWidth=1280&VideoBitrate=10000000&AudioCodec=aac&audioBitrate=360000&MaxAudioChannels=6&MediaSourceId='+this.PlayerData.MediaSources[0].Id + '&api_key=' + Server.getAuthToken();	
 		var url = Server.getServerAddr() + '/Videos/' + this.PlayerData.Id + streamparams + '&DeviceId='+Server.getDeviceID();
 		var httpPlayback = [0,url,"Transcode",-1,-1,-1];
@@ -48,29 +47,18 @@ GuiPlayer_Versions.start = function(playerData,resumeTicks,playedFromPage) {
 		
 	//Loop through all media sources and determine which is best
 	
-	FileLog.write("Video : Find Media Streams")
+	FileLog.write("Video : Find Media Streams");
 	for(var index = 0; index < this.PlayerData.MediaSources.length;index++) {
 		this.getMainStreamIndex(this.PlayerData.MediaSources[index],index);
 	}
 	
 	//Loop through all options and see if transcode is required, generate URL blah...
-	FileLog.write("Video : Determine Playback of Media Streams")
+	FileLog.write("Video : Determine Playback of Media Streams");
 	for (var index = 0; index < this.MediaOptions.length; index++) {
 		var result = GuiPlayer_Transcoding.start(this.PlayerData.Id, this.PlayerData.MediaSources[this.MediaOptions[index][0]],this.MediaOptions[index][0],
 			this.MediaOptions[index][1],this.MediaOptions[index][2],this.MediaOptions[index][3],this.MediaOptions[index][4]);
-		
-		//Toggle D Series Transcoding in Main
-		if (Main.getModelYear() == "D" && (File.getTVProperty("TranscodeDSeries") == false)) {
-			if (result[2] == "Direct Play") { 
-				FileLog.write("Video : Playback Added - D Series")
-				this.MediaPlayback.push(result);
-			} else {
-				FileLog.write("Video : Playback NOT Added - Requires Transcode and user setting is off");
-			}
-		} else {
 			FileLog.write("Video : Playback Added")
-			this.MediaPlayback.push(result);
-		}	
+			this.MediaPlayback.push(result);	
 	}
 	
 	//Setup Gui
@@ -78,7 +66,7 @@ GuiPlayer_Versions.start = function(playerData,resumeTicks,playedFromPage) {
 	
 	//MediaSource,Url,hasVideo,hasAudio,hasSubtitle,videoIndex,audioIndex,subtitleIndex
 	if (this.MediaPlayback.length <= 0) {
-		FileLog.write("Video : No Playback Options")
+		FileLog.write("Video : No Playback Options");
 		//Error - No media playback options!
 		document.getElementById("guiPlayer_Loading").style.visibility = "hidden";
 		GuiNotifications.setNotification("None of the MediaSources are playable","Unable To Play");

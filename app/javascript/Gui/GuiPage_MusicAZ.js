@@ -53,12 +53,12 @@ GuiPage_MusicAZ.start = function(entryView) {
 	
 	//Proceed as Normal	
 	//Update Padding on pageContent
-	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div><div id=Center class='SeriesCenter'><div id=Content style='padding-top:20px;'></div></div>" +
-			"<div style='padding-top:260px;padding-left:4px;'><p id=pageTitle2 style='font-size:22px;'></p><div id=Content2></div></div>";
+	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div><div id=Center class='SeriesCenter'><div id=Content style='padding-top:40px;'></div></div>" +
+			"<div style='padding-top:520px;padding-left:8px;'><p id=pageTitle2 style='font-size:1.7em;'></p><div id=Content2></div></div>";
 		
 	//Set banner Styling
-	document.getElementById("bannerSelection").style.paddingTop="10px";
-	document.getElementById("bannerSelection").style.paddingBottom="5px";
+	document.getElementById("bannerSelection").style.paddingTop="20px";
+	document.getElementById("bannerSelection").style.paddingBottom="10px";
 		
 	//Display first XX series
 	this.updateDisplayedItems();
@@ -90,7 +90,7 @@ GuiPage_MusicAZ.start = function(entryView) {
 GuiPage_MusicAZ.updateDisplayedItems = function() {
 	var htmlToAdd = "";
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.Letters.length); index++) {
-		htmlToAdd += "<div id="+this.Letters[index] + "><div style='text-align:center;font-size:40px;padding-top:15px;'>"+this.Letters[index] + "</div></div>";
+		htmlToAdd += "<div id="+this.Letters[index] + "><div style='text-align:center;font-size:2.5em;padding-top:30px;'>"+this.Letters[index] + "</div></div>";
 	}
 	document.getElementById("Content").innerHTML = htmlToAdd;
 }

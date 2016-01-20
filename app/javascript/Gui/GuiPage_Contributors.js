@@ -15,11 +15,11 @@ GuiPage_Contributors.start = function() {
 	document.getElementById("guiReturnButton").style.visibility = "";
 	document.getElementById("guiReturnButton").innerHTML = "Return";
 	
-	document.getElementById("pageContent").innerHTML = "<div class='EpisodesSeriesInfo'>About:</div><div id=ContentAbout style='font-size:14px;' class='guiPage_Settings_Settings'></div>";
+	document.getElementById("pageContent").innerHTML = "<div class='EpisodesSeriesInfo'>About:</div><div id=ContentAbout style='font-size:1.1em;' class='guiPage_Settings_Settings'></div>";
 	
 	var htmlToAdd = "Emby for Samsung Smart TVs is a free, opensource community driven project. A broad range of Smarthub compatible devices are supported due to the generously donated time and efforts of, among others, the following people.<br>";
 	htmlToAdd += "Feedback on this and other Emby products is gratefully received at emby.media/community.<br><br>"
-	htmlToAdd += "<span style='font-size:16px;'>Main Developers</span><table><tr class='guiSettingsRow'>";
+	htmlToAdd += "<span style='font-size:1.2em;'>Main Developers</span><table><tr class='guiSettingsRow'>";
 	for (var index = 0; index < this.MainDevs.length; index++) {
 		if (index % 6 == 0) {
 			htmlToAdd += "<tr class='guiSettingsRow'>";
@@ -30,7 +30,7 @@ GuiPage_Contributors.start = function() {
 		}
 	}
 	htmlToAdd += "</tr></table><br><br>";
-	htmlToAdd += "<span style='font-size:16px;'>Contributing Developers</span><table><tr class='guiSettingsRow'>";
+	htmlToAdd += "<span style='font-size:1.2em;'>Contributing Developers</span><table><tr class='guiSettingsRow'>";
 	for (var index = 0; index < this.ContribDevs.length; index++) {
 		if (index % 6 == 0) {
 			htmlToAdd += "<tr class='guiSettingsRow'>";
@@ -41,7 +41,7 @@ GuiPage_Contributors.start = function() {
 		}
 	}
 	htmlToAdd += "</tr></table><br><br>";
-	htmlToAdd += "<span style='font-size:16px;'>Donators, supporters and valued beta testers.</span><table><tr class='guiSettingsRow'>";
+	htmlToAdd += "<span style='font-size:1.2em;'>Donators, supporters and valued beta testers.</span><table><tr class='guiSettingsRow'>";
 	for (var index = 0; index < this.DonateSupport.length; index++) {
 		if (index % 6 == 0) {
 			htmlToAdd += "<tr class='guiSettingsRow'>";

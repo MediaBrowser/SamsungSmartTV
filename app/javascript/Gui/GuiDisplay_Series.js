@@ -77,9 +77,9 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem) {
 	
 	//Update Padding on pageContent
 	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div><div id=Center class='SeriesCenter'><div id=Content></div></div>" +
-	"<div id=SeriesContent class='SeriesContent'><div id='SeriesTitle' style='position:relative; height:22px; font-size:23px;'></div>" +
-	"<div id='SeriesSubData' style='padding-top:2px;color:#2ad;font-size:18px;'></div>" +
-	"<div id='SeriesOverview' style='margin-top:6px;padding-right:10px;font-size:15px;max-height:110px;overflow-y:hidden;'></div>" +
+	"<div id=SeriesContent class='SeriesContent'><div id='SeriesTitle' style='position:relative; height:40px; font-size:1.6em;'></div>" +
+	"<div id='SeriesSubData' style='padding-top:2px;color:#2ad;font-size:1.8em;'></div>" +
+	"<div id='SeriesOverview' style='margin-top:6px;padding-right:10px;font-size:1.1em;max-height:150px;overflow-y:hidden;'></div>" +
 	"</div>";
 	
 	//Split Name - 1st Element = View, 2nd = Type (Collections being the odd one out!)
@@ -92,26 +92,23 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem) {
 		this.isTvOrMovies = 0;
 		this.bannerItems = this.tvBannerItems;
 		if (File.getUserProperty("LargerView") == true) {
-			document.getElementById("Center").style.top = "40px";
-			document.getElementById("SeriesContent").style.top="410px";
-			document.getElementById("SeriesOverview").style.height="73px";
+			document.getElementById("SeriesContent").style.top="830px";
+			document.getElementById("SeriesOverview").style.height="250px";
 		}
 	break;
 	case "Movies":
 		this.isTvOrMovies = 1;
 		this.bannerItems = this.movieBannerItems;
 		if (File.getUserProperty("LargerView") == true) {
-			document.getElementById("Center").style.top = "40px";
-			document.getElementById("SeriesContent").style.top="410px";
-			document.getElementById("SeriesOverview").style.height="73px";
+			document.getElementById("SeriesContent").style.top="830px";
+			document.getElementById("SeriesOverview").style.height="250px";
 		}
 	break;
 	case "Collections":
 		this.isTvOrMovies = -1;
 		if (File.getUserProperty("LargerView") == true) {
-			document.getElementById("Center").style.top = "40px";
-			document.getElementById("SeriesContent").style.top="410px";
-			document.getElementById("SeriesOverview").style.height="73px";
+			document.getElementById("SeriesContent").style.top="830px";
+			document.getElementById("SeriesOverview").style.height="250px";
 		}
 		break;
 	case "Music":
@@ -120,7 +117,7 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem) {
 		this.MAXROWCOUNT = 3;
 		this.isTvOrMovies = 2;
 		this.bannerItems = this.musicBannerItems;
-		document.getElementById("SeriesContent").style.top="440px";
+		document.getElementById("SeriesContent").style.top="880px";
 		document.getElementById("SeriesOverview").style.height="0px";	
 	}
 	
@@ -139,12 +136,12 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem) {
 		alert ("Media Folder");
 		this.isAllorFolder = 1;
 		this.bannerItems = []; //NEEDED HERE! 
-		document.getElementById("bannerSelection").style.paddingTop="15px";
+		document.getElementById("bannerSelection").style.paddingTop="25px";
 		document.getElementById("bannerSelection").style.paddingBottom="10px";
 	} else {
 		alert ("All TV or Movies");
 		this.isAllorFolder = 0;
-		document.getElementById("bannerSelection").style.paddingTop="10px";
+		document.getElementById("bannerSelection").style.paddingTop="25px";
 		document.getElementById("bannerSelection").style.paddingBottom="5px";
 	}
 	
@@ -153,14 +150,14 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem) {
 		if (this.MAXROWCOUNT > 2) {
 			if (this.ItemData.Items.length <= this.MAXCOLUMNCOUNT * 2) {
 				if (this.ItemData.Items.length <= this.MAXCOLUMNCOUNT) {
-					document.getElementById("Center").style.top = "112px";
+					document.getElementById("Center").style.top = "200px";
 				} else {
-					document.getElementById("Center").style.top = "75px";
+					document.getElementById("Center").style.top = "120px";
 				}		
 			}
 		} else {
 			if (this.ItemData.Items.length <= this.MAXCOLUMNCOUNT) {
-				document.getElementById("Center").style.top = "110px";
+				document.getElementById("Center").style.top = "220px";
 			}
 		}
 		
@@ -194,7 +191,7 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem) {
 	} else {
 		//Set message to user
 		document.getElementById("Counter").innerHTML = "";
-		document.getElementById("Content").style.fontSize="20px";
+		document.getElementById("Content").style.fontSize="40px";
 		document.getElementById("Content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen";
 		
 		document.getElementById("NoItems").focus();
@@ -233,7 +230,7 @@ GuiDisplay_Series.updateSelectedItems = function () {
 		
 	}
 			
-	var htmlForTitle = this.ItemData.Items[this.selectedItem].Name + "<div style='display:inline-block; position:absolute; height:22px; bottom:0px'><table style='font-size:14px;padding-left:10px;'><tr>";
+	var htmlForTitle = this.ItemData.Items[this.selectedItem].Name + "<div style='display:inline-block; position:absolute;'><table style='padding-left:20px;'><tr>";
 	
 	var toms = this.ItemData.Items[this.selectedItem].CriticRating;
 	var stars = this.ItemData.Items[this.selectedItem].CommunityRating;
@@ -241,20 +238,20 @@ GuiDisplay_Series.updateSelectedItems = function () {
 	var starsImage = "";
 	if (toms){
 		if (toms > 59){
-			tomsImage = "images/fresh-24x24.png";
+			tomsImage = "images/fresh-40x40.png";
 		} else {
-			tomsImage = "images/rotten-24x24.png";
+			tomsImage = "images/rotten-40x40.png";
 		}
 		htmlForTitle += "<td class=MetadataItemVSmall style=background-image:url("+tomsImage+")></td>";
 		htmlForTitle += "<td class=MetadataItemVSmall )>" + toms + "%</td>";
 	}
 	if (stars){
     	if (stars <3.1){
-    		starsImage = "images/star_empty-24x24.png"; 
+    		starsImage = "images/star_empty-46x40.png"; 
     	} else if (stars >=3.1 && stars < 6.5) {
-    		starsImage = "images/star_half-24x24.png";
+    		starsImage = "images/star_half-46x40.png";
     	} else {
-    		starsImage = "images/star_full-24x24.png";
+    		starsImage = "images/star_full-46x40.png";
     	}
     	htmlForTitle += "<td class=MetadataItemVSmall style=background-image:url("+starsImage+")></td>";
     	htmlForTitle += "<td class=MetadataItemVSmall>" + stars + "</td>";
@@ -303,7 +300,7 @@ GuiDisplay_Series.updateSelectedItems = function () {
 	}
 	
 	if (this.ItemData.Items[this.selectedItem].HasSubtitles) {
-		htmlForTitle += "<td class=MetadataItemVSmall style=background-image:url(images/cc-25x20.png)></td>";
+		htmlForTitle += "<td class=MetadataItemVSmall style=background-image:url(images/cc-50x40.png)></td>";
 	}
 
 	htmlForTitle += "</tr></table></div>";
@@ -328,7 +325,7 @@ GuiDisplay_Series.updateSelectedItems = function () {
 			document.getElementById("SeriesOverview").innerHTML = htmlForOverview;
 			Support.scrollingText("SeriesOverview");
 		} else {
-			document.getElementById("SeriesContent").style.top = "488px";
+			document.getElementById("SeriesContent").style.top = "960px";
 			document.getElementById("SeriesTitle").innerHTML = htmlForTitle;
 		}
 	}
@@ -340,11 +337,11 @@ GuiDisplay_Series.updateSelectedItems = function () {
 		if (GuiDisplay_Series.selectedItem == currentSelectedItem) {
 			//Set Background
 			if (GuiDisplay_Series.ItemData.Items[currentSelectedItem].BackdropImageTags.length > 0) {
-				var imgsrc = Server.getBackgroundImageURL(GuiDisplay_Series.ItemData.Items[currentSelectedItem].Id,"Backdrop",960,540,0,false,0,GuiDisplay_Series.ItemData.Items[currentSelectedItem].BackdropImageTags.length);
+				var imgsrc = Server.getBackgroundImageURL(GuiDisplay_Series.ItemData.Items[currentSelectedItem].Id,"Backdrop",Main.width,Main.height,0,false,0,GuiDisplay_Series.ItemData.Items[currentSelectedItem].BackdropImageTags.length);
 				Support.fadeImage(imgsrc);
 			}
 			else if (GuiDisplay_Series.ItemData.Items[currentSelectedItem].ParentBackdropImageTags) {
-				var imgsrc = Server.getBackgroundImageURL(GuiDisplay_Series.ItemData.Items[currentSelectedItem].ParentBackdropItemId,"Backdrop",960,540,0,false,0,GuiDisplay_Series.ItemData.Items[currentSelectedItem].ParentBackdropImageTags.length);
+				var imgsrc = Server.getBackgroundImageURL(GuiDisplay_Series.ItemData.Items[currentSelectedItem].ParentBackdropItemId,"Backdrop",Main.width,Main.height,0,false,0,GuiDisplay_Series.ItemData.Items[currentSelectedItem].ParentBackdropImageTags.length);
 				Support.fadeImage(imgsrc);
 			}
 		}

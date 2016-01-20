@@ -81,7 +81,7 @@ var GuiPage_NewServer_Input  = function(id,previousId, nextId) {
     }
     
     var ime = new IMEShell(id, imeReady,'en');
-    ime.setKeypadPos(680,90);
+    ime.setKeypadPos(1300,90);
     ime.setMode('_num');
     
     var previousElement = document.getElementById(previousId);

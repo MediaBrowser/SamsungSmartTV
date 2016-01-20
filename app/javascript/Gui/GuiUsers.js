@@ -70,7 +70,7 @@ GuiUsers.start = function(runAutoLogin) {
 	if (autoLogin == false) {
 		//Change Display
 		document.getElementById("pageContent").className = "";
-		document.getElementById("pageContent").innerHTML = "<div style='padding-top:50px;text-align:center'>" +
+		document.getElementById("pageContent").innerHTML = "<div style='padding-top:100px;text-align:center'>" +
 			"<div id=guiUsers_allusers></div>" +
 			"<div id='guiUsers_pwd' style='visibility:hidden'>" +
 			"<br>Password:    <input id='guiUsers_Password' type='text' size='20'/>" +
@@ -96,7 +96,7 @@ GuiUsers.updateDisplayedUsers = function() {
 	var htmltoadd = "";
 	for (var index = this.topLeftItem; index < (Math.min(this.topLeftItem + this.getMaxDisplay(),this.UserData.length)); index++) {
 		if (this.UserData[index].PrimaryImageTag) {			
-			var imgsrc = Server.getImageURL(this.UserData[index].Id,"UsersPrimary",200,200,0,false,0);
+			var imgsrc = Server.getImageURL(this.UserData[index].Id,"UsersPrimary",400,400,0,false,0);
 			htmltoadd += "<div id=" + this.UserData[index].Id + " style=background-image:url(" +imgsrc+ ")><div class=menuItem>"+ this.UserData[index].Name + "</div></div>";
 		} else {
 			htmltoadd += "<div id=" + this.UserData[index].Id + " style=background-image:url(images/loginusernoimage.png)><div class=menuItem>"+ this.UserData[index].Name + "</div></div>";

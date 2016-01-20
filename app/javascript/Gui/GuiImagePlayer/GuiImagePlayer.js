@@ -73,7 +73,7 @@ GuiImagePlayer.start = function(ItemData,selectedItem,isPhotoCollection) {
 
 	//Initialte new instance, set Frame Area & Set Notifications
 	this.ImageViewer = new CImageViewer('Common ImageViewer');
-	this.ImageViewer.setFrameArea(0, 0, 960, 540); 
+	this.ImageViewer.setFrameArea(0, 0, Main.width, Main.height); 
 	
 	this.ImageViewer.setOnNetworkError(function() {
 		GuiNotifications.setNotification("Network Error");

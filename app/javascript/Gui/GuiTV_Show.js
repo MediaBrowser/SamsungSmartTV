@@ -56,18 +56,18 @@ GuiTV_Show.start = function(title,url,selectedItem,topLeftItem) {
 		GuiDisplay_Episodes.start(this.ShowData.Name + " " + this.ItemData.Items[this.selectedItem].Name,url,0,0);
 	} else {
 		if (this.ItemData.Items.length > 0) {				
-			document.getElementById("pageContent").innerHTML = "<div id=allOptions><span id='playAll' style='padding-right:35px'>Play All</span><span id='shuffleAll'>Shuffle All</span></div><div id=Content></div>" + 
+			document.getElementById("pageContent").innerHTML = "<div id=allOptions><span id='playAll' style='padding-right:70px'>Play All</span><span id='shuffleAll'>Shuffle All</span></div><div id=Content></div>" + 
 			"<div id='ShowSeriesInfo'></div>" + 
 			"<div id='ShowImage'></div>" + 
 			"<div id='InfoContainer' class='showItemContainer'>" + 
-				"<div id='ShowTitle' style='position:relative; height:22px; font-size:22px;'></div>" +
-				"<div id='ShowMetadata' style='padding-top:2px;color:#0099FF;padding-bottom:5px;'></div>" +
+				"<div id='ShowTitle' style='position:relative; height:44px; font-size:1.7em;'></div>" +
+				"<div id='ShowMetadata' style='padding-top:4px;color:#0099FF;padding-bottom:10px;'></div>" +
 				"<div id='ShowOverview' class='ShowOverview'></div>" + 
 				"</div>";
 			
 			//Load Background
 			if (this.ShowData.BackdropImageTags.length > 0){
-				var imgsrc = Server.getBackgroundImageURL(this.ShowData.Id,"Backdrop",960,540,0,false,0,this.ShowData.BackdropImageTags.length);
+				var imgsrc = Server.getBackgroundImageURL(this.ShowData.Id,"Backdrop",Main.width,Main.height,0,false,0,this.ShowData.BackdropImageTags.length);
 				Support.fadeImage(imgsrc);
 			}
 			
@@ -88,7 +88,7 @@ GuiTV_Show.start = function(title,url,selectedItem,topLeftItem) {
 			
 			//If cover art use that else use text
 			if (this.ShowData.ImageTags.Logo) {
-				var imgsrc = Server.getImageURL(this.ShowData.Id,"Logo",300,40,0,false,0);
+				var imgsrc = Server.getImageURL(this.ShowData.Id,"Logo",600,80,0,false,0);
 				document.getElementById("ShowSeriesInfo").style.backgroundImage="url('"+imgsrc+"')";
 				document.getElementById("ShowSeriesInfo").className = 'EpisodesSeriesInfoLogo';	
 			} else {
@@ -133,16 +133,16 @@ GuiTV_Show.updateDisplayedItems = function() {
 	var htmlToAdd = "";
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length); index++) {			
 		if (this.ItemData.Items[index].ImageTags.Thumb) {
-			var imgsrc = Server.getImageURL(this.ItemData.Items[index].Id,"Thumb",100,46,0,false,0);	
+			var imgsrc = Server.getImageURL(this.ItemData.Items[index].Id,"Thumb",200,92,0,false,0);	
 			htmlToAdd += "<div id=" + this.ItemData.Items[index].Id + "><div class='ShowListSingleImage' style=background-image:url(" +imgsrc+ ")></div><div class='ShowListSingleTitle'><div class='ShowListTextOneLine'>"+ this.ItemData.Items[index].Name + "</div></div>";
 		} else if (this.ItemData.Items[index].BackdropImageTags.length > 0) {			
-			var imgsrc = Server.getBackgroundImageURL(this.ItemData.Items[index].Id,"Backdrop",100,46,0,false,0,this.ItemData.Items[index].BackdropImageTags.length);	
+			var imgsrc = Server.getBackgroundImageURL(this.ItemData.Items[index].Id,"Backdrop",200,92,0,false,0,this.ItemData.Items[index].BackdropImageTags.length);	
 			htmlToAdd += "<div id=" + this.ItemData.Items[index].Id + "><div class='ShowListSingleImage' style=background-image:url(" +imgsrc+ ")></div><div class='ShowListSingleTitle'><div class='ShowListTextOneLine'>"+ this.ItemData.Items[index].Name + "</div></div>";
 		} else if (this.ShowData.ImageTags.Thumb) {			
-			var imgsrc = Server.getImageURL(this.ShowData.Id,"Thumb",100,46,0,false,0);	
+			var imgsrc = Server.getImageURL(this.ShowData.Id,"Thumb",200,92,0,false,0);	
 			htmlToAdd += "<div id=" + this.ItemData.Items[index].Id + "><div class='ShowListSingleImage' style=background-image:url(" +imgsrc+ ")></div><div class='ShowListSingleTitle'><div class='ShowListTextOneLine'>"+ this.ItemData.Items[index].Name + "</div></div>";
 		} else if (this.ShowData.BackdropImageTags.length > 0) {			
-			var imgsrc = Server.getBackgroundImageURL(this.ShowData.Id,"Backdrop",100,46,0,false,0,this.ShowData.BackdropImageTags.length);	
+			var imgsrc = Server.getBackgroundImageURL(this.ShowData.Id,"Backdrop",200,92,0,false,0,this.ShowData.BackdropImageTags.length);	
 			htmlToAdd += "<div id=" + this.ItemData.Items[index].Id + "><div class='ShowListSingleImage' style=background-image:url(" +imgsrc+ ")></div><div class='ShowListSingleTitle'><div class='ShowListTextOneLine'>"+ this.ItemData.Items[index].Name + "</div></div>";
 		} else {
 			htmlToAdd += "<div id=" + this.ItemData.Items[index].Id + "><div class='ShowListSingleImage' style=background-image:url(images/ShowNoImage.png)></div><div class='ShowListSingleTitle'><div class='ShowListTextOneLine'>"+ this.ItemData.Items[index].Name + "</div></div>";
@@ -156,16 +156,16 @@ GuiTV_Show.updateDisplayedItems = function() {
 	
 	//document.getElementById("ShowTitle").innerHTML = "";
 	var htmlforTitle = "";
-	htmlforTitle += this.ShowData.Name + "<div style='display:inline-block; position:absolute; height:22px; bottom:0px'><table style='font-size:14px;padding-left:10px;'><tr>";
+	htmlforTitle += this.ShowData.Name + "<div style='display:inline-block; position:absolute; height:44px; bottom:0px'><table style='font-size:1em;padding-left:20px;'><tr>";
 	var stars = this.ShowData.CommunityRating;
 	var starsImage = "";
 	if (stars){
     	if (stars <3.1){
-    		starsImage = "images/star_empty-24x24.png"; 
+    		starsImage = "images/star_empty-46x40.png"; 
     	} else if (stars >=3.1 && stars < 6.5) {
-    		starsImage = "images/star_half-24x24.png";
+    		starsImage = "images/star_half-46x40.png";
     	} else {
-    		starsImage = "images/star_full-24x24.png";
+    		starsImage = "images/star_full-46x40.png";
     	}
     	htmlforTitle += "<td class=MetadataItemVSmall style=background-image:url("+starsImage+")></td>";
     	htmlforTitle += "<td class=MetadataItemVSmall>" + stars + "</td>";
@@ -189,7 +189,7 @@ GuiTV_Show.updateSelectedItems = function () {
 	//Update Displayed Image - Prevent code running on banner items with if below!
 	if (this.selectedItem >= 0) {
 		if (this.ItemData.Items[this.selectedItem].ImageTags.Primary) {			
-			var imgsrc = Server.getImageURL(this.ItemData.Items[this.selectedItem].Id,"Primary",140,200,0,false,0);
+			var imgsrc = Server.getImageURL(this.ItemData.Items[this.selectedItem].Id,"Primary",280,400,0,false,0);
 			document.getElementById("ShowImage").style.backgroundImage="url('" + imgsrc + "')";
 			
 				if (this.ItemData.Items[this.selectedItem].UserData.UnplayedItemCount > 0 || this.ItemData.Items[this.selectedItem].LocationType == "Virtual"){

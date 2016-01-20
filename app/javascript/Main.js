@@ -4,12 +4,16 @@ var tvKey = new Common.API.TVKeyValue();
 	
 var Main =
 {
-		version : "v1.0.5",
+		version : "v2.0.6",
 		requiredServerVersion : "3.0.5211",
 		requiredDevServerVersion : "3.0.5507.2131",
 		
 		//TV Series Version
 		modelYear : null,
+		width : 1920,
+		height : 1080,
+		posterWidth : 427,
+		posterHeight : 240,
 		
 		forceDeleteSettings : false,
 		

@@ -66,15 +66,15 @@ GuiPage_HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 		}
 		
 		//Set page content
-		document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div><div id=Center class='HomeOneCenter'><p id='title' style='font-size:18px'>"+title+"</p><div id=Content></div></div>";			
+		document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div><div id=Center class='HomeOneCenter'><p id='title' style='font-size:1.4em'>"+title+"</p><div id=Content></div></div>";			
 
 		//Set isResume based on title - used in UpdateDisplayedItems
 		this.isResume = (title == "Resume" ||  title == "Continue Watching" ) ? true : false;
 		
 		//If to determine positioning of content
-		document.getElementById("Center").style.top = (this.ItemData.Items.length <= this.MAXCOLUMNCOUNT) ? "130px" : "90px";
-		document.getElementById("Center").style.left = "100px";
-		document.getElementById("Center").style.width = "760px";
+		document.getElementById("Center").style.top = (this.ItemData.Items.length <= this.MAXCOLUMNCOUNT) ? "180px" : "200px";
+		document.getElementById("Center").style.left = "230px";
+		document.getElementById("Center").style.width = "1500px";
 
 		//Generate Banner Items - Mreove Home Page
 		this.menuItems = GuiMainMenu.menuItemsHomePages; 
@@ -102,7 +102,7 @@ GuiPage_HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 			
 			for (var index = 0; index < randomImageData.Items.length; index++) {
 				if (randomImageData.Items[index ].BackdropImageTags.length > 0) {
-					var imgsrc = Server.getBackgroundImageURL(randomImageData.Items[index ].Id,"Backdrop",960,540,0,false,0,randomImageData.Items[index ].BackdropImageTags.length);
+					var imgsrc = Server.getBackgroundImageURL(randomImageData.Items[index ].Id,"Backdrop",Main.width,Main.height,0,false,0,randomImageData.Items[index ].BackdropImageTags.length);
 					Support.fadeImage(imgsrc);
 					break;
 				}

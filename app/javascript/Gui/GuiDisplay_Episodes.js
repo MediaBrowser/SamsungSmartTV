@@ -49,11 +49,11 @@ GuiDisplay_Episodes.start = function(title,url,selectedItem,topLeftItem) {
 	
 	if (this.ItemData.Items.length > 0) {
 		
-		document.getElementById("pageContent").innerHTML = "<div id=allOptions class='EpisodesAllOptions'><span id='playAll' style='padding-right:35px'>Play All</span><span id='shuffleAll'>Shuffle All</span></div><div id=Content class='EpisodesList'></div>" +
+		document.getElementById("pageContent").innerHTML = "<div id=allOptions class='EpisodesAllOptions'><span id='playAll' style='padding-right:70px'>Play All</span><span id='shuffleAll'>Shuffle All</span></div><div id=Content class='EpisodesList'></div>" +
 		"<div id='EpisodesSeriesInfo' class='EpisodesSeriesInfo'></div>" + 
 		"<div id='EpisodesImage' class='EpisodesImage'></div>" + 
 		"<div id='EpisodesInfo' class='EpisodesInfo'>" +
-		"<div id='SeriesTitle' style='font-size:22px; margin:3px 0px'></div>" +
+		"<div id='SeriesTitle' style='font-size:1.7em; margin:6px 0px'></div>" +
 		"<hr/>"+
 		"<div id='SeriesOverview' class='EpisodesOverview'></div></div>" +
 		"<div id='SeriesSubData' class='EpisodesSubData'></div>";
@@ -61,13 +61,13 @@ GuiDisplay_Episodes.start = function(title,url,selectedItem,topLeftItem) {
 		
 		//Set backdrop
 		if (this.ItemData.Items[0].ParentBackdropImageTags){
-			var imgsrc = Server.getBackgroundImageURL(this.ItemData.Items[0].ParentBackdropItemId,"Backdrop",960,540,0,false,0,this.ItemData.Items[0].ParentBackdropImageTags.length);
+			var imgsrc = Server.getBackgroundImageURL(this.ItemData.Items[0].ParentBackdropItemId,"Backdrop",Main.width,Main.height,0,false,0,this.ItemData.Items[0].ParentBackdropImageTags.length);
 			Support.fadeImage(imgsrc);
 		}
 		
 		//If cover art use that else use text
 		if (this.ItemData.Items[0].ParentLogoItemId) {
-			var imgsrc = Server.getImageURL(this.ItemData.Items[0].ParentLogoItemId,"Logo",300,40,0,false,0);
+			var imgsrc = Server.getImageURL(this.ItemData.Items[0].ParentLogoItemId,"Logo",600,80,0,false,0);
 			document.getElementById("EpisodesSeriesInfo").style.backgroundImage="url('"+imgsrc+"')";
 			document.getElementById("EpisodesSeriesInfo").className = 'EpisodesSeriesInfoLogo';	
 		} else {
@@ -115,7 +115,7 @@ GuiDisplay_Episodes.updateDisplayedItems = function() {
 		htmlToAdd += "<div id=" + this.ItemData.Items[index].Id + " class='EpisodeListSingle'>";
 		
 		if (this.ItemData.Items[index].ImageTags.Primary) {			
-			var imgsrc = Server.getImageURL(this.ItemData.Items[index].Id,"Primary",100,46,0,false,0);
+			var imgsrc = Server.getImageURL(this.ItemData.Items[index].Id,"Primary",200,92,0,false,0);
 			htmlToAdd += "<div class='EpisodeListSingleImage' style=background-image:url(" +imgsrc+ ")></div>";
 		} else {
 			htmlToAdd += "<div class='EpisodeListSingleImage'></div>";
@@ -150,9 +150,9 @@ GuiDisplay_Episodes.updateDisplayedItems = function() {
 		var titleHeight = $('#title_'+this.ItemData.Items[index].Id).height();
 		
 		if (titleHeight >= 50) {
-			document.getElementById("title_"+this.ItemData.Items[index].Id).style.paddingTop = "1px";
+			document.getElementById("title_"+this.ItemData.Items[index].Id).style.paddingTop = "2px";
 		} else if (titleHeight >= 34) {
-			document.getElementById("title_"+this.ItemData.Items[index].Id).style.paddingTop = "9px";
+			document.getElementById("title_"+this.ItemData.Items[index].Id).style.paddingTop = "18px";
 		}
 	}
 }
@@ -169,7 +169,7 @@ GuiDisplay_Episodes.updateSelectedItems = function () {
 	if (this.selectedItem > -1) {
 		//Update Displayed Image
 		if (this.ItemData.Items[this.selectedItem].ImageTags.Primary) {			
-			var imgsrc = Server.getImageURL(this.ItemData.Items[this.selectedItem].Id,"Primary",470,180,0,false,0);
+			var imgsrc = Server.getImageURL(this.ItemData.Items[this.selectedItem].Id,"Primary",890,310,0,false,0);
 			document.getElementById("EpisodesImage").style.backgroundImage="url('" + imgsrc + "')";
 		}
 					
@@ -191,11 +191,11 @@ GuiDisplay_Episodes.updateSelectedItems = function () {
 		var starsImage = "";
 		if (stars){
 	    	if (stars <3.1){
-	    		starsImage = "images/star_empty-24x24.png"; 
+	    		starsImage = "images/star_empty-46x40.png"; 
 	    	} else if (stars >=3.1 && stars < 6.5) {
-	    		starsImage = "images/star_half-24x24.png";
+	    		starsImage = "images/star_half-46x40.png";
 	    	} else {
-	    		starsImage = "images/star_full-24x24.png";
+	    		starsImage = "images/star_full-46x40.png";
 	    	}
 	    	htmlSubData += "<td class=MetadataItemVSmall style=background-image:url("+starsImage+")></td>";
 	    	htmlSubData += "<td class=MetadataItemVSmall>" + stars + "</td>";
@@ -211,7 +211,7 @@ GuiDisplay_Episodes.updateSelectedItems = function () {
 		}
 		
 		if (this.ItemData.Items[this.selectedItem].HasSubtitles) {
-			htmlSubData += "<td class=MetadataItemVSmall style=background-image:url(images/cc-25x20.png)></td>";
+			htmlSubData += "<td class=MetadataItemVSmall style=background-image:url(images/cc-50x40.png)></td>";
 		}
 		
 		htmlSubData += "</tr></table>";
@@ -231,11 +231,11 @@ GuiDisplay_Episodes.updateSelectedItems = function () {
 		//Height fix for overview based on height of title - Numbers will need to change if styling is changed!
 		var titleHeight = $('#SeriesTitle').height();
 		if (titleHeight >= 78) {
-			document.getElementById("SeriesOverview").style.height = "109px";
+			document.getElementById("SeriesOverview").style.height = "218px";
 		} else if (titleHeight >= 52) {
-			document.getElementById("SeriesOverview").style.height = "135px";
+			document.getElementById("SeriesOverview").style.height = "1270px";
 		} else {
-			document.getElementById("SeriesOverview").style.height = "161px";
+			document.getElementById("SeriesOverview").style.height = "322px";
 		}
 					
 		Support.scrollingText("SeriesOverview");
@@ -247,7 +247,7 @@ GuiDisplay_Episodes.updateSelectedItems = function () {
 			if (GuiDisplay_Episodes.selectedItem == currentSelectedItem) {
 				//Set Background
 				if (GuiDisplay_Episodes.ItemData.Items[currentSelectedItem].BackdropImageTags.length > 0) {
-					var imgsrc = Server.getBackgroundImageURL(GuiDisplay_Episodes.ItemData.Items[currentSelectedItem].Id,"Backdrop",960,540,0,false,0,GuiDisplay_Episodes.ItemData.Items[currentSelectedItem].BackdropImageTags.length);
+					var imgsrc = Server.getBackgroundImageURL(GuiDisplay_Episodes.ItemData.Items[currentSelectedItem].Id,"Backdrop",Main.width,Main.height,0,false,0,GuiDisplay_Episodes.ItemData.Items[currentSelectedItem].BackdropImageTags.length);
 					Support.fadeImage(imgsrc);
 				}
 			}

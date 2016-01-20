@@ -43,14 +43,14 @@ GuiPage_Playlist.start = function(title,url,type,playlistId) { //Type is either 
 	if (this.AlbumData.Items.length > 0) {
 		//Set PageContent
 		document.getElementById("pageContent").className = "";
-		document.getElementById("pageContent").innerHTML = "<div id='guiTV_Show_Title' style='font-size:22px;padding-top:20px;padding-left:20px'></div> \
-			   <div id='guiTV_Show_Subtitle' style='font-size:16px;padding-top:5px;padding-left:30px'></div> \
-			   <div style='margin-top:30px;margin-left:80px;'> \
-			   <div id='GuiPage_Playlist_Globals' style='display:block;width:400px;text-align:center;'> \
-			   <div id='PlayAll' style='display:inline-block;padding:10px;'>Play All</div> \
-			   <div id='ShuffleAll' style='display:inline-block;padding:10px;'>Shuffle</div> \
-			   <div id='Delete' style='display:inline-block;padding:10px;'>Delete</div></div> \
-			<div id='GuiPage_Playlist_Options' style='padding-left:20px;padding-top:10px;'></div></div>";
+		document.getElementById("pageContent").innerHTML = "<div id='guiTV_Show_Title' style='display:inline-block;font-size:1.5em;padding-top:30px;padding-left:40px'></div> \
+			   <div id='guiTV_Show_Subtitle' style='display:inline-block;font-size:1.2em;padding-left:60px'></div> \
+			   <div style='margin-top:60px;margin-left:160px;'> \
+			   <div id='GuiPage_Playlist_Globals' style='display:block;width:800px;text-align:center;'> \
+			   <div id='PlayAll' style='display:inline-block;padding:20px;'>Play All</div> \
+			   <div id='ShuffleAll' style='display:inline-block;padding:20px;'>Shuffle</div> \
+			   <div id='Delete' style='display:inline-block;padding:20px;'>Delete</div></div> \
+			<div id='GuiPage_Playlist_Options' style='padding-left:40px;'></div></div>";
 		document.getElementById("Counter").innerHTML = "1/" + this.topMenuItems.length;	
 				
 		//Set Page Title
@@ -69,14 +69,14 @@ GuiPage_Playlist.start = function(title,url,type,playlistId) { //Type is either 
 		//No items in playlist
 		//Set PageContent
 		document.getElementById("pageContent").className = "";
-		document.getElementById("pageContent").innerHTML = "<div id='guiTV_Show_Title' style='font-size:22px;padding-top:20px;padding-left:20px'></div> \
-			   <div id='guiTV_Show_Subtitle' style='font-size:16px;padding-top:5px;padding-left:30px'></div> \
-			   <div style='margin-top:30px;margin-left:80px;'> \
-			   <div id='GuiPage_Playlist_Globals' style='display:block;width:400px;text-align:center;'> \
-			   <div id='PlayAll' style='display:inline-block;padding:10px;'>Play All</div> \
-			   <div id='ShuffleAll' style='display:inline-block;padding:10px;'>Shuffle</div> \
-			   <div id='Delete' style='display:inline-block;padding:10px;'>Delete</div></div> \
-			<div id='GuiPage_Playlist_Options' style='padding-left:20px;padding-top:10px;max-height:400px;'>There are no items in this playlist</div></div>";
+		document.getElementById("pageContent").innerHTML = "<div id='guiTV_Show_Title' style='display:inline-block;font-size:1.5em;padding-top:30px;padding-left:40px'></div> \
+			   <div id='guiTV_Show_Subtitle' style='display:inline-block;font-size:1.2em;padding-left:60px'></div> \
+			   <div style='margin-top:60px;margin-left:160px;'> \
+			   <div id='GuiPage_Playlist_Globals' style='display:block;width:800px;text-align:center;'> \
+			   <div id='PlayAll' style='display:inline-block;padding:20px;'>Play All</div> \
+			   <div id='ShuffleAll' style='display:inline-block;padding:20px;'>Shuffle</div> \
+			   <div id='Delete' style='display:inline-block;padding:20px;'>Delete</div></div> \
+			<div id='GuiPage_Playlist_Options' style='padding-left:40px;'>There are no items in this playlist</div></div>";
 		document.getElementById("Counter").innerHTML = "0/0";	
 				
 		//Set Page Title
@@ -94,7 +94,7 @@ GuiPage_Playlist.start = function(title,url,type,playlistId) { //Type is either 
 GuiPage_Playlist.updateDisplayedItems = function() {
 	var htmlToAdd = "";
 	if (this.startParams[2] == "Audio") {
-		htmlToAdd = "<table><th style='width:100px'></th><th style='width:33px'></th><th style='width:36px'></th><th style='width:60px'></th><th style='width:33px'></th><th style='width:250px'></th><th style='width:65px'></th>";
+		htmlToAdd = "<table><th style='width:200px'></th><th style='width:66px'></th><th style='width:72px'></th><th style='width:120px'></th><th style='width:66px'></th><th style='width:500px'></th><th style='width:130px'></th>";
 		for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.AlbumData.Items.length); index++){			
 			if (this.AlbumData.Items[index].ParentIndexNumber && this.AlbumData.Items[index].IndexNumber) {
 				TrackDetails = this.AlbumData.Items[index].ParentIndexNumber+"." + this.AlbumData.Items[index].IndexNumber;
@@ -109,7 +109,7 @@ GuiPage_Playlist.updateDisplayedItems = function() {
 							"<td class='guiMusic_TableTd'>"+Support.convertTicksToTimeSingle(this.AlbumData.Items[index].RunTimeTicks/10000,true)+"</td></tr>";	
 		}
 	} else {
-		htmlToAdd = "<table><th style='width:100px'></th><th style='width:33px'></th><th style='width:36px'></th><th style='width:60px'></th><th style='width:150px'></th><th style='width:50px'></th><th style='width:250px'></th><th style='width:65px'></th>";
+		htmlToAdd = "<table><th style='width:200px'></th><th style='width:66px'></th><th style='width:72px'></th><th style='width:120px'></th><th style='width:300px'></th><th style='width:100px'></th><th style='width:500px'></th><th style='width:130px'></th>";
 		for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.AlbumData.Items.length); index++){	
 			
 			if (this.AlbumData.Items[index].Type == "Episode") {
