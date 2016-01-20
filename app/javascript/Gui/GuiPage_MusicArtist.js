@@ -58,11 +58,11 @@ GuiPage_MusicArtist.start = function(title1, url1) {
 	
 	//Update Padding on pageContent
 	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div><div id=Center class='SeriesCenter'><div id=Content></div></div>" +
-			"<div style='padding-top:260px;text-align:center;'><p id=pageTitle2 class='guiDisplay_Series-pageTitle2'></p><div id=Content2 class='guiDisplay_Series-Content2'></div></div>";
+			"<div style='padding-top:540px;text-align:center;'><p id=pageTitle2 class='guiDisplay_Series-pageTitle2'></p><div id=Content2 class='guiDisplay_Series-Content2'></div></div>";
 	
 	//Set banner Styling
-	document.getElementById("bannerSelection").style.paddingTop="10px";
-	document.getElementById("bannerSelection").style.paddingBottom="5px";
+	document.getElementById("bannerSelection").style.paddingTop="20px";
+	document.getElementById("bannerSelection").style.paddingBottom="10px";
 	
 	
 	if (this.ItemData.Items.length > 0) {
@@ -77,7 +77,7 @@ GuiPage_MusicArtist.start = function(title1, url1) {
 		
 		//Add Padding
 		if (this.ItemData.Items.length <= this.MAXCOLUMNCOUNT) {
-			document.getElementById("Center").style.top = "75px";
+			document.getElementById("Center").style.top = "150px";
 		}
 		
 		//Set Banner Items
@@ -99,7 +99,7 @@ GuiPage_MusicArtist.start = function(title1, url1) {
 	} else {
 		//Set message to user
 		document.getElementById("Counter").innerHTML = "";
-		document.getElementById("Content").style.fontSize="20px";
+		document.getElementById("Content").style.fontSize="40px";
 		document.getElementById("Content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen";
 		
 		document.getElementById("NoItems").focus();

@@ -29,11 +29,6 @@ GuiPage_Photos.start = function(title,url,selectedItem,topLeftItem) {
 	
 	alert (url);
 	
-	//Set background
-/*	this.backdropTimeout = setTimeout(function(){
-		Support.fadeImage("images/lensflare-960x540.jpg");
-	}, 1000);*/
-	
 	//Reset Values
 	this.indexSeekPos = -1;
 	this.selectedItem = selectedItem;
@@ -69,7 +64,7 @@ GuiPage_Photos.start = function(title,url,selectedItem,topLeftItem) {
 	} else {
 		//Set message to user
 		document.getElementById("Counter").innerHTML = "";
-		document.getElementById("Content").style.fontSize="20px";
+		document.getElementById("Content").style.fontSize="1.7empx";
 		document.getElementById("Content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen";
 		
 		document.getElementById("NoItems").focus();
@@ -92,14 +87,14 @@ GuiPage_Photos.updateDisplayedItems = function() {
 				photosCount = photos.TotalRecordCount;
 				if(photos.Items[0]){
 					if(photos.Items[0].ImageTags.Primary){			
-						imgsrc = Server.getImageURL(photos.Items[0].Id,"Primary",(i==0?440:220),(i==0?440:220),0,false,0);
+						imgsrc = Server.getImageURL(photos.Items[0].Id,"Primary",(i==0?880:440),(i==0?880:440),0,false,0);
 					}
 				}
 			}
 			if (imgsrc == ""){
-				imgsrc = "images/EmptyFolder-75x61.png";
+				imgsrc = "images/EmptyFolder-122x98.png";
 			}
-			htmlToAdd += (i==0?"<td class=photoThumbLarge colspan=2 rowspan=2>":"<td class=photoThumbSmall>")+"<div id="+ DivIdPrepend + Items[this.topLeftItem+i].Id + " style=background-color:rgba(0,0,0,0.5);background-image:url(" +imgsrc+ ");width:"+(i==0?286:135)+"px;height:"+(i==0?286:135)+"px><div class=photoTitle style=font-size:"+(i==0?18:14)+"px>"+ title + "</div>";
+			htmlToAdd += (i==0?"<td class=photoThumbLarge colspan=2 rowspan=2>":"<td class=photoThumbSmall>")+"<div id="+ DivIdPrepend + Items[this.topLeftItem+i].Id + " style=background-color:rgba(0,0,0,0.5);background-image:url(" +imgsrc+ ");width:"+(i==0?572:270)+"px;height:"+(i==0?572:270)+"px><div class=photoTitle style=font-size:"+(i==0?36:28)+"px>"+ title + "</div>";
 			if (Items[this.topLeftItem+i].UserData.IsFavorite){
 				htmlToAdd += "<div class=favItem></div>";
 			}
@@ -109,26 +104,26 @@ GuiPage_Photos.updateDisplayedItems = function() {
 			htmlToAdd += "</div></td>";
 		} else if (Items[this.topLeftItem+i].Type == "Video") {
 			if (Items[this.topLeftItem+i].ImageTags.Primary){
-				imgsrc = Server.getImageURL(Items[this.topLeftItem+i].Id,"Primary",(i==0?440:220),(i==0?440:220),0,false,0);
+				imgsrc = Server.getImageURL(Items[this.topLeftItem+i].Id,"Primary",(i==0?880:440),(i==0?880:440),0,false,0);
 			} else if (Items[this.topLeftItem+i].ImageTags.Thumb){
-				imgsrc = Server.getImageURL(Items[this.topLeftItem+i].Id,"Thumb",(i==0?440:220),(i==0?440:220),0,false,0);
+				imgsrc = Server.getImageURL(Items[this.topLeftItem+i].Id,"Thumb",(i==0?880:440),(i==0?880:440),0,false,0);
 			} else { 
-				imgsrc = "images/film-54x60.png";
+				imgsrc = "images/film-93x105.png";
 			}
-			htmlToAdd += (i==0?"<td class=photoThumbLarge colspan=2 rowspan=2>":"<td class=photoThumbSmall>")+"<div id="+ DivIdPrepend + Items[this.topLeftItem+i].Id + " style=background-color:rgba(0,0,0,0.5);background-image:url(" +imgsrc+ ");width:"+(i==0?286:135)+"px;height:"+(i==0?286:135)+"px><div class=photoTitle style=font-size:"+(i==0?18:14)+"px>"+ title + "</div>";
+			htmlToAdd += (i==0?"<td class=photoThumbLarge colspan=2 rowspan=2>":"<td class=photoThumbSmall>")+"<div id="+ DivIdPrepend + Items[this.topLeftItem+i].Id + " style=background-color:rgba(0,0,0,0.5);background-image:url(" +imgsrc+ ");width:"+(i==0?572:270)+"px;height:"+(i==0?572:270)+"px><div class=photoTitle style=font-size:"+(i==0?36:28)+"px>"+ title + "</div>";
 			if (Items[this.topLeftItem+i].UserData.IsFavorite){
 				htmlToAdd += "<div class=favItem></div>";
 			}
 			htmlToAdd += "</div></td>";
 		} else { //It's a photo (probably).
 			if (Items[this.topLeftItem+i].ImageTags.Primary){
-				imgsrc = Server.getImageURL(Items[this.topLeftItem+i].Id,"Primary",(i==0?440:220),(i==0?440:220),0,false,0);
+				imgsrc = Server.getImageURL(Items[this.topLeftItem+i].Id,"Primary",(i==0?880:440),(i==0?880:440),0,false,0);
 			} else if (Items[this.topLeftItem+i].ImageTags.Thumb){
-				imgsrc = Server.getImageURL(Items[this.topLeftItem+i].Id,"Thumb",(i==0?440:220),(i==0?440:220),0,false,0);
+				imgsrc = Server.getImageURL(Items[this.topLeftItem+i].Id,"Thumb",(i==0?880:440),(i==0?880:440),0,false,0);
 			} else { 
-				imgsrc = "images/photos-54x54.png";
+				imgsrc = "images/menu/photos-54x54.png";
 			}
-			htmlToAdd += (i==0?"<td class=photoThumbLarge colspan=2 rowspan=2>":"<td class=photoThumbSmall>")+"<div id="+ DivIdPrepend + Items[this.topLeftItem+i].Id + " style=background-color:rgba(0,0,0,0.5);background-image:url(" +imgsrc+ ");width:"+(i==0?286:135)+"px;height:"+(i==0?286:135)+"px>";
+			htmlToAdd += (i==0?"<td class=photoThumbLarge colspan=2 rowspan=2>":"<td class=photoThumbSmall>")+"<div id="+ DivIdPrepend + Items[this.topLeftItem+i].Id + " style=background-color:rgba(0,0,0,0.5);background-image:url(" +imgsrc+ ");width:"+(i==0?572:270)+"px;height:"+(i==0?572:270)+"px>";
 			if (Items[this.topLeftItem+i].UserData.IsFavorite){
 				htmlToAdd += "<div class=favItem></div>";
 			}
@@ -146,7 +141,7 @@ GuiPage_Photos.updateOneDisplayedItem = function(item,selectedItem) {
 	var htmlToAdd = "";	
 	if (item.Type == "PhotoAlbum" || item.Type == "Folder") {
 		var title = item.Name;
-		htmlToAdd += "<div class=photoTitle style=font-size:"+(this.selectedItem==this.topLeftItem?18:14)+"px>"+ title + "</div>";
+		htmlToAdd += "<div class=photoTitle style=font-size:"+(this.selectedItem==this.topLeftItem?36:28)+"px>"+ title + "</div>";
 	}
 	if (item.UserData.IsFavorite){
 		htmlToAdd += "<div class=favItem></div>";
@@ -421,7 +416,7 @@ GuiPage_Photos.processDownKey = function() {
 }
 
 GuiPage_Photos.setPadding = function(title) {
-		document.getElementById("Center").style.top = "50px";
+		document.getElementById("Center").style.top = "100px";
 }
 
 GuiPage_Photos.returnFromMusicPlayer = function() {

@@ -531,7 +531,7 @@ GuiPlayer.keyDown = function() {
     			$('#guiPlayer_Osd').css('opacity',1).animate({opacity:0}, 500);
     		}
     		document.getElementById("guiPlayer_Subtitles").style.top="auto";
-    		document.getElementById("guiPlayer_Subtitles").style.bottom="60px";
+    		document.getElementById("guiPlayer_Subtitles").style.bottom="100px";
     		GuiPlayer_Display.updateSelectedItems();
     		if (document.getElementById("guiPlayer_Tools").style.opacity != 1) {
     			$('#guiPlayer_Tools').css('opacity',0).animate({opacity:1}, 500);
@@ -586,7 +586,7 @@ GuiPlayer.handlePlayKey = function() {
 		FileLog.write("Playback : Play by User");
 		this.Status = "PLAYING";
 		this.plugin.Resume();
-		document.getElementById("guiPlayer_Subtitles").style.bottom="60px";
+		document.getElementById("guiPlayer_Subtitles").style.bottom="100px";
 		if (document.getElementById("guiPlayer_Osd").style.opacity == 0) {
 			$('#guiPlayer_Osd').css('opacity',0).animate({opacity:1}, 500);
 		}
@@ -600,13 +600,13 @@ GuiPlayer.handlePlayKey = function() {
 			$('#guiPlayer_Osd').css('opacity',1).animate({opacity:0}, 500);
 			setTimeout(function(){
 				document.getElementById("guiPlayer_Subtitles").style.top="auto";
-				document.getElementById("guiPlayer_Subtitles").style.bottom="20px";
+				document.getElementById("guiPlayer_Subtitles").style.bottom="60px";
 			}, 500);
 		}, 3000);
 	}
 	else
 	{
-		document.getElementById("guiPlayer_Subtitles").style.bottom="60px";
+		document.getElementById("guiPlayer_Subtitles").style.bottom="100px";
 		if (document.getElementById("guiPlayer_Osd").style.opacity == 0) {
 			$('#guiPlayer_Osd').css('opacity',0).animate({opacity:1}, 500);
 		}
@@ -619,7 +619,7 @@ GuiPlayer.handlePlayKey = function() {
 			$('#guiPlayer_Osd').css('opacity',1).animate({opacity:0}, 500);
 			setTimeout(function(){
 				document.getElementById("guiPlayer_Subtitles").style.top="auto";
-				document.getElementById("guiPlayer_Subtitles").style.bottom="20px";
+				document.getElementById("guiPlayer_Subtitles").style.bottom="60px";
 			}, 500);
 		}, 3000);
 	}
@@ -637,7 +637,7 @@ GuiPlayer.handleStopKey = function() {
 
 GuiPlayer.handlePauseKey = function() {
 	if(this.Status == "PLAYING") {
-		document.getElementById("guiPlayer_Subtitles").style.bottom="60px";
+		document.getElementById("guiPlayer_Subtitles").style.bottom="100px";
 		if (document.getElementById("guiPlayer_Osd").style.opacity == 0) {
 			$('#guiPlayer_Osd').css('opacity',0).animate({opacity:1}, 500);
 		}
@@ -656,7 +656,7 @@ GuiPlayer.handlePauseKey = function() {
 			$('#guiPlayer_Osd').css('opacity',1).animate({opacity:0}, 500);
 			setTimeout(function(){
 				document.getElementById("guiPlayer_Subtitles").style.top="auto";
-				document.getElementById("guiPlayer_Subtitles").style.bottom="20px";
+				document.getElementById("guiPlayer_Subtitles").style.bottom="60px";
 			}, 500);
 		}, 10000);
 	} 
@@ -666,7 +666,7 @@ GuiPlayer.handleFFKey = function() {
 	FileLog.write("Playback : Fast Forward");
     if(this.Status == "PLAYING") {
     	if (this.PlayMethod == "DirectPlay") {
-    		document.getElementById("guiPlayer_Subtitles").style.bottom="60px";
+    		document.getElementById("guiPlayer_Subtitles").style.bottom="100px";
     		if (document.getElementById("guiPlayer_Osd").style.opacity == 0) {
     			$('#guiPlayer_Osd').css('opacity',0).animate({opacity:1}, 500);
     		}
@@ -681,7 +681,7 @@ GuiPlayer.handleFFKey = function() {
     				document.getElementById("guiPlayer_ItemDetails").style.visibility="hidden";
     				document.getElementById("guiPlayer_ItemDetails2").style.visibility="";
     				document.getElementById("guiPlayer_Subtitles").style.top="auto";
-    				document.getElementById("guiPlayer_Subtitles").style.bottom="20px";
+    				document.getElementById("guiPlayer_Subtitles").style.bottom="60px";
     			}, 500);
     			$('#guiPlayer_Osd').css('opacity',1).animate({opacity:0}, 500);
     		}, 3000);
@@ -706,7 +706,7 @@ GuiPlayer.handleRWKey = function() {
 	FileLog.write("Playback : Fast Forward");
     if(this.Status == "PLAYING") {
     	if (this.PlayMethod == "DirectPlay") {
-    		document.getElementById("guiPlayer_Subtitles").style.bottom="60px";
+    		document.getElementById("guiPlayer_Subtitles").style.bottom="100px";
     		if (document.getElementById("guiPlayer_Osd").style.opacity == 0) {
     			$('#guiPlayer_Osd').css('opacity',0).animate({opacity:1}, 500);
     		}
@@ -721,7 +721,7 @@ GuiPlayer.handleRWKey = function() {
     				document.getElementById("guiPlayer_ItemDetails").style.visibility="hidden";
     				document.getElementById("guiPlayer_ItemDetails2").style.visibility="";
     				document.getElementById("guiPlayer_Subtitles").style.top="auto";
-        			document.getElementById("guiPlayer_Subtitles").style.bottom="20px";
+        			document.getElementById("guiPlayer_Subtitles").style.bottom="60px";
     			}, 500);
     			$('#guiPlayer_Osd').css('opacity',1).animate({opacity:0}, 500);
     		}, 3000);
@@ -749,7 +749,7 @@ GuiPlayer.handleInfoKey = function () {
 			document.getElementById("guiPlayer_ItemDetails").style.visibility == "hidden"){ //Full info called
 		document.getElementById("guiPlayer_ItemDetails").style.visibility="";
 		document.getElementById("guiPlayer_ItemDetails2").style.visibility="hidden";
-		document.getElementById("guiPlayer_Subtitles").style.top="77px";
+		document.getElementById("guiPlayer_Subtitles").style.top="170px";
 		if (document.getElementById("guiPlayer_Osd").style.opacity == 0) {
 			$('#guiPlayer_Osd').css('opacity',0).animate({opacity:1}, 500);
 		}
@@ -758,7 +758,7 @@ GuiPlayer.handleInfoKey = function () {
 				document.getElementById("guiPlayer_ItemDetails").style.visibility="hidden";
 				document.getElementById("guiPlayer_ItemDetails2").style.visibility="";
 				document.getElementById("guiPlayer_Subtitles").style.top="auto";
-				document.getElementById("guiPlayer_Subtitles").style.bottom="20px";
+				document.getElementById("guiPlayer_Subtitles").style.bottom="60px";
 			}, 500);
 			$('#guiPlayer_Osd').css('opacity',1).animate({opacity:0}, 500);
 		}, 10000);
@@ -768,7 +768,7 @@ GuiPlayer.handleInfoKey = function () {
 			document.getElementById("guiPlayer_ItemDetails").style.visibility="hidden";
 			document.getElementById("guiPlayer_ItemDetails2").style.visibility="";
 			document.getElementById("guiPlayer_Subtitles").style.top="auto";
-			document.getElementById("guiPlayer_Subtitles").style.bottom="20px";
+			document.getElementById("guiPlayer_Subtitles").style.bottom="60px";
 		}, 500);
 	}
 };

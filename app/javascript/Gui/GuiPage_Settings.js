@@ -23,7 +23,7 @@ var GuiPage_Settings = {
 		//Per Setting Type List of settings, names & defaults
 		Settings : ["Default","ContinueWatching","View1","View2","LargerView","AudioTheme", "SkipShow","SeasonLabel","AutoPlay","ShowDisc","SubtitleSize","SubtitleColour","ImagePlayerImageTime","ScreensaverImages","ScreensaverTimeout","ScreensaverImageTime","ForgetSavedPassword"],
 		SettingsName : ["Default User: ","Continue Watching:","Home View 1: ","Home View 2: ","Show Larger Icons: ", "Play Audio Themes: ", "Skip TV Show Page: ","Use Alternate Season Label: ","Auto Play Next Episode: ","Show Disc Art: ","Subtitle Text Size: ","Subtitle Text Colour: ","Image Player Rotate Speed: ", "Screensaver Image Source: ", "Screensaver Timeout: ", "Screensaver Rotate Speed: ", "Forget Password at Log Out:"],
-		SettingsDefaults : [false,true,"ddddd","aaaaa",false,false,false,false,false,false,"30px","white",10000,"Media",300000,10000,false],
+		SettingsDefaults : [false,true,"ddddd","aaaaa",false,false,false,false,false,true,"50px","white",10000,"Media",300000,10000,false],
 		
 		TVSettings : ["Bitrate","Dolby","DTS","AACtoDolby","TranscodeDSeries","ItemPaging","ClockOffset"],
 		TVSettingsName : ["Max Bitrate: ","Enable Dolby Digital Playback: ","Enable DTS Playback: ","Enable AAC Transcoding to Dolby: ","Enable Transcoding on D Series","Item Paging: ","Clock Offset: "],
@@ -49,8 +49,8 @@ var GuiPage_Settings = {
 		ItemPagingOptions : [100,150,200,300,500],
 		ItemPagingValues : [100,150,200,300,500],
 		
-		SubtitleSizeOptions: ["36px","34px","32px","30px","28px","26px"],
-		SubtitleSizeValues: ["36px","34px","32px","30px","28px","26px"],
+		SubtitleSizeOptions: ["70px","66px","62px","58px","54px","50px"],
+		SubtitleSizeValues: ["70px","66px","62px","58px","54px","50px"],
 		
 		SubtitleColourOptions: ["White","Red","Green","Blue","Yellow"],
 		SubtitleColourValues: ["white","red","green","blue","yellow"],
@@ -404,7 +404,7 @@ GuiPage_Settings.updateSelectedItems = function() {
 		if (index == this.selectedItem) {
 			document.getElementById(index).className = "guiSettingsTD GuiPage_Setting_Selected";
 		} else {
-			document.getElementById(index).className = "guiSettingsTD GuiPage_Setting_UnSelected";
+			document.getElementById(index).className = "guiSettingsTD";
 		}
 	}
 	
@@ -494,7 +494,7 @@ GuiPage_Settings.processSelectedItem = function() {
 		this.updateSelectedBannerItems();
 	} else {
 		document.getElementById(this.selectedItem).className = "guiSettingsTD GuiPage_Setting_SubSelected";
-		document.getElementById("Value"+this.selectedItem).className = "guiSettingsTD GuiPage_Setting_Changing";
+		document.getElementById("Value"+this.selectedItem).className = "guiSettingsTD GuiPage_Setting_Changing arrowUpDown";
 		
 		switch (this.currentViewSettings[this.selectedItem]) {
 		case "Default":
@@ -1039,7 +1039,7 @@ GuiPage_Settings.setOverview = function() {
 			break;
 		case "ClockOffset":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Clock Offset";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Some devices report their system time incorectly. Use this option to apply a correction.";
+			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Some devices report their system time incorrectly. Use this option to apply a correction.";
 			break;	
 		case "Bitrate":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Max Bitrate";
@@ -1055,7 +1055,7 @@ GuiPage_Settings.setOverview = function() {
 			break;
 		case "AACtoDolby":	
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Enable AAC Transcoding to Dolby";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Set this option only if you have an external reciever capable of recieving Dolby but not AAC<br><br>Will be ignored if Enable Dolby Digital Playback is false";
+			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Set this option only if you have an external receiver capable of receiving Dolby but not AAC<br><br>Will be ignored if Enable Dolby Digital Playback is false";
 			break;
 		case "TranscodeDSeries":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Enable Transcoding on D Series TV's";

@@ -4,7 +4,7 @@ var GuiPage_SettingsLog = {
 		topLeftItem : 0,
 		
 		MAXCOLUMNCOUNT : 1,
-		MAXROWCOUNT : 20,
+		MAXROWCOUNT : 22,
 		
 		bannerItems : ["User Settings","Server Settings","TV Settings","Log","About"],
 }
@@ -56,7 +56,7 @@ GuiPage_SettingsLog.start = function() {
 GuiPage_SettingsLog.updateDisplayedItems = function() {
 	var htmlToAdd = "<table>";
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.logArray.length); index++) {
-		htmlToAdd += "<tr><td>"+(index+1)+"</td><td style='word-wrap:break-word;word-break:break-all;width:450px;'>" + this.logArray[index] + "</td></tr>";
+		htmlToAdd += "<tr><td>"+(index+1)+"</td><td style='word-wrap:break-word;word-break:break-all;width:900px;'>" + this.logArray[index] + "</td></tr>";
 	}
 	document.getElementById("guiPage_Settings_Settings").innerHTML = htmlToAdd + "</table>";
 }

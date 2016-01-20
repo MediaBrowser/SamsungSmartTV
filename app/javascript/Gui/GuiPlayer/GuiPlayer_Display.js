@@ -69,12 +69,12 @@ GuiPlayer_Display.setDisplay = function(playerdata,playingmediasource,playingtra
     	//Add the series logo at the top left.
     	if (this.PlayerData.ParentLogoImageTag) {
     		document.getElementById("guiPlayer_Info_Details").innerHTML = "";
-    		var imgsrc = Server.getImageURL(this.PlayerData.SeriesId,"Logo",450,53,0,false,0);
+    		var imgsrc = Server.getImageURL(this.PlayerData.SeriesId,"Logo",820,110,0,false,0);
     		document.getElementById("guiPlayer_Info_Details").style.backgroundImage="url('"+imgsrc+"')";	
 		}
     	
         //Add the TV series DVD cover art to the GUI display.
-        var diskImgsrc = Server.getImageURL(this.PlayerData.SeriesId,"Primary",96,140,0,false,0);
+        var diskImgsrc = Server.getImageURL(this.PlayerData.SeriesId,"Primary",200,280,0,false,0);
     	document.getElementById("guiPlayer_DvdArt").style.backgroundImage="url('" + diskImgsrc + "')";
     	
     	//Get ratings info.
@@ -84,20 +84,20 @@ GuiPlayer_Display.setDisplay = function(playerdata,playingmediasource,playingtra
     	var starsImage = "";
     	if (toms){
     		if (toms > 59){
-    			tomsImage = "images/fresh-24x24.png";
+    			tomsImage = "images/fresh-40x40.png";
     		} else {
-    			tomsImage = "images/rotten-24x24.png";
+    			tomsImage = "images/rotten-40x40.png";
     		}
     		document.getElementById("guiPlayer_Ratings").innerHTML += "<div class='videoItemRatingsTomatoIcon' style=background-image:url("+tomsImage+")></div>";
     		document.getElementById("guiPlayer_Ratings").innerHTML += "<div class='videoItemRatingsTomato'>"+toms+"%</div>";
     	}
     	if (stars){
         	if (stars <3.1){
-        		starsImage = "images/star_empty-24x24.png"; 
+        		starsImage = "images/star_empty-46x40.png"; 
         	} else if (stars >=3.1 && stars < 6.5) {
-        		starsImage = "images/star_half-24x24.png";
+        		starsImage = "images/star_half-46x40.png";
         	} else {
-        		starsImage = "images/star_full-24x24.png";
+        		starsImage = "images/star_full-46x40.png";
         	}
         	document.getElementById("guiPlayer_Ratings").innerHTML += "<div class='videoItemRatingsStarIcon' style=background-image:url("+starsImage+")></div>";
        		document.getElementById("guiPlayer_Ratings").innerHTML += "<div class='videoItemRatingsStar'>"+stars+"</div>";
@@ -108,12 +108,12 @@ GuiPlayer_Display.setDisplay = function(playerdata,playingmediasource,playingtra
     	//Add the movie logo at the top left.
     	if (this.PlayerData.ImageTags.Logo) {
     		document.getElementById("guiPlayer_Info_Details").innerHTML = "";
-    		var imgsrc = Server.getImageURL(this.PlayerData.Id,"Logo",450,53,0,false,0);
+    		var imgsrc = Server.getImageURL(this.PlayerData.Id,"Logo",820,110,0,false,0);
     		document.getElementById("guiPlayer_Info_Details").style.backgroundImage="url('"+imgsrc+"')";	
     	}
     	
         //Add the movie DVD cover art to the GUI display.
-        var diskImgsrc = Server.getImageURL(this.PlayerData.Id,"Primary",96,140,0,false,0);
+        var diskImgsrc = Server.getImageURL(this.PlayerData.Id,"Primary",200,280,0,false,0);
     	document.getElementById("guiPlayer_DvdArt").style.backgroundImage="url('" + diskImgsrc + "')";
     	
     	//Get ratings info.
@@ -123,20 +123,20 @@ GuiPlayer_Display.setDisplay = function(playerdata,playingmediasource,playingtra
     	var starsImage = "";
     	if (toms){
     		if (toms > 59){
-    			tomsImage = "images/fresh-24x24.png";
+    			tomsImage = "images/fresh-40x40.png";
     		} else {
-    			tomsImage = "images/rotten-24x24.png";
+    			tomsImage = "images/rotten-40x40.png";
     		}
     		document.getElementById("guiPlayer_Ratings").innerHTML += "<div class='videoItemRatingsTomatoIcon' style=background-image:url("+tomsImage+")></div>";
     		document.getElementById("guiPlayer_Ratings").innerHTML += "<div class='videoItemRatingsTomato'>"+toms+"%</div>";
     	}
     	if (stars){
         	if (stars <3.1){
-        		starsImage = "images/star_empty-24x24.png"; 
+        		starsImage = "images/star_empty-46x40.png"; 
         	} else if (stars >=3.1 && stars < 6.5) {
-        		starsImage = "images/star_half-24x24.png";
+        		starsImage = "images/star_half-46x40.png";
         	} else {
-        		starsImage = "images/star_full-24x24.png";
+        		starsImage = "images/star_full-46x40.png";
         	}
         	document.getElementById("guiPlayer_Ratings").innerHTML += "<div class='videoItemRatingsStarIcon' style=background-image:url("+starsImage+")></div>";
        		document.getElementById("guiPlayer_Ratings").innerHTML += "<div class='videoItemRatingsStar'>"+stars+"</div>";
@@ -219,25 +219,25 @@ GuiPlayer_Display.createToolsMenu = function() {
 		}
 		if (this.chapterIndexes.length > 0) {
 			this.videoToolsOptions.push("videoOptionChapters");
-		    document.getElementById("guiPlayer_Tools").innerHTML += '<div id="videoOptionChapters" style="display:inline-block;">Chapters</div>';
+		    document.getElementById("guiPlayer_Tools").innerHTML += '<div id="videoOptionChapters" class="videoToolsItem";">Chapters</div>';
 		}
 	}
 	    
 	if (this.subtitleIndexes.length > 0) {
 		this.subtitleIndexes.unshift(-1);
 	    this.videoToolsOptions.push("videoOptionSubtitles");
-	    document.getElementById("guiPlayer_Tools").innerHTML += '<div id="videoOptionSubtitles" style="display:inline-block;">Subtitles</div>';
+	    document.getElementById("guiPlayer_Tools").innerHTML += '<div id="videoOptionSubtitles" class="videoToolsItem";">Subtitles</div>';
 		}
 	    
 	//Hide if only 1 audio stream given thats the one playing!
 	if (this.audioIndexes.length > 1) {
 	    this.videoToolsOptions.push("videoOptionAudio");
-	   	document.getElementById("guiPlayer_Tools").innerHTML += '<div id="videoOptionAudio" style="display:inline-block;">Audio</div>';
+	   	document.getElementById("guiPlayer_Tools").innerHTML += '<div id="videoOptionAudio" class="videoToolsItem";">Audio</div>';
 	}
 	
 	//Add Slider Bar
 	this.videoToolsOptions.push("videoOptionSlider");
-	document.getElementById("guiPlayer_Tools").innerHTML += '<div id="videoOptionSlider" style="display:inline-block;">Position</div>';
+	document.getElementById("guiPlayer_Tools").innerHTML += '<div id="videoOptionSlider" class="videoToolsItem";">Position</div>';
 };
 
 
@@ -257,7 +257,7 @@ GuiPlayer_Display.keyDownTools = function() {
     		}
 			setTimeout(function(){
 				document.getElementById("guiPlayer_Subtitles").style.top="none";
-				document.getElementById("guiPlayer_Subtitles").style.bottom="20px";
+				document.getElementById("guiPlayer_Subtitles").style.bottom="60px";
 			}, 500);
 			document.getElementById("GuiPlayer").focus();
 			break;	
@@ -269,7 +269,7 @@ GuiPlayer_Display.keyDownTools = function() {
     		}
 			setTimeout(function(){
 				document.getElementById("guiPlayer_Subtitles").style.top="none";
-				document.getElementById("guiPlayer_Subtitles").style.bottom="20px";
+				document.getElementById("guiPlayer_Subtitles").style.bottom="60px";
 			}, 500);
 			GuiPlayer.handlePlayKey();
 			document.getElementById("GuiPlayer").focus();
@@ -311,10 +311,10 @@ GuiPlayer_Display.keyDownTools = function() {
 				break;	
 			case "videoOptionSlider":
 				this.sliderCurrentTime = GuiPlayer.currentTime + this.offsetSeconds;
-				var leftPos = (900 *  this.sliderCurrentTime/ (this.PlayerData.RunTimeTicks / 10000))-10+30;
+				var leftPos = (1800 *  this.sliderCurrentTime/ (this.PlayerData.RunTimeTicks / 10000))-20+60;
 				document.getElementById("guiPlayer_Tools_SliderBarCurrent").style.left = leftPos+"px";	
 				document.getElementById("guiPlayer_Tools_SliderBarCurrentTime").innerHTML = Support.convertTicksToTimeSingle(this.sliderCurrentTime);
-				document.getElementById("guiPlayer_Tools_SliderBarCurrentTime").style.left = leftPos-20+"px";
+				document.getElementById("guiPlayer_Tools_SliderBarCurrentTime").style.left = leftPos-40+"px";
 				document.getElementById("guiPlayer_Tools_Slider").style.visibility = "";
 				document.getElementById("GuiPlayer_ToolsSlider").focus();	
 				break;
@@ -326,7 +326,7 @@ GuiPlayer_Display.keyDownTools = function() {
     		}
 			setTimeout(function(){
 				document.getElementById("guiPlayer_Subtitles").style.top="none";
-				document.getElementById("guiPlayer_Subtitles").style.bottom="20px";
+				document.getElementById("guiPlayer_Subtitles").style.bottom="60px";
 			}, 500);
 			document.getElementById("GuiPlayer").focus();
 			GuiPlayer.handlePlayKey();
@@ -386,17 +386,17 @@ GuiPlayer_Display.keyDownToolsSlider = function() {
 		case tvKey.KEY_LEFT:
 			this.sliderCurrentTime = this.sliderCurrentTime - 30000; //30 seconds
 			this.sliderCurrentTime = (this.sliderCurrentTime < 0) ? 0 : this.sliderCurrentTime;
-			var leftPos = (900 * this.sliderCurrentTime / (this.PlayerData.RunTimeTicks / 10000))-10+30; //-10 half width of selector, +30 as left as progress bar is 30 from left
+			var leftPos = (1800 * this.sliderCurrentTime / (this.PlayerData.RunTimeTicks / 10000))-20+60; //-20 half width of selector, +60 as left as progress bar is 30 from left
 			document.getElementById("guiPlayer_Tools_SliderBarCurrentTime").innerHTML = Support.convertTicksToTimeSingle(this.sliderCurrentTime);
-			document.getElementById("guiPlayer_Tools_SliderBarCurrentTime").style.left = leftPos-20+"px";
+			document.getElementById("guiPlayer_Tools_SliderBarCurrentTime").style.left = leftPos-40+"px";
 			document.getElementById("guiPlayer_Tools_SliderBarCurrent").style.left = leftPos+"px";	
 			break;
 		case tvKey.KEY_RIGHT:
 			this.sliderCurrentTime = this.sliderCurrentTime + 30000; //30 seconds
 			this.sliderCurrentTime = (this.sliderCurrentTime > this.PlayerData.RunTimeTicks / 10000) ? this.PlayerData.RunTimeTicks / 10000 : this.sliderCurrentTime;
-			var leftPos = (900 * this.sliderCurrentTime / (this.PlayerData.RunTimeTicks / 10000))-10+30;
+			var leftPos = (1800 * this.sliderCurrentTime / (this.PlayerData.RunTimeTicks / 10000))-20+60;
 			document.getElementById("guiPlayer_Tools_SliderBarCurrentTime").innerHTML = Support.convertTicksToTimeSingle(this.sliderCurrentTime);
-			document.getElementById("guiPlayer_Tools_SliderBarCurrentTime").style.left = leftPos-20+"px";
+			document.getElementById("guiPlayer_Tools_SliderBarCurrentTime").style.left = leftPos-40+"px";
 			document.getElementById("guiPlayer_Tools_SliderBarCurrent").style.left = leftPos+"px";	
 			break;
 		case tvKey.KEY_ENTER:
@@ -407,7 +407,7 @@ GuiPlayer_Display.keyDownToolsSlider = function() {
     		}
 			setTimeout(function(){
 				document.getElementById("guiPlayer_Subtitles").style.top="none";
-				document.getElementById("guiPlayer_Subtitles").style.bottom="20px";
+				document.getElementById("guiPlayer_Subtitles").style.bottom="60px";
 			}, 500);
 			GuiPlayer.newPlaybackPosition(this.sliderCurrentTime * 10000);
 			break;
@@ -466,9 +466,9 @@ GuiPlayer_Display.keyDownToolsSlider = function() {
 GuiPlayer_Display.updateSelectedItems = function() {
 	for (var index = 0; index < this.videoToolsOptions.length; index++){	
 		if (index == this.videoToolsSelectedItem) {
-			document.getElementById(this.videoToolsOptions[index]).style.color = "#27a436";	
+			document.getElementById(this.videoToolsOptions[index]).className = "videoToolsItem videoToolsItemSelected";	
 		} else {	
-			document.getElementById(this.videoToolsOptions[index]).style.color = "white";		
+			document.getElementById(this.videoToolsOptions[index]).className = "videoToolsItem";		
 		}		
 	} 
 };
@@ -482,8 +482,7 @@ GuiPlayer_Display.keyDownToolsSub = function() {
 			alert("RETURN");
 			widgetAPI.blockNavigation(event);
 			document.getElementById("guiPlayer_Tools_SubOptions").style.visibility = "hidden";
-			document.getElementById("guiPlayer_Subtitles").style.top="none";
-			document.getElementById("guiPlayer_Subtitles").style.bottom="20px";
+			this.updateSelectedItems();
 			document.getElementById("GuiPlayer_Tools").focus();
 			break;	
 		case tvKey.KEY_UP:
@@ -517,7 +516,7 @@ GuiPlayer_Display.keyDownToolsSub = function() {
     		}
 			setTimeout(function(){
 				document.getElementById("guiPlayer_Subtitles").style.top="none";
-				document.getElementById("guiPlayer_Subtitles").style.bottom="20px";
+				document.getElementById("guiPlayer_Subtitles").style.bottom="60px";
 			}, 500);
 			switch (this.videoToolsOptions[this.videoToolsSelectedItem]) {
 			case "videoOptionChapters":
@@ -594,13 +593,20 @@ GuiPlayer_Display.keyDownToolsSub = function() {
 	}
 };
 
-GuiPlayer_Display.updateSelectedItemsSub = function() {
-	for (var index = this.topLeftItem; index < Math.min(this.videoToolsSubOptions.length,this.topLeftItem + this.maxDisplay);index++){	
+GuiPlayer_Display.updateSelectedItemsSub = function() {	
+	document.getElementById(this.videoToolsOptions[this.videoToolsSelectedItem]).className = "videoToolsItem";
+	for (var index = this.topLeftItem; index < Math.min(this.videoToolsSubOptions.length,this.topLeftItem + this.maxDisplay);index++){
+		var classes = "videoToolsOption";
 		if (index == this.videoToolsSelectedItemSub) {
-			document.getElementById("videoToolsSubOptions"+index).style.color = "#27a436";	
-		} else {	
-			document.getElementById("videoToolsSubOptions"+index).style.color = "white";		
-		}		
+			classes += " videoToolsOptionSelected";	
+		}
+		if (index == this.topLeftItem && this.topLeftItem != 0){
+			classes += " arrowUp";
+		}
+		if (index == this.topLeftItem + this.maxDisplay -1 && this.topLeftItem + this.maxDisplay -1 != this.videoToolsSubOptions.length -1){
+			classes += " arrowDown";
+		}
+		document.getElementById("videoToolsSubOptions"+index).className = classes;
 	} 
 };
 
@@ -608,7 +614,6 @@ GuiPlayer_Display.updateDisplayedItemsSub = function() {
 	document.getElementById("guiPlayer_Tools_SubOptions").innerHTML = "";
 	alert ("VideoToolsSubOptions Length: " + this.videoToolsSubOptions.length);
 	for (var index = this.topLeftItem; index < Math.min(this.videoToolsSubOptions.length,this.topLeftItem + this.maxDisplay);index++) {
-		
 		switch (this.videoToolsOptions[this.videoToolsSelectedItem]) {
 		case "videoOptionSubtitles":
 			alert ("Subtitle Option Index in DisplayItems: " + this.videoToolsSubOptions[index]);
@@ -625,7 +630,7 @@ GuiPlayer_Display.updateDisplayedItemsSub = function() {
 					Name = "Unknown Language";
 				}
 				if (this.playingSubtitleIndex == this.videoToolsSubOptions[index]) {
-					Name += "<br>Currently Showing";
+					Name += " - Showing";
 				}
 				document.getElementById("guiPlayer_Tools_SubOptions").innerHTML += "<div id=videoToolsSubOptions"+index+" class=videoToolsOption>"+Name+"</div>";	
 			}	
@@ -650,7 +655,6 @@ GuiPlayer_Display.updateDisplayedItemsSub = function() {
 			document.getElementById("guiPlayer_Tools_SubOptions").innerHTML += "<div id=videoToolsSubOptions"+index+" class=videoToolsOption>"+Name+"</div>";
 			break;	
 		case "videoOptionChapters":
-			//Run option through transcoding algorithm - see if it plays natively
 			document.getElementById("guiPlayer_Tools_SubOptions").innerHTML += "<div id=videoToolsSubOptions"+index+" class=videoToolsOption>"+this.PlayerData.Chapters[index].Name+"</div>";
 			break;	
 		}	

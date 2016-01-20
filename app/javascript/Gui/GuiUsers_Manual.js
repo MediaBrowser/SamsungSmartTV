@@ -79,7 +79,7 @@ var GuiUsers_Manual_Input  = function(id) {
     }
     
     var ime = new IMEShell(id, imeReady,'num');
-    ime.setKeypadPos(680,90);
+    ime.setKeypadPos(1300,90);
 /*	ime.setKeypadChangeFunc('qwerty',onSwitchToQwerty);
 	ime.setKeypadChangeFunc('12key',onSwitchTo12key);
 	

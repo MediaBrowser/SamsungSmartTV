@@ -64,12 +64,12 @@ GuiPage_Search.start = function(title, url) {
 }
 
 GuiPage_Search.updateDisplayedItems = function() {
-	htmlToAdd = "<table><th style='width:33px'></th><th style='width:36px'></th><th style='width:300px'></th><th style='width:50px'></th>";
+	htmlToAdd = "<table><th style='width:66px'></th><th style='width:72px'></th><th style='width:600px'></th><th style='width:100px'></th>";
 	var epName = "";
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.SearchHints.length); index++){
 		epName = (this.ItemData.SearchHints[index].Type == "Episode") ? Support.getNameFormat(null,this.ItemData.SearchHints[index].ParentIndexNumber,null,this.ItemData.SearchHints[index].IndexNumber) + " - " + this.ItemData.SearchHints[index].Name : this.ItemData.SearchHints[index].Name;
-		htmlToAdd += "<tr><td id=Play_"+this.ItemData.SearchHints[index].ItemId+" class='musicTableTd'>Play</td><td id=View_"+this.ItemData.SearchHints[index].ItemId+" class='musicTableTd'>View</td>" +
-				"<td id="+ this.ItemData.SearchHints[index].ItemId +" class='musicTableTd'>" + epName + "</td><td id=Type_"+ this.ItemData.SearchHints[index].ItemId +" class='musicTableTd'>" + this.ItemData.SearchHints[index].Type + "</td></tr>";		
+		htmlToAdd += "<tr><td id=Play_"+this.ItemData.SearchHints[index].ItemId+" class='guiMusic_TableTd'>Play</td><td id=View_"+this.ItemData.SearchHints[index].ItemId+" class='guiMusic_TableTd'>View</td>" +
+				"<td id="+ this.ItemData.SearchHints[index].ItemId +" class='guiMusic_TableTd'>" + epName + "</td><td id=Type_"+ this.ItemData.SearchHints[index].ItemId +" class='guiMusic_TableTd'>" + this.ItemData.SearchHints[index].Type + "</td></tr>";		
 	}
 	document.getElementById("Results").innerHTML = htmlToAdd + "</table>";
 }
@@ -79,18 +79,18 @@ GuiPage_Search.updateSelectedItems = function () {
 	//Finds correct items to set Red / Green
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.SearchHints.length); index++){	
 		if (index == this.selectedItem) {
-			document.getElementById(this.ItemData.SearchHints[index].ItemId).style.color = "green";
+			document.getElementById(this.ItemData.SearchHints[index].ItemId).className = "guiMusic_TableTd SelectedButton";
 			for (var index2 = 0; index2 < this.playItems.length; index2++) {
 				if (index2 == this.selectedItem2) {
-					document.getElementById(this.playItems[index2]+this.ItemData.SearchHints[index].ItemId).className = "musicTableTd red";
+					document.getElementById(this.playItems[index2]+this.ItemData.SearchHints[index].ItemId).className = "guiMusic_TableTd SelectedButton";
 				} else {
-					document.getElementById(this.playItems[index2]+this.ItemData.SearchHints[index].ItemId).className = "musicTableTd";
+					document.getElementById(this.playItems[index2]+this.ItemData.SearchHints[index].ItemId).className = "guiMusic_TableTd";
 				}
 			}
 		} else {
-			document.getElementById(this.ItemData.SearchHints[index].ItemId).style.color = "white";
+			document.getElementById(this.ItemData.SearchHints[index].ItemId).className = "guiMusic_TableTd";
 			for (var index2 = 0; index2 < this.playItems.length; index2++) {
-				document.getElementById(this.playItems[index2]+this.ItemData.SearchHints[index].ItemId).className = "musicTableTd";
+				document.getElementById(this.playItems[index2]+this.ItemData.SearchHints[index].ItemId).className = "guiMusic_TableTd";
 			}
 		}
 	}

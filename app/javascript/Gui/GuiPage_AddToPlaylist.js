@@ -40,16 +40,16 @@ GuiPage_AddToPlaylist.start=function(itemId, playedFromPage, mediaType) {
 	
 	//Set window size based on item count
 	if (this.ItemData.Items.length < 6){
-		document.getElementById("guiPlayListContainer").style.height = (this.ItemData.Items.length*20)+200 +"px";
+		document.getElementById("guiPlayListContainer").style.height = (this.ItemData.Items.length*40)+400 +"px";
 	} else {
-		document.getElementById("guiPlayListContainer").style.height = "280px";
+		document.getElementById("guiPlayListContainer").style.height = "560px";
 	}
 	
 	//Create IME - Send it the name of the thing to focus.
 	new GuiPage_AddToPlaylist_Input("guiPlayListNew");
 
 	if (this.ItemData.Items.length == 0) {
-		document.getElementById("guiPlayListExisting").innerHTML = "<div style='padding-top:10px;padding-left:40px;'>You have no existing "+ this.mediaType.toLowerCase() +" playlists.</div>";
+		document.getElementById("guiPlayListExisting").innerHTML = "<div style='padding-top:20px;padding-left:80px;'>You have no existing "+ this.mediaType.toLowerCase() +" playlists.</div>";
 		Support.screensaverOff(); // Must turn off as not possible to catch keys!
 	} else {
 		for (var index = 0; index < this.ItemData.Items.length; index++) {
@@ -75,7 +75,7 @@ GuiPage_AddToPlaylist.start=function(itemId, playedFromPage, mediaType) {
 }
 
 GuiPage_AddToPlaylist.updateDisplayedItems = function() {
-	var htmlToAdd = "<table style='padding-top:10px;padding-left:40px;'><th style='width:230px'>Playlist</th><th style='width:100px'>Exists in Playlist</th>";
+	var htmlToAdd = "<table style='padding-top:20px;padding-left:80px;'><th style='width:460px'>Playlist</th><th style='width:200px'>Exists in Playlist</th>";
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length);index++) {
 		var existsInPlaylist = (this.hasItemInPlaylist[index] == true) ? "Yes" : "No";
 		htmlToAdd += "<tr><td id='"+this.ItemData.Items[index].Id+"'>"+ this.ItemData.Items[index].Name + "</td><td>"+existsInPlaylist+"</tr>";
@@ -155,7 +155,7 @@ GuiPage_AddToPlaylist.processSelectedItem = function() {
 		this.hasItemInPlaylist[this.selectedItem] = true;
 		this.updateDisplayedItems();
 		this.updateSelectedItems();
-		document.getElementById("guiPlayListResult").innerHTML = "<div style='padding-top:10px;padding-left:40px;'>The "+ this.mediaType.toLowerCase() +" was added to the playlist.</div>";
+		document.getElementById("guiPlayListResult").innerHTML = "<div style='padding-top:20px;padding-left:80px;'>The "+ this.mediaType.toLowerCase() +" was added to the playlist.</div>";
 	} else {
 		return;
 	}
@@ -218,7 +218,7 @@ var GuiPage_AddToPlaylist_Input  = function(id) {
     }
 
 	var ime = new IMEShell("guiPlayListNew", imeReady,this);
-	ime.setKeypadPos(680,90);
+	ime.setKeypadPos(1360,180);
 	ime.setKeypadChangeFunc('qwerty',onSwitchToQwerty);
 	ime.setKeypadChangeFunc('12key',onSwitchTo12key);
 	
@@ -238,7 +238,7 @@ var GuiPage_AddToPlaylist_Input  = function(id) {
 	        
 	        var playlist = document.getElementById("guiPlayListNew").value;
 	        if (playlist == "") {
-	        	document.getElementById("guiPlayListResult").innerHTML = "<div style='padding-top:10px;padding-left:40px;'>Enter a playlist name or press Return to cancel.</div>";
+	        	document.getElementById("guiPlayListResult").innerHTML = "<div style='padding-top:20px;padding-left:80px;'>Enter a playlist name or press Return to cancel.</div>";
 	        	setTimeout(function(){
 	        		document.getElementById("guiPlayListResult").innerHTML = "";
 		    	}, 3000);
@@ -251,7 +251,7 @@ var GuiPage_AddToPlaylist_Input  = function(id) {
 	        //Sent Server Request
 	        Server.createPlaylist(playlist,GuiPage_AddToPlaylist.itemId, GuiPage_AddToPlaylist.mediaType);
 	        
-	        document.getElementById("guiPlayListResult").innerHTML = "<div style='padding-top:10px;padding-left:40px;'>The playlist was created.</div>";
+	        document.getElementById("guiPlayListResult").innerHTML = "<div style='padding-top:20px;padding-left:80px;'>The playlist was created.</div>";
 	        
 	    	//Close
 	    	setTimeout(function(){

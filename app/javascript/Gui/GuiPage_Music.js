@@ -7,7 +7,7 @@ var GuiPage_Music = {
 		selectedItem2 : 0, //Horizontal
 		
 		MAXCOLUMNCOUNT : 1,
-		MAXROWCOUNT : 15,
+		MAXROWCOUNT : 13,
 		
 		startParams : [],
 		
@@ -53,7 +53,7 @@ GuiPage_Music.start = function(title,url,type) { //Type is either MusicAlbum or 
 		
 	//Get Episode Poster	
 	if (this.AlbumData.Items[0].AlbumPrimaryImageTag) {
-		var imgsrc = Server.getImageURL(this.AlbumData.Items[0].AlbumId,"Primary",325,325,0,false,0); 	
+		var imgsrc = Server.getImageURL(this.AlbumData.Items[0].AlbumId,"Primary",650,650,0,false,0); 	
 		document.getElementById("guiMusic_Poster").style.backgroundImage = "url("+imgsrc + ")";
 	} else {
 		document.getElementById("guiMusic_Poster").style.backgroundImage = "url(images/collection.png)";
@@ -78,7 +78,7 @@ GuiPage_Music.start = function(title,url,type) { //Type is either MusicAlbum or 
 }
 
 GuiPage_Music.updateDisplayedItems = function() {
-	var htmlToAdd = "<table class=table><th style='width:33px'></th><th style='width:50px'></th><th style='width:45px'></th><th style='width:33px'></th><th style='width:280px'></th><th style='width:65px'></th>";
+	var htmlToAdd = "<table class=table><th style='width:66px'></th><th style='width:100px'></th><th style='width:90px'></th><th style='width:66px'></th><th style='width:560px'></th><th style='width:130px'></th>";
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.AlbumData.Items.length); index++){	
 		if (this.AlbumData.Items[index].ParentIndexNumber && this.AlbumData.Items[index].IndexNumber) {
 			TrackDetails = this.AlbumData.Items[index].ParentIndexNumber+"." + this.AlbumData.Items[index].IndexNumber;
@@ -90,8 +90,8 @@ GuiPage_Music.updateDisplayedItems = function() {
 		
 		//Truncate long song names.
 		var songName = this.AlbumData.Items[index].Name;
-		if (songName.length > 50){
-			songName = songName.substring(0,47) + "..."; 
+		if (songName.length > 43){
+			songName = songName.substring(0,40) + "..."; 
 		}
 		
 		htmlToAdd += "<tr><td id=Play_"+this.AlbumData.Items[index].Id+" class='guiMusic_TableTd'>Play</td><td id=Queue_"+this.AlbumData.Items[index].Id+" class='guiMusic_TableTd'>Queue</td><td id=Mix_"+this.AlbumData.Items[index].Id+" class='guiMusic_TableTd'>Mix</td>" +
@@ -107,30 +107,30 @@ GuiPage_Music.updateSelectedItems = function () {
 		//Sets Correct Item To Green
 		for (var index = 0; index < this.topMenuItems.length; index++) {
 			if (index == this.selectedItem2) {
-				document.getElementById(this.topMenuItems[index]).style.color = "#27a436";
+				document.getElementById(this.topMenuItems[index]).className = "guiMusic_Global SelectedButton";
 			} else {
-				document.getElementById(this.topMenuItems[index]).style.color = "white";
+				document.getElementById(this.topMenuItems[index]).className = "guiMusic_Global";
 			}
 		}		
 	} else {
 		//Resets original Item to White
 		for (var index = 0; index < this.topMenuItems.length; index++) {
-			document.getElementById(this.topMenuItems[index]).style.color = "white";
+			document.getElementById(this.topMenuItems[index]).className = "guiMusic_Global";
 		}
 		
 		//Finds correct items to set Red / Green
 		for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.AlbumData.Items.length); index++){	
 			if (index == this.selectedItem) {
-				document.getElementById(this.AlbumData.Items[index].Id).style.color = "green";
+				document.getElementById(this.AlbumData.Items[index].Id).className = "guiMusic_TableTd SelectedButton";
 				for (var index2 = 0; index2 < this.playItems.length; index2++) {
 					if (index2 == this.selectedItem2) {
-						document.getElementById(this.playItems[index2]+this.AlbumData.Items[index].Id).className = "guiMusic_TableTd red";
+						document.getElementById(this.playItems[index2]+this.AlbumData.Items[index].Id).className = "guiMusic_TableTd SelectedButton";
 					} else {
 						document.getElementById(this.playItems[index2]+this.AlbumData.Items[index].Id).className = "guiMusic_TableTd";
 					}
 				}
 			} else {
-				document.getElementById(this.AlbumData.Items[index].Id).style.color = "white";
+				document.getElementById(this.AlbumData.Items[index].Id).className = "guiMusic_TableTd";
 				for (var index2 = 0; index2 < this.playItems.length; index2++) {
 					document.getElementById(this.playItems[index2]+this.AlbumData.Items[index].Id).className = "guiMusic_TableTd";
 				}

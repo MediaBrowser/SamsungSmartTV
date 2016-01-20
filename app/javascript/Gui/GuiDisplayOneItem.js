@@ -30,13 +30,6 @@ GuiDisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 	//Save Start Params	
 	this.startParams = [title,url];
 	
-	alert (url);
-	
-	//Set background
-/*	this.backdropTimeout = setTimeout(function(){
-		Support.fadeImage("images/lensflare2-960x540.jpg");
-	}, 1000);*/
-	
 	//Reset Values
 	this.indexSeekPos = -1;
 	this.selectedItem = selectedItem;
@@ -50,7 +43,7 @@ GuiDisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 	//Setup display width height based on title
 	switch (title) {
 	case "Media Folders":
-	case "Collections":	
+	case "Collections":
 		this.MAXCOLUMNCOUNT = 3;
 		this.MAXROWCOUNT = 2;
 		break;
@@ -91,7 +84,7 @@ GuiDisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 	} else {
 		//Set message to user
 		document.getElementById("Counter").innerHTML = "";
-		document.getElementById("Content").style.fontSize="20px";
+		document.getElementById("Content").style.fontSize="40px";
 		document.getElementById("Content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen";
 		
 		document.getElementById("NoItems").focus();
@@ -339,9 +332,9 @@ GuiDisplayOneItem.setPadding = function(title) {
 	case "Media Folders":
 	case "Collections":	
 		if (this.ItemData.Items.length <= this.MAXCOLUMNCOUNT) {
-			document.getElementById("Center").style.top = "110px";
+			document.getElementById("Center").style.top = "220px";
 		} else {
-			document.getElementById("Center").style.top = "90px";
+			document.getElementById("Center").style.top = "180px";
 		}
 		break;
 	case "Music":
@@ -351,13 +344,13 @@ GuiDisplayOneItem.setPadding = function(title) {
 	default:
 		if (this.ItemData.Items.length > this.MAXCOLUMNCOUNT * 2) {
 			//3 Rows
-			document.getElementById("Center").style.top = "60px";
+			document.getElementById("Center").style.top = "120px";
 		} else if (this.ItemData.Items.length > this.MAXCOLUMNCOUNT) {
 			//2 Rows
-			document.getElementById("Center").style.top = "110px";
+			document.getElementById("Center").style.top = "220px";
 		} else {
 			//1 Row
-			document.getElementById("Center").style.top = "90px";
+			document.getElementById("Center").style.top = "180px";
 		}		
 		break;
 	}

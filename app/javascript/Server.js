@@ -412,7 +412,6 @@ Server.removeFromPlaylist = function(playlistId, ids) {
 Server.testConnectionSettings = function (server,fromFile) {	
 	xmlHttp = new XMLHttpRequest();
 	if (xmlHttp) {
-		//xmlHttp.open("GET", ("http://" + server + "/mediabrowser/System/Info?format=json") , false); //must be false
 		xmlHttp.open("GET", ("http://" + server + "/emby/System/Info/Public?format=json") , false); //must be false
 		xmlHttp.setRequestHeader("Content-Type", 'application/json');
 		xmlHttp.send(null);

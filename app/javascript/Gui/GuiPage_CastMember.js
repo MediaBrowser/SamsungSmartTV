@@ -27,7 +27,7 @@ GuiPage_CastMember.start = function(title,url,selectedItem,topLeftItem) {
 	alert (url);
 	this.CastData = Server.getContent(url);
 	if (this.CastData == null) { return; }
-	var Itemurl = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&Recursive=true&Limit=100&fields=ParentId&Person=" + this.CastData.Name.replace(/ /g, '+'));
+	var Itemurl = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&Recursive=true&Limit=100&ExcludeLocationTypes=Virtual&fields=ParentId&Person=" + this.CastData.Name.replace(/ /g, '+'));
 	alert (Itemurl);
 	this.ItemData = Server.getContent(Itemurl);
 	if (this.ItemData == null) { return; }
@@ -42,7 +42,7 @@ GuiPage_CastMember.start = function(title,url,selectedItem,topLeftItem) {
 	
 	//Add cast member name and image.
 	document.getElementById("GuiPage_CastMember_Name").innerHTML = this.CastData.Name;
-	var imgsrc = Server.getImageURL(this.CastData.Id,"Primary",160,240,0,false,0);
+	var imgsrc = Server.getImageURL(this.CastData.Id,"Primary",350,480,0,false,0);
 	document.getElementById("GuiPage_CastMember_Poster").style.backgroundImage = "url("+imgsrc +")";
 	
 	var detailsHtml = "";
@@ -91,16 +91,16 @@ GuiPage_CastMember.updateDisplayedItems = function() {
 	var htmlToAdd = "";
 	var htmlToAdd2 ="";
 	for (var index = this.topLeftItem;index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length); index++) {
-		var imgsrc = "images/MBS/play.png";
+		var imgsrc = "images/menu/Play-46x37.png";
 		if (this.ItemData.Items[index].Type == "Episode"){
 			if (this.ItemData.Items[index].ImageTags.Primary) {
-				imgsrc = Server.getImageURL(this.ItemData.Items[index].Id,"Primary",90,50,null,null,null,index);
+				imgsrc = Server.getImageURL(this.ItemData.Items[index].Id,"Primary",180,100,null,null,null,index);
 			} 
 		} else {
 			if (this.ItemData.Items[index].ImageTags.Thumb) {
-				imgsrc = Server.getImageURL(this.ItemData.Items[index].Id,"Thumb",90,50,null,null,null,index);
+				imgsrc = Server.getImageURL(this.ItemData.Items[index].Id,"Thumb",180,100,null,null,null,index);
 			} else if (this.ItemData.Items[index].ImageTags.Primary) {
-				imgsrc = Server.getImageURL(this.ItemData.Items[index].Id,"Primary",90,50,null,null,null,index);
+				imgsrc = Server.getImageURL(this.ItemData.Items[index].Id,"Primary",180,100,null,null,null,index);
 			}
 		}
 		htmlToAdd += "<div id="+this.ItemData.Items[index].Id+" class='GuiPage_CastMember_ListSingle'><div class='GuiPage_CastMember_ListSingleImage' style=background-image:url(" +imgsrc+ ")></div><div class='GuiPage_CastMember_ListSingleTitle'>"+this.ItemData.Items[index].Name+"</div></div>";
@@ -117,20 +117,20 @@ GuiPage_CastMember.updateSelectedItems = function () {
 			switch (this.ItemData.Items[index].Type) {
 			case "Episode":
 				if (this.ItemData.Items[index].ParentBackdropItemId) {
-					var imgsrc = Server.getBackgroundImageURL(this.ItemData.Items[index].ParentBackdropItemId,"Backdrop",960,540,0,false,0,this.ItemData.Items[index].ParentBackdropImageTags.length);
+					var imgsrc = Server.getBackgroundImageURL(this.ItemData.Items[index].ParentBackdropItemId,"Backdrop",Main.width,Main.height,0,false,0,this.ItemData.Items[index].ParentBackdropImageTags.length);
 					Support.fadeImage(imgsrc);
 				}
 				break;
 			case "Movie":	
 			case "Series":
 				if (this.ItemData.Items[index].BackdropImageTags.length > 0) {
-					var imgsrc = Server.getBackgroundImageURL(this.ItemData.Items[index].Id,"Backdrop",960,540,0,false,0,this.ItemData.Items[index].BackdropImageTags.length);
+					var imgsrc = Server.getBackgroundImageURL(this.ItemData.Items[index].Id,"Backdrop",Main.width,Main.height,0,false,0,this.ItemData.Items[index].BackdropImageTags.length);
 					Support.fadeImage(imgsrc);
 				}
 				break;
 			case "Photo":
 				if (this.ItemData.Items[index].ImageTags.Primary.length > 0) {
-					var imgsrc = Server.getImageURL(this.ItemData.Items[index].Id,"Primary",960,540,0,false,0);
+					var imgsrc = Server.getImageURL(this.ItemData.Items[index].Id,"Primary",Main.width,Main.height,0,false,0);
 					Support.fadeImage(imgsrc);
 				}
 				break;
