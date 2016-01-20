@@ -565,7 +565,7 @@
 	display:inline-block;
  	position:absolute; 
     right:0px;
-	height:50px;
+	height:40px;
 	width:80px;
 	background-image:url('images/missing.png');
 	background-repeat: no-repeat;
@@ -576,7 +576,7 @@
 	display:inline-block;
  	position:absolute; 
     right:0px;
-	height:50px;
+	height:40px;
 	width:80px;
 	background-image:url('images/unaired.png');
 	background-repeat: no-repeat;

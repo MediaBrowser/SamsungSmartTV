@@ -310,8 +310,12 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 				} else {
 					imageData = "background-color:rgba(0,0,0,0.5)";
 				}
-				//Add watched and favourite overlays.
 				htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style="+imageData+">";
+				//Add overlays.
+				if (Items[index].LocationType == "Virtual"){
+					var imageMissingOrUnaired = (Support.FutureDate(Items[index].PremiereDate) == true) ? "ShowListSingleUnaired" : "ShowListSingleMissing";
+					htmlToAdd += "<div class='"+imageMissingOrUnaired+"'></div>";
+				}
 				if (Items[index].UserData.Played) {
 					htmlToAdd += "<div class=genreItemCount>&#10003</div>";	
 				}
@@ -1089,6 +1093,9 @@ Support.playSelectedItem = function(page,ItemData,startParams,selectedItem,topLe
 			GuiImagePlayer.start(ItemData,selectedItem,true);	
 		}
 	} else if (ItemData.Items[selectedItem].MediaType == "Video") {
+		if (ItemData.Items[selectedItem].LocationType == "Virtual"){
+			return;
+		}
 		Support.updateURLHistory(page,startParams[0],startParams[1],startParams[2],startParams[3],selectedItem,topLeftItem,isTop);
 		var url = Server.getItemInfoURL(ItemData.Items[selectedItem].Id,"&ExcludeLocationTypes=Virtual");
 		GuiPlayer.start("PLAY",url,ItemData.Items[selectedItem].UserData.PlaybackPositionTicks / 10000,page);	
