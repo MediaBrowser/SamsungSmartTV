@@ -501,10 +501,10 @@ GuiDisplay_Series.processSelectedItem = function() {
 		break;
 		case "Latest":		
 			if (this.isTvOrMovies == 1) {
-				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Movie&isPlayed=false&IsFolder=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
+				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Movie&IsFolder=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
 				GuiDisplay_Series.start("Latest Movies",url,0,0);
 			} else if (this.isTvOrMovies == 0){
-				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Episode&isPlayed=false&IsFolder=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
+				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Episode&IsFolder=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
 				GuiDisplay_Series.start("Latest TV",url,0,0);
 			} else {
 				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Audio&Limit=21&fields=SortName,Genres");
