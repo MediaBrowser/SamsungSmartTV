@@ -232,7 +232,7 @@ GuiPage_MusicAZ.processTopMenuLeftKey = function() {
 			this.openMenu();
 		}
 		this.updateSelectedBannerItems();
-	} else if (Support.isPower(this.selectedItem, this.MAXCOLUMNCOUNT)){ //Going left from the first column.
+	} else if (this.selectedItem % this.MAXCOLUMNCOUNT == 0){ //Going left from the first column.
 		this.openMenu();
 	} else {
 		this.selectedItem--;

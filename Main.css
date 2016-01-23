@@ -172,6 +172,8 @@
 	text-align:center;
 	font-size:5em;
 	padding-top: 30px;
+	border-radius: 25px;
+    border: 2px solid white;
 }
 /*----------------------------------------------------------------------------------------------*/
 

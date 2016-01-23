@@ -33,10 +33,10 @@ var GuiDisplay_Series = {
 GuiDisplay_Series.onFocus = function() {
 	switch (this.currentMediaType) {
 	case "Movies":
-		GuiHelper.setControlButtons("Favourite","Watched",null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
+		GuiHelper.setControlButtons("Favourite","Watched","Next Index",GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
 	break;
 	default:
-		GuiHelper.setControlButtons("Favourite",null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");	
+		GuiHelper.setControlButtons("Favourite",null,"Next Index",GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
 	}
 }
 
@@ -626,7 +626,7 @@ GuiDisplay_Series.processLeftKey = function() {
 			this.selectedBannerItem = 0;
 			this.openMenu();
 		}
-	} else if (Support.isPower(this.selectedItem, this.MAXCOLUMNCOUNT)){ //Going left from the first column.
+	} else if (this.selectedItem % this.MAXCOLUMNCOUNT == 0){ //Going left from the first column.
 		this.openMenu();
 	} else {
 		this.selectedItem--;
@@ -811,7 +811,14 @@ GuiDisplay_Series.processIndexing = function() {
 		}
 		
 		this.selectedItem = indexPos[this.indexSeekPos];
-		this.topLeftItem = this.selectedItem;
+		this.topLeftItem = this.selectedItem; //safety net
+		
+		for (var i = this.selectedItem; i > this.selectedItem-this.MAXCOLUMNCOUNT; i--) {		
+			if (i % this.MAXCOLUMNCOUNT == 0) {
+				this.topLeftItem = i;
+				break;
+			}
+		}
 		
 		document.getElementById("guiDisplay_SeriesIndexing").innerHTML = indexLetter[this.indexSeekPos].toUpperCase();
 		document.getElementById("guiDisplay_SeriesIndexing").style.visibility = "";

@@ -210,7 +210,7 @@ GuiDisplayOneItem.openMenu = function() {
 }
 
 GuiDisplayOneItem.processLeftKey = function() {
-	if (Support.isPower(this.selectedItem, this.MAXCOLUMNCOUNT)){
+	if (this.selectedItem % this.MAXCOLUMNCOUNT == 0){
 		this.openMenu(); //Going left from anywhere in the first column.
 	} else {
 		this.selectedItem--;

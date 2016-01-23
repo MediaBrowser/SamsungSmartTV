@@ -302,7 +302,7 @@ GuiPage_HomeOneItem.processLeftKey = function() {
 		} else {
 			this.updateSelectedBannerItems();	
 		}
-	} else if (Support.isPower(this.selectedItem, this.MAXCOLUMNCOUNT)){
+	} else if (this.selectedItem % this.MAXCOLUMNCOUNT == 0){
 			this.openMenu(); //Going left from anywhere in the first column.
 	} else {
 		this.selectedItem--;

@@ -1781,17 +1781,3 @@ Support.getStarRatingImage = function(rating) {
 		break;
 	} 
 }
-
-Support.isPower = function(a,b) {
-		if ( a == 0) {
-			return true;
-		}
-		//This is a brain dead way of doing this. I expect you can do better! 
-		for (var i = 0; i < 1000; i++){
-			if (a/i == b){
-				return true;
-				break;
-			}
-		}
-		return false;	
-};
