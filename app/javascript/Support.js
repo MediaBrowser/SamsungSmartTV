@@ -235,8 +235,8 @@ Support.processIndexing = function(ItemsArray) {
 Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,DivIdUpdate,DivIdPrepend,isResume,Genre,showBackdrop) {
 	var htmlToAdd = "";	
 	for (var index = startPos; index < endPos; index++) {
-		progress = Math.round((Main.posterWidth / 100) * Math.round(Items[index].UserData.PlayedPercentage));
 		if (isResume == true) {
+			progress = Math.round((Main.posterWidth / 100) * Math.round(Items[index].UserData.PlayedPercentage));
 			//Calculate Width of Progress Bar
 			if (Items[index].Type == "Episode") {
 				var title = this.getNameFormat(Items[index].SeriesName, Items[index].ParentIndexNumber, Items[index].Name, Items[index].IndexNumber);		
@@ -440,6 +440,19 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 				} else {
 					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-color:rgba(0,0,0,0.5);><div class=menuItem>"+ title + "</div></div>";
 				}
+			//----------------------------------------------------------------------------------------------
+			} else if (Items[index].Type == "Recording") {
+				alert("Unhandled Item type: "+Items[index].Type);
+				var title = Items[index].Name;		
+				if (Items[index].ImageTags.Thumb) {		
+					var imgsrc = Server.getImageURL(Items[index].Id,"Thumb",Main.posterWidth,Main.posterHeight,0,false,0);
+					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(" +imgsrc+ ")><div class=menuItem>"+ title + "</div></div>";
+				} else if (Items[index].BackdropImageTags.length > 0) {			
+					var imgsrc = Server.getBackgroundImageURL(Items[index].Id,"Backdrop",Main.posterWidth,Main.posterHeight,0,false,0,Items[index].BackdropImageTags.length);
+					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(" +imgsrc+ ")><div class=menuItem>"+ title + "</div></div>";	
+				} else {
+					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-color:rgba(0,0,0,0.5);><div class=menuItem>"+ title + "</div></div>";
+				}	
 			//----------------------------------------------------------------------------------------------
 			} else if (Items[index].Type == "Playlist" || Items[index].Type == "CollectionFolder" ) {
 				var title = Items[index].Name;	
@@ -1050,6 +1063,10 @@ Support.processSelectedItem = function(page,ItemData,startParams,selectedItem,to
 			var url = Server.getCustomURL("/Channels/"+ItemData.Items[selectedItem].ChannelId+"/Items?userId="+Server.getUserID()+"&folderId="+ItemData.Items[selectedItem].Id+"&fields=SortName&format=json");	
 			GuiDisplayOneItem.start(ItemData.Items[selectedItem].Name,url,0,0);
 			break;	
+		case "TvChannel":
+			alert ("TV Live Channel Page Not Implemented - Play Channel");
+			this.playSelectedItem("GuiDisplayOneItem",ItemData,startParams,selectedItem,topLeftItem,null);
+			break;		
 		case "Playlist":
 			var url = Server.getCustomURL("/Playlists/"+ItemData.Items[selectedItem].Id+"/Items?userId="+Server.getUserID()+"&fields=SortName&SortBy=SortName&SortOrder=Ascending&format=json");	
 			GuiPage_Playlist.start(ItemData.Items[selectedItem].Name,url,ItemData.Items[selectedItem].MediaType,ItemData.Items[selectedItem].Id);
@@ -1091,7 +1108,7 @@ Support.playSelectedItem = function(page,ItemData,startParams,selectedItem,topLe
 			Support.updateURLHistory(page,startParams[0],startParams[1],startParams[2],startParams[3],selectedItem,topLeftItem,isTop);
 			GuiImagePlayer.start(ItemData,selectedItem,true);	
 		}
-	} else if (ItemData.Items[selectedItem].MediaType == "Video") {
+	} else if (ItemData.Items[selectedItem].MediaType == "Video" && ItemData.Items[selectedItem].Type != "TvChannel") {
 		if (ItemData.Items[selectedItem].LocationType == "Virtual"){
 			return;
 		}
@@ -1102,7 +1119,11 @@ Support.playSelectedItem = function(page,ItemData,startParams,selectedItem,topLe
 		Support.updateURLHistory(page,startParams[0],startParams[1],startParams[2],startParams[3],selectedItem,topLeftItem,isTop);
 		var url = Server.getItemInfoURL(ItemData.Items[selectedItem].Id,"&ExcludeLocationTypes=Virtual");
 		GuiPlayer.start("PLAY",url,ItemData.Items[selectedItem].UserData.PlaybackPositionTicks / 10000,page);	
-	} else if (ItemData.Items[selectedItem].CollectionType == "photos") {
+	}  else if (ItemData.Items[selectedItem].Type == "TvChannel") {
+		Support.updateURLHistory(page,startParams[0],startParams[1],startParams[2],startParams[3],selectedItem,topLeftItem,isTop);
+		var url = Server.getItemInfoURL(ItemData.Items[selectedItem].Id,"&ExcludeLocationTypes=Virtual");
+		GuiPlayer.start("PLAY",url,0,page);
+	}  else if (ItemData.Items[selectedItem].CollectionType == "photos") {
 		Support.updateURLHistory(page,startParams[0],startParams[1],startParams[2],startParams[3],selectedItem,topLeftItem,isTop);
 		GuiImagePlayer.start(ItemData,selectedItem,true);	
 	} else if (ItemData.Items[selectedItem].Type == "PhotoAlbum") {
@@ -1205,7 +1226,6 @@ Support.generateMainMenu = function() {
 		menuItems.push("Playlists");
 	}
 
-	/*
 	//Check Live TV
 	var urlLiveTV = Server.getCustomURL("/LiveTV/Info?format=json");
 	var hasLiveTV = Server.getContent(urlLiveTV);
@@ -1214,6 +1234,7 @@ Support.generateMainMenu = function() {
 		for (var index = 0; index < hasLiveTV.EnabledUsers.length; index++) {
 			if (Server.getUserID() == hasLiveTV.EnabledUsers[index]) {
 				menuItems.push("Live-TV");
+				menuItems.push("Recordings");
 				break;
 			}
 		}
@@ -1228,7 +1249,7 @@ Support.generateMainMenu = function() {
 		if (hasChannels.Items.length > 0) {
 			menuItems.push("Channels");
 		}
-	}*/
+	}
 	
 	//Check Media Folders
 	var urlMF = Server.getItemTypeURL("&Limit=0");
@@ -1348,6 +1369,14 @@ Support.processHomePageMenu = function (menuItem) {
 			GuiPage_Photos.start("Photos",url,0,0);
 		}
 		break;
+	case "Live-TV":
+		var url = Server.getCustomURL("/LiveTV/Channels?SortBy=SortName&SortOrder=Ascending&StartIndex=0&fields=SortName");
+		GuiDisplayOneItem.start("Live TV", url,0,0);
+		break;	
+	case "Recordings":
+		var url = Server.getCustomURL("/LiveTV/Recordings?IsInProgress=false&SortBy=SortName&SortOrder=Ascending&StartIndex=0&fields=SortName");
+		GuiDisplayOneItem.start("Recordings", url,0,0);
+		break;	
 	case "Home-Movies":
 		var homeVideosFolderId = Server.getUserViewId("homevideos");
 		if (homeVideosFolderId != null){
@@ -1360,9 +1389,6 @@ Support.processHomePageMenu = function (menuItem) {
 		break;		
 	case "Settings":
 		GuiPage_Settings.start();
-		break;	
-	case "Contributors":
-		GuiPage_Contributors.start();
 		break;		
 	case "Log-Out":
 		if (File.getUserProperty("ForgetSavedPassword")) {
@@ -1370,12 +1396,7 @@ Support.processHomePageMenu = function (menuItem) {
 			File.setUserProperty("ForgetSavedPassword",false);
 		}
 		Support.logout();
-		break;		
-	case "Log-Out_Delete":
-		alert("Log-Out_Delete");
-		File.setUserProperty("Password","");
-		Support.logout();
-		break;		
+		break;				
 	}
 }
 

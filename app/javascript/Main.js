@@ -18,9 +18,9 @@ var Main =
 		forceDeleteSettings : false,
 		
 		enableMusic : true,
-		enableLiveTV : false,
+		enableLiveTV : true,
 		enableCollections : true,
-		enableChannels : false,
+		enableChannels : true,
 		
 		enableScreensaver : true,
 		isScreensaverRunning : false,

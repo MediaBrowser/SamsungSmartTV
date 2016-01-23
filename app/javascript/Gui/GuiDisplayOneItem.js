@@ -71,7 +71,7 @@ GuiDisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 		this.isResume = (title == "Resume") ? true : false;
 		
 		//Alter to only allow indexing on certain pages??
-		this.ItemIndexData = Support.processIndexing(this.ItemData.Items); 
+		//this.ItemIndexData = Support.processIndexing(this.ItemData.Items); 
 	
 		//Display first XX series
 		this.updateDisplayedItems();
