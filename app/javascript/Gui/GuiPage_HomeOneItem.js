@@ -40,7 +40,7 @@ GuiPage_HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 	this.ItemData = Server.getContent(url);
 	if (this.ItemData == null) { return; }
 	
-	if (title == "Latest TV") {
+	if (title == "Latest TV" || title == "Latest Movies") {
 		this.isLatest = true;
 		this.ItemData.Items = this.ItemData;
 	}

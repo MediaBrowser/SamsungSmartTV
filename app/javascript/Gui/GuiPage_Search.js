@@ -140,7 +140,7 @@ var imeReady = function(imeObject) {
 }
 
 var ime = new IMEShell("searchInput", imeReady,'en');
-ime.setKeypadPos(680,90);
+ime.setKeypadPos(1300,90);
        
 var installFocusKeyCallbacks = function () {
     ime.setKeyFunc(tvKey.KEY_ENTER, function (keyCode) {
