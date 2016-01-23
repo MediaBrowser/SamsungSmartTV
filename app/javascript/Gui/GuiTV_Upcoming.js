@@ -69,15 +69,15 @@ GuiTV_Upcoming.start = function() {
 	//Set PageContent
 	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div>" +
 			"<div id=Center class='HomeOneCenter'>" + 
-			"<p id='title1' style='font-size:18px;padding-left:11px;'></p><div id='TopRow' style='margin-bottom:30px'><div id=Content></div></div>" +
-			"<p id='title2' style='font-size:18px;padding-left:11px;'></p><div id='BottomRow'><div id=Content2></div></div>" +
+			"<p id='title1' style='font-size:1.2em;padding-left:22px;'></p><div id='TopRow' style='margin-bottom:60px'><div id=Content></div></div>" +
+			"<p id='title2' style='font-size:1.2em;padding-left:22px;'></p><div id='BottomRow'><div id=Content2></div></div>" +
 			"</div>";
 	
 	
 	//If to determine positioning of content
-	document.getElementById("Center").style.top = "70px";
-	document.getElementById("Center").style.left = "100px";
-	document.getElementById("Center").style.width = "760px";
+	document.getElementById("Center").style.top = "140px";
+	document.getElementById("Center").style.left = "200px";
+	document.getElementById("Center").style.width = "1520px";
 	
 	if (ItemData.Items.length > 0) {		
 		//Generate Banner display
@@ -116,7 +116,7 @@ GuiTV_Upcoming.start = function() {
 	} else  {
 		//Set message to user
 		document.getElementById("Counter").innerHTML = "";
-		document.getElementById("Content").style.fontSize="20px";
+		document.getElementById("Content").style.fontSize="1.3em";
 		document.getElementById("Content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen";
 		
 		document.getElementById("NoItems").focus();
