@@ -74,7 +74,7 @@ Main.onLoad = function()
 {	
 	//Setup Logging
 	FileLog.loadFile(false); // doesn't return contents, done to ensure file exists
-	FileLog.write("---------------------------------------------------------------------");
+	FileLog.write("---------------------------------------------------------------------",true);
 	FileLog.write("Emby Application Started");
 
 	document.getElementById("splashscreen_version").innerHTML = Main.version;
