@@ -124,28 +124,28 @@ Server.getImageURL = function(itemId,imagetype,maxwidth,maxheight,unplayedcount,
 	var query = "";
 	switch (imagetype) {
 	case "Primary":
-		query = Server.getServerAddr() + "/Items/"+ itemId +"/Images/Primary/0?maxwidth="+maxwidth+"&maxheight="+maxheight;
+		query = Server.getServerAddr() + "/Items/"+ itemId +"/Images/Primary/0?tag&maxwidth="+maxwidth+"&maxheight="+maxheight;
 		break;
 	case "Banner":
-		query = Server.getServerAddr() + "/Items/"+ itemId +"/Images/Banner/0?maxwidth="+maxwidth+"&maxheight="+maxheight;
+		query = Server.getServerAddr() + "/Items/"+ itemId +"/Images/Banner/0?tag&maxwidth="+maxwidth+"&maxheight="+maxheight;
 		break;
 	case "Backdrop":
-		query = Server.getServerAddr() + "/Items/"+ itemId +"/Images/Backdrop/0?maxwidth="+maxwidth+"&maxheight="+maxheight;
+		query = Server.getServerAddr() + "/Items/"+ itemId +"/Images/Backdrop/0?tag&maxwidth="+maxwidth+"&maxheight="+maxheight;
 		break;
 	case "Thumb":
-		query = Server.getServerAddr() + "/Items/"+ itemId +"/Images/Thumb/0?maxwidth="+maxwidth+"&maxheight="+maxheight;
+		query = Server.getServerAddr() + "/Items/"+ itemId +"/Images/Thumb/0?tag&maxwidth="+maxwidth+"&maxheight="+maxheight;
 		break;	
 	case "Logo":
-		query = Server.getServerAddr() + "/Items/"+ itemId +"/Images/Logo/0?maxwidth="+maxwidth+"&maxheight="+maxheight;
+		query = Server.getServerAddr() + "/Items/"+ itemId +"/Images/Logo/0?tag&maxwidth="+maxwidth+"&maxheight="+maxheight;
 		break;
 	case "Disc":
-		query = Server.getServerAddr() + "/Items/"+ itemId +"/Images/Disc/0?maxwidth="+maxwidth+"&maxheight="+maxheight;
+		query = Server.getServerAddr() + "/Items/"+ itemId +"/Images/Disc/0?tag&maxwidth="+maxwidth+"&maxheight="+maxheight;
 		break;
 	case "UsersPrimary":
-		query = Server.getServerAddr() + "/Users/" + itemId + "/Images/Primary?maxwidth="+maxwidth+"&maxheight="+maxheight;
+		query = Server.getServerAddr() + "/Users/" + itemId + "/Images/Primary?tag&maxwidth="+maxwidth+"&maxheight="+maxheight;
 		break;
 	case "Chapter":
-		query = Server.getServerAddr() + "/Items/" + itemId + "/Images/Chapter/" + chapter + "?maxwidth="+maxwidth+"&maxheight="+maxheight;
+		query = Server.getServerAddr() + "/Items/" + itemId + "/Images/Chapter/" + chapter + "?tag&maxwidth="+maxwidth+"&maxheight="+maxheight;
 		break;
 	}
 
@@ -158,10 +158,10 @@ Server.getScreenSaverImageURL = function(itemId,imagetype,maxwidth,maxheight) {
 	var query = "";
 	switch (imagetype) {
 		case "Backdrop":
-			query =   Server.getServerAddr() + "/Items/"+ itemId +"/Images/Backdrop/0?maxwidth="+maxwidth+"&maxheight="+maxheight;
+			query =   Server.getServerAddr() + "/Items/"+ itemId +"/Images/Backdrop/0?tag&quality=90&maxwidth="+maxwidth+"&maxheight="+maxheight;
 			break;
 		case "Primary":
-			query =   Server.getServerAddr() + "/Items/"+ itemId +"/Images/Primary/0?maxwidth="+maxwidth+"&maxheight="+maxheight;
+			query =   Server.getServerAddr() + "/Items/"+ itemId +"/Images/Primary/0?tag&quality=90&maxwidth="+maxwidth+"&maxheight="+maxheight;
 			break;	
 	}	
 	return query;
@@ -174,7 +174,7 @@ Server.getBackgroundImageURL = function(itemId,imagetype,maxwidth,maxheight,unpl
 	switch (imagetype) {
 	
 	case "Backdrop":
-		query =   Server.getServerAddr() + "/Items/"+ itemId +"/Images/Backdrop/"+index+"?maxwidth="+maxwidth+"&maxheight="+maxheight;
+		query =   Server.getServerAddr() + "/Items/"+ itemId +"/Images/Backdrop/"+index+"?tag&maxwidth="+maxwidth+"&maxheight="+maxheight;
 		break;
 	}
 	
