@@ -172,8 +172,8 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem) {
 			}
 		}
 	
-		//Indexing Algorithm - Disabled v0.570c
-		//this.ItemIndexData = Support.processIndexing(this.ItemData.Items); 
+		//Indexing Algorithm
+		this.ItemIndexData = Support.processIndexing(this.ItemData.Items); 
 	
 		//Display first XX series
 		this.updateDisplayedItems();
@@ -457,6 +457,9 @@ GuiDisplay_Series.keyDown = function() {
 				}
 				Support.updateOneDisplayedItem(this.ItemData.Items[this.selectedItem],"",this.isResume,this.genreTypefalse,"GuiDisplay_Series",false);
 			}
+			break;
+		case tvKey.KEY_YELLOW:
+			GuiDisplay_Series.processIndexing();
 			break;
 		case tvKey.KEY_BLUE:	
 			GuiMusicPlayer.showMusicPlayer("GuiDisplay_Series");
@@ -788,13 +791,17 @@ GuiDisplay_Series.processChannelDownKey = function() {
 
 GuiDisplay_Series.processIndexing = function() {
 	if (this.selectedItem > -1) {
-		var indexLetter = this.ItemIndexData[0];
 		var indexPos = this.ItemIndexData[1];
 		
 		this.indexSeekPos++;
 		if (this.indexSeekPos >= indexPos.length) {
-			this.indexSeekPos = 0;
-			this.topLeftItem = 0;
+			//Check if more items, if so load next batch
+			if (this.totalRecordCount > this.ItemData.Items.length) {
+				this.loadMoreItems();				
+			} else {
+				this.indexSeekPos = 0;
+				this.topLeftItem = 0;
+			}
 		}
 		
 		this.selectedItem = indexPos[this.indexSeekPos];
@@ -827,6 +834,7 @@ GuiDisplay_Series.loadMoreItems = function() {
 		document.getElementById("Counter").innerHTML = (this.selectedItem + 1) + "/" + this.ItemData.Items.length;
 		
 		//Reprocess Indexing Algorithm
+		this.ItemIndexData = Support.processIndexing(this.ItemData.Items); 
 		
 		//Hide Loading Div
 		document.getElementById("guiPlayer_Loading").style.visibility = "hidden";
