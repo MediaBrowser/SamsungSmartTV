@@ -19,6 +19,7 @@ var GuiDisplay_Series = {
 		musicBannerItems : ["Recent","Frequent","Album","Album Artist", "Artist"],
 		
 		indexSeekPos : -1,
+		indexTimeout : null,
 		isResume : false,
 		genreType : "",
 		
@@ -388,6 +389,10 @@ GuiDisplay_Series.keyDown = function() {
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
+	
+	//Clear Indexing Letter Display timeout & Hide
+	clearTimeout(this.indexTimeout);
+	document.getElementById("guiDisplay_SeriesIndexing").style.visibility = "hidden";
 	
 	//Update Screensaver Timer
 	Support.screensaver();
@@ -791,6 +796,7 @@ GuiDisplay_Series.processChannelDownKey = function() {
 
 GuiDisplay_Series.processIndexing = function() {
 	if (this.selectedItem > -1) {
+		var indexLetter = this.ItemIndexData[0]
 		var indexPos = this.ItemIndexData[1];
 		
 		this.indexSeekPos++;
@@ -806,6 +812,13 @@ GuiDisplay_Series.processIndexing = function() {
 		
 		this.selectedItem = indexPos[this.indexSeekPos];
 		this.topLeftItem = this.selectedItem;
+		
+		document.getElementById("guiDisplay_SeriesIndexing").innerHTML = indexLetter[this.indexSeekPos].toUpperCase();
+		document.getElementById("guiDisplay_SeriesIndexing").style.visibility = "";
+		
+		this.indexTimeout = setTimeout(function(){
+			document.getElementById("guiDisplay_SeriesIndexing").style.visibility = "hidden";
+		}, 1000);
 		
 		this.updateDisplayedItems();
 		this.updateSelectedItems();

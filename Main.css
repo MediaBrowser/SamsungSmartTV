@@ -162,6 +162,20 @@
 
 /*----------------------------------------------------------------------------------------------*/
 
+.guiDisplay_SeriesIndexing {
+	position:absolute;
+	bottom:440px;
+	left:850px;
+	height: 200px;
+	width: 200px;
+	background-color:rgba(0,0,0,0.8);
+	text-align:center;
+	font-size:5em;
+	padding-top: 30px;
+}
+/*----------------------------------------------------------------------------------------------*/
+
+
 .help {
 	position:absolute;
 	bottom:0px;
