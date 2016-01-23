@@ -65,10 +65,10 @@ GuiPage_HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,to
 	}
 	
 	//Latest Page Fix
-	if (title1 == "Latest TV") {
+	if (title1 == "Latest TV" || title1 == "Latest Movies") {
 		this.ItemData.Items = this.ItemData;
 	}
-	if (title2 == "Latest TV") {
+	if (title2 == "Latest TV" || title2 == "Latest Movies") {
 		this.ItemData2.Items = this.ItemData2;
 	}
 	

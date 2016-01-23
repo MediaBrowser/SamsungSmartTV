@@ -64,7 +64,7 @@ GuiPage_Photos.start = function(title,url,selectedItem,topLeftItem) {
 	} else {
 		//Set message to user
 		document.getElementById("Counter").innerHTML = "";
-		document.getElementById("Content").style.fontSize="1.7empx";
+		document.getElementById("Content").style.fontSize="1.7em";
 		document.getElementById("Content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen";
 		
 		document.getElementById("NoItems").focus();
