@@ -21,6 +21,7 @@ var Main =
 		enableLiveTV : true,
 		enableCollections : true,
 		enableChannels : true,
+		enableImageCache : false,
 		
 		enableScreensaver : true,
 		isScreensaverRunning : false,
@@ -50,6 +51,10 @@ Main.isScreensaverEnabled = function() {
 	return this.enableScreensaver;
 };
 
+Main.isImageCaching = function() {
+	return this.enableImageCache;
+};
+
 Main.getRequiredServerVersion = function() {
 	return this.requiredServerVersion;
 };
@@ -76,7 +81,13 @@ Main.onLoad = function()
 	FileLog.loadFile(false); // doesn't return contents, done to ensure file exists
 	FileLog.write("---------------------------------------------------------------------",true);
 	FileLog.write("Emby Application Started");
-
+	
+	if (Main.isImageCaching() == false) {
+		ImageCache.deleteCache();
+	} else {
+		Support.imageCachejson = JSON.parse(ImageCache.loadFile());
+	}
+	
 	document.getElementById("splashscreen_version").innerHTML = Main.version;
 	
 	//Turn ON screensaver
@@ -191,6 +202,8 @@ Main.initKeys = function() {
 
 Main.onUnload = function()
 {
+	//Write Cache to disk
+	ImageCache.writeAll(Support.imageCachejson);
 	Support.screensaverOff();
 	GuiImagePlayer.kill();
 	GuiMusicPlayer.stopOnAppExit();

@@ -18,7 +18,9 @@ var Support = {
 		screensaverVar : null,
 		isScreensaverOn : true,
 		
-		clockVar : null
+		clockVar : null,
+		
+		imageCachejson : null
 }
 
 Support.clock = function() {
@@ -1021,9 +1023,9 @@ Support.processSelectedItem = function(page,ItemData,startParams,selectedItem,to
 		case "Movie":
 			var url = Server.getItemInfoURL(ItemData.Items[selectedItem].Id,null);
 			if (page == "GuiDisplay_Series"){
-				GuiPage_ItemDetails.start(ItemData.Items[selectedItem].Name,url,0,false);
+				GuiPage_ItemDetails.start(ItemData.Items[selectedItem].Name,url,0);
 			} else {
-				GuiPage_ItemDetails.start(ItemData.Items[selectedItem].Name,url,0,true);
+				GuiPage_ItemDetails.start(ItemData.Items[selectedItem].Name,url,0);
 			}
 			break;	
 		case "Episode":
@@ -1742,6 +1744,32 @@ Support.styleSubtitles = function (element) {
 	document.getElementById(element).style.fontSize = File.getUserProperty("SubtitleSize");
 	document.getElementById(element).style.textShadow = "0px 0px 10px rgba(0, 0, 0, 1)";
 }
+
+
+Support.getBase64Image = function (url, query) {
+	    var img = new Image();
+
+	    img.setAttribute('crossOrigin', 'anonymous');
+	    img.query = query;
+
+	    img.onload = function () {
+	        var canvas = document.createElement("canvas");
+	        canvas.width =this.width;
+	        canvas.height =this.height;
+
+	        var ctx = canvas.getContext("2d");
+	        ctx.drawImage(this, 0, 0);
+
+	        var dataURL = canvas.toDataURL("image/jpg");
+	        var dataURI = dataURL.replace(/^data:image\/(png|jpg);base64,/, "")
+
+			Support.imageCachejson.Images[Support.imageCachejson.Images.length] = {"URL":this.query,"DataURI":dataURI};
+	    };
+
+	    img.src = url;
+	}
+
+
 
 Support.getStarRatingImage = function(rating) {
 	switch (Math.round(rating)) {

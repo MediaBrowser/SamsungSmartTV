@@ -333,20 +333,23 @@ GuiDisplay_Series.updateSelectedItems = function () {
 		
 	//Background Image
 	//Blocking code to skip getting data for items where the user has just gone past it
-	var currentSelectedItem = this.selectedItem;
-	setTimeout(function(){	
-		if (GuiDisplay_Series.selectedItem == currentSelectedItem) {
-			//Set Background
-			if (GuiDisplay_Series.ItemData.Items[currentSelectedItem].BackdropImageTags.length > 0) {
-				var imgsrc = Server.getBackgroundImageURL(GuiDisplay_Series.ItemData.Items[currentSelectedItem].Id,"Backdrop",Main.width,Main.height,0,false,0,GuiDisplay_Series.ItemData.Items[currentSelectedItem].BackdropImageTags.length);
-				Support.fadeImage(imgsrc);
+	//Only for collections (usually small) as a performance enhance - If screen is full of items anyway who cares what the background is
+	if  (this.currentMediaType == "Collections") {
+		var currentSelectedItem = this.selectedItem;
+		setTimeout(function(){	
+			if (GuiDisplay_Series.selectedItem == currentSelectedItem) {
+				//Set Background
+				if (GuiDisplay_Series.ItemData.Items[currentSelectedItem].BackdropImageTags.length > 0) {
+					var imgsrc = Server.getBackgroundImageURL(GuiDisplay_Series.ItemData.Items[currentSelectedItem].Id,"Backdrop",Main.width,Main.height,0,false,0,GuiDisplay_Series.ItemData.Items[currentSelectedItem].BackdropImageTags.length);
+					Support.fadeImage(imgsrc);
+				}
+				else if (GuiDisplay_Series.ItemData.Items[currentSelectedItem].ParentBackdropImageTags) {
+					var imgsrc = Server.getBackgroundImageURL(GuiDisplay_Series.ItemData.Items[currentSelectedItem].ParentBackdropItemId,"Backdrop",Main.width,Main.height,0,false,0,GuiDisplay_Series.ItemData.Items[currentSelectedItem].ParentBackdropImageTags.length);
+					Support.fadeImage(imgsrc);
+				}
 			}
-			else if (GuiDisplay_Series.ItemData.Items[currentSelectedItem].ParentBackdropImageTags) {
-				var imgsrc = Server.getBackgroundImageURL(GuiDisplay_Series.ItemData.Items[currentSelectedItem].ParentBackdropItemId,"Backdrop",Main.width,Main.height,0,false,0,GuiDisplay_Series.ItemData.Items[currentSelectedItem].ParentBackdropImageTags.length);
-				Support.fadeImage(imgsrc);
-			}
-		}
-	}, 1000);
+		}, 1000);
+	}
 }
 
 GuiDisplay_Series.updateSelectedBannerItems = function() {
