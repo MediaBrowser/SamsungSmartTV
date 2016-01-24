@@ -43,8 +43,7 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem,updateBackdrop) {
 	
 	//Save Start Params
 	this.startParams = [title,url];
-	alert("updateBackdrop: "+updateBackdrop);
-	this.updateBackdrop = updateBackdrop;
+	this.updateBackdrop = true; //updateBackdrop;
 
 	alert (url);
 	
@@ -266,7 +265,7 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem,updateBackdrop) {
 		} else {
 			tomsImage = "images/rotten-40x40.png";
 		}
-		htmlForMetaData += "<td class=MetadataItemVSmall style=background-image:url("+tomsImage+")></td>";
+		htmlForMetaData += "<td class=MetadataItemIcon style=background-image:url("+tomsImage+")></td>";
 		htmlForMetaData += "<td class=MetadataItemVSmall )>" + toms + "%</td>";
 	}
 	if (stars){
@@ -277,7 +276,7 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem,updateBackdrop) {
     	} else {
     		starsImage = "images/star_full-46x40.png";
     	}
-    	htmlForMetaData += "<td class=MetadataItemVSmall style=background-image:url("+starsImage+")></td>";
+    	htmlForMetaData += "<td class=MetadataItemIcon style=background-image:url("+starsImage+")></td>";
     	htmlForMetaData += "<td class=MetadataItemVSmall>" + stars + "</td>";
 	}
 	
@@ -302,7 +301,7 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem,updateBackdrop) {
 	}
 	
 	if (this.ItemData.HasSubtitles) {
-		htmlForMetaData += "<td class=MetadataItemVSmall style=background-image:url(images/cc-50x40.png)></td>";
+		htmlForMetaData += "<td class=MetadataItemIcon style=background-image:url(images/cc-50x40.png)></td>";
 	}
 	
 	htmlForMetaData += "</tr></table>";

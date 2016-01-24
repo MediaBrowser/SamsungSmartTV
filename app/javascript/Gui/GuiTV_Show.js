@@ -167,7 +167,7 @@ GuiTV_Show.updateDisplayedItems = function() {
     	} else {
     		starsImage = "images/star_full-46x40.png";
     	}
-    	htmlforTitle += "<td class=MetadataItemVSmall style=background-image:url("+starsImage+")></td>";
+    	htmlforTitle += "<td class=MetadataItemIcon style=background-image:url("+starsImage+")></td>";
     	htmlforTitle += "<td class=MetadataItemVSmall>" + stars + "</td>";
 	}
 	if (this.ShowData.OfficialRating !== undefined) {

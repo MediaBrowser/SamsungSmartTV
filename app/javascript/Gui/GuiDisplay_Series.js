@@ -179,7 +179,7 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem) {
 		this.updateDisplayedItems();
 			
 		//Update Selected Collection CSS
-		this.updateSelectedItems();	
+		this.updateSelectedItems();
 		
 		this.selectedBannerItem = -1;
 		this.updateSelectedBannerItems();
@@ -225,7 +225,7 @@ GuiDisplay_Series.updateSelectedItems = function () {
 					Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"SeriesPortraitLarge Selected","SeriesPortraitLarge","",false,this.totalRecordCount);
 		} else {
 			Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-					Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"SeriesPortrait Selected","SeriesPortrait","",false,this.totalRecordCount);
+					Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"SeriesPortrait seriesSelected","SeriesPortrait","",false,this.totalRecordCount);
 		}
 		
 	}
@@ -242,8 +242,8 @@ GuiDisplay_Series.updateSelectedItems = function () {
 		} else {
 			tomsImage = "images/rotten-40x40.png";
 		}
-		htmlForTitle += "<td class=MetadataItemVSmall style=background-image:url("+tomsImage+")></td>";
-		htmlForTitle += "<td class=MetadataItemVSmall )>" + toms + "%</td>";
+		htmlForTitle += "<td class=MetadataItemIcon style=background-image:url("+tomsImage+")></td>";
+		htmlForTitle += "<td class=MetadataItemVSmall>" + toms + "%</td>";
 	}
 	if (stars){
     	if (stars <3.1){
@@ -253,7 +253,7 @@ GuiDisplay_Series.updateSelectedItems = function () {
     	} else {
     		starsImage = "images/star_full-46x40.png";
     	}
-    	htmlForTitle += "<td class=MetadataItemVSmall style=background-image:url("+starsImage+")></td>";
+    	htmlForTitle += "<td class=MetadataItemIcon style=background-image:url("+starsImage+")></td>";
     	htmlForTitle += "<td class=MetadataItemVSmall>" + stars + "</td>";
 	}
 	
@@ -300,7 +300,7 @@ GuiDisplay_Series.updateSelectedItems = function () {
 	}
 	
 	if (this.ItemData.Items[this.selectedItem].HasSubtitles) {
-		htmlForTitle += "<td class=MetadataItemVSmall style=background-image:url(images/cc-50x40.png)></td>";
+		htmlForTitle += "<td class=MetadataItemIcon style=background-image:url(images/cc-50x40.png)></td>";
 	}
 
 	htmlForTitle += "</tr></table></div>";
@@ -332,7 +332,7 @@ GuiDisplay_Series.updateSelectedItems = function () {
 		
 	//Background Image
 	//Blocking code to skip getting data for items where the user has just gone past it
-	var currentSelectedItem = this.selectedItem;
+/*	var currentSelectedItem = this.selectedItem;
 	setTimeout(function(){	
 		if (GuiDisplay_Series.selectedItem == currentSelectedItem) {
 			//Set Background
@@ -345,7 +345,7 @@ GuiDisplay_Series.updateSelectedItems = function () {
 				Support.fadeImage(imgsrc);
 			}
 		}
-	}, 1000);
+	}, 1000);*/
 }
 
 GuiDisplay_Series.updateSelectedBannerItems = function() {

@@ -64,7 +64,7 @@ GuiMainMenu.start = function() {
 	document.getElementById("menuItems").innerHTML += htmlToAdd;
 	
 	//Function to generate random backdrop
-	this.backdropTimeout = setTimeout(function(){
+	/*this.backdropTimeout = setTimeout(function(){
 		var randomImageURL = Server.getItemTypeURL("&SortBy=Random&IncludeItemTypes=Series,Movie&Recursive=true&CollapseBoxSetItems=false&Limit=20");
 		var randomImageData = Server.getContent(randomImageURL);
 		if (randomImageData == null) { return; }
@@ -76,7 +76,7 @@ GuiMainMenu.start = function() {
 				break;
 			}
 		}
-	}, 500);
+	}, 500);*/
 	
 	//Turn On Screensaver
 	Support.screensaverOn();
@@ -109,18 +109,11 @@ GuiMainMenu.requested = function(pageSelected, pageSelectedId, pageSelectedClass
 	}
 		
 	//Show Menu
-	$('.page').animate({
-		left: 350
-	}, 100, function() {
-		//animate complete.
-	});
-	document.getElementById("menu").style.visibility = "";
-	$('.menu').animate({
-		left: 0
-	}, 100, function() {
-		//animate complete.
-	});
-
+	setTimeout(function(){
+		document.getElementById("menu").style.visibility = "";
+		document.getElementById("menu").style.left = "0px";
+		document.getElementById("page").style.left = "350px";
+	}, 200);
 
 	//Show submenu dependant on selectedMainMenuItem
 	this.updateSelectedItems();
@@ -210,16 +203,12 @@ GuiMainMenu.processSelectedItems = function() {
     if (GuiPage_ItemDetails.trailerState == sf.service.VideoPlayer.STATE_PAUSED) {
 	    sf.service.VideoPlayer.stop();
 	}
-	$('.menu').animate({
-		left: -350
-	}, 100, function() {
-		document.getElementById("menu").style.visibility = "hidden";
-	});
-	$('.page').animate({
-		left: 0
-	}, 100, function() {
-		//animate complete.
-	});
+
+    //Close the menu
+	document.getElementById("menu").style.visibility = "none";
+	document.getElementById("menu").style.left = "-350px";
+	document.getElementById("page").style.left = "0px";
+	
 	setTimeout(function(){
 		Support.processHomePageMenu(GuiMainMenu.menuItems[GuiMainMenu.selectedMainMenuItem]);
 	}, 310);
@@ -228,17 +217,12 @@ GuiMainMenu.processSelectedItems = function() {
 GuiMainMenu.playSelectedItem = function() {
 	//Pressing play on Photos in the main menu plays a random slideshow.
 	if (this.menuItems[this.selectedMainMenuItem] == "Photos") {
+
 		//Close the menu
-		$('.menu').animate({
-			left: -350
-		}, 100, function() {
-			document.getElementById("menu").style.visibility = "hidden";
-		});
-		$('.page').animate({
-			left: 0
-		}, 100, function() {
-			//animate complete.
-		});
+		document.getElementById("menu").style.visibility = "none";
+		document.getElementById("menu").style.left = "-350px";
+		document.getElementById("page").style.left = "0px";
+		
 		var userViews = Server.getUserViews();
 		for (var i = 0; i < userViews.Items.length; i++){
 			if (userViews.Items[i].CollectionType == "photos"){
@@ -260,17 +244,12 @@ GuiMainMenu.processReturnKey = function() {
 		this.updateSelectedItems();
 		this.selectedMainMenuItem = 0;
 		
-		//Hide Menu
-		$('.menu').animate({
-			left: -350
-		}, 100, function() {
-			document.getElementById("menu").style.visibility = "hidden";
-		});
-		$('.page').animate({
-			left: 0
-		}, 100, function() {
-			//animate complete.
-		});
+		//Close the menu
+		setTimeout(function(){
+			document.getElementById("menu").style.visibility = "none";
+			document.getElementById("menu").style.left = "-350px";
+			document.getElementById("page").style.left = "0px";
+		}, 200);
 		
 		if (this.pageSelected == "GuiMusicPlayer") {
 			GuiMusicPlayer.showMusicPlayer(this.pageSelectedId);

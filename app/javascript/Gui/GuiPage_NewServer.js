@@ -8,6 +8,7 @@ var GuiPage_NewServer = {
 GuiPage_NewServer.start = function() {
 	alert("Page Enter : GuiPage_NewServer");
 	GuiHelper.setControlButtons(null,null,null,null,"Return");
+	Support.fadeImage("images/bg1.jpg");
 	
 	//Insert html into page
 	document.getElementById("pageContent").innerHTML = "<div class='GuiPage_NewServer12key'> \

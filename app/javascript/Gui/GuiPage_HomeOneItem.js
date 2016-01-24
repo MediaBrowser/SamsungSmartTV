@@ -95,7 +95,7 @@ GuiPage_HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 		this.updateSelectedItems();	
 		
 		//Function to generate random backdrop
-/*		this.backdropTimeout = setTimeout(function(){
+		this.backdropTimeout = setTimeout(function(){
 			var randomImageURL = Server.getItemTypeURL("&SortBy=Random&IncludeItemTypes=Series,Movie&Recursive=true&CollapseBoxSetItems=false&Limit=20");
 			var randomImageData = Server.getContent(randomImageURL);
 			if (randomImageData == null) { return; }
@@ -107,7 +107,7 @@ GuiPage_HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 					break;
 				}
 			}
-		}, 500);*/
+		}, 500);
 		
 		//Set Focus for Key Events
 		document.getElementById("GuiPage_HomeOneItem").focus();

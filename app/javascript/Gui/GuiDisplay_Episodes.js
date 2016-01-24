@@ -197,7 +197,7 @@ GuiDisplay_Episodes.updateSelectedItems = function () {
 	    	} else {
 	    		starsImage = "images/star_full-46x40.png";
 	    	}
-	    	htmlSubData += "<td class=MetadataItemVSmall style=background-image:url("+starsImage+")></td>";
+	    	htmlSubData += "<td class=MetadataItemIcon style=background-image:url("+starsImage+")></td>";
 	    	htmlSubData += "<td class=MetadataItemVSmall>" + stars + "</td>";
 		}
 		if (this.ItemData.Items[this.selectedItem].PremiereDate !== undefined) {
@@ -211,7 +211,7 @@ GuiDisplay_Episodes.updateSelectedItems = function () {
 		}
 		
 		if (this.ItemData.Items[this.selectedItem].HasSubtitles) {
-			htmlSubData += "<td class=MetadataItemVSmall style=background-image:url(images/cc-50x40.png)></td>";
+			htmlSubData += "<td class=MetadataItemIcon style=background-image:url(images/cc-50x40.png)></td>";
 		}
 		
 		htmlSubData += "</tr></table>";
