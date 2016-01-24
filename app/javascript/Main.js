@@ -14,6 +14,7 @@ var Main =
 		height : 1080,
 		posterWidth : 427,
 		posterHeight : 240,
+		MAXIMAGECACHE : 600, //Server,js 167
 		
 		forceDeleteSettings : true,
 		
@@ -21,7 +22,7 @@ var Main =
 		enableLiveTV : true,
 		enableCollections : true,
 		enableChannels : true,
-		enableImageCache : false,
+		enableImageCache : true,
 		
 		enableScreensaver : true,
 		isScreensaverRunning : false,
@@ -61,6 +62,10 @@ Main.getRequiredServerVersion = function() {
 
 Main.getVersion = function() {
 	return this.version;
+};
+
+Main.getMaxImageCache = function() {
+	return this.MAXIMAGECACHE;
 };
 
 Main.getIsScreensaverRunning = function() {

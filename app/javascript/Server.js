@@ -152,6 +152,7 @@ Server.getImageURL = function(itemId,imagetype,maxwidth,maxheight,unplayedcount,
 	if (Main.isImageCaching()) {
 		if (imagetype != "Backdrop") { //Too large to store backdrops.  
 			var found = false;
+			
 			for (var i = 0; i <Support.imageCachejson.Images.length; i++) {
 				//Is image in cache - If so use it
 				if (Support.imageCachejson.Images[i].URL == query) {
@@ -164,6 +165,14 @@ Server.getImageURL = function(itemId,imagetype,maxwidth,maxheight,unplayedcount,
 				//Use data URI from file
 				return "data:image/jpg;base64," + Support.imageCachejson.Images[i].DataURI;
 			} else {
+				if (Support.imageCachejson.Images.length > Main.getMaxImageCache()) {
+					alert ("Cleaning image cache");
+					while (Support.imageCachejson.Images.length > Main.getMaxImageCache()) {
+						alert ("Cleaning image cache : -1");
+						Support.imageCachejson.Images.shift();
+					}	
+				}
+				
 				//Use URL & Add to Cache
 				var full = Server.getServerAddr() +  query;
 				Support.getBase64Image(full, query);
