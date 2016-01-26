@@ -834,12 +834,6 @@ input[type="password"]
     z-index:2;
 }
 
-/* .photoSelected {	
-	border: 2px solid white;
-	width:290px;
-	height:290px;
-} */
-
 .photoAlbum{
 	position:absolute;
 	width:1800px;
@@ -996,8 +990,8 @@ input[type="password"]
 }
 
 .seriesSelected {
-	-webkit-transform: scale(1.3);
-	transform: scale(1.3);
+	-webkit-transform: scale(1.25);
+	transform: scale(1.25);
 	z-index:5;
 }
 
@@ -1047,7 +1041,7 @@ input[type="password"]
 	position:absolute;
 	top:600px;
 	left:95px;
-	width:1825px;
+	width:1820px;
 }
 
 .HomeOneCenter {
@@ -1057,7 +1051,7 @@ input[type="password"]
 
 .SeriesCenter{
 	position:absolute;
-	top:90px;
+	top:105px;
 	left:5px;
 	width:1910px;
 	text-align: center;
