@@ -29,9 +29,9 @@ var GuiPage_Settings = {
 		TVSettingsName : ["Max Bitrate: ","Enable Dolby Digital Playback: ","Enable DTS Playback: ","Enable AAC Transcoding to Dolby: ","Enable Transcoding on D Series","Item Paging: ","Clock Offset: "],
 		TVSettingsDefaults : [60,false,false,false,false,150,0],
 		
-		ServerSettings : ["DisplayMissingEpisodes","DisplayUnairedEpisodes","GroupMovieCollections","DefaultAudioLang","PlayDefaultAudioTrack","DefaultSubtitleLang", "SubtitleMode"],
-		ServerSettingsName : ["Display Missing Episodes: ", "Display Unaired Episodes: ","Group Movies into Collections: ","Default Audio Language: ","Play default audio track regardless of language: ", "Default Subtitle Language: ","Subtitle Mode:"], 
-		ServerSettingsDefaults : [false,false,false,"",true,"","default"], //Not actually Used but implemented for clean code!!! Values read from Server so no default needed!
+		ServerSettings : ["DisplayMissingEpisodes","DisplayUnairedEpisodes","GroupMovieCollections","DefaultAudioLang","PlayDefaultAudioTrack","DefaultSubtitleLang", "SubtitleMode", "HidePlayedInLatest"],
+		ServerSettingsName : ["Display Missing Episodes: ", "Display Unaired Episodes: ","Group Movies into Collections: ","Default Audio Language: ","Play default audio track regardless of language: ", "Default Subtitle Language: ","Subtitle Mode:","Hide watched content from latest media:"], 
+		ServerSettingsDefaults : [false,false,false,"",true,"","default",false], //Not actually Used but implemented for clean code!!! Values read from Server so no default needed!
 		
 		//Per Setting Options & Values
 		DefaultOptions : ["True","False"],
@@ -386,6 +386,7 @@ GuiPage_Settings.updateDisplayedItems = function() {
 			}
 			break;	
 		case "GroupMovieCollections":
+		case "HidePlayedInLatest":
 			for (var index2 = 0; index2 < this.DefaultValues.length; index2++) {
 				if (this.DefaultValues[index2] == this.ServerUserData.Configuration.GroupMoviesIntoBoxSets) {
 					Setting = this.DefaultOptions[index2];
@@ -514,6 +515,7 @@ GuiPage_Settings.processSelectedItem = function() {
 		case "AACtoDolby":	
 		case "LargerView":
 		case "ForgetSavedPassword":
+		case "HidePlayedInLatest":
 			this.CurrentSubSettings = this.DefaultOptions;
 			break;
 		case "View1":
@@ -862,6 +864,13 @@ GuiPage_Settings.processSelectedSubItem = function() {
 		//Update Server	
 		Server.updateUserConfiguration(JSON.stringify(this.ServerUserData.Configuration));
 		break;	
+	case "HidePlayedInLatest":
+		this.ServerUserData.Configuration.HidePlayedInLatest = this.DefaultValues[this.selectedSubItem];
+		this.CurrentSettingValue = this.DefaultOptions[this.selectedSubItem];
+				
+		//Update Server	
+		Server.updateUserConfiguration(JSON.stringify(this.ServerUserData.Configuration));
+		break;
 	}
 		
 	switch (this.currentView) {
@@ -1081,6 +1090,10 @@ GuiPage_Settings.setOverview = function() {
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Subtitle Mode";
 			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Select the default behaviour of when subtitles are loaded<br><br>Default: Subtitles matching the language preference will be loaded when the audio is in a foreign language.<br><br>Only Forced Subtitles: Only subtitles marked as forced will be loaded.<br><br>Always Play Subtitles: Subtitles matching the language preference will be loaded regardless of the audio language.<br><br>None: Subtitles will not be loaded by default.<br><br>This is a server option and will affect your Emby experience on all clients";
 			break;	
+		case "HidePlayedInLatest":
+			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Hide watched content from latest media";
+			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Watched items will not appear in the Latest TV or Latest Movies home views or pages.<br><br>This is a server option and will affect your Emby experience on all clients";
+			break;
 		case "DisplayMissingEpisodes":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Display Missing Episodes within Seasons";
 			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Display missing episodes within TV seasons<br><br>This is a server option and will affect your Emby experience on all clients";

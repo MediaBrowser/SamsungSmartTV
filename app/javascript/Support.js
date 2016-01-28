@@ -1410,41 +1410,23 @@ Support.parseSearchTerm = function(searchTermString) {
 
 Support.fadeImage = function(imgsrc) {
 	var bg = $('#pageBackground').css('background-image');
-	if (bg != "none") { // catch initial entry from user page to app!
-		bg = bg.replace('url(','').slice(0, -1);
-		if (bg.substring(0,5) == "'file") {
-			bg = bg.substring(bg.indexOf("images")).slice(0, -1);
-		}
-		//Do nothing!
-		if (bg != imgsrc) {
-			var imgHolder = new Image();  
-		    imgHolder.onload = function(){
-		    	$('#pageBackgroundHolder').css("background-image","url('"+bg+"')");
-		    	var img = new Image();  
-			    img.onload = function(){
-			      // image  has been loaded
-			    	$('#pageBackground').css("display","none");
-			    	$('#pageBackground').css("background-image","url('"+imgsrc+"')");
-			        $('#pageBackground').fadeIn(1000);	
-			        img = null;
-			    };
-			    img.src = imgsrc
-		    	
-			    imgHolder = null;
-		    };
-		    imgHolder.src = bg
-		}	
-	} else {
-		var img = new Image();  
-	    img.onload = function(){
-	      // image  has been loaded
-	    	$('#pageBackground').css("display","none");
-	    	$('#pageBackground').css("background-image","url('"+imgsrc+"')");
-	        $('#pageBackground').fadeIn(1000);	
-	        img = null;
-	    };
-	    img.src = imgsrc
+	bg = bg.replace('url(','').slice(0, -1);
+	if (bg.substring(0,5) == "'file") {
+		bg = bg.substring(bg.indexOf("images")).slice(0, -1);
 	}
+	//Do nothing if the image is the same as the old one.
+	if (bg != imgsrc) {
+		//Copy the current background image to the holder.
+		document.getElementById("pageBackgroundHolder").style.backgroundImage = "url('"+bg+"')";
+		document.getElementById("pageBackground").className = "pageBackground quickFade";
+		document.getElementById("pageBackground").style.opacity = "0";
+		$('#pageBackgroundHolder').css('background-image',"url('"+bg+"')");
+		setTimeout(function(){
+			document.getElementById("pageBackground").style.backgroundImage = "url('"+imgsrc+"')";
+			document.getElementById("pageBackground").className = "pageBackground";
+			document.getElementById("pageBackground").style.opacity = "1";
+		}, 400);
+	}	
 }
 
 Support.randomBackground = function() {

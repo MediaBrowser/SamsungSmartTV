@@ -4,7 +4,7 @@ var tvKey = new Common.API.TVKeyValue();
 	
 var Main =
 {
-		version : "v2.0.7",
+		version : "v2.1.0c",
 		requiredServerVersion : "3.0.5211",
 		requiredDevServerVersion : "3.0.5507.2131",
 		
@@ -19,9 +19,9 @@ var Main =
 		forceDeleteSettings : true,
 		
 		enableMusic : true,
-		enableLiveTV : true,
+		enableLiveTV : false,
 		enableCollections : true,
-		enableChannels : true,
+		enableChannels : false,
 		enableImageCache : true,
 		
 		enableScreensaver : true,
@@ -192,6 +192,9 @@ Main.onLoad = function()
 	widgetAPI.sendReadyEvent();
 	Support.clock();
 	
+	//Set background 
+	Support.fadeImage("images/bg1.jpg"); 
+
 	setTimeout(function(){
 		document.getElementById("splashscreen").style.visibility="hidden";
 		FileLog.write("Ready to start. Removing the splash screen.");

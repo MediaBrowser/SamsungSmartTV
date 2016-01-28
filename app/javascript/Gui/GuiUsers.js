@@ -29,6 +29,7 @@ GuiUsers.start = function(runAutoLogin) {
 	this.rememberPassword = true;
 	
 	Support.destroyURLHistory();
+	Support.fadeImage("images/bg1.jpg");
 	document.getElementById("NotificationText").innerHTML = "";
 	document.getElementById("Notifications").style.visibility = "hidden";
 	

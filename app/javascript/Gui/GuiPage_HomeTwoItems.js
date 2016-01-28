@@ -137,17 +137,19 @@ GuiPage_HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,to
 		this.updateSelectedItems2(updateCounter2);
 		
 		//Function to generate random backdrop
-/*		var randomImageURL = Server.getItemTypeURL("&SortBy=Random&IncludeItemTypes=Series,Movie&Recursive=true&CollapseBoxSetItems=false&Limit=10");
-		var randomImageData = Server.getContent(randomImageURL);
-		if (randomImageData == null) { return; }
+		this.backdropTimeout = setTimeout(function(){
+			var randomImageURL = Server.getItemTypeURL("&SortBy=Random&IncludeItemTypes=Series,Movie&Recursive=true&CollapseBoxSetItems=false&Limit=20");
+			var randomImageData = Server.getContent(randomImageURL);
+			if (randomImageData == null) { return; }
 			
-		for (var index = 0; index < randomImageData.Items.length; index++) {
-			if (randomImageData.Items[index].BackdropImageTags.length > 0) {
-				var imgsrc = Server.getBackgroundImageURL(randomImageData.Items[index ].Id,"Backdrop",Main.width,Main.height,0,false,0,randomImageData.Items[index ].BackdropImageTags.length);
-				Support.fadeImage(imgsrc);
-				break;
+			for (var index = 0; index < randomImageData.Items.length; index++) {
+				if (randomImageData.Items[index ].BackdropImageTags.length > 0) {
+					var imgsrc = Server.getBackgroundImageURL(randomImageData.Items[index ].Id,"Backdrop",Main.width,Main.height,0,false,0,randomImageData.Items[index ].BackdropImageTags.length);
+					Support.fadeImage(imgsrc);
+					break;
+				}
 			}
-		}*/
+		}, 500);
 		
 	} else if (this.ItemData.Items.length > 0 && this.ItemData2.Items.length == 0) {
 		GuiPage_HomeOneItem.start(title1,url1,0,0);

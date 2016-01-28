@@ -262,7 +262,7 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem) {
 		} else {
 			tomsImage = "images/rotten-40x40.png";
 		}
-		htmlForMetaData += "<td class=MetadataItemVSmall style=background-image:url("+tomsImage+")></td>";
+		htmlForMetaData += "<td class=MetadataItemIcon style=background-image:url("+tomsImage+")></td>";
 		htmlForMetaData += "<td class=MetadataItemVSmall )>" + toms + "%</td>";
 	}
 	if (stars){
@@ -273,7 +273,7 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem) {
     	} else {
     		starsImage = "images/star_full-46x40.png";
     	}
-    	htmlForMetaData += "<td class=MetadataItemVSmall style=background-image:url("+starsImage+")></td>";
+    	htmlForMetaData += "<td class=MetadataItemIcon style=background-image:url("+starsImage+")></td>";
     	htmlForMetaData += "<td class=MetadataItemVSmall>" + stars + "</td>";
 	}
 	
@@ -298,7 +298,7 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem) {
 	}
 	
 	if (this.ItemData.HasSubtitles) {
-		htmlForMetaData += "<td class=MetadataItemVSmall style=background-image:url(images/cc-50x40.png)></td>";
+		htmlForMetaData += "<td class=MetadataItemIcon style=background-image:url(images/cc-50x40.png)></td>";
 	}
 	
 	htmlForMetaData += "</tr></table>";
