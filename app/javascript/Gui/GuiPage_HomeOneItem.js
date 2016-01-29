@@ -94,20 +94,8 @@ GuiPage_HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 		//Update Selected Collection CSS
 		this.updateSelectedItems();	
 		
-		//Function to generate random backdrop
-		this.backdropTimeout = setTimeout(function(){
-			var randomImageURL = Server.getItemTypeURL("&SortBy=Random&IncludeItemTypes=Series,Movie&Recursive=true&CollapseBoxSetItems=false&Limit=20");
-			var randomImageData = Server.getContent(randomImageURL);
-			if (randomImageData == null) { return; }
-			
-			for (var index = 0; index < randomImageData.Items.length; index++) {
-				if (randomImageData.Items[index ].BackdropImageTags.length > 0) {
-					var imgsrc = Server.getBackgroundImageURL(randomImageData.Items[index ].Id,"Backdrop",Main.width,Main.height,0,false,0,randomImageData.Items[index ].BackdropImageTags.length);
-					Support.fadeImage(imgsrc);
-					break;
-				}
-			}
-		}, 500);
+		//Set Background
+		Support.fadeImage("images/bg1.jpg"); 
 		
 		//Set Focus for Key Events
 		document.getElementById("GuiPage_HomeOneItem").focus();
@@ -117,6 +105,9 @@ GuiPage_HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 		document.getElementById("Counter").innerHTML = "";
 		document.getElementById("title").innerHTML = "Sorry";
 		document.getElementById("Content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid";
+		
+		//Set Background
+		Support.fadeImage("images/bg1.jpg"); 
 		
 		//As no content focus on menu bar and null null means user can't return off the menu bar
 		GuiMainMenu.requested(null,null);

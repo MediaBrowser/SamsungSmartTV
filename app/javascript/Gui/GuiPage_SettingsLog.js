@@ -10,7 +10,7 @@ var GuiPage_SettingsLog = {
 }
 
 GuiPage_SettingsLog.onFocus = function() {
-	GuiHelper.setControlButtons("Clear Log","Clear Image Cache",null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
+	GuiHelper.setControlButtons("Clear Log",null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
 }
 
 GuiPage_SettingsLog.getMaxDisplay = function() {
@@ -143,10 +143,6 @@ GuiPage_SettingsLog.keyDown = function() {
 			FileLog.write("Log File Emptied by User")
 			GuiPage_SettingsLog.start(); //relead
 			break;
-		case tvKey.KEY_GREEN:	
-			ImageCache.deleteCache();
-			Support.imageCachejson.Images = [];
-			break;	
 		case tvKey.KEY_BLUE:	
 			GuiMusicPlayer.showMusicPlayer("GuiPage_SettingsLog");
 			break;		

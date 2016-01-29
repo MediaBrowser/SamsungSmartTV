@@ -124,33 +124,32 @@ Server.getImageURL = function(itemId,imagetype,maxwidth,maxheight,unplayedcount,
 	var query = "";
 	switch (imagetype) {
 	case "Primary":
-		query = "/Items/"+ itemId +"/Images/Primary/0?maxwidth="+maxwidth+"&maxheight="+maxheight + "&Quality=90";
+		query = "/Items/"+ itemId +"/Images/Primary/0?maxwidth="+maxwidth+"&maxheight="+maxheight + "&quality=90&format=jpg";
 		break;
 	case "Banner":
-		query = "/Items/"+ itemId +"/Images/Banner/0?maxwidth="+maxwidth+"&maxheight="+maxheight + "&Quality=90";
+		query = "/Items/"+ itemId +"/Images/Banner/0?maxwidth="+maxwidth+"&maxheight="+maxheight + "&quality=90";
 		break;
 	case "Backdrop":
-		query = "/Items/"+ itemId +"/Images/Backdrop/0?maxwidth="+maxwidth+"&maxheight="+maxheight + "&Quality=90";
+		query = "/Items/"+ itemId +"/Images/Backdrop/0?maxwidth="+maxwidth+"&maxheight="+maxheight + "&quality=90";
 		break;
 	case "Thumb":
-		query = "/Items/"+ itemId +"/Images/Thumb/0?maxwidth="+maxwidth+"&maxheight="+maxheight + "&Quality=90";
+		query = "/Items/"+ itemId +"/Images/Thumb/0?maxwidth="+maxwidth+"&maxheight="+maxheight + "&quality=90";
 		break;	
 	case "Logo":
-		query = "/Items/"+ itemId +"/Images/Logo/0?maxwidth="+maxwidth+"&maxheight="+maxheight + "&Quality=90";
+		query = "/Items/"+ itemId +"/Images/Logo/0?maxwidth="+maxwidth+"&maxheight="+maxheight + "&quality=90";
 		break;
 	case "Disc":
-		query = "/Items/"+ itemId +"/Images/Disc/0?maxwidth="+maxwidth+"&maxheight="+maxheight + "&Quality=90";
+		query = "/Items/"+ itemId +"/Images/Disc/0?maxwidth="+maxwidth+"&maxheight="+maxheight + "&quality=90";
 		break;
 	case "UsersPrimary":
-		query = "/Users/" + itemId + "/Images/Primary?maxwidth="+maxwidth+"&maxheight="+maxheight + "&Quality=90";
+		query = "/Users/" + itemId + "/Images/Primary?maxwidth="+maxwidth+"&maxheight="+maxheight + "&quality=90&format=jpg";
 		break;
 	case "Chapter":
-		query = "/Items/" + itemId + "/Images/Chapter/" + chapter + "?maxwidth="+maxwidth+"&maxheight="+maxheight + "&Quality=90";
+		query = "/Items/" + itemId + "/Images/Chapter/" + chapter + "?maxwidth="+maxwidth+"&maxheight="+maxheight + "&quality=90";
 		break;
 	}
 	
-	if (Main.isImageCaching()) {
-		if (imagetype != "Backdrop") { //Too large to store backdrops.  
+	if (Main.isImageCaching() && imagetype != "Backdrop") { //Backdrops too large
 			var found = false;
 			
 			for (var i = 0; i <Support.imageCachejson.Images.length; i++) {
@@ -160,25 +159,29 @@ Server.getImageURL = function(itemId,imagetype,maxwidth,maxheight,unplayedcount,
 					break;
 				}
 			}
-			
+
 			if (found == true) {
-				//Use data URI from file
-				return "data:image/jpg;base64," + Support.imageCachejson.Images[i].DataURI;
-			} else {
-				if (Support.imageCachejson.Images.length > Main.getMaxImageCache()) {
-					alert ("Cleaning image cache");
-					while (Support.imageCachejson.Images.length > Main.getMaxImageCache()) {
-						alert ("Cleaning image cache : -1");
-						Support.imageCachejson.Images.shift();
-					}	
-				}
-				
+				//Use data URI from file			
+				return Support.imageCachejson.Images[i].DataURI;
+			} else {			
 				//Use URL & Add to Cache
 				var full = Server.getServerAddr() +  query;
-				Support.getBase64Image(full, query);
+
+				var xhr = new XMLHttpRequest();
+				xhr.open('GET', full, true);
+				xhr.responseType = 'blob';
+
+				xhr.onload = function(e) {
+				  if (this.status == 200) {
+				    var blob = this.response;
+				    Support.imageCachejson.Images[Support.imageCachejson.Images.length] = {"URL":query,"DataURI":window.URL.createObjectURL(blob)};
+				  }
+				};
+				xhr.send();
+				
+				
 				return full;
 			}
-		}
 	} else {
 		return Server.getServerAddr() +  query;
 	}

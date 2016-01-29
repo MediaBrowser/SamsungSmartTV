@@ -72,6 +72,9 @@ GuiPage_Music.start = function(title,url,type) { //Type is either MusicAlbum or 
 	
 	//Update Selected Item
 	this.updateSelectedItems();
+	
+	//Set Background
+	Support.fadeImage("images/bg1.jpg"); 
 		
 	//Set Focus for Key Events
 	document.getElementById("GuiPage_Music").focus();

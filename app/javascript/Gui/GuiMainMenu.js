@@ -63,21 +63,6 @@ GuiMainMenu.start = function() {
 	htmlToAdd += "<div id=Log-Out class='menu-item'><div id='menu-Icon' class='menu-icon' style='background-image:url(images/menu/Logout-46x37.png)'></div>Log Out</div>";	
 	document.getElementById("menuItems").innerHTML += htmlToAdd;
 	
-	//Function to generate random backdrop
-	/*this.backdropTimeout = setTimeout(function(){
-		var randomImageURL = Server.getItemTypeURL("&SortBy=Random&IncludeItemTypes=Series,Movie&Recursive=true&CollapseBoxSetItems=false&Limit=20");
-		var randomImageData = Server.getContent(randomImageURL);
-		if (randomImageData == null) { return; }
-		
-		for (var index = 0; index < randomImageData.Items.length; index++) {
-			if (randomImageData.Items[index ].BackdropImageTags.length > 0) {
-				var imgsrc = Server.getBackgroundImageURL(randomImageData.Items[index ].Id,"Backdrop",Main.width,Main.height,0,false,0,randomImageData.Items[index ].BackdropImageTags.length);
-				Support.fadeImage(imgsrc);
-				break;
-			}
-		}
-	}, 500);*/
-	
 	//Turn On Screensaver
 	Support.screensaverOn();
 	Support.screensaver();

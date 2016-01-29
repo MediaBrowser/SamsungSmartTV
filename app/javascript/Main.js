@@ -14,7 +14,6 @@ var Main =
 		height : 1080,
 		posterWidth : 427,
 		posterHeight : 240,
-		MAXIMAGECACHE : 600, //Server,js 167
 		
 		forceDeleteSettings : true,
 		
@@ -64,10 +63,6 @@ Main.getVersion = function() {
 	return this.version;
 };
 
-Main.getMaxImageCache = function() {
-	return this.MAXIMAGECACHE;
-};
-
 Main.getIsScreensaverRunning = function() {
 	return this.isScreensaverRunning;
 };
@@ -87,10 +82,10 @@ Main.onLoad = function()
 	FileLog.write("---------------------------------------------------------------------",true);
 	FileLog.write("Emby Application Started");
 	
-	if (Main.isImageCaching() == false) {
-		ImageCache.deleteCache();
-	} else {
-		Support.imageCachejson = JSON.parse(ImageCache.loadFile());
+	if (Main.isImageCaching()) {
+		var fileSystemObj = new FileSystem();
+		fileSystemObj.deleteCommonFile(curWidget.id + '/cache.json');
+		Support.imageCachejson = JSON.parse('{"Images":[]}');
 	}
 	
 	document.getElementById("splashscreen_version").innerHTML = Main.version;

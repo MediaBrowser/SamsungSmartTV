@@ -149,10 +149,10 @@ Support.processReturnURLHistory = function() {
 				GuiDisplayTwoItems.start(title,url,title2,url2,selectedItem,topLeftItem,isTop);
 				break;	
 			case "GuiPage_MusicArtist": 	
-				GuiPage_MusicArtist.start(title,url);
+				GuiPage_MusicArtist.start(title,url,selectedItem, topLeftItem);
 				break;
 			case "GuiPage_MusicAZ": 	
-				GuiPage_MusicAZ.start(title);//Not actually Title - Holds page!
+				GuiPage_MusicAZ.start(title,selectedItem);//Not actually Title - Holds page!
 				break;		
 			case "GuiPage_Music": 	
 				GuiPage_Music.start(title,url);
@@ -1358,7 +1358,8 @@ Support.processHomePageMenu = function (menuItem) {
 		GuiDisplay_Series.start("All Movies",url,0,0);
 		break;
 	case "Music":
-		GuiPage_MusicAZ.start("Album");
+		//Get Option Value
+		GuiPage_MusicAZ.start(File.getUserProperty("MusicView"),0);
 		break;
 	case "Playlists":
 		var url = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&fields=SortName&IncludeItemTypes=Playlist&Recursive=true");
@@ -1726,32 +1727,6 @@ Support.styleSubtitles = function (element) {
 	document.getElementById(element).style.fontSize = File.getUserProperty("SubtitleSize");
 	document.getElementById(element).style.textShadow = "0px 0px 10px rgba(0, 0, 0, 1)";
 }
-
-
-Support.getBase64Image = function (url, query) {
-	    var img = new Image();
-
-	    img.setAttribute('crossOrigin', 'anonymous');
-	    img.query = query;
-
-	    img.onload = function () {
-	        var canvas = document.createElement("canvas");
-	        canvas.width =this.width;
-	        canvas.height =this.height;
-
-	        var ctx = canvas.getContext("2d");
-	        ctx.drawImage(this, 0, 0);
-
-	        var dataURL = canvas.toDataURL("image/jpg");
-	        var dataURI = dataURL.replace(/^data:image\/(png|jpg);base64,/, "")
-
-			Support.imageCachejson.Images[Support.imageCachejson.Images.length] = {"URL":this.query,"DataURI":dataURI};
-	    };
-
-	    img.src = url;
-	}
-
-
 
 Support.getStarRatingImage = function(rating) {
 	switch (Math.round(rating)) {
