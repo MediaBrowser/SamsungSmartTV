@@ -183,9 +183,6 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem) {
 		this.selectedBannerItem = -1;
 		this.updateSelectedBannerItems();
 		this.selectedBannerItem = 0;
-		
-		//Set Background
-		Support.fadeImage("images/bg1.jpg"); 
 
 		//Set Focus for Key Events
 		document.getElementById("GuiDisplay_Series").focus();
@@ -196,9 +193,6 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem) {
 		document.getElementById("Counter").innerHTML = "";
 		document.getElementById("Content").style.fontSize="40px";
 		document.getElementById("Content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen";
-		
-		//Set Background
-		Support.fadeImage("images/bg1.jpg"); 
 		
 		document.getElementById("NoItems").focus();
 	}	
@@ -350,6 +344,9 @@ GuiDisplay_Series.updateSelectedItems = function () {
 				}
 			}
 		}, 1000);
+	} else {
+		//Set Background
+		Support.fadeImage("images/bg1.jpg"); 
 	}
 }
 

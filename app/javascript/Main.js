@@ -14,6 +14,10 @@ var Main =
 		height : 1080,
 		posterWidth : 427,
 		posterHeight : 240,
+		seriesPosterWidth : 180,
+		seriesPosterHeight : 270,
+		seriesPosterLargeWidth : 235,
+		seriesPosterLargeHeight : 350,
 		
 		forceDeleteSettings : true,
 		
