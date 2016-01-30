@@ -377,7 +377,7 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 					}
 				} else {
 					if (Items[index].ImageTags.Primary) {
-						var imgsrc = (File.getUserProperty("LargerView") == true) ? Server.getImageURL(Items[index].Id,"Primary",240,355,0,false,0) : Server.getImageURL(Items[index].Id,"Primary",190,270,0,false,0); 
+						var imgsrc = (File.getUserProperty("LargerView") == true) ? Server.getImageURL(Items[index].Id,"Primary",235,350,0,false,0) : Server.getImageURL(Items[index].Id,"Primary",180,270,0,false,0); 
 						htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style='background-image:url(" +imgsrc+ ")'>";
 					} else {
 						htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style='background-image:rgba(0,0,0,0.5)'><div class=menuItem>"+ title + "</div>";				
