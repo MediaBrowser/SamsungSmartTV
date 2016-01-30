@@ -178,8 +178,6 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem) {
 	
 		//Display first XX series
 		this.updateDisplayedItems();
-			
-		//Update Selected Collection CSS
 		this.updateSelectedItems();
 		
 		this.selectedBannerItem = -1;
@@ -192,6 +190,7 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem) {
 		//Set Focus for Key Events
 		document.getElementById("GuiDisplay_Series").focus();
 		Support.pageLoadTimes("GuiDisplay_Series","UserControl",false);
+		
 	} else {
 		//Set message to user
 		document.getElementById("Counter").innerHTML = "";
@@ -212,12 +211,8 @@ GuiDisplay_Series.updateDisplayedItems = function() {
 		}
 	}
 	
-	Support.updateDisplayedItems(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Content","",this.isResume,this.genreType);
-}
-
-GuiDisplay_Series.updateOneDisplayedItem = function() {
-	Support.updateOneDisplayedItem(this.ItemData.Items[this.selectedItem],"",this.isResume,this.genreTypefalse,"GuiDisplay_Series",false);
+Support.updateDisplayedItems(this.ItemData.Items,this.selectedItem,this.topLeftItem,
+		Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Content","",this.isResume,this.genreType);
 }
 
 //Function sets CSS Properties so show which user is selected
@@ -469,7 +464,8 @@ GuiDisplay_Series.keyDown = function() {
 					Server.setFavourite(this.ItemData.Items[this.selectedItem].Id);
 					this.ItemData.Items[this.selectedItem].UserData.IsFavorite = true;
 				}
-				Support.updateOneDisplayedItem(this.ItemData.Items[this.selectedItem],"",this.isResume,this.genreTypefalse,"GuiDisplay_Series",false);
+				GuiDisplay_Series.updateDisplayedItems();
+				GuiDisplay_Series.updateSelectedItems();
 			}
 			break;
 		case tvKey.KEY_YELLOW:

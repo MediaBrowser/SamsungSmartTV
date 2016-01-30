@@ -51,8 +51,7 @@ GuiPage_MusicAZ.start = function(entryView,selectedItem) {
 	
 	//Proceed as Normal	
 	//Update Padding on pageContent
-	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div><div id=Center class='SeriesCenter'><div id=Content style='padding-top:40px;'></div></div>" +
-			"<div style='padding-top:520px;padding-left:8px;'><p id=pageTitle2 style='font-size:1.7em;'></p><div id=Content2></div></div>";
+	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div><div id=Center class='SeriesCenter'><div id=Content style='padding-top:40px;'></div></div>";
 		
 	//Set banner Styling
 	document.getElementById("bannerSelection").style.paddingTop="20px";

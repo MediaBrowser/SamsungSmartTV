@@ -768,8 +768,8 @@ input[type="password"]
     border:2px solid transparent;
     border-radius: 10px;
     white-space:nowrap;
-    text-overflow:ellipsis; 
-    overflow: hidden; 
+    text-overflow:ellipsis;
+    overflow: hidden;
     background-repeat: no-repeat;
     background-position:center;
     -webkit-transition: all 0.25s ease-out;
