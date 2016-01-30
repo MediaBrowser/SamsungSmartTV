@@ -146,6 +146,10 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem) {
 		document.getElementById("bannerSelection").style.paddingBottom="5px";
 	}
 	
+	if (this.currentMediaType != "Collections"){
+		Support.fadeImage("images/bg1.jpg"); 
+	}
+	
 	if (this.ItemData.Items.length > 0) {		
 		//Determine if extra top padding is needed for items <= MaxRow
 		if (this.MAXROWCOUNT > 2) {
@@ -329,7 +333,7 @@ GuiDisplay_Series.updateSelectedItems = function () {
 	//Background Image
 	//Blocking code to skip getting data for items where the user has just gone past it
 	//Only for collections (usually small) as a performance enhance - If screen is full of items anyway who cares what the background is
-	if  (this.currentMediaType == "Collections") {
+	if  (this.currentMediaType == "Collections" && this.ItemData.Items[this.selectedItem].Type == "BoxSet") {
 		var currentSelectedItem = this.selectedItem;
 		setTimeout(function(){	
 			if (GuiDisplay_Series.selectedItem == currentSelectedItem) {
@@ -344,9 +348,6 @@ GuiDisplay_Series.updateSelectedItems = function () {
 				}
 			}
 		}, 1000);
-	} else {
-		//Set Background
-		Support.fadeImage("images/bg1.jpg"); 
 	}
 }
 

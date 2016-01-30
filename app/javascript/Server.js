@@ -149,7 +149,7 @@ Server.getImageURL = function(itemId,imagetype,maxwidth,maxheight,unplayedcount,
 		break;
 	}
 	
-	if (Main.isImageCaching() && imagetype != "Backdrop") { //Backdrops too large
+	if (Main.isImageCaching()) {
 			var found = false;
 			
 			for (var i = 0; i <Support.imageCachejson.Images.length; i++) {
