@@ -95,8 +95,8 @@ GuiPage_HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,to
 		//Set PageContent
 		document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div>" +
 				"<div id=Center class='HomeOneCenter'>" + 
-				"<p style='font-size:1.4em;padding-left:11px;'>"+title1+"</p><div id='TopRow' style='margin-bottom:50px'><div id=Content></div></div>" +
-				"<p style='font-size:1.4em;padding-left:11px;'>"+title2+"</p><div id='BottomRow'><div id=Content2></div></div>" +
+				"<p style='position:relative;font-size:1.4em;padding-left:11px;z-index:5;'>"+title1+"</p><div id='TopRow' style='margin-bottom:50px'><div id=Content></div></div>" +
+				"<p style='position:relative;font-size:1.4em;padding-left:11px;z-index:5;'>"+title2+"</p><div id='BottomRow'><div id=Content2></div></div>" +
 				"</div>";
 	
 		//Set isResume based on title - used in UpdateDisplayedItems

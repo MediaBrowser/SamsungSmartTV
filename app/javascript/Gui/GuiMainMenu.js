@@ -109,11 +109,11 @@ GuiMainMenu.requested = function(pageSelected, pageSelectedId, pageSelectedClass
 	}
 		
 	//Show Menu
-	setTimeout(function(){
+	//setTimeout(function(){
 		document.getElementById("menu").style.visibility = "";
 		document.getElementById("menu").style.left = "0px";
 		document.getElementById("page").style.left = "350px";
-	}, 200);
+	//}, 200);
 
 	//Show submenu dependant on selectedMainMenuItem
 	this.updateSelectedItems();
@@ -245,11 +245,11 @@ GuiMainMenu.processReturnKey = function() {
 		this.selectedMainMenuItem = 0;
 		
 		//Close the menu
-		setTimeout(function(){
+		//setTimeout(function(){
 			document.getElementById("menu").style.visibility = "none";
 			document.getElementById("menu").style.left = "-350px";
 			document.getElementById("page").style.left = "0px";
-		}, 200);
+		//}, 200);
 		
 		if (this.pageSelected == "GuiMusicPlayer") {
 			GuiMusicPlayer.showMusicPlayer(this.pageSelectedId);

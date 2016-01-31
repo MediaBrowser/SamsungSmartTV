@@ -76,10 +76,9 @@ GuiPage_Search.updateDisplayedItems = function() {
 
 //Function sets CSS Properties so show which user is selected
 GuiPage_Search.updateSelectedItems = function () {
-	//Finds correct items to set Red / Green
+	//Highlight the selected list item.
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.SearchHints.length); index++){	
 		if (index == this.selectedItem) {
-			document.getElementById(this.ItemData.SearchHints[index].ItemId).className = "guiMusic_TableTd SelectedButton";
 			for (var index2 = 0; index2 < this.playItems.length; index2++) {
 				if (index2 == this.selectedItem2) {
 					document.getElementById(this.playItems[index2]+this.ItemData.SearchHints[index].ItemId).className = "guiMusic_TableTd SelectedButton";

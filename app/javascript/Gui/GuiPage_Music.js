@@ -104,7 +104,7 @@ GuiPage_Music.updateDisplayedItems = function() {
 //Function sets CSS Properties so show which user is selected
 GuiPage_Music.updateSelectedItems = function () {
 	if (this.selectedItem == -1) {		
-		//Sets Correct Item To Green
+		//Highlight the selected global item (PlayAll, Shuffle etc.)
 		for (var index = 0; index < this.topMenuItems.length; index++) {
 			if (index == this.selectedItem2) {
 				document.getElementById(this.topMenuItems[index]).className = "guiMusic_Global SelectedButton";
@@ -113,15 +113,14 @@ GuiPage_Music.updateSelectedItems = function () {
 			}
 		}		
 	} else {
-		//Resets original Item to White
+		//Reset the global items.
 		for (var index = 0; index < this.topMenuItems.length; index++) {
 			document.getElementById(this.topMenuItems[index]).className = "guiMusic_Global";
 		}
 		
-		//Finds correct items to set Red / Green
+		//Highlight the selected list item.
 		for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.AlbumData.Items.length); index++){	
 			if (index == this.selectedItem) {
-				document.getElementById(this.AlbumData.Items[index].Id).className = "guiMusic_TableTd SelectedButton";
 				for (var index2 = 0; index2 < this.playItems.length; index2++) {
 					if (index2 == this.selectedItem2) {
 						document.getElementById(this.playItems[index2]+this.AlbumData.Items[index].Id).className = "guiMusic_TableTd SelectedButton";
@@ -212,7 +211,7 @@ GuiPage_Music.openMenu = function() {
 	if (this.selectedItem == -1) {
 		GuiMainMenu.requested("GuiPage_Music",this.topMenuItems[this.selectedItem],"guiMusic_Global green");
 	} else {
-		GuiMainMenu.requested("GuiPage_Music",this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"guiMusic_TableTd green");
+		GuiMainMenu.requested("GuiPage_Music",this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"guiMusic_TableTd SelectedButton");
 	}
 }
 

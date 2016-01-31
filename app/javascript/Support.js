@@ -358,7 +358,6 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 				}
 			//----------------------------------------------------------------------------------------------
 			} else if (Items[index].Type == "Series" || Items[index].Type == "Movie" || Items[index].Type == "BoxSet") {
-				//alert(Items[index].Type+": "+Items[index].Name);
 				var title = Items[index].Name;
 				if (showBackdrop == true) {
 					if (Items[index].ImageTags.Thumb) {		
@@ -909,8 +908,10 @@ Support.getNameFormat = function(SeriesName, SeriesNo, EpisodeName, EpisodeNo) {
 Support.updateSelectedNEW = function(Array,selectedItemID,startPos,endPos,strIfSelected,strIfNot,DivIdPrepend,dontUpdateCounter,totalRecordCount) {
 	for (var index = startPos; index < endPos; index++){	
 		if (index == selectedItemID) {
+			document.getElementById(DivIdPrepend + Array[index].Id).style.zIndex = "5";
 			document.getElementById(DivIdPrepend + Array[index].Id).className = strIfSelected;			
-		} else {	
+		} else {
+			document.getElementById(DivIdPrepend + Array[index].Id).style.zIndex = "2";
 			document.getElementById(DivIdPrepend + Array[index].Id).className = strIfNot;		
 		}			
     }

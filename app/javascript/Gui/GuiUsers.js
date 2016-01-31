@@ -77,10 +77,11 @@ GuiUsers.start = function(runAutoLogin) {
 			"<br>Password:    <input id='guiUsers_Password' type='text' size='20'/>" +
 			"<br><span id='guiUsers_rempwd'>Remember Password </span> : <span id='guiUsers_rempwdvalue'>" + this.rememberPassword + "</span>" + 
 	    	"</div><br>" +
-	    	"<div id='ManualLogin'>Manual Login</div>" +
-	    	"<div id='ChangeServer'>Change Server</div> " +
-	    	"<div><br>Available options for each page are shown at the bottom.<br>Once logged in, move left on any page to access the main menu.</div>" +
-	    	"</div>";
+	    	"<div id='loginOptions' class='loginOptions'>" +
+	    		"<div id='ManualLogin'>Manual Login</div>" +
+	    		"<div id='ChangeServer'>Change Server</div> " +
+	    		"<div><br>Available options for each page are shown at the bottom.<br>Once logged in, move left on any page to access the main menu.</div>" +
+	    	"</div></div>";
 		
 		if (this.UserData.length != 0) {
 			GuiUsers.updateDisplayedUsers();

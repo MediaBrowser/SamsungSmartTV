@@ -218,7 +218,7 @@ GuiDisplay_Series.updateSelectedItems = function () {
 	if (this.isTvOrMovies == 2) {
 		//Music - Use different styles
 		Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-				Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Music Selected","Music","",false,this.totalRecordCount);
+				Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Music seriesSelected","Music","",false,this.totalRecordCount);
 	} else {
 		if (File.getUserProperty("LargerView") == true) {
 			Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
@@ -229,7 +229,7 @@ GuiDisplay_Series.updateSelectedItems = function () {
 		}
 		
 	}
-			
+	
 	var htmlForTitle = this.ItemData.Items[this.selectedItem].Name + "<div style='display:inline-block; position:absolute;'><table style='padding-left:20px;'><tr>";
 	
 	var toms = this.ItemData.Items[this.selectedItem].CriticRating;
@@ -330,22 +330,27 @@ GuiDisplay_Series.updateSelectedItems = function () {
 		}
 	}
 		
-	//Background Image
-	//Blocking code to skip getting data for items where the user has just gone past it
-/*	var currentSelectedItem = this.selectedItem;
-	setTimeout(function(){	
-		if (GuiDisplay_Series.selectedItem == currentSelectedItem) {
-			//Set Background
-			if (GuiDisplay_Series.ItemData.Items[currentSelectedItem].BackdropImageTags.length > 0) {
-				var imgsrc = Server.getBackgroundImageURL(GuiDisplay_Series.ItemData.Items[currentSelectedItem].Id,"Backdrop",Main.width,Main.height,0,false,0,GuiDisplay_Series.ItemData.Items[currentSelectedItem].BackdropImageTags.length);
-				Support.fadeImage(imgsrc);
-			}
-			else if (GuiDisplay_Series.ItemData.Items[currentSelectedItem].ParentBackdropImageTags) {
-				var imgsrc = Server.getBackgroundImageURL(GuiDisplay_Series.ItemData.Items[currentSelectedItem].ParentBackdropItemId,"Backdrop",Main.width,Main.height,0,false,0,GuiDisplay_Series.ItemData.Items[currentSelectedItem].ParentBackdropImageTags.length);
-				Support.fadeImage(imgsrc);
-			}
-		}
-	}, 1000);*/
+	//Background Image 
+	//Blocking code to skip getting data for items where the user has just gone past it 
+	//Only for collections (usually small) as a performance enhance - If screen is full of items anyway who cares what the background is.
+	if  ((this.currentMediaType == "Collections" && this.ItemData.Items[this.selectedItem].Type == "BoxSet") ||
+			(this.currentMediaType == "Collections" && this.ItemData.Items[this.selectedItem].Type == "Movie") ||
+			(this.currentMediaType == "Music")) {
+		var currentSelectedItem = this.selectedItem; 
+		setTimeout(function(){	 
+			if (GuiDisplay_Series.selectedItem == currentSelectedItem) { 
+					//A movie.
+					if (GuiDisplay_Series.ItemData.Items[currentSelectedItem].BackdropImageTags.length > 0) { 
+						var imgsrc = Server.getBackgroundImageURL(GuiDisplay_Series.ItemData.Items[currentSelectedItem].Id,"Backdrop",Main.width,Main.height,0,false,0,GuiDisplay_Series.ItemData.Items[currentSelectedItem].BackdropImageTags.length); 
+						Support.fadeImage(imgsrc);
+					//A music album.
+					} else if (GuiDisplay_Series.ItemData.Items[currentSelectedItem].ParentBackdropImageTags) { 
+						var imgsrc = Server.getBackgroundImageURL(GuiDisplay_Series.ItemData.Items[currentSelectedItem].ParentBackdropItemId,"Backdrop",Main.width,Main.height,0,false,0,GuiDisplay_Series.ItemData.Items[currentSelectedItem].ParentBackdropImageTags.length); 
+						Support.fadeImage(imgsrc); 
+					} 
+			} 
+	 	}, 1000); 
+	}
 }
 
 GuiDisplay_Series.updateSelectedBannerItems = function() {

@@ -40,13 +40,9 @@ GuiPage_MusicAZ.start = function(entryView) {
 		break;
 	default:
 		this.bannerItems = this.musicBannerItems;
-/*		this.backdropTimeout = setTimeout(function(){
-			Support.fadeImage("images/music-960x540.jpg");
-		}, 1000);*/
 		break;
 	}
 		
-	
 	//Reset Vars
 	this.selectedItem = 0;
 	this.topLeftItem = 0;
@@ -99,8 +95,10 @@ GuiPage_MusicAZ.updateDisplayedItems = function() {
 GuiPage_MusicAZ.updateSelectedItems = function (bypassCounter) {
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.Letters.length); index++){	
 		if (index == this.selectedItem) {
-			document.getElementById( this.Letters[index]).className = "Letter Selected";			
-		} else {	
+			document.getElementById(this.Letters[index]).style.zIndex = "5";
+			document.getElementById( this.Letters[index]).className = "Letter seriesSelected";			
+		} else {
+			document.getElementById(this.Letters[index]).style.zIndex = "2";
 			document.getElementById(this.Letters[index]).className = "Letter";		
 		}			
     }
