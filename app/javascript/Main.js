@@ -22,7 +22,7 @@ var Main =
 		forceDeleteSettings : true,
 		
 		enableMusic : true,
-		enableLiveTV : true,
+		enableLiveTV : false,
 		enableCollections : true,
 		enableChannels : false,
 		enableImageCache : true,
