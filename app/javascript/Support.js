@@ -336,7 +336,20 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 						htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(" +imgsrc+ ")><div class=genreItemCount>"+Items[index].RecursiveItemCount+"</div><div class=menuItem>"+ title + "</div></div>";	
 					}	
 				} else {
-					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(images/album.png)><div class=genreItemCount>"+Items[index].RecursiveItemCount+"</div><div class=menuItem>"+ title + "</div></div>";
+					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style='background-image:url(images/album.png);border:2px solid black;background-position:center;'><div class=genreItemCount>"+Items[index].RecursiveItemCount+"</div><div class=menuItem>"+ title + "</div></div>";
+				} 
+			//----------------------------------------------------------------------------------------------
+			} else if (Items[index].Type == "ChannelAudioItem"){
+				var title = Items[index].Name;		
+				if (Items[index].ImageTags.Primary) {		
+					var imgsrc = Server.getImageURL(Items[index].Id,"Primary",224,224,Items[index].UserData.PlayCount,false,0);
+					if (Items[index].UserData.IsFavorite) {
+						htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(" +imgsrc+ ")><div class=favItem></div></div>";
+					} else {
+						htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(" +imgsrc+ ")></div>";	
+					}	
+				} else {
+					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style='background-image:url(images/album.png);border:2px solid black;background-position:center;'><div class=genreItemCount>"+Items[index].RecursiveItemCount+"</div><div class=menuItem>"+ title + "</div></div>";
 				} 
 			//----------------------------------------------------------------------------------------------
 			}  else if (Items[index].Type == "MusicArtist"){
@@ -344,10 +357,10 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 				var count = Items[index].SongCount;
 				
 				if (Items[index].ImageTags.Primary) {			
-					var imgsrc = Server.getImageURL(Items[index].Id,"Primary",224,224,0,false,0);
+					var imgsrc = Server.getImageURL(Items[index].Id,"Primary",250,500,0,false,0);
 					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(" +imgsrc+ ")><div class=genreItemCount>"+count+"</div><div class=menuItem>"+ title + "</div></div>";	
 				} else {
-					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(images/artist.png)><div class=genreItemCount>"+count+"</div><div class=menuItem>"+ title + "</div></div>";
+					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style='background-image:url(images/artist.png);border:2px solid black;background-position:center;'><div class=genreItemCount>"+count+"</div><div class=menuItem>"+ title + "</div></div>";
 				}
 			//----------------------------------------------------------------------------------------------
 			} else if (Items[index].Type == "Audio"){
@@ -359,7 +372,7 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(images/album.png)><div class=menuItem>"+ title + "</div></div>";
 				}
 			//----------------------------------------------------------------------------------------------
-			} else if (Items[index].Type == "Series" || Items[index].Type == "Movie" || Items[index].Type == "BoxSet") {
+			} else if (Items[index].Type == "Series" || Items[index].Type == "Movie" || Items[index].Type == "BoxSet" || Items[index].Type == "ChannelVideoItem") {
 				var title = Items[index].Name;
 				if (showBackdrop == true) {
 					if (Items[index].ImageTags.Thumb) {		
@@ -1068,8 +1081,7 @@ Support.processHomePageMenu = function (menuItem) {
 		GuiDisplay_Series.start("All Movies",url,0,0);
 		break;
 	case "Music":
-		//Get Option Value
-		GuiPage_MusicAZ.start(File.getUserProperty("MusicView"),0);
+		this.enterMusicPage(File.getUserProperty("MusicView"));
 		break;
 	case "Playlists":
 		var url = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&fields=SortName&IncludeItemTypes=Playlist&Recursive=true");
@@ -1114,6 +1126,49 @@ Support.processHomePageMenu = function (menuItem) {
 	}
 }
 
+Support.enterMusicPage = function(musicView) {
+	if (File.getUserProperty("SkipMusicAZ")){
+		switch (musicView) {
+			case "Album":
+				var url = Server.getItemTypeURL("&IncludeItemTypes=MusicAlbum&Recursive=true&SortBy=SortName&SortOrder=Ascending&ExcludeLocationTypes=Virtual&fields=SortName,Genres&CollapseBoxSetItems=false");
+				GuiDisplay_Series.start("Album Music",url,0,0);
+				break;
+			case "Album Artist":
+				var url = Server.getCustomURL("/Artists/AlbumArtists?format=json&SortBy=SortName&SortOrder=Ascending&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,Genres,ItemCounts&userId=" + Server.getUserID());
+				GuiPage_MusicArtist.start("Album Artist",url,0,0);
+				break;
+			case "Artist":
+				var url = Server.getCustomURL("/Artists?format=json&SortBy=SortName&SortOrder=Ascending&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,Genres,ItemCounts&userId=" + Server.getUserID());
+				GuiDisplay_Series.start("Artist Music",url,0,0);
+				break;
+			case "Recent":
+				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items?format=json&SortBy=DatePlayed&SortOrder=Descending&IncludeItemTypes=Audio&Filters=IsPlayed&Limit=21&Recursive=true&fields=SortName,Genres");
+				GuiDisplay_Series.start("Recent Music",url,0,0);
+				break;
+			case "Frequent":
+				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items?format=json&SortBy=PlayCount&SortOrder=Descending&IncludeItemTypes=Audio&Limit=21&Filters=IsPlayed&Recursive=true&fields=SortName,Genres");
+				GuiDisplay_Series.start("Frequent Music",url,0,0);
+				break;
+		}
+	} else {
+		switch (musicView) {
+			case "Album":
+			case "Album Artist":
+			case "Artist":
+				GuiPage_MusicAZ.start(musicView,0);
+				break;
+			case "Recent":
+				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items?format=json&SortBy=DatePlayed&SortOrder=Descending&IncludeItemTypes=Audio&Filters=IsPlayed&Limit=21&Recursive=true&fields=SortName,Genres");
+				GuiDisplay_Series.start("Recent Music",url,0,0);
+				break;
+			case "Frequent":
+				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items?format=json&SortBy=PlayCount&SortOrder=Descending&IncludeItemTypes=Audio&Limit=21&Filters=IsPlayed&Recursive=true&fields=SortName,Genres");
+				GuiDisplay_Series.start("Frequent Music",url,0,0);
+				break;
+		}
+	}
+}
+
 Support.parseSearchTerm = function(searchTermString) {
 	var parsedString = searchTermString.replace(/ /gi, "%20");
 	//Probably more chars to parse here!
@@ -1130,14 +1185,14 @@ Support.fadeImage = function(imgsrc) {
 	if (bg != imgsrc) {
 		//Copy the current background image to the holder.
 		document.getElementById("pageBackgroundHolder").style.backgroundImage = "url('"+bg+"')";
+		//Make the standard pageBackground transparent.
 		document.getElementById("pageBackground").className = "pageBackground quickFade";
 		document.getElementById("pageBackground").style.opacity = "0";
-		$('#pageBackgroundHolder').css('background-image',"url('"+bg+"')");
 		setTimeout(function(){
 			document.getElementById("pageBackground").style.backgroundImage = "url('"+imgsrc+"')";
 			document.getElementById("pageBackground").className = "pageBackground";
 			document.getElementById("pageBackground").style.opacity = "1";
-		}, 400);
+		}, 350);
 	}	
 }
 

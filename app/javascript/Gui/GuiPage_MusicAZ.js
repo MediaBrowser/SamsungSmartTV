@@ -74,10 +74,7 @@ GuiPage_MusicAZ.start = function(entryView,selectedItem) {
 	//Update Selected Banner Item
 	this.selectedBannerItem = -1;
 	this.updateSelectedBannerItems();
-	this.selectedBannerItem = 0;
-	
-	//Set Background
-	Support.fadeImage("images/bg1.jpg"); 
+	this.selectedBannerItem = 0; 
 	
 	//Set Focus for Key Events
 	document.getElementById("GuiPage_MusicAZ").focus();	
@@ -415,28 +412,21 @@ GuiPage_MusicAZ.processTopMenuEnterKey = function() {
 		urlString = (this.selectedItem == 27) ? "&NameStartsWithOrGreater=~" : urlString;
 
 		switch (this.startParams[0]) {
-		case "Album":
-			var url = Server.getItemTypeURL("&IncludeItemTypes=MusicAlbum&Recursive=true&ExcludeLocationTypes=Virtual&fields=SortName,Genres&CollapseBoxSetItems=false" + urlString);
-			GuiDisplay_Series.start("Album Music",url,0,0);
-		break;
-		case "Album Artist":
-			var url1 = Server.getCustomURL("/Artists/AlbumArtists?format=json&SortBy=SortName&SortOrder=Ascending&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,Genres,ItemCounts&userId=" + Server.getUserID() + urlString);
-			GuiPage_MusicArtist.start("Album Artist",url1,0,0);
+			case "Album":	
+			case "Album Artist":	
+			case "Artist":
+				Support.enterMusicPage(this.bannerItems[this.selectedBannerItem]);	
 			break;
-		case "Artist":
-			var url = Server.getCustomURL("/Artists?format=json&SortBy=SortName&SortOrder=Ascending&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,Genres,ItemCounts&userId=" + Server.getUserID() + urlString);
-			GuiDisplay_Series.start("Artist Music",url,0,0);
-			break;
-		case "TV":				
-			var url = Server.getCustomURL("/Items?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Series&Recursive=true&CollapseBoxSetItems=false&fields=SortName,Overview,Genres,RunTimeTicks&userId=" + Server.getUserID() + urlString);
-			GuiDisplay_Series.start("Letter TV",url,0,0);		
-			break;	
-		case "Movies":				
-			var url = Server.getCustomURL("/Items?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Movie&Recursive=true&CollapseBoxSetItems=false&fields=SortName,Overview,Genres,RunTimeTicks&userId=" + Server.getUserID() + urlString);
-			GuiDisplay_Series.start("Letter Movies",url,0,0);		
-			break;		
-		default:
-			break;
+			case "TV":				
+				var url = Server.getCustomURL("/Items?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Series&Recursive=true&CollapseBoxSetItems=false&fields=SortName,Overview,Genres,RunTimeTicks&userId=" + Server.getUserID() + urlString);
+				GuiDisplay_Series.start("Letter TV",url,0,0);		
+				break;	
+			case "Movies":				
+				var url = Server.getCustomURL("/Items?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Movie&Recursive=true&CollapseBoxSetItems=false&fields=SortName,Overview,Genres,RunTimeTicks&userId=" + Server.getUserID() + urlString);
+				GuiDisplay_Series.start("Letter Movies",url,0,0);		
+				break;		
+			default:
+				break;
 		}
 	}		
 }

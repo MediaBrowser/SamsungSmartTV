@@ -38,6 +38,8 @@ input[type="password"]
 	background-image: url('images/splash.jpg');
 	background-repeat: no-repeat;
     background-position:center;
+    -webkit-transition: opacity 1s ease-in-out;
+    transition: opacity 1s ease-in-out;
 }
 
 .splash_version{ 
@@ -63,18 +65,18 @@ input[type="password"]
 }
 
 .quickFade {
-	-webkit-transition: opacity .4s ease-in-out;
-    transition: opacity .4s ease-in-out;
+	-webkit-transition: opacity .2s ease-in-out;
+    transition: opacity .2s ease-in-out;
 }
 
 .pageBackgroundFade{
 	position:absolute;
     top:0px;
     left:0px;
-    height:1080px;
-    width:1920px;
-    background: rgba(10,10,10, 0.65);
-    z-index:5;
+    height:100%;
+    width:100%;
+    background-color:rgba(10,10,10,0.65);
+    z-index:4;
 }
 
 .page {
@@ -84,8 +86,6 @@ input[type="password"]
    	color:#f9f9f9;	
 	text-align:left;
     font-size:1em;
-    -webkit-transition: all 0.2s ease-out;
-    transition: all 0.2s ease-out;
 }
 
 .imageView {
@@ -107,21 +107,27 @@ input[type="password"]
 	color:#f9f9f9;	
 	text-align:left; 	
     font-size:1em;
-    -webkit-transition: all 0.2s ease-out;
-    transition: all 0.2s ease-out;
     z-index:8;
 }
 
 .menu-userImage {
-	width:350px;
-	height:120px;
-	padding-top: 40px;
-	border-radius: 10px;
+	position: relative;
+	left: 140px; top: 10px;
+	width:70px;
+	height:70px;
+	border-radius: 40px;
 	background-repeat: no-repeat;
     background-position:center;
 }
 
+.menu-UserImageContainer {
+	position: relative;
+	width:350px;
+	height:90px;
+}
+
 .menu-userName {
+	position: relative;
 	text-align:center;
 	padding-bottom:3px;
 }
@@ -187,9 +193,11 @@ input[type="password"]
 	padding-top: 30px;
 	border-radius: 25px;
     border: 2px solid white;
+    -webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+    z-index:10;
 }
 /*----------------------------------------------------------------------------------------------*/
-
 
 .help {
 	position:absolute;
@@ -833,13 +841,12 @@ input[type="password"]
     position:relative; 
     margin:10px;
     color:#fff;
-    /* border:2px solid transparent; */
     border-radius: 10px;
     white-space:nowrap;
     text-overflow:ellipsis; 
     overflow: hidden; 
     background-repeat: no-repeat;
-    background-position:center;
+    background-position:top;
 }
 
 .Letter {
@@ -1059,15 +1066,14 @@ input[type="password"]
 	position: absolute;
  	left: 0px; top: 0px;
    	width: 1920px; height: 1080px;
-   	z-index:5;
 }
 
-.guiDisplay_Series-pageTitle2{
+.albumArtist-lowerTitle{
 	font-size:1.8em;
-	height:25px;
+	height:30px;
 }
 
-.guiDisplay_Series-Content2{
+.albumArtist-lowerContent{
 	padding-top:1.1em;
 	min-width:500px;
 	height:200px;
@@ -1437,15 +1443,25 @@ input[type="password"]
     z-index:5;
 }
 
-.guiFilm_CDArt {
+.imageDisk {
 	position:absolute;
-    bottom:150px;
     right:50px;
 	width: 250px;
     height: 250px;
+    bottom:150px;
     background-repeat: no-repeat;
     background-position:center;
+    -webkit-transform: rotate(-250deg);
+    transform: rotate(-250deg);
+    -webkit-transition: -webkit-transform 4s ease-out, bottom 3s ease-out;
+    transition: transform 4s ease-out, bottom 3s ease-out;
     z-index:5;
+}
+
+.imageDiskEndPosition {
+	bottom:300px;
+	-webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
 }
 
 .guiTV_Episode_Poster {

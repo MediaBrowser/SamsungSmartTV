@@ -31,11 +31,11 @@ GuiPage_SettingsLog.start = function() {
 	//Load Settings
 	document.getElementById("pageContent").className = "";
 	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div><div id='guiTV_Show_Title' class='guiPage_Settings_Title'>Log</div>\ \
-		<div id='guiPage_Settings_Settings' class='guiPage_Settings_Settings'></div>" +
-		"<div id='guiPage_Settings_Overview' class='guiPage_Settings_Overview'>" +
+		<div id='guiPage_Settings_Settings' class='guiPage_Settings_Settings'></div>";// +
+		/*"<div id='guiPage_Settings_Overview' class='guiPage_Settings_Overview'>" +
 			"<div id=guiPage_Settings_Overview_Title></div>" +
 			"<div id=guiPage_Settings_Overview_Content></div>" +
-		"</div>";
+		"</div>";*/
 	
 	//Create Banner Items
 	for (var index = 0; index < this.bannerItems.length; index++) {
@@ -47,7 +47,7 @@ GuiPage_SettingsLog.start = function() {
 	}
 	
 	//Update Displayed
-	this.setText();
+	//this.setText();
 	this.updateDisplayedItems();
 	this.updateSelectedBannerItems();
 	document.getElementById("GuiPage_SettingsLog").focus();
@@ -56,7 +56,7 @@ GuiPage_SettingsLog.start = function() {
 GuiPage_SettingsLog.updateDisplayedItems = function() {
 	var htmlToAdd = "<table>";
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.logArray.length); index++) {
-		htmlToAdd += "<tr><td style='padding-right:5px'>"+(index+1)+"</td><td style='word-wrap:break-word;word-break:break-all;width:900px;'>" + this.logArray[index] + "</td></tr>";
+		htmlToAdd += "<tr><td style='padding-right:5px'>"+(index+1)+"</td><td style='word-wrap:break-word;word-break:break-all;width:1500px;'>" + this.logArray[index] + "</td></tr>";
 	}
 	document.getElementById("guiPage_Settings_Settings").innerHTML = htmlToAdd + "</table>";
 }

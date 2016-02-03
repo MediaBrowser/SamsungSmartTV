@@ -185,7 +185,6 @@ GuiPlayer.stopPlayback = function() {
 
 GuiPlayer.setDisplaySize = function() {
 	var aspectRatio = (this.playingMediaSource.MediaStreams[this.playingVideoIndex] === undefined) ? "16:9" : this.playingMediaSource.MediaStreams[this.playingVideoIndex].AspectRatio;
-alert("aspectRatio "+aspectRatio);
 	if (aspectRatio == "16:9") {
 		this.plugin.SetDisplayArea(0, 0, 960, 540);
 	} else {

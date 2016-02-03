@@ -8,7 +8,6 @@ var GuiPage_NewServer = {
 GuiPage_NewServer.start = function() {
 	alert("Page Enter : GuiPage_NewServer");
 	GuiHelper.setControlButtons(null,null,null,null,"Return");
-	Support.fadeImage("images/bg1.jpg");
 	
 	//Insert html into page
 	document.getElementById("pageContent").innerHTML = "<div class='GuiPage_NewServer12key'> \
@@ -24,9 +23,8 @@ GuiPage_NewServer.start = function() {
 		</div>";
 	
 	//Set Backdrop
-	if (document.getElementById("splashscreen").style.visibility != "hidden") {
-		document.getElementById("splashscreen").style.visibility="hidden";
-	}
+	Support.fadeImage("images/bg1.jpg");
+	document.getElementById("splashscreen").style.opacity=0;
 
 	//Prepare all input elements for IME
 	GuiPage_NewServer.createInputObjects();

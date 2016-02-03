@@ -56,9 +56,16 @@ GuiPage_MusicArtist.start = function(title1, url1, selectedItem, topLeftItem) {
 	this.totalRecordCount = this.ItemData.TotalRecordCount;
 	Support.pageLoadTimes("GuiPage_MusicArtist","RetrievedServerData",false);
 	
-	//Update Padding on pageContent
-	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div><div id=Center class='SeriesCenter'><div id=Content></div></div>" +
-			"<div style='padding-top:540px;text-align:center;'><p id=pageTitle2 class='guiDisplay_Series-pageTitle2'></p><div id=Content2 class='guiDisplay_Series-Content2'></div></div>";
+	//Create pageContent
+	var htmlToAdd = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div>";
+	htmlToAdd += "<div id=Center class='SeriesCenter'>";
+	htmlToAdd += 	"<div id=Content></div>";
+	htmlToAdd += "</div>";
+	htmlToAdd += "<div style='padding-top:650px;text-align:center;'>";
+	htmlToAdd += 	"<p id=lowerTitle class='albumArtist-lowerTitle'></p>";
+	htmlToAdd += 	"<div id=lowerContent class='albumArtist-lowerContent'></div>";
+	htmlToAdd += "</div>";
+	document.getElementById("pageContent").innerHTML = htmlToAdd;
 	
 	//Set banner Styling
 	document.getElementById("bannerSelection").style.paddingTop="20px";
@@ -91,10 +98,7 @@ GuiPage_MusicArtist.start = function(title1, url1, selectedItem, topLeftItem) {
 		
 		this.selectedBannerItem = -1;
 		this.updateSelectedBannerItems();
-		this.selectedBannerItem = 0;
-	
-		//Set Background
-		Support.fadeImage("images/bg1.jpg"); 
+		this.selectedBannerItem = 0; 
 		
 		//Set Focus for Key Events
 		document.getElementById("GuiPage_MusicArtist").focus();	
@@ -136,7 +140,7 @@ GuiPage_MusicArtist.updateSelectedItems = function (bypassCounter) {
 	if (this.selectedItem != -1) {	
 		
 		//Set Title2
-		document.getElementById("pageTitle2").innerHTML = "Albums by " + this.ItemData.Items[this.selectedItem].Name;
+		document.getElementById("lowerTitle").innerHTML = "Albums by " + this.ItemData.Items[this.selectedItem].Name;
 
 		//Load Data
 		var url2 = "";
@@ -172,6 +176,22 @@ GuiPage_MusicArtist.updateSelectedItems = function (bypassCounter) {
 				GuiPage_MusicArtist.updateSelectedItems2(true);
 			}
 		}, 500);
+		
+		//Background Image 
+		var currentSelectedItem = this.selectedItem; 
+		setTimeout(function(){	 
+			if (GuiPage_MusicArtist.selectedItem == currentSelectedItem) { 
+					//A movie.
+					if (GuiPage_MusicArtist.ItemData.Items[currentSelectedItem].BackdropImageTags.length > 0) { 
+						var imgsrc = Server.getBackgroundImageURL(GuiPage_MusicArtist.ItemData.Items[currentSelectedItem].Id,"Backdrop",Main.width,Main.height,0,false,0,GuiPage_MusicArtist.ItemData.Items[currentSelectedItem].BackdropImageTags.length); 
+						Support.fadeImage(imgsrc);
+					//A music album.
+					} else if (GuiPage_MusicArtist.ItemData.Items[currentSelectedItem].ParentBackdropImageTags) { 
+						var imgsrc = Server.getBackgroundImageURL(GuiPage_MusicArtist.ItemData.Items[currentSelectedItem].ParentBackdropItemId,"Backdrop",Main.width,Main.height,0,false,0,GuiPage_MusicArtist.ItemData.Items[currentSelectedItem].ParentBackdropImageTags.length); 
+						Support.fadeImage(imgsrc); 
+					} 
+			} 
+	 	}, 1000);
 	}
 }
 
@@ -378,7 +398,7 @@ GuiPage_MusicArtist.processTopMenuDownKey = function() {
 GuiPage_MusicArtist.processTopMenuEnterKey = function() {
 	alert ("TopMenuEnterKey");
 	if (this.selectedItem == -1) {
-		GuiPage_MusicAZ.start(this.bannerItems[this.selectedBannerItem]);	
+		Support.enterMusicPage(this.bannerItems[this.selectedBannerItem]);
 	} else {
 		if (this.ItemData2.Items.length > 0) {
 			//Set to 0 and reset display, then set to -1 and update selected so none are selected, then reset to 0
@@ -402,7 +422,7 @@ GuiPage_MusicArtist.processTopMenuEnterKey = function() {
 //---------------------------------------------------------------------------------------------------
 GuiPage_MusicArtist.updateDisplayedItems2 = function() {
 	Support.updateDisplayedItems(this.ItemData2.Items,this.selectedItem2,this.topLeftItem2,
-			Math.min(this.topLeftItem2 + this.getMaxDisplay2(),this.ItemData2.Items.length),"Content2",this.divprepend2,this.isResume2);
+			Math.min(this.topLeftItem2 + this.getMaxDisplay2(),this.ItemData2.Items.length),"lowerContent",this.divprepend2,this.isResume2);
 }
 
 //Function sets CSS Properties so show which user is selected

@@ -40,10 +40,17 @@ GuiDisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 	this.ItemData = Server.getContent(url);
 	if (this.ItemData == null) { return; }
 
+	//Once we've browsed the channels down to a content folder we should display them using GuiDisplay_Series.
+	if (this.ItemData.Items[0].Type == "ChannelVideoItem" || this.ItemData.Items[0].Type == "ChannelAudioItem") {
+		GuiDisplay_Series.start(title,url,selectedItem,topLeftItem);
+		return;
+	}
+
 	//Setup display width height based on title
 	switch (title) {
 	case "Media Folders":
 	case "Collections":
+	case "Channels":
 		this.MAXCOLUMNCOUNT = 3;
 		this.MAXROWCOUNT = 2;
 		break;

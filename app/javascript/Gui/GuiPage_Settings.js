@@ -21,13 +21,13 @@ var GuiPage_Settings = {
 		CurrentSettingValue : null,
 		
 		//Per Setting Type List of settings, names & defaults
-		Settings : ["Default","ContinueWatching","View1","View2","LargerView","AudioTheme","MusicView", "SkipShow","SeasonLabel","AutoPlay","ShowDisc","SubtitleSize","SubtitleColour","ImagePlayerImageTime","ScreensaverImages","ScreensaverTimeout","ScreensaverImageTime","ForgetSavedPassword"],
-		SettingsName : ["Default User: ","Continue Watching:","Home View 1: ","Home View 2: ","Show Larger Icons: ", "Play Audio Themes: ", "Default Music View: ", "Skip TV Show Page: ","Use Alternate Season Label: ","Auto Play Next Episode: ","Show Disc Art: ","Subtitle Text Size: ","Subtitle Text Colour: ","Image Player Rotate Speed: ", "Screensaver Image Source: ", "Screensaver Timeout: ", "Screensaver Rotate Speed: ", "Forget Password at Log Out:"],
-		SettingsDefaults : [false,true,"ddddd","aaaaa",false,false,"Album Artist",false,false,false,true,"50px","white",10000,"Media",300000,10000,false],
+		Settings : ["Default","ContinueWatching","View1","View2","LargerView","AudioTheme","MusicView","SkipMusicAZ","SkipShow","SeasonLabel","AutoPlay","ShowDisc","SubtitleSize","SubtitleColour","ImagePlayerImageTime","ScreensaverImages","ScreensaverTimeout","ScreensaverImageTime","ForgetSavedPassword"],
+		SettingsName : ["Default User: ","Continue Watching:","Home View 1: ","Home View 2: ","Show Larger Icons: ", "Play Audio Themes: ", "Default Music View: ", "Skip Music A-Z: ", "Skip TV Show Page: ","Use Alternate Season Label: ","Auto Play Next Episode: ","Show Disc Art: ","Subtitle Text Size: ","Subtitle Text Colour: ","Image Player Rotate Speed: ", "Screensaver Image Source: ", "Screensaver Timeout: ", "Screensaver Rotate Speed: ", "Forget Password at Log Out:"],
+		SettingsDefaults : [false,true,"ddddd","aaaaa",false,false,"Album",false,false,false,false,true,"50px","white",10000,"Media",300000,10000,false],
 		
-		TVSettings : ["Bitrate","Dolby","DTS","AACtoDolby","TranscodeDSeries","ItemPaging","ClockOffset"],
-		TVSettingsName : ["Max Bitrate: ","Enable Dolby Digital Playback: ","Enable DTS Playback: ","Enable AAC Transcoding to Dolby: ","Enable Transcoding on D Series","Item Paging: ","Clock Offset: "],
-		TVSettingsDefaults : [60,false,false,false,false,150,0],
+		TVSettings : ["Bitrate","Dolby","DTS","AACtoDolby","ItemPaging","ClockOffset"],
+		TVSettingsName : ["Max Bitrate: ","Enable Dolby Digital Playback: ","Enable DTS Playback: ","Enable AAC Transcoding to Dolby: ","Item Paging: ","Clock Offset: "],
+		TVSettingsDefaults : [60,false,false,false,150,0],
 		
 		ServerSettings : ["DisplayMissingEpisodes","DisplayUnairedEpisodes","GroupMovieCollections","DefaultAudioLang","PlayDefaultAudioTrack","DefaultSubtitleLang", "SubtitleMode", "HidePlayedInLatest"],
 		ServerSettingsName : ["Display Missing Episodes: ", "Display Unaired Episodes: ","Group Movies into Collections: ","Default Audio Language: ","Play default audio track regardless of language: ", "Default Subtitle Language: ","Subtitle Mode:","Hide watched content from latest media:"], 
@@ -87,7 +87,6 @@ GuiPage_Settings.getMaxDisplay = function() {
 }
 
 GuiPage_Settings.initiateViewValues = function() {
- 	//ResumeAllItemsURL = Server.getServerAddr() + "/Users/"+Server.getUserID()+"/Items?format=json&SortBy=DatePlayed&SortOrder=Descending&MediaTypes=Video&Filters=IsResumable&Limit=10&Recursive=true&Fields=PrimaryImageAspectRatio,SyncInfo&CollapseBoxSetItems=false&ExcludeLocationTypes=Virtual&ImageTypeLimit=1&EnableImageTypes=Primary,Backdrop,Banner,Thumb";
 	TVNextUp = Server.getServerAddr() + "/Shows/NextUp?format=json&UserId="+Server.getUserID()+"&IncludeItemTypes=Episode&ExcludeLocationTypes=Virtual&Limit=24&Fields=PrimaryImageAspectRatio,SeriesInfo,DateCreated,SyncInfo,SortName&ImageTypeLimit=1&EnableImageTypes=Primary,Backdrop,Banner,Thumb";
 	Favourites = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&Filters=IsFavorite&fields=SortName&recursive=true");
 	FavouriteMovies = Server.getServerAddr() + "/Users/"+Server.getUserID()+"/Items?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Movie&Filters=IsFavorite&Limit=10&Recursive=true&Fields=PrimaryImageAspectRatio,SyncInfo&CollapseBoxSetItems=false&ExcludeLocationTypes=Virtual";
@@ -230,6 +229,7 @@ GuiPage_Settings.updateDisplayedItems = function() {
 		case "ContinueWatching":
 		case "AudioTheme":
 		case "SkipShow":
+		case "SkipMusicAZ":
 		case "SeasonLabel":
 		case "AutoPlay":
 		case "ShowDisc":	
@@ -318,7 +318,6 @@ GuiPage_Settings.updateDisplayedItems = function() {
 			break;
 		case "Dolby":
 		case "DTS":	
-		case "TranscodeDSeries":
 		case "AACtoDolby":	
 			for (var index2 = 0; index2 < this.DefaultValues.length; index2++) {
 				if (this.DefaultValues[index2] == this.AllData.TV[this.currentViewSettings[index]]) {
@@ -514,6 +513,7 @@ GuiPage_Settings.processSelectedItem = function() {
 		case "ContinueWatching":
 		case "AudioTheme":
 		case "SkipShow":	
+		case "SkipMusicAZ":
 		case "SeasonLabel":	
 		case "AutoPlay":
 		case "Dolby":
@@ -521,7 +521,6 @@ GuiPage_Settings.processSelectedItem = function() {
 		case "DisplayMissingEpisodes":
 		case "DisplayUnairedEpisodes":	
 		case "GroupMovieCollections":
-		case "TranscodeDSeries":
 		case "PlayDefaultAudioTrack":
 		case "ShowDisc":	
 		case "AACtoDolby":	
@@ -764,7 +763,8 @@ GuiPage_Settings.processSelectedSubItem = function() {
 		break;
 	case "ContinueWatching":
 	case "AudioTheme":
-	case "SkipShow":	
+	case "SkipShow":
+	case "SkipMusicAZ":
 	case "SeasonLabel":	
 	case "AutoPlay":
 	case "ShowDisc":	
@@ -821,7 +821,6 @@ GuiPage_Settings.processSelectedSubItem = function() {
 		break;
 	case "Dolby":
 	case "DTS":
-	case "TranscodeDSeries":
 	case "AACtoDolby":	
 		this.AllData.TV[this.currentViewSettings[this.selectedItem]] = this.DefaultValues[this.selectedSubItem];
 		this.CurrentSettingValue = this.DefaultOptions[this.selectedSubItem];
@@ -993,30 +992,35 @@ GuiPage_Settings.setOverview = function() {
 		case "Default":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Default User";
 			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Setting the default user to True allows for the app to sign in the user automatically." +
-					"<br><br>Changing this setting to True will change all other users to False";
+					"<br><br>Changing this setting to True will change all other users to False.";
 			break;
 		case "ContinueWatching":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Continue Watching";
 			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Show partially watched items on the home page." +
-					"<br><br>If you have any partially watched programs they will be shown on the home page instead of the second home page view.";
+					"<br><br>If you have any partially watched programs they will be shown on the home page along with Home View 1.";
 			break;
 		case "View1":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Home View 1";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Sets the content of the first view of the Home page" +
-					"<br><br>Available Choices<ul style='padding-left:22px'><li>Next Up</li><li>All Favourites</li><li>Favourite Movies</li><li>Favourite Series</li><li>Favourite Episodes</li><li>Suggested For You</li><li>Media Folders</li><li>Latest TV</li><li>Latest Movies</li></ul>" +
-					"<br><br>Setting Home View 2 to None will show more content of this view";
+			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Sets the content of the first view on the Home page." +
+					"<br><br>Available Choices:<br>&nbsp;<ul style='padding-left:22px'><li>Next Up</li><li>All Favourites</li><li>Favourite Movies</li><li>Favourite Series</li><li>Favourite Episodes</li><li>Suggested For You</li><li>Media Folders</li><li>Latest TV</li><li>Latest Movies</li></ul>" +
+					"<br><br>Setting Home View 2 to None will show more content in this view.";
 			break; 
 		case "View2":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Home View 2";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Sets the content of the first view of the Home page" +
-					"<br><br>Available Choices<ul style='padding-left:22px'><li>None</li><li>Next Up</li><li>All Favourites</li><li>Favourite Movies</li><li>Favourite Series</li><li>Favourite Episodes</li><li>Suggested For You</li><li>Media Folders</li><li>Latest TV</li><li>Latest Movies</li></ul>" +
-					"<br><br>Setting this to None will show more content from Home View 1";
+			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Sets the content of the second view on the Home page." +
+					"<br><br>Available Choices:<br>&nbsp;<ul style='padding-left:22px'><li>None</li><li>Next Up</li><li>All Favourites</li><li>Favourite Movies</li><li>Favourite Series</li><li>Favourite Episodes</li><li>Suggested For You</li><li>Media Folders</li><li>Latest TV</li><li>Latest Movies</li></ul>" +
+					"<br><br>Setting this to None will show more content from Home View 1.";
 			break;	
 		case "MusicView":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Default Music view";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Sets the default view the Music menu will open up on" +
-					"<br><br>Available Choices<ul style='padding-left:22px'><li>Recent</li><li>Frequent</li><li>Album</li><li>Album Artist</li><li>Artist</li></ul>";
+			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Sets the default view the Music page will open up on." +
+					"<br><br>Available Choices:<br>&nbsp;<ul style='padding-left:22px'><li>Recent</li><li>Frequent</li><li>Album</li><li>Album Artist</li><li>Artist</li></ul>";
 			break;	
+		case "SkipMusicAZ":
+			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Skip A-Z Page When Entering Music";
+			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Go directly to your entire music collection instead of to the A-Z page." +
+					"<br><br>Only set this True if you have a workable combination of the following:<br>&nbsp;<ul style='padding-left:22px'><li>A modest size music collection.</li><li>A reasonably powerful Emby server.</li><li>A little patience.</li></ul>";
+			break;
 		case "LargerView":	
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Display Larger View";
 			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Enabling this changes the TV & Movies view from 9 items across to 7 items across, allowing for larger images for each item.";
@@ -1089,10 +1093,6 @@ GuiPage_Settings.setOverview = function() {
 		case "AACtoDolby":	
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Enable AAC Transcoding to Dolby";
 			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Set this option only if you have an external receiver capable of receiving Dolby but not AAC<br><br>Will be ignored if Enable Dolby Digital Playback is false";
-			break;
-		case "TranscodeDSeries":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Enable Transcoding on D Series TV's";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Enable this if you want to transcode videos to your D Series TV<br><br>This is off by default as it is not reliable and may cause issues, and as such is unsupported.";
 			break;
 		case "ItemPaging":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Item Paging";

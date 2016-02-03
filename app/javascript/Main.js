@@ -4,7 +4,7 @@ var tvKey = new Common.API.TVKeyValue();
 	
 var Main =
 {
-		version : "v2.1.0c",
+		version : "v2.1.0d",
 		requiredServerVersion : "3.0.5211",
 		requiredDevServerVersion : "3.0.5507.2131",
 		
@@ -24,7 +24,7 @@ var Main =
 		enableMusic : true,
 		enableLiveTV : false,
 		enableCollections : true,
-		enableChannels : false,
+		enableChannels : true,
 		enableImageCache : true,
 		
 		enableScreensaver : true,
@@ -126,9 +126,7 @@ Main.onLoad = function()
 	} else {
 		this.modelYear = pluginTV.GetProductCode(0).substring(4,5);
 	}
-	/*if (this.modelYear == "B"){
-		this.modelYear = "D";
-	}*/
+
 	FileLog.write("Model Year is " + this.modelYear);
 	
 	if (phyConnection && http && gateway) {
@@ -190,12 +188,9 @@ Main.onLoad = function()
 	}
 	widgetAPI.sendReadyEvent();
 	Support.clock();
-	
-	//Set background 
-	Support.fadeImage("images/bg1.jpg"); 
 
 	setTimeout(function(){
-		document.getElementById("splashscreen").style.visibility="hidden";
+		document.getElementById("splashscreen").style.opacity=0;
 		FileLog.write("Ready to start. Removing the splash screen.");
 	}, 2500);
 };

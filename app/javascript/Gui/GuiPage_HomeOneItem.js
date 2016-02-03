@@ -90,10 +90,10 @@ GuiPage_HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 	
 		//Display first XX series
 		this.updateDisplayedItems();
-			
-		//Update Selected Collection CSS
-		this.updateSelectedItems();	
 		
+		//Update Selected Collection CSS
+		this.updateSelectedItems();
+
 		//Function to generate random backdrop
 		this.backdropTimeout = setTimeout(function(){
 			var randomImageURL = Server.getItemTypeURL("&SortBy=Random&IncludeItemTypes=Series,Movie&Recursive=true&CollapseBoxSetItems=false&Limit=20");
@@ -111,6 +111,7 @@ GuiPage_HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 		
 		//Set Focus for Key Events
 		document.getElementById("GuiPage_HomeOneItem").focus();
+		
 	} else {
 		//Set message to user
 		document.getElementById("pageContent").innerHTML = "<p id='title' class=pageTitle>"+title+"</p><div id=Content></div></div>";

@@ -29,18 +29,14 @@ GuiMainMenu.start = function() {
 	this.menuItems = Support.generateMainMenu();
 	
 	//Get user details.
-	//document.getElementById("menuUserName").innerHTML = Server.getUserName();
-	alert(this.menuItems.length);
-	if (this.menuItems.length < 10){
-		document.getElementById("menuUserName").innerHTML = "<br>";
-	}
-	document.getElementById("menuUserName").style.visibility = "";
+	//document.getElementById("menuUserName").innerHTML = "<br>"+Server.getUserName()+"<br><br>";
 	var userURL = Server.getServerAddr() + "/Users/" + Server.getUserID() + "?format=json&Fields=PrimaryImageTag";
 	var UserData = Server.getContent(userURL);
 	if (UserData == null) { return; }
 	
+	//User Image
 	if (UserData.PrimaryImageTag) {
-		var imgsrc = Server.getImageURL(UserData.Id,"UsersPrimary",120,120,0,false,0);
+		var imgsrc = Server.getImageURL(UserData.Id,"UsersPrimary",70,70,0,false,0);
 		document.getElementById("menuUserImage").style.backgroundImage = "url(" + imgsrc + ")";	
 	} else {
 		document.getElementById("menuUserImage").style.backgroundImage = "url(images/loginusernoimage.png)";
@@ -182,6 +178,14 @@ GuiMainMenu.keyDown = function()
 }
 
 GuiMainMenu.processSelectedItems = function() {
+	
+	//Selecting home when you came from home just closes the menu.
+	if 	(this.menuItems[this.selectedMainMenuItem] == "Home" &&
+		(this.pageSelected == "GuiPage_HomeOneItem" || this.pageSelected == "GuiPage_HomeTwoItems")) {
+			this.processReturnKey();
+			return;
+	}
+	
 	//If a trailer was paused when we arrived in the menu, stop it now.
     if (GuiPage_ItemDetails.trailerState == sf.service.VideoPlayer.STATE_PAUSED) {
 	    sf.service.VideoPlayer.stop();
@@ -194,7 +198,7 @@ GuiMainMenu.processSelectedItems = function() {
 	
 	setTimeout(function(){
 		Support.processHomePageMenu(GuiMainMenu.menuItems[GuiMainMenu.selectedMainMenuItem]);
-	}, 310);
+	}, 200);
 }
 
 GuiMainMenu.playSelectedItem = function() {

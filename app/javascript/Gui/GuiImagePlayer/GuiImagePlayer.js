@@ -59,7 +59,7 @@ GuiImagePlayer.start = function(ItemData,selectedItem,isPhotoCollection) {
 	imageIdx = 0;
 	for (var index = 0; index < result.Items.length; index++) {
 		//Dont use server function here to prevent these large images caching!
-		var temp = Server.getServerAddr() + "/Items/"+ this.newItemData.Items[i].Id +"/Images/Primary/0?maxwidth=1920&maxheight=1080&quality=90";
+		var temp = Server.getServerAddr() + "/Items/"+ this.newItemData.Items[index].Id +"/Images/Primary/0?maxwidth=1920&maxheight=1080&quality=90";
 		this.images.push(temp);
 		
 		if (this.newItemData.Items[index].PremiereDate !== undefined) {
