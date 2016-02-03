@@ -19,6 +19,7 @@ var GuiDisplay_Series = {
 		musicBannerItems : ["Recent","Frequent","Album","Album Artist", "Artist"],
 		
 		indexSeekPos : -1,
+		indexTimeout : null,
 		isResume : false,
 		genreType : "",
 		
@@ -32,10 +33,10 @@ var GuiDisplay_Series = {
 GuiDisplay_Series.onFocus = function() {
 	switch (this.currentMediaType) {
 	case "Movies":
-		GuiHelper.setControlButtons("Favourite","Watched",null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
+		GuiHelper.setControlButtons("Favourite","Watched","Next Index",GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
 	break;
 	default:
-		GuiHelper.setControlButtons("Favourite",null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");	
+		GuiHelper.setControlButtons("Favourite",null,"Next Index",GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
 	}
 }
 
@@ -145,6 +146,10 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem) {
 		document.getElementById("bannerSelection").style.paddingBottom="5px";
 	}
 	
+	if (this.currentMediaType != "Collections"){
+		Support.fadeImage("images/bg1.jpg"); 
+	}
+	
 	if (this.ItemData.Items.length > 0) {		
 		//Determine if extra top padding is needed for items <= MaxRow
 		if (this.MAXROWCOUNT > 2) {
@@ -172,13 +177,11 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem) {
 			}
 		}
 	
-		//Indexing Algorithm - Disabled v0.570c
-		//this.ItemIndexData = Support.processIndexing(this.ItemData.Items); 
+		//Indexing Algorithm
+		this.ItemIndexData = Support.processIndexing(this.ItemData.Items); 
 	
 		//Display first XX series
 		this.updateDisplayedItems();
-			
-		//Update Selected Collection CSS
 		this.updateSelectedItems();
 		
 		this.selectedBannerItem = -1;
@@ -188,6 +191,7 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem) {
 		//Set Focus for Key Events
 		document.getElementById("GuiDisplay_Series").focus();
 		Support.pageLoadTimes("GuiDisplay_Series","UserControl",false);
+		
 	} else {
 		//Set message to user
 		document.getElementById("Counter").innerHTML = "";
@@ -205,12 +209,8 @@ GuiDisplay_Series.updateDisplayedItems = function() {
 		}
 	}
 	
-	Support.updateDisplayedItems(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Content","",this.isResume,this.genreType);
-}
-
-GuiDisplay_Series.updateOneDisplayedItem = function() {
-	Support.updateOneDisplayedItem(this.ItemData.Items[this.selectedItem],"",this.isResume,this.genreTypefalse,"GuiDisplay_Series",false);
+Support.updateDisplayedItems(this.ItemData.Items,this.selectedItem,this.topLeftItem,
+		Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Content","",this.isResume,this.genreType);
 }
 
 //Function sets CSS Properties so show which user is selected
@@ -329,7 +329,7 @@ GuiDisplay_Series.updateSelectedItems = function () {
 			document.getElementById("SeriesTitle").innerHTML = htmlForTitle;
 		}
 	}
-		
+
 	//Background Image 
 	//Blocking code to skip getting data for items where the user has just gone past it 
 	//Only for collections (usually small) as a performance enhance - If screen is full of items anyway who cares what the background is.
@@ -393,6 +393,10 @@ GuiDisplay_Series.keyDown = function() {
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
+	
+	//Clear Indexing Letter Display timeout & Hide
+	clearTimeout(this.indexTimeout);
+	document.getElementById("guiDisplay_SeriesIndexing").style.visibility = "hidden";
 	
 	//Update Screensaver Timer
 	Support.screensaver();
@@ -460,8 +464,12 @@ GuiDisplay_Series.keyDown = function() {
 					Server.setFavourite(this.ItemData.Items[this.selectedItem].Id);
 					this.ItemData.Items[this.selectedItem].UserData.IsFavorite = true;
 				}
-				Support.updateOneDisplayedItem(this.ItemData.Items[this.selectedItem],"",this.isResume,this.genreTypefalse,"GuiDisplay_Series",false);
+				GuiDisplay_Series.updateDisplayedItems();
+				GuiDisplay_Series.updateSelectedItems();
 			}
+			break;
+		case tvKey.KEY_YELLOW:
+			GuiDisplay_Series.processIndexing();
 			break;
 		case tvKey.KEY_BLUE:	
 			GuiMusicPlayer.showMusicPlayer("GuiDisplay_Series");
@@ -525,13 +533,13 @@ GuiDisplay_Series.processSelectedItem = function() {
 		case "Album":	
 		case "Album Artist":	
 		case "Artist":	
-			GuiPage_MusicAZ.start(this.bannerItems[this.selectedBannerItem]);		
+			GuiPage_MusicAZ.start(this.bannerItems[this.selectedBannerItem],0);		
 		break;
 		case"A-Z":
 			if (this.isTvOrMovies == 1) {
-				GuiPage_MusicAZ.start("Movies");
+				GuiPage_MusicAZ.start("Movies",0);
 			} else {
-				GuiPage_MusicAZ.start("TV");
+				GuiPage_MusicAZ.start("TV",0);
 			}
 			break;
 		case "Recent": //Music Only
@@ -626,7 +634,7 @@ GuiDisplay_Series.processLeftKey = function() {
 			this.selectedBannerItem = 0;
 			this.openMenu();
 		}
-	} else if (Support.isPower(this.selectedItem, this.MAXCOLUMNCOUNT)){ //Going left from the first column.
+	} else if (this.selectedItem % this.MAXCOLUMNCOUNT == 0){ //Going left from the first column.
 		this.openMenu();
 	} else {
 		this.selectedItem--;
@@ -799,14 +807,45 @@ GuiDisplay_Series.processIndexing = function() {
 		var indexLetter = this.ItemIndexData[0];
 		var indexPos = this.ItemIndexData[1];
 		
-		this.indexSeekPos++;
-		if (this.indexSeekPos >= indexPos.length) {
-			this.indexSeekPos = 0;
-			this.topLeftItem = 0;
+		var letterSelected = this.ItemData.Items[this.selectedItem].SortName.charAt(0).toLowerCase();
+		if(new RegExp("^([^a-z])").test(letterSelected)){
+			letterSelected = "#";
 		}
 		
-		this.selectedItem = indexPos[this.indexSeekPos];
-		this.topLeftItem = this.selectedItem;
+		var indexSeekPos = 0; //Safety
+		for (var i = 0; i < indexLetter.length; i++) {
+			if (letterSelected == indexLetter[i]) {
+				indexSeekPos = i+1;
+				break;
+			}
+		}
+		
+		if (indexSeekPos >= indexPos.length) {
+			//Check if more items, if so load next batch
+			if (this.totalRecordCount > this.ItemData.Items.length) {
+				this.loadMoreItems();				
+			} else {
+				indexSeekPos = 0;
+				this.topLeftItem = 0;
+			}
+		}
+		
+		this.selectedItem = indexPos[indexSeekPos];
+		this.topLeftItem = this.selectedItem; //safety net
+		
+		for (var i = this.selectedItem; i > this.selectedItem-this.MAXCOLUMNCOUNT; i--) {		
+			if (i % this.MAXCOLUMNCOUNT == 0) {
+				this.topLeftItem = i;
+				break;
+			}
+		}
+		
+		document.getElementById("guiDisplay_SeriesIndexing").innerHTML = indexLetter[indexSeekPos].toUpperCase();
+		document.getElementById("guiDisplay_SeriesIndexing").style.visibility = "";
+		
+		this.indexTimeout = setTimeout(function(){
+			document.getElementById("guiDisplay_SeriesIndexing").style.visibility = "hidden";
+		}, 1000);
 		
 		this.updateDisplayedItems();
 		this.updateSelectedItems();
@@ -835,6 +874,7 @@ GuiDisplay_Series.loadMoreItems = function() {
 		document.getElementById("Counter").innerHTML = (this.selectedItem + 1) + "/" + this.ItemData.Items.length;
 		
 		//Reprocess Indexing Algorithm
+		this.ItemIndexData = Support.processIndexing(this.ItemData.Items); 
 		
 		//Hide Loading Div
 		document.getElementById("guiPlayer_Loading").style.visibility = "hidden";

@@ -118,6 +118,9 @@ GuiPage_HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 		document.getElementById("title").innerHTML = "Sorry";
 		document.getElementById("Content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid";
 		
+		//Set Background
+		Support.fadeImage("images/bg1.jpg"); 
+		
 		//As no content focus on menu bar and null null means user can't return off the menu bar
 		GuiMainMenu.requested(null,null);
 	}
@@ -302,7 +305,7 @@ GuiPage_HomeOneItem.processLeftKey = function() {
 		} else {
 			this.updateSelectedBannerItems();	
 		}
-	} else if (Support.isPower(this.selectedItem, this.MAXCOLUMNCOUNT)){
+	} else if (this.selectedItem % this.MAXCOLUMNCOUNT == 0){
 			this.openMenu(); //Going left from anywhere in the first column.
 	} else {
 		this.selectedItem--;

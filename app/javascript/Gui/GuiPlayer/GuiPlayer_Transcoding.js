@@ -47,10 +47,17 @@ GuiPlayer_Transcoding.start = function(showId, MediaSource,MediaSourceIndex, vid
 
 	var streamparams = "";
 	var transcodeStatus = "";
-	var audioCodec = this.MediaSource.MediaStreams[this.audioIndex].Codec.toLowerCase();
+
+	//If audiocheck failed convert to AAC OR AC3 depending on setting
+	//If audiocheck ok convert to AAC or dont convert & leave as original codec
+
+	var audioCodec = "aac"; //Catch all, supported by all tv's (?)
 	var convertAACtoDolby = (File.getTVProperty("Dolby") && File.getTVProperty("AACtoDolby") && audioCodec == "aac") ? true : false;
-	
-	audioCodec = (convertAACtoDolby) ? "ac3" : "aac";
+	if (this.isAudio == false) {
+	   audioCodec = (File.getTVProperty("Dolby") && File.getTVProperty("AACtoDolby")) ? "ac3" : "aac";
+	} else {
+	   audioCodec = (File.getTVProperty("Dolby") && File.getTVProperty("AACtoDolby") && audioCodec == "aac") ? "ac3" : this.MediaSource.MediaStreams[this.audioIndex].Codec.toLowerCase();
+	}
 	
 	if (this.isVideo && this.isAudio && convertAACtoDolby == false) {
 		if (isFirstAudioIndex == true) {

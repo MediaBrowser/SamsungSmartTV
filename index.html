@@ -67,6 +67,7 @@
 		<script src="app/javascript/Gui/GuiPage_AddToPlaylist.js"></script>
 		<script src="app/javascript/Gui/GuiPage_Search.js"></script>
 		<script src="app/javascript/Support/polyfill.js"></script>
+		<script src="app/javascript/Gui/GuiPage_TvChannel.js"></script>
 		
 		<object id="pluginPlayer" border=0 classid="clsid:SAMSUNG-INFOLINK-PLAYER"></object>
         <object id="pluginObjectAudio" border=0 classid="clsid:SAMSUNG-INFOLINK-AUDIO"></object>
@@ -75,7 +76,6 @@
         <object id="pluginObjectTVMW" border=0 classid="clsid:SAMSUNG-INFOLINK-TVMW"></object>
         <object id="pluginObjectNNavi" border=0 classid="clsid:SAMSUNG-INFOLINK-NNAVI"></object>
         <object id="pluginObjectTV" border=0 classid="clsid:SAMSUNG-INFOLINK-TV"></object> 
-
 	</head>
 
 	<body onload="Main.onLoad();" onunload="Main.onUnload();">
@@ -129,6 +129,7 @@
 		<a href="javascript:void(0);" id="GuiPage_Playlist" onkeydown="GuiPage_Playlist.keyDown();"></a>
 		<a href="javascript:void(0);" id="GuiPage_AddToPlaylist" onkeydown="GuiPage_AddToPlaylist.keyDown();" onfocus="GuiPage_AddToPlaylist.onFocus();"></a>
 		<a href="javascript:void(0);" id="GuiPage_Search" onkeydown="GuiPage_Search.keyDown();" onfocus="GuiPage_Search.onFocus();"></a>
+		<a href="javascript:void(0);" id="GuiPage_TvChannel" onkeydown="GuiPage_TvChannel.keyDown();" onfocus="GuiPage_TvChannel.onFocus();"></a>
 
 		<!-- IME (on-screen keypad) loader has to be in the body. -->
         <script src="$MANAGER_WIDGET/Common/IME/ime2.js"></script>
@@ -172,6 +173,9 @@
 				 <div id="guiPlayListResult"></div>
 				</div>
 				
+				<div id="guiDisplay_SeriesIndexing" class="guiDisplay_SeriesIndexing" style="visibility:hidden">
+				</div>
+				
 				<!--  Music Player -->
 				<div id="guiMusicPlayerDiv" class="guiMusicPlayerDiv" style="visibility:hidden">
 					<div id="guiMusicPlayerTitle" class="guiMusicPlayerTitle"></div>
@@ -201,6 +205,8 @@
 					<div id="exitConfirmYes" class="exitConfirmYes">Yes</div>
 					<div id="exitConfirmNo" class="exitConfirmNo">No</div>
 				</div>	
+
+				<div id="guiLoading" class="videoLoading" style="visibility:hidden">Loading</div>
 				
 			</div>	
 			<!-- MUST KEEP OUTSIDE OF page div else its hidden during video playback -->	

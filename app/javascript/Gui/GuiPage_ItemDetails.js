@@ -7,7 +7,6 @@ var GuiPage_ItemDetails = {
 		
 		menuItems : [],
 		selectedItem : 0,
-		updateBackdrop : true,
 		
 		trailerItems : [],
 		trailerUrl : "",
@@ -31,7 +30,7 @@ GuiPage_ItemDetails.getMaxDisplay2 = function() {
 	return this.MAXCOLUMNCOUNT2 * this.MAXROWCOUNT2;
 };
 
-GuiPage_ItemDetails.start = function(title,url,selectedItem,updateBackdrop) {
+GuiPage_ItemDetails.start = function(title,url,selectedItem) {
 	alert("Page Enter : GuiPage_ItemDetails");
 	
 	//Clear previous trailer
@@ -43,9 +42,6 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem,updateBackdrop) {
 	
 	//Save Start Params
 	this.startParams = [title,url];
-	this.updateBackdrop = true; //updateBackdrop;
-
-	alert (url);
 	
 	//Reset Vars
 	this.trailerUrl = "";
@@ -227,7 +223,7 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem,updateBackdrop) {
 		
 		//Set Film Backdrop
 		this.backdropTimeout = setTimeout(function(){
-			if (GuiPage_ItemDetails.ItemData.BackdropImageTags.length > 0 && GuiPage_ItemDetails.updateBackdrop) {
+			if (GuiPage_ItemDetails.ItemData.BackdropImageTags.length > 0) {
 				var imgsrc = Server.getBackgroundImageURL(GuiPage_ItemDetails.ItemData.Id,"Backdrop",Main.width,Main.height,0,false,0,GuiPage_ItemDetails.ItemData.BackdropImageTags.length);
 				Support.fadeImage(imgsrc);
 			}

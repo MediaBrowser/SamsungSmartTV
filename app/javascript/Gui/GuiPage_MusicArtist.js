@@ -33,7 +33,7 @@ GuiPage_MusicArtist.getMaxDisplay2 = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROW2COUNT;
 }
 
-GuiPage_MusicArtist.start = function(title1, url1) {
+GuiPage_MusicArtist.start = function(title1, url1, selectedItem, topLeftItem) {
 	alert("Page Enter : GuiPage_MusicArtist");
 	GuiHelper.setControlButtons(null,null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
 	
@@ -42,9 +42,9 @@ GuiPage_MusicArtist.start = function(title1, url1) {
 	this.startParams = [title1,url1];
 	
 	//Reset Vars
-	this.selectedItem = 0;
+	this.selectedItem = selectedItem;
 	this.selectedItem2 = -1; //Prevents any item being shown as selected! 
-	this.topLeftItem = 0;
+	this.topLeftItem = topLeftItem;
 	this.topLeftItem2 = 0;
 	this.indexSeekPos = -1,
 
@@ -93,6 +93,9 @@ GuiPage_MusicArtist.start = function(title1, url1) {
 		this.updateSelectedBannerItems();
 		this.selectedBannerItem = 0;
 	
+		//Set Background
+		Support.fadeImage("images/bg1.jpg"); 
+		
 		//Set Focus for Key Events
 		document.getElementById("GuiPage_MusicArtist").focus();	
 		Support.pageLoadTimes("GuiPage_MusicArtist","UserControl",false);
@@ -101,6 +104,9 @@ GuiPage_MusicArtist.start = function(title1, url1) {
 		document.getElementById("Counter").innerHTML = "";
 		document.getElementById("Content").style.fontSize="40px";
 		document.getElementById("Content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen";
+		
+		//Set Background
+		Support.fadeImage("images/bg1.jpg"); 
 		
 		document.getElementById("NoItems").focus();
 	}
@@ -153,7 +159,7 @@ GuiPage_MusicArtist.updateSelectedItems = function (bypassCounter) {
 		}
 		
 		//Blocking code to skip getting data for items where the user has just gone past it
-		var currentArtistSelected = this.selectedItem;
+		var currentArtistSelected = this.selectedItem; //IS USED
 		this.timeout = setTimeout(function(){	
 			if (GuiPage_MusicArtist.selectedItem == currentArtistSelected) {
 				GuiPage_MusicArtist.ItemData2 = Server.getContent(url2);
@@ -264,7 +270,7 @@ GuiPage_MusicArtist.processTopMenuLeftKey = function() {
 			this.openMenu();
 		}
 		this.updateSelectedBannerItems();	
-	} else if (Support.isPower(this.selectedItem, this.MAXCOLUMNCOUNT)){ //Going left from the first column.
+	} else if (this.selectedItem % this.MAXCOLUMNCOUNT == 0){ //Going left from the first column.
 			this.openMenu();	
 	} else {
 		this.selectedItem--;
@@ -439,7 +445,7 @@ GuiPage_MusicArtist.bottomKeyDown = function() {
 			if (this.selectedItem2 == -1) {
 				this.selectedItem2 = 0; //Going left from bottom items row.
 				//Open the menu
-				Support.updateURLHistory("GuiPage_MusicArtist",this.startParams[0],this.startParams[1],null,null,this.selectedItem2,this.topLeftItem2,false);
+				Support.updateURLHistory("GuiPage_MusicArtist",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,false);
 				GuiMainMenu.requested("GuiPage_MusicArtistBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id);
 				
 			} else {
@@ -479,7 +485,7 @@ GuiPage_MusicArtist.bottomKeyDown = function() {
 		case tvKey.KEY_ENTER:
 		case tvKey.KEY_PANEL_ENTER:
 			alert("ENTER BOTTOM");
-			this.processSelectedItem(this.ItemData2,this.selectedItem2,this.topLeftItem2,true);
+			this.processSelectedItem();
 			break;	
 		case tvKey.KEY_PLAY:
 			this.playSelectedItem(this.ItemData2.Items,this.selectedItem2);
@@ -499,7 +505,7 @@ GuiPage_MusicArtist.bottomKeyDown = function() {
 				this.selectedItem = 0;
 				this.topLeftItem = 0;
 			}
-			Support.updateURLHistory("GuiPage_MusicArtist",this.startParams[0],this.startParams[1],null,null,this.selectedItem2,this.topLeftItem2,false);
+			Support.updateURLHistory("GuiPage_MusicArtist",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,false);
 			GuiMainMenu.requested("GuiPage_MusicArtistBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id);				
 			break;
 		case tvKey.KEY_RETURN:
@@ -557,8 +563,10 @@ GuiPage_MusicArtist.updateSelectedBannerItems = function() {
 	}
 }
 
-GuiPage_MusicArtist.processSelectedItem = function (array,selected,topLeftItem,isBottom) {
-	Support.processSelectedItem("GuiPage_MusicArtist",array,this.startParams,selected,topLeftItem,true,null);
+GuiPage_MusicArtist.processSelectedItem = function () {
+	Support.updateURLHistory("GuiPage_MusicArtist",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,false);
+	var url = Server.getChildItemsURL(this.ItemData2.Items[this.selectedItem2].Id,"&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Audio&Recursive=true&CollapseBoxSetItems=false");
+	GuiPage_Music.start(this.ItemData2.Items[this.selectedItem2].Name,url,this.ItemData2.Items[this.selectedItem2].Type);
 }
 
 GuiPage_MusicArtist.playSelectedItem = function (array,selected) {

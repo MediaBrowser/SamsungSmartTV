@@ -157,10 +157,6 @@ GuiDisplay_Episodes.updateDisplayedItems = function() {
 	}
 }
 
-GuiDisplay_Episodes.updateOneDisplayedItem = function() {
-	Support.updateOneDisplayedItem(this.ItemData.Items[this.selectedItem],"",this.isResume,this.genreType,false,"GuiDisplay_Episodes",false);
-}
-
 //Function sets CSS Properties so show which user is selected
 GuiDisplay_Episodes.updateSelectedItems = function () {
 	Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
@@ -346,7 +342,8 @@ GuiDisplay_Episodes.keyDown = function() {
 						Server.setWatchedStatus(this.ItemData.Items[this.selectedItem].Id);
 						this.ItemData.Items[this.selectedItem].UserData.Played = true
 					}
-					Support.updateOneDisplayedItem(this.ItemData.Items[this.selectedItem],"",this.isResume,this.genreType,false,"GuiDisplay_Episodes",false);
+					this.updateDisplayedItems();
+					this.updateSelectedItems();
 				}
 			}
 			break;
@@ -360,7 +357,8 @@ GuiDisplay_Episodes.keyDown = function() {
 					Server.setFavourite(this.ItemData.Items[this.selectedItem].Id);
 					this.ItemData.Items[this.selectedItem].UserData.IsFavorite = true;
 				}
-				Support.updateOneDisplayedItem(this.ItemData.Items[this.selectedItem],"",this.isResume,this.genreType,false,"GuiDisplay_Episodes",false);
+				this.updateDisplayedItems();
+				this.updateSelectedItems();
 			}
 			break;		
 		case tvKey.KEY_BLUE:	

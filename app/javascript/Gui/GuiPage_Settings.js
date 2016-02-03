@@ -21,9 +21,9 @@ var GuiPage_Settings = {
 		CurrentSettingValue : null,
 		
 		//Per Setting Type List of settings, names & defaults
-		Settings : ["Default","ContinueWatching","View1","View2","LargerView","AudioTheme", "SkipShow","SeasonLabel","AutoPlay","ShowDisc","SubtitleSize","SubtitleColour","ImagePlayerImageTime","ScreensaverImages","ScreensaverTimeout","ScreensaverImageTime","ForgetSavedPassword"],
-		SettingsName : ["Default User: ","Continue Watching:","Home View 1: ","Home View 2: ","Show Larger Icons: ", "Play Audio Themes: ", "Skip TV Show Page: ","Use Alternate Season Label: ","Auto Play Next Episode: ","Show Disc Art: ","Subtitle Text Size: ","Subtitle Text Colour: ","Image Player Rotate Speed: ", "Screensaver Image Source: ", "Screensaver Timeout: ", "Screensaver Rotate Speed: ", "Forget Password at Log Out:"],
-		SettingsDefaults : [false,true,"ddddd","aaaaa",false,false,false,false,false,true,"50px","white",10000,"Media",300000,10000,false],
+		Settings : ["Default","ContinueWatching","View1","View2","LargerView","AudioTheme","MusicView", "SkipShow","SeasonLabel","AutoPlay","ShowDisc","SubtitleSize","SubtitleColour","ImagePlayerImageTime","ScreensaverImages","ScreensaverTimeout","ScreensaverImageTime","ForgetSavedPassword"],
+		SettingsName : ["Default User: ","Continue Watching:","Home View 1: ","Home View 2: ","Show Larger Icons: ", "Play Audio Themes: ", "Default Music View: ", "Skip TV Show Page: ","Use Alternate Season Label: ","Auto Play Next Episode: ","Show Disc Art: ","Subtitle Text Size: ","Subtitle Text Colour: ","Image Player Rotate Speed: ", "Screensaver Image Source: ", "Screensaver Timeout: ", "Screensaver Rotate Speed: ", "Forget Password at Log Out:"],
+		SettingsDefaults : [false,true,"ddddd","aaaaa",false,false,"Album Artist",false,false,false,true,"50px","white",10000,"Media",300000,10000,false],
 		
 		TVSettings : ["Bitrate","Dolby","DTS","AACtoDolby","TranscodeDSeries","ItemPaging","ClockOffset"],
 		TVSettingsName : ["Max Bitrate: ","Enable Dolby Digital Playback: ","Enable DTS Playback: ","Enable AAC Transcoding to Dolby: ","Enable Transcoding on D Series","Item Paging: ","Clock Offset: "],
@@ -42,6 +42,9 @@ var GuiPage_Settings = {
 		
 		View2Options : [], 
 		View2Values : [], 
+		
+		MusicViewOptions : ["Recent", "Frequent", "Album", "Album Artist", "Artist"],
+		MusicViewValues : ["Recent", "Frequent", "Album", "Album Artist", "Artist"],
 
 		TvConnectionOptions : ["120Mb/s","100Mb/s","80Mb/s","60Mb/s","40Mb/s","30Mb/s","20Mb/s","15Mb/s","10Mb/s","8Mb/s","6Mb/s","5Mb/s","4Mb/s","3Mb/s","2Mb/s","1Mb/s","0.5Mb/s"], 
 		TvConnectionValues : [120,100,80,60,40,30,20,15,10,8,6,5,4,3,2,1,0.5], 
@@ -255,6 +258,15 @@ GuiPage_Settings.updateDisplayedItems = function() {
 				}
 			}
 			break;
+		
+		case "MusicView":
+			for (var index2 = 0; index2 < this.MusicViewValues.length; index2++) {
+				if (this.MusicViewValues[index2] == this.UserData[this.currentViewSettings[index]]) {
+					Setting = this.MusicViewOptions[index2];
+					break;
+				}
+			}
+			break;
 		case "SubtitleSize":
 			for (var index2 = 0; index2 < this.SubtitleSizeValues.length; index2++) {
 				if (this.SubtitleSizeValues[index2] == this.UserData[this.currentViewSettings[index]]) {
@@ -262,7 +274,7 @@ GuiPage_Settings.updateDisplayedItems = function() {
 					break;
 				}
 			}
-			break;
+			break;	
 		case "SubtitleColour":
 			for (var index2 = 0; index2 < this.SubtitleColourValues.length; index2++) {
 				if (this.SubtitleColourValues[index2] == this.UserData[this.currentViewSettings[index]]) {
@@ -524,6 +536,9 @@ GuiPage_Settings.processSelectedItem = function() {
 		case "View2":
 			this.CurrentSubSettings = this.View2Options;
 			break;
+		case "MusicView":
+			this.CurrentSubSettings = this.MusicViewOptions;
+			break;
 		case "SubtitleSize":
 			this.CurrentSubSettings = this.SubtitleSizeOptions;
 			break;	
@@ -772,6 +787,10 @@ GuiPage_Settings.processSelectedSubItem = function() {
 	
 		Support.updateHomePageURLs(this.UserData.View2Name ,this.UserData.View2,this.UserData.View2Name,false);
 		break;
+	case "MusicView":
+		this.UserData.MusicView = this.MusicViewValues[this.selectedSubItem];
+		this.CurrentSettingValue = this.MusicViewOptions[this.selectedSubItem];
+		break;
 	case "SubtitleSize":
 		this.UserData.SubtitleSize = this.SubtitleSizeValues[this.selectedSubItem];
 		this.CurrentSettingValue = this.SubtitleSizeOptions[this.selectedSubItem];
@@ -992,6 +1011,11 @@ GuiPage_Settings.setOverview = function() {
 			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Sets the content of the first view of the Home page" +
 					"<br><br>Available Choices<ul style='padding-left:22px'><li>None</li><li>Next Up</li><li>All Favourites</li><li>Favourite Movies</li><li>Favourite Series</li><li>Favourite Episodes</li><li>Suggested For You</li><li>Media Folders</li><li>Latest TV</li><li>Latest Movies</li></ul>" +
 					"<br><br>Setting this to None will show more content from Home View 1";
+			break;	
+		case "MusicView":
+			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Default Music view";
+			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Sets the default view the Music menu will open up on" +
+					"<br><br>Available Choices<ul style='padding-left:22px'><li>Recent</li><li>Frequent</li><li>Album</li><li>Album Artist</li><li>Artist</li></ul>";
 			break;	
 		case "LargerView":	
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Display Larger View";
