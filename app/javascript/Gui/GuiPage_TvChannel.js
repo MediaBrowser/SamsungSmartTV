@@ -4,7 +4,7 @@ var GuiPage_TvChannel = {
 		
 		selectedItem : 0,
 		topLeftItem : 0,
-		MAXCOLUMNCOUNT : 4,
+		MAXCOLUMNCOUNT : 7, 
 		MAXROWCOUNT : 3,
 		
 		startParams : []
@@ -25,17 +25,17 @@ GuiPage_TvChannel.start = function(title,url,selectedItem,topLeftItem) {
 	//Load Data
 	this.ItemData = Server.getContent(url);
 
-	//If length < 4 set class specific to item count
-	if (this.MAXCOLUMNCOUNT == 4 && this.ItemData.Items.length < 4) {
-		document.getElementById("pageContent").innerHTML = "<div class='Columns"+this.ItemData.Items.length+"Thin  padding10'><p id='title' class=pageTitleFive>"+title+"</p><div id=Content></div></div>";
-	} else {
-		document.getElementById("pageContent").innerHTML = "<div class='Columns"+this.MAXCOLUMNCOUNT+"  padding10'><p id='title' class=pageTitleFive>"+title+"</p><div id=Content></div></div>";			
-	}
+	//Update Page
+	document.getElementById("pageContent").innerHTML = "<div id=Center class='SeriesCenter'><div id=Content></div></div>" +
+	"<div id=SeriesContent class='SeriesContent'><div id='SeriesTitle' style='position:relative; height:40px; font-size:1.6em;'></div>" +
+	"<div id='SeriesSubData' style='padding-top:2px;color:#2ad;font-size:1.8em;'></div>" +
+	"<div id='SeriesOverview' style='margin-top:6px;padding-right:10px;font-size:1.1em;max-height:150px;overflow-y:hidden;'></div>" +
+	"</div>";
+	
+	document.getElementById("SeriesContent").style.top = "810px";
+	document.getElementById("Center").style.top = "20px";
 	
 	if (this.ItemData.Items.length > 0) {
-		//Check Collection Length to set CSS Code - Takes smallest number from Array or MAXDISPLAY
-		Support.changePaddingGuiVideo(Math.min(this.getMaxDisplay(),this.ItemData.Items.length),this.MAXCOLUMNCOUNT,this.MAXROWCOUNT,"pageContent");
-	
 		//Display first 12 series
 		this.updateDisplayedItems();
 			
@@ -58,13 +58,21 @@ GuiPage_TvChannel.start = function(title,url,selectedItem,topLeftItem) {
 
 GuiPage_TvChannel.updateDisplayedItems = function() {
 	Support.updateDisplayedItems(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Content","",false,null);	
+			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Content","",null,null);
 }
 
 //Function sets CSS Properties so show which user is selected
 GuiPage_TvChannel.updateSelectedItems = function () {
-		Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-				Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Series Selected","Series","");
+	Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
+			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Music Selected","Music","",false,this.ItemData.Items.TotalRecordCount);
+
+	var programmeURL = Server.getItemInfoURL(this.ItemData.Items[this.selectedItem].CurrentProgram.Id,"");
+	var ProgrammeData = Server.getContent(programmeURL);
+	
+	document.getElementById("SeriesTitle").innerHTML = this.ItemData.Items[this.selectedItem].Name;
+	document.getElementById("SeriesSubData").innerHTML = this.ItemData.Items[this.selectedItem].CurrentProgram.Name;
+	document.getElementById("SeriesOverview").innerHTML = ProgrammeData.Overview;
+	
 }
 
 GuiPage_TvChannel.keyDown = function() {
@@ -133,12 +141,12 @@ GuiPage_TvChannel.keyDown = function() {
 	}
 }
 
-GuiPage_TvChannel.processSelectedItem = function(page,ItemData,startParams,selectedItem,topLeftItem) {
+GuiPage_TvChannel.processSelectedItem = function() {
 	Support.processSelectedItem("GuiPage_TvChannel",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null,null); 
 }
 
 GuiPage_TvChannel.playSelectedItem = function () {
-	
+	GuiPage_TvChannel.processSelectedItem();
 }
 
 GuiPage_TvChannel.processLeftKey = function() {

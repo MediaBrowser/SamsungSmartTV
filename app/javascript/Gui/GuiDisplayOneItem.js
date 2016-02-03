@@ -71,7 +71,7 @@ GuiDisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 		this.isResume = (title == "Resume") ? true : false;
 		
 		//Alter to only allow indexing on certain pages??
-		this.ItemIndexData = Support.processIndexing(this.ItemData.Items); 
+		//this.ItemIndexData = Support.processIndexing(this.ItemData.Items); 
 	
 		//Display first XX series
 		this.updateDisplayedItems();
@@ -210,7 +210,7 @@ GuiDisplayOneItem.openMenu = function() {
 }
 
 GuiDisplayOneItem.processLeftKey = function() {
-	if (Support.isPower(this.selectedItem, this.MAXCOLUMNCOUNT)){
+	if (this.selectedItem % this.MAXCOLUMNCOUNT == 0){
 		this.openMenu(); //Going left from anywhere in the first column.
 	} else {
 		this.selectedItem--;

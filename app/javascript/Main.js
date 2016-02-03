@@ -14,6 +14,10 @@ var Main =
 		height : 1080,
 		posterWidth : 427,
 		posterHeight : 240,
+		seriesPosterWidth : 180,
+		seriesPosterHeight : 270,
+		seriesPosterLargeWidth : 235,
+		seriesPosterLargeHeight : 350,
 		
 		forceDeleteSettings : true,
 		
@@ -21,6 +25,7 @@ var Main =
 		enableLiveTV : false,
 		enableCollections : true,
 		enableChannels : false,
+		enableImageCache : true,
 		
 		enableScreensaver : true,
 		isScreensaverRunning : false,
@@ -50,6 +55,10 @@ Main.isScreensaverEnabled = function() {
 	return this.enableScreensaver;
 };
 
+Main.isImageCaching = function() {
+	return this.enableImageCache;
+};
+
 Main.getRequiredServerVersion = function() {
 	return this.requiredServerVersion;
 };
@@ -74,9 +83,15 @@ Main.onLoad = function()
 {	
 	//Setup Logging
 	FileLog.loadFile(false); // doesn't return contents, done to ensure file exists
-	FileLog.write("---------------------------------------------------------------------");
+	FileLog.write("---------------------------------------------------------------------",true);
 	FileLog.write("Emby Application Started");
-
+	
+	if (Main.isImageCaching()) {
+		var fileSystemObj = new FileSystem();
+		fileSystemObj.deleteCommonFile(curWidget.id + '/cache.json');
+		Support.imageCachejson = JSON.parse('{"Images":[]}');
+	}
+	
 	document.getElementById("splashscreen_version").innerHTML = Main.version;
 	
 	//Turn ON screensaver
@@ -194,6 +209,8 @@ Main.initKeys = function() {
 
 Main.onUnload = function()
 {
+	//Write Cache to disk
+	ImageCache.writeAll(Support.imageCachejson);
 	Support.screensaverOff();
 	GuiImagePlayer.kill();
 	GuiMusicPlayer.stopOnAppExit();

@@ -56,7 +56,7 @@ GuiPage_SettingsLog.start = function() {
 GuiPage_SettingsLog.updateDisplayedItems = function() {
 	var htmlToAdd = "<table>";
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.logArray.length); index++) {
-		htmlToAdd += "<tr><td>"+(index+1)+"</td><td style='word-wrap:break-word;word-break:break-all;width:900px;'>" + this.logArray[index] + "</td></tr>";
+		htmlToAdd += "<tr><td style='padding-right:5px'>"+(index+1)+"</td><td style='word-wrap:break-word;word-break:break-all;width:900px;'>" + this.logArray[index] + "</td></tr>";
 	}
 	document.getElementById("guiPage_Settings_Settings").innerHTML = htmlToAdd + "</table>";
 }
@@ -139,13 +139,10 @@ GuiPage_SettingsLog.keyDown = function() {
 			break;
 		case tvKey.KEY_RED:
 			FileLog.empty();
-			FileLog.write("---------------------------------------------------------------------")
+			FileLog.write("---------------------------------------------------------------------",true);
 			FileLog.write("Log File Emptied by User")
 			GuiPage_SettingsLog.start(); //relead
 			break;
-		case tvKey.KEY_YELLOW:	
-			//Favourites - Not needed on this page!
-			break;	
 		case tvKey.KEY_BLUE:	
 			GuiMusicPlayer.showMusicPlayer("GuiPage_SettingsLog");
 			break;		

@@ -119,6 +119,11 @@ GuiUsers.updateSelectedUser = function () {
 GuiUsers.processSelectedUser = function () {
 	var selectedUserId = this.UserData[this.selectedUser].Id;
 
+	//Remove Focus & Display Loading
+	
+	document.getElementById("NoItems").focus();
+	document.getElementById("guiLoading").style.visibility = "";
+
 	//Load JSON File
 	var userInFile = false;
 	var fileJson = JSON.parse(File.loadFile()); 
@@ -138,12 +143,18 @@ GuiUsers.processSelectedUser = function () {
     			//Authenticate with MB3 - if fail somehow bail?					
 				var authenticateSuccess = Server.Authenticate(UserId, User, Password);		
 				if (authenticateSuccess) {
+					//Hide loading
+					document.getElementById("guiLoading").style.visibility = "hidden";
+					//document.getElementById("GuiUsers").focus();
 					//Set File User Entry
 					File.setUserEntry(index);
 					//Change Focus and call function in GuiMain to initiate the page!
 					GuiMainMenu.start();
 				} else {
 					//Doesn't delete, allows user to correct password for the user.
+					//Hide loading
+					document.getElementById("guiLoading").style.visibility = "hidden";
+					document.getElementById("GuiUsers").focus();
 					
 					//Saved password failed - likely due to a user changing their password or user forgetting passwords!
 					new GuiUsers_Input("guiUsers_Password");				
@@ -155,17 +166,25 @@ GuiUsers.processSelectedUser = function () {
 	if (userInFile == false){
 		if (this.UserData[this.selectedUser].HasPassword) {
 			//Has password - Load IME	
+			//Hide loading
+			document.getElementById("guiLoading").style.visibility = "hidden";
+			document.getElementById("GuiUsers").focus();
 			new GuiUsers_Input("guiUsers_Password");
 		} else {
 			var pwdSHA1 = Sha1.hash("",true);
 			var authenticateSuccess = Server.Authenticate(this.UserData[this.selectedUser].Id, this.UserData[this.selectedUser].Name, pwdSHA1);		
 			if (authenticateSuccess) {
 				//Reset GUI to as new - Not Required as it already is!!
+				//Hide loading
+				document.getElementById("guiLoading").style.visibility = "hidden";
 				//Add Username & Password to DB
 				File.addUser(this.UserData[this.selectedUser].Id,this.UserData[this.selectedUser].Name,pwdSHA1,this.rememberPassword);
 				//Change Focus and call function in GuiMain to initiate the page!
 				GuiMainMenu.start();
 			} else {
+				//Hide loading
+				document.getElementById("guiLoading").style.visibility = "hidden";
+				document.getElementById("GuiUsers").focus();
 				//Div to display Network Failure - No password therefore no password error
 				//This event should be impossible under normal circumstances
 				GuiNotifications.setNotification("Network Error");

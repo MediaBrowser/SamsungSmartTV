@@ -25,7 +25,7 @@ GuiPage_MusicAZ.getMaxDisplay = function() {
 }
 
 
-GuiPage_MusicAZ.start = function(entryView) {
+GuiPage_MusicAZ.start = function(entryView,selectedItem) {
 	alert("Page Enter : GuiPage_MusicAZ");
 	
 	//Save Start Vars
@@ -44,13 +44,13 @@ GuiPage_MusicAZ.start = function(entryView) {
 	}
 		
 	//Reset Vars
-	this.selectedItem = 0;
+	this.selectedItem = (selectedItem == -1) ? 0 : selectedItem;
+	alert ("MusixcAZ Selected: " + this.selectedItem);
 	this.topLeftItem = 0;
 	
 	//Proceed as Normal	
 	//Update Padding on pageContent
-	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div><div id=Center class='SeriesCenter'><div id=Content style='padding-top:40px;'></div></div>" +
-			"<div style='padding-top:520px;padding-left:8px;'><p id=pageTitle2 style='font-size:1.7em;'></p><div id=Content2></div></div>";
+	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div><div id=Center class='SeriesCenter'><div id=Content style='padding-top:40px;'></div></div>";
 		
 	//Set banner Styling
 	document.getElementById("bannerSelection").style.paddingTop="20px";
@@ -75,6 +75,9 @@ GuiPage_MusicAZ.start = function(entryView) {
 	this.selectedBannerItem = -1;
 	this.updateSelectedBannerItems();
 	this.selectedBannerItem = 0;
+	
+	//Set Background
+	Support.fadeImage("images/bg1.jpg"); 
 	
 	//Set Focus for Key Events
 	document.getElementById("GuiPage_MusicAZ").focus();	
@@ -230,7 +233,7 @@ GuiPage_MusicAZ.processTopMenuLeftKey = function() {
 			this.openMenu();
 		}
 		this.updateSelectedBannerItems();
-	} else if (Support.isPower(this.selectedItem, this.MAXCOLUMNCOUNT)){ //Going left from the first column.
+	} else if (this.selectedItem % this.MAXCOLUMNCOUNT == 0){ //Going left from the first column.
 		this.openMenu();
 	} else {
 		this.selectedItem--;
@@ -336,6 +339,10 @@ GuiPage_MusicAZ.processTopMenuDownKey = function() {
 GuiPage_MusicAZ.processTopMenuEnterKey = function() {
 	alert ("TopMenuEnterKey");
 	clearTimeout(this.backdropTimeout);
+	
+	//Add URL History
+	Support.updateURLHistory("GuiPage_MusicAZ",this.startParams[0],null,null,null,this.selectedItem,this.topLeftItem,null);
+	
 	if (this.selectedItem == -1) {
 		switch (this.bannerItems[this.selectedBannerItem]) {
 		case "All":		
@@ -383,13 +390,15 @@ GuiPage_MusicAZ.processTopMenuEnterKey = function() {
 		case "Album":	
 		case "Album Artist":	
 		case "Artist":	
-			GuiPage_MusicAZ.start(this.bannerItems[this.selectedBannerItem]);		
+			Support.removeLatestURL(); //Staying on the same page
+			GuiPage_MusicAZ.start(this.bannerItems[this.selectedBannerItem],this.selectedItem);		
 		break;
 		case"A-Z":
+			Support.removeLatestURL(); //Staying on the same page
 			if (GuiDisplay_Series.isTvOrMovies == 1) {
-				GuiPage_MusicAZ.start("Movies");
+				GuiPage_MusicAZ.start("Movies",this.selectedItem);
 			} else {
-				GuiPage_MusicAZ.start("TV");
+				GuiPage_MusicAZ.start("TV",this.selectedItem);
 			}
 			break;
 		case "Recent": //Music Only
@@ -404,8 +413,7 @@ GuiPage_MusicAZ.processTopMenuEnterKey = function() {
 	} else {
 		var urlString = (this.selectedItem == 0) ? "&NameLessThan=A" : "&NameStartsWith=" + this.Letters[this.selectedItem];
 		urlString = (this.selectedItem == 27) ? "&NameStartsWithOrGreater=~" : urlString;
-		
-		Support.updateURLHistory("GuiPage_MusicAZ",this.startParams[0],null,null,null,this.selectedItem,this.topLeftItem,null);
+
 		switch (this.startParams[0]) {
 		case "Album":
 			var url = Server.getItemTypeURL("&IncludeItemTypes=MusicAlbum&Recursive=true&ExcludeLocationTypes=Virtual&fields=SortName,Genres&CollapseBoxSetItems=false" + urlString);
@@ -413,7 +421,7 @@ GuiPage_MusicAZ.processTopMenuEnterKey = function() {
 		break;
 		case "Album Artist":
 			var url1 = Server.getCustomURL("/Artists/AlbumArtists?format=json&SortBy=SortName&SortOrder=Ascending&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,Genres,ItemCounts&userId=" + Server.getUserID() + urlString);
-			GuiPage_MusicArtist.start("Album Artist",url1);
+			GuiPage_MusicArtist.start("Album Artist",url1,0,0);
 			break;
 		case "Artist":
 			var url = Server.getCustomURL("/Artists?format=json&SortBy=SortName&SortOrder=Ascending&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,Genres,ItemCounts&userId=" + Server.getUserID() + urlString);
