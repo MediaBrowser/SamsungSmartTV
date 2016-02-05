@@ -374,7 +374,11 @@ GuiPlayer.handleStreamNotFound = function() {
 
 GuiPlayer.setCurrentTime = function(time) {
 	if (this.Status == "PLAYING") {
-		this.currentTime = parseInt(time);
+		if (this.PlayMethod == "Transcode") {
+			this.currentTime = parseInt(time) + this.offsetSeconds;
+		} else {
+			this.currentTime = parseInt(time);
+		}
 		//Subtitle Update
 		if (this.playingSubtitleIndex != null && this.PlayerDataSubtitle != null && this.subtitleSeeking == false) {
 			if (this.currentTime >= this.PlayerDataSubtitle[this.subtitleShowingIndex].endTime) {
@@ -870,6 +874,7 @@ GuiPlayer.newPlaybackPosition = function(startPositionTicks) {
 	var url = this.playingURL + '&StartTimeTicks=' + (Math.round(startPositionTicks));
 	
 	if (this.PlayMethod == "Transcode") {
+		this.offsetSeconds = this.offsetSeconds + ((position * 1000) - this.currentTime);
 		this.plugin.ResumePlay(url,0); //0 as if transcoding the transcode will start from the supplied starttimeticks
 	} else {
 		this.plugin.ResumePlay(url,position); 
