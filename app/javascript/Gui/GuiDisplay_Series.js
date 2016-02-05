@@ -87,6 +87,16 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem) {
 	var titleArray = title.split(" ");
 	this.currentView = titleArray[0];
 	this.currentMediaType = titleArray[1];
+	
+	switch (titleArray[0]) {
+	case "Genre":
+		this.genreType = (titleArray[1] == "TV") ? "Series" : "Movie";
+		break;
+	case "Latest":
+		this.isLatest = true;
+		this.ItemData.Items = this.ItemData;
+		break;
+	}
 
 	if (this.ItemData.Items[0].Type == "ChannelAudioItem") {
 		this.currentMediaType = "Music";
@@ -131,16 +141,6 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem) {
 			document.getElementById("SeriesContent").style.top="830px";
 			document.getElementById("SeriesOverview").style.height="250px";
 		}
-		break;
-	}
-	
-	switch (titleArray[0]) {
-	case "Genre":
-		this.genreType = (titleArray[1] == "TV") ? "Series" : "Movie";
-		break;
-	case "Latest":
-		this.isLatest = true;
-		this.ItemData.Items = this.ItemData;
 		break;
 	}
 

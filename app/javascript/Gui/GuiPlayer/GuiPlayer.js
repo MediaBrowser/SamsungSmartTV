@@ -132,7 +132,11 @@ GuiPlayer.startPlayback = function(TranscodeAlg, resumeTicksSamsung) {
 	}
 
     //Set offsetSeconds time
-    this.offsetSeconds = (this.PlayMethod == "Transcode") ? resumeTicksSamsung : 0;
+    if (this.PlayMethod == "Transcode") {
+    	this.offsetSeconds = resumeTicksSamsung;
+    } else {
+    	this.offsetSeconds = 0;
+    }
 
     //Set up GuiPlayer_Display
     GuiPlayer_Display.setDisplay(this.PlayerData,this.playingMediaSource,this.playingTranscodeStatus,this.offsetSeconds,this.playingVideoIndex,this.playingAudioIndex,this.playingSubtitleIndex,this.playingMediaSourceIndex);
@@ -371,13 +375,14 @@ GuiPlayer.handleStreamNotFound = function() {
 GuiPlayer.setCurrentTime = function(time) {
 	if (this.Status == "PLAYING") {
 		this.currentTime = parseInt(time);
-
 		//Subtitle Update
 		if (this.playingSubtitleIndex != null && this.PlayerDataSubtitle != null && this.subtitleSeeking == false) {
 			if (this.currentTime >= this.PlayerDataSubtitle[this.subtitleShowingIndex].endTime) {
 				document.getElementById("guiPlayer_Subtitles").innerHTML = "";
 				document.getElementById("guiPlayer_Subtitles").style.visibility = "hidden";
-				this.subtitleShowingIndex++;
+				if (this.PlayerDataSubtitle.length -1 > this.subtitleShowingIndex){
+					this.subtitleShowingIndex++;
+				}
 			}
 			if (this.currentTime >= this.PlayerDataSubtitle[this.subtitleShowingIndex].startTime && this.currentTime < this.PlayerDataSubtitle[this.subtitleShowingIndex].endTime && document.getElementById("guiPlayer_Subtitles").innerHTML != this.PlayerDataSubtitle.text) {
 				var subtitleText = this.PlayerDataSubtitle[this.subtitleShowingIndex].text;
@@ -391,7 +396,6 @@ GuiPlayer.setCurrentTime = function(time) {
 				document.getElementById("guiPlayer_Subtitles").style.visibility = "";
 			}
 		}
-		
 		this.updateTimeCount++;
 		if (time > 0 && this.setThreeD == false) {
 			//Check 3D & Audio
@@ -400,13 +404,10 @@ GuiPlayer.setCurrentTime = function(time) {
 		    this.setupThreeDConfiguration();			
 		    this.setThreeD = true;
 		}
-		
 		//Update GUIs
-		percentage = (100 * this.currentTime / (this.PlayerData.RunTimeTicks / 10000));
-
+		percentage = (100 * this.currentTime / (this.PlayerData.RunTimeTicks / 10000));	
 		document.getElementById("guiPlayer_Info_ProgressBar_Current").style.width = percentage + "%";	
 		document.getElementById("guiPlayer_Info_Time").innerHTML = Support.convertTicksToTime(this.currentTime, (this.PlayerData.RunTimeTicks / 10000));
-	
 		//Update Server every 8 ticks (Don't want to spam!
 		if (this.updateTimeCount == 8) {
 			this.updateTimeCount = 0;
@@ -866,20 +867,14 @@ GuiPlayer.newPlaybackPosition = function(startPositionTicks) {
 	//Update URL with resumeticks
 	this.setDisplaySize();
 	var position = Math.round(startPositionTicks / 10000000);
-	if (Main.getModelYear() == "D" && this.PlayMethod != "DirectPlay") {
-		var url = this.playingURL + '&StartTimeTicks=' + (Math.round(startPositionTicks)) + '|COMPONENT=HLS';						
-	    this.plugin.ResumePlay(url,0); //0 as if transcoding the transcode will start from the supplied starttimeticks
-	    this.updateSubtitleTime(startPositionTicks / 10000,"NewSubs");
+	var url = this.playingURL + '&StartTimeTicks=' + (Math.round(startPositionTicks));
+	
+	if (this.PlayMethod == "Transcode") {
+		this.plugin.ResumePlay(url,0); //0 as if transcoding the transcode will start from the supplied starttimeticks
 	} else {
-		var url = this.playingURL + '&StartTimeTicks=' + (Math.round(startPositionTicks));
-		
-		if (this.PlayMethod == "Transcode") {
-			this.plugin.ResumePlay(url,0); //0 as if transcoding the transcode will start from the supplied starttimeticks
-		} else {
-			this.plugin.ResumePlay(url,position); 
-		}    
-	    this.updateSubtitleTime(startPositionTicks / 10000,"NewSubs");
-	}
+		this.plugin.ResumePlay(url,position); 
+	}    
+    this.updateSubtitleTime(startPositionTicks / 10000,"NewSubs");
 };
 
 GuiPlayer.newSubtitleIndex = function (newSubtitleIndex) {

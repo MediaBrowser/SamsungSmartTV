@@ -75,7 +75,17 @@ input[type="password"]
     left:0px;
     height:100%;
     width:100%;
-    background-color:rgba(10,10,10,0.65);
+    background-color:rgba(10,10,10,0.45);
+    z-index:1;
+}
+
+.itemBackgroundFade{
+	position:absolute;
+    top:0px;
+    left:0px;
+    height:100%;
+    width:100%;
+    background-color:rgba(10,10,10,0.3);
     z-index:4;
 }
 
@@ -1028,12 +1038,12 @@ input[type="password"]
 
 .Selected {
 	-webkit-transform: scale(1.15);
-	transform: scale(1.15);
+	transform: scale(1.2);
 }
 
 .seriesSelected {
 	-webkit-transform: scale(1.25);
-	transform: scale(1.25);
+	transform: scale(1.3);
 }
 
 .SelectedButton {
