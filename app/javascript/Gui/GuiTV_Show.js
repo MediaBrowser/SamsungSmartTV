@@ -67,7 +67,7 @@ GuiTV_Show.start = function(title,url,selectedItem,topLeftItem) {
 			
 			//Load Background
 			if (this.ShowData.BackdropImageTags.length > 0){
-				var imgsrc = Server.getBackgroundImageURL(this.ShowData.Id,"Backdrop",Main.width,Main.height,0,false,0,this.ShowData.BackdropImageTags.length);
+				var imgsrc = Server.getBackgroundImageURL(this.ShowData.Id,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,this.ShowData.BackdropImageTags.length);
 				Support.fadeImage(imgsrc);
 			}
 			

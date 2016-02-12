@@ -152,7 +152,7 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem) {
 		//Set Backdrop
 		this.backdropTimeout = setTimeout(function(){
 			if (GuiPage_ItemDetails.ItemData.ParentBackdropImageTags) {
-				var imgsrc = Server.getBackgroundImageURL(GuiPage_ItemDetails.ItemData.ParentBackdropItemId,"Backdrop",Main.width,Main.height,0,false,0,GuiPage_ItemDetails.ItemData.ParentBackdropImageTags.length);
+				var imgsrc = Server.getBackgroundImageURL(GuiPage_ItemDetails.ItemData.ParentBackdropItemId,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,GuiPage_ItemDetails.ItemData.ParentBackdropImageTags.length);
 				Support.fadeImage(imgsrc);		
 			}	
 		}, 1000);
@@ -219,7 +219,7 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem) {
 		//Set Film Backdrop
 		//this.backdropTimeout = setTimeout(function(){
 			if (GuiPage_ItemDetails.ItemData.BackdropImageTags.length > 0) {
-				var imgsrc = Server.getBackgroundImageURL(GuiPage_ItemDetails.ItemData.Id,"Backdrop",Main.width,Main.height,0,false,0,GuiPage_ItemDetails.ItemData.BackdropImageTags.length);
+				var imgsrc = Server.getBackgroundImageURL(GuiPage_ItemDetails.ItemData.Id,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,GuiPage_ItemDetails.ItemData.BackdropImageTags.length);
 				Support.fadeImage(imgsrc);
 			}
 		//}, 10);

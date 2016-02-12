@@ -397,9 +397,16 @@ GuiPage_Settings.updateDisplayedItems = function() {
 			}
 			break;	
 		case "GroupMovieCollections":
-		case "HidePlayedInLatest":
 			for (var index2 = 0; index2 < this.DefaultValues.length; index2++) {
 				if (this.DefaultValues[index2] == this.ServerUserData.Configuration.GroupMoviesIntoBoxSets) {
+					Setting = this.DefaultOptions[index2];
+					break;
+				}
+			}
+			break;
+		case "HidePlayedInLatest":
+			for (var index2 = 0; index2 < this.DefaultValues.length; index2++) {
+				if (this.DefaultValues[index2] == this.ServerUserData.Configuration.HidePlayedInLatest) {
 					Setting = this.DefaultOptions[index2];
 					break;
 				}

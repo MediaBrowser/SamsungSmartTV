@@ -252,7 +252,7 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 					imgsrc = "images/collection.png";
 				}
 				//Add watched and favourite overlays.
-				htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(" +imgsrc+ ")><div class=menuProgressBar></div><div class=menuProgressBar_Current style='width:"+progress+"px;'></div>";
+				htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style='background-image:url(" +imgsrc+ ");background-size:contain'><div class=menuProgressBar></div><div class=menuProgressBar_Current style='width:"+progress+"px;'></div>";
 				if (Items[index].UserData.Played) {
 					htmlToAdd += "<div class=genreItemCount>&#10003</div>";	
 				}
@@ -304,11 +304,11 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 				var imageData = "";	
 				if (Items[index].SeriesThumbImageTag) {	
 					var imgsrc = Server.getImageURL(Items[index].SeriesId,"Thumb",Main.posterWidth,Main.posterHeight,0,Items[index].UserData.Played,0);
-					imageData = "background-image:url(" +imgsrc+ ")";
+					imageData = "'background-image:url(" +imgsrc+ ");background-size:contain'";
 					title = this.getNameFormat("", Items[index].ParentIndexNumber, Items[index].Name, Items[index].IndexNumber);
 				} else 	if (Items[index].ImageTags.Primary) {	
 					var imgsrc = Server.getImageURL(Items[index].Id,"Primary",Main.posterWidth,Main.posterHeight,0,Items[index].UserData.Played,0);	
-					imageData = "background-image:url(" +imgsrc+ ")";
+					imageData = "'background-image:url(" +imgsrc+ ");background-size:contain'";
 				} else {
 					imageData = "background-color:rgba(0,0,0,0.5)";
 				}

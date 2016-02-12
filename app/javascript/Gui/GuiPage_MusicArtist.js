@@ -183,11 +183,11 @@ GuiPage_MusicArtist.updateSelectedItems = function (bypassCounter) {
 			if (GuiPage_MusicArtist.selectedItem == currentSelectedItem) { 
 					//A movie.
 					if (GuiPage_MusicArtist.ItemData.Items[currentSelectedItem].BackdropImageTags.length > 0) { 
-						var imgsrc = Server.getBackgroundImageURL(GuiPage_MusicArtist.ItemData.Items[currentSelectedItem].Id,"Backdrop",Main.width,Main.height,0,false,0,GuiPage_MusicArtist.ItemData.Items[currentSelectedItem].BackdropImageTags.length); 
+						var imgsrc = Server.getBackgroundImageURL(GuiPage_MusicArtist.ItemData.Items[currentSelectedItem].Id,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,GuiPage_MusicArtist.ItemData.Items[currentSelectedItem].BackdropImageTags.length); 
 						Support.fadeImage(imgsrc);
 					//A music album.
 					} else if (GuiPage_MusicArtist.ItemData.Items[currentSelectedItem].ParentBackdropImageTags) { 
-						var imgsrc = Server.getBackgroundImageURL(GuiPage_MusicArtist.ItemData.Items[currentSelectedItem].ParentBackdropItemId,"Backdrop",Main.width,Main.height,0,false,0,GuiPage_MusicArtist.ItemData.Items[currentSelectedItem].ParentBackdropImageTags.length); 
+						var imgsrc = Server.getBackgroundImageURL(GuiPage_MusicArtist.ItemData.Items[currentSelectedItem].ParentBackdropItemId,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,GuiPage_MusicArtist.ItemData.Items[currentSelectedItem].ParentBackdropImageTags.length); 
 						Support.fadeImage(imgsrc); 
 					} 
 			} 

@@ -59,7 +59,7 @@ input[type="password"]
     background-repeat: no-repeat;
     background-position:center;
     background-color:rgba(59,59,59,1);
-    background-size: contain;
+    background-size:contain;
     -webkit-transition: opacity 3s ease-in-out;
     transition: opacity 3s ease-in-out;
 }
@@ -2080,6 +2080,7 @@ input[type="password"]
 	height:300px;
 	border:4px solid white;
 	border-radius:20px;
+	text-align: center;
 	background-color:rgba(0,0,0,0.9);
 	padding:20px;
 	opacity:0;
@@ -2096,7 +2097,8 @@ input[type="password"]
 	height:30px;
 	border:2px solid white;
 	border-radius:20px;
-	background-color:rgba(0,0,0,0.9);
+	text-align: center;
+	background-color:rgba(50,50,50,0.9);
 	padding:20px;
 }
 
@@ -2108,6 +2110,7 @@ input[type="password"]
 	height:30px;
 	border:2px solid white;
 	border-radius:20px;
-	background-color:rgba(0,0,0,0.9);
+	text-align: center;
+	background-color:rgba(50,50,50,0.9);
 	padding:20px;
 }

@@ -61,7 +61,7 @@ GuiDisplay_Episodes.start = function(title,url,selectedItem,topLeftItem) {
 		
 		//Set backdrop
 		if (this.ItemData.Items[0].ParentBackdropImageTags){
-			var imgsrc = Server.getBackgroundImageURL(this.ItemData.Items[0].ParentBackdropItemId,"Backdrop",Main.width,Main.height,0,false,0,this.ItemData.Items[0].ParentBackdropImageTags.length);
+			var imgsrc = Server.getBackgroundImageURL(this.ItemData.Items[0].ParentBackdropItemId,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,this.ItemData.Items[0].ParentBackdropImageTags.length);
 			Support.fadeImage(imgsrc);
 		}
 		
@@ -243,7 +243,7 @@ GuiDisplay_Episodes.updateSelectedItems = function () {
 			if (GuiDisplay_Episodes.selectedItem == currentSelectedItem) {
 				//Set Background
 				if (GuiDisplay_Episodes.ItemData.Items[currentSelectedItem].BackdropImageTags.length > 0) {
-					var imgsrc = Server.getBackgroundImageURL(GuiDisplay_Episodes.ItemData.Items[currentSelectedItem].Id,"Backdrop",Main.width,Main.height,0,false,0,GuiDisplay_Episodes.ItemData.Items[currentSelectedItem].BackdropImageTags.length);
+					var imgsrc = Server.getBackgroundImageURL(GuiDisplay_Episodes.ItemData.Items[currentSelectedItem].Id,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,GuiDisplay_Episodes.ItemData.Items[currentSelectedItem].BackdropImageTags.length);
 					Support.fadeImage(imgsrc);
 				}
 			}

@@ -74,7 +74,7 @@ GuiUsers.start = function(runAutoLogin) {
 		document.getElementById("pageContent").innerHTML = "<div style='padding-top:100px;text-align:center'>" +
 			"<div id=guiUsers_allusers></div>" +
 			"<div id='guiUsers_pwd' style='visibility:hidden'>" +
-			"<br>Password:    <input id='guiUsers_Password' type='text' size='20'/>" +
+			"<br>Password:    <input id='guiUsers_Password' type='password' size='20'/>" +
 			"<br><span id='guiUsers_rempwd'>Remember Password </span> : <span id='guiUsers_rempwdvalue'>" + this.rememberPassword + "</span>" + 
 	    	"</div><br>" +
 	    	"<div id='loginOptions' class='loginOptions'>" +
@@ -335,7 +335,7 @@ var GuiUsers_Input  = function(id) {
     }
     
     var ime = new IMEShell(id, imeReady,'en');
-    ime.setKeypadPos(680,90);
+    ime.setKeypadPos(1300,90);
         
     var installFocusKeyCallbacks = function () {
         ime.setKeyFunc(tvKey.KEY_ENTER, function (keyCode) {

@@ -46,7 +46,7 @@ GuiDisplay_Series.getMaxDisplay = function() {
 
 GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem) {	
 	alert("Page Enter : GuiDisplay_Series");
-	
+	this.onFocus();
 	//Save Start Params	
 	Support.pageLoadTimes("GuiDisplay_Series","Start",true);
 	this.startParams = [title,url];
@@ -95,6 +95,7 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem) {
 	case "Latest":
 		this.isLatest = true;
 		this.ItemData.Items = this.ItemData;
+		GuiHelper.setControlButtons(0,0,null,0,0);
 		break;
 	}
 
@@ -349,11 +350,11 @@ GuiDisplay_Series.updateSelectedItems = function () {
 			if (GuiDisplay_Series.selectedItem == currentSelectedItem) { 
 					//A movie.
 					if (GuiDisplay_Series.ItemData.Items[currentSelectedItem].BackdropImageTags.length > 0) { 
-						var imgsrc = Server.getBackgroundImageURL(GuiDisplay_Series.ItemData.Items[currentSelectedItem].Id,"Backdrop",Main.width,Main.height,0,false,0,GuiDisplay_Series.ItemData.Items[currentSelectedItem].BackdropImageTags.length); 
+						var imgsrc = Server.getBackgroundImageURL(GuiDisplay_Series.ItemData.Items[currentSelectedItem].Id,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,GuiDisplay_Series.ItemData.Items[currentSelectedItem].BackdropImageTags.length); 
 						Support.fadeImage(imgsrc);
 					//A music album.
 					} else if (GuiDisplay_Series.ItemData.Items[currentSelectedItem].ParentBackdropImageTags) { 
-						var imgsrc = Server.getBackgroundImageURL(GuiDisplay_Series.ItemData.Items[currentSelectedItem].ParentBackdropItemId,"Backdrop",Main.width,Main.height,0,false,0,GuiDisplay_Series.ItemData.Items[currentSelectedItem].ParentBackdropImageTags.length); 
+						var imgsrc = Server.getBackgroundImageURL(GuiDisplay_Series.ItemData.Items[currentSelectedItem].ParentBackdropItemId,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,GuiDisplay_Series.ItemData.Items[currentSelectedItem].ParentBackdropImageTags.length); 
 						Support.fadeImage(imgsrc); 
 					} 
 			} 
@@ -477,7 +478,9 @@ GuiDisplay_Series.keyDown = function() {
 			}
 			break;
 		case tvKey.KEY_YELLOW:
-			GuiDisplay_Series.processIndexing();
+			if (!this.isLatest){
+				GuiDisplay_Series.processIndexing();
+			}
 			break;
 		case tvKey.KEY_BLUE:	
 			GuiMusicPlayer.showMusicPlayer("GuiDisplay_Series");
