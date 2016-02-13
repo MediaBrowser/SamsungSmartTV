@@ -2009,6 +2009,7 @@ input[type="password"]
 	width:  860px;
 	background-color: #303030;
 	border: 4px solid #087B26;
+	z-index:5;
 }
 
 .playlistContainerQwerty {
@@ -2018,6 +2019,7 @@ input[type="password"]
 	width: 415px;
 	background-color: #303030;
 	border: 2px solid #087B26;
+	z-index:5;
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -2026,7 +2028,7 @@ input[type="password"]
 	position:relative;
 	margin-top:60px;
 	margin-left:160px;
-	z-inxed:5;	
+	z-index:5;	
 }
 
 .playlistTitle {

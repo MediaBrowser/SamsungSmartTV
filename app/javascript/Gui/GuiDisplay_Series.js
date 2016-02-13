@@ -44,7 +44,7 @@ GuiDisplay_Series.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
 }
 
-GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem) {	
+GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem,items) {	
 	alert("Page Enter : GuiDisplay_Series");
 	this.onFocus();
 	//Save Start Params	
@@ -59,17 +59,21 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem) {
 	this.isLatest = false;
 	this.bannerItems = [];
 	this.totalRecordCount = 0;
+	this.ItemData = items;
 	
 	//Set Display Size from User settings
 	this.MAXCOLUMNCOUNT = (File.getUserProperty("LargerView") == true) ? 7 : 9;
 	this.MAXROWCOUNT = (File.getUserProperty("LargerView") == true) ? 2 : 3;
 
-	//On show all items pages, there is no limit - For music there is due to speed!
-	if (title == "Latest Music" || title == "Recent Music" || title == "Frequent Music") {
-		this.ItemData = Server.getContent(url);
-		this.totalRecordCount = 21;
-	} else {
-		this.ItemData = Server.getContent(url + "&Limit="+File.getTVProperty("ItemPaging"));
+	//If items are passed in use those, otherwise process the url.
+	if (!this.ItemData) {
+		//On show all items pages, there is no limit - For music there is due to speed!
+		if (title == "Latest Music" || title == "Recent Music" || title == "Frequent Music") {
+			this.ItemData = Server.getContent(url);
+			this.totalRecordCount = 21;
+		} else {
+			this.ItemData = Server.getContent(url + "&Limit="+File.getTVProperty("ItemPaging"));
+		}
 	}
 	
 	if (this.ItemData == null) { return; }

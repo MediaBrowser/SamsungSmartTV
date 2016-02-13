@@ -42,7 +42,7 @@ GuiDisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 
 	//Once we've browsed the channels down to a content folder we should display them using GuiDisplay_Series.
 	if (this.ItemData.Items[0].Type == "ChannelVideoItem" || this.ItemData.Items[0].Type == "ChannelAudioItem") {
-		GuiDisplay_Series.start(title,url,selectedItem,topLeftItem);
+		GuiDisplay_Series.start(title,url,selectedItem,topLeftItem,this.ItemData);
 		return;
 	}
 
