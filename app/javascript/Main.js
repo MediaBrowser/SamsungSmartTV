@@ -4,7 +4,7 @@ var tvKey = new Common.API.TVKeyValue();
 	
 var Main =
 {
-		version : "v2.1.0g",
+		version : "v2.1.0",
 		requiredServerVersion : "3.0.5211",
 		requiredDevServerVersion : "3.0.5507.2131",
 		
@@ -21,7 +21,7 @@ var Main =
 		seriesPosterLargeWidth : 235,
 		seriesPosterLargeHeight : 350,
 		
-		forceDeleteSettings : false,
+		forceDeleteSettings : true,
 		
 		enableMusic : true,
 		enableLiveTV : false,
