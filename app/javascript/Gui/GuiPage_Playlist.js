@@ -43,19 +43,19 @@ GuiPage_Playlist.start = function(title,url,type,playlistId) { //Type is either 
 	if (this.AlbumData.Items.length > 0) {
 		//Set PageContent
 		document.getElementById("pageContent").className = "";
-		document.getElementById("pageContent").innerHTML = "<div id='guiTV_Show_Title' style='display:inline-block;font-size:1.5em;padding-top:30px;padding-left:40px'></div> \
-			   <div id='guiTV_Show_Subtitle' style='display:inline-block;font-size:1.2em;padding-left:60px'></div> \
-			   <div style='margin-top:60px;margin-left:160px;'> \
-			   <div id='GuiPage_Playlist_Globals' style='display:block;width:800px;text-align:center;'> \
-			   <div id='PlayAll' style='display:inline-block;padding:20px;'>Play All</div> \
-			   <div id='ShuffleAll' style='display:inline-block;padding:20px;'>Shuffle</div> \
-			   <div id='Delete' style='display:inline-block;padding:20px;'>Delete</div></div> \
-			<div id='GuiPage_Playlist_Options' style='padding-left:40px;'></div></div>";
+		document.getElementById("pageContent").innerHTML = "<div id='playlistTitle' class='playlistTitle'></div> \
+			   <div id='playlistSubtitle' class='playlistSubtitle'></div> \
+			   <div id='playlist' class='playlist'> \
+			   <div id='playlistGlobals' class='playlistGlobals'> \
+			   <div id='PlayAll' class='guiMusic_Global'>Play All</div> \
+			   <div id='ShuffleAll' class='guiMusic_Global'>Shuffle</div> \
+			   <div id='Delete' class='guiMusic_Global'>Delete</div></div> \
+			<div id='playlistOptions' class='playlistOptions'></div></div>";
 		document.getElementById("Counter").innerHTML = "1/" + this.topMenuItems.length;	
 				
 		//Set Page Title
-		document.getElementById("guiTV_Show_Title").innerHTML = title;	
-		document.getElementById("guiTV_Show_Subtitle").innerHTML = type + " Playlist";	
+		document.getElementById("playlistTitle").innerHTML = title;	
+		document.getElementById("playlistSubtitle").innerHTML = type + " Playlist";	
 		
 		//Get Page Items
 		this.updateDisplayedItems();
@@ -69,19 +69,19 @@ GuiPage_Playlist.start = function(title,url,type,playlistId) { //Type is either 
 		//No items in playlist
 		//Set PageContent
 		document.getElementById("pageContent").className = "";
-		document.getElementById("pageContent").innerHTML = "<div id='guiTV_Show_Title' style='display:inline-block;font-size:1.5em;padding-top:30px;padding-left:40px'></div> \
-			   <div id='guiTV_Show_Subtitle' style='display:inline-block;font-size:1.2em;padding-left:60px'></div> \
-			   <div style='margin-top:60px;margin-left:160px;'> \
-			   <div id='GuiPage_Playlist_Globals' style='display:block;width:800px;text-align:center;'> \
-			   <div id='PlayAll' style='display:inline-block;padding:20px;'>Play All</div> \
-			   <div id='ShuffleAll' style='display:inline-block;padding:20px;'>Shuffle</div> \
-			   <div id='Delete' style='display:inline-block;padding:20px;'>Delete</div></div> \
-			<div id='GuiPage_Playlist_Options' style='padding-left:40px;'>There are no items in this playlist</div></div>";
+		document.getElementById("pageContent").innerHTML = "<div id='playlistTitle' class='playlistTitle'></div> \
+			   <div id='playlistSubtitle' class='playlistSubtitle'></div> \
+			   <div id='playlist' class='playlist'> \
+			   <div id='playlistGlobals' class='playlistGlobals'> \
+			   <div id='PlayAll' class='guiMusic_Global'>Play All</div> \
+			   <div id='ShuffleAll' class='guiMusic_Global'>Shuffle</div> \
+			   <div id='Delete' class='guiMusic_Global'>Delete</div></div> \
+			<div id='playlistOptions' class='playlistOptions'>There are no items in this playlist</div></div>";
 		document.getElementById("Counter").innerHTML = "0/0";	
 				
 		//Set Page Title
-		document.getElementById("guiTV_Show_Title").innerHTML = title;	
-		document.getElementById("guiTV_Show_Subtitle").innerHTML = type + " Playlist";	
+		document.getElementById("playlistTitle").innerHTML = title;	
+		document.getElementById("playlistSubtitle").innerHTML = type + " Playlist";	
 
 		//Update Selected Item
 		this.updateSelectedItems();
@@ -126,39 +126,38 @@ GuiPage_Playlist.updateDisplayedItems = function() {
 			}
 		}
 	}
-	document.getElementById("GuiPage_Playlist_Options").innerHTML = htmlToAdd + "</table>";
+	document.getElementById("playlistOptions").innerHTML = htmlToAdd + "</table>";
 }
 
 //Function sets CSS Properties so show which user is selected
 GuiPage_Playlist.updateSelectedItems = function () {
-	if (this.selectedItem == -1) {	
-		//Sets Correct Item To Green
+	if (this.selectedItem == -1) {		
+		//Highlight the selected global item (PlayAll, Shuffle etc.)
 		for (var index = 0; index < this.topMenuItems.length; index++) {
 			if (index == this.selectedItem2) {
-				document.getElementById(this.topMenuItems[index]).style.color = "#27a436";
+				document.getElementById(this.topMenuItems[index]).className = "guiMusic_Global SelectedButton";
 			} else {
-				document.getElementById(this.topMenuItems[index]).style.color = "white";
+				document.getElementById(this.topMenuItems[index]).className = "guiMusic_Global";
 			}
 		}		
 	} else {
-		//Resets original Item to White
+		//Reset the global items.
 		for (var index = 0; index < this.topMenuItems.length; index++) {
-			document.getElementById(this.topMenuItems[index]).style.color = "white";
+			document.getElementById(this.topMenuItems[index]).className = "guiMusic_Global";
 		}
 		
-		//Finds correct items to set Red / Green
+		//Highlight the selected list item.
 		for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.AlbumData.Items.length); index++){	
 			if (index == this.selectedItem) {
-				document.getElementById(this.AlbumData.Items[index].Id).style.color = "green";
 				for (var index2 = 0; index2 < this.playItems.length; index2++) {
 					if (index2 == this.selectedItem2) {
-						document.getElementById(this.playItems[index2]+this.AlbumData.Items[index].Id).className = "guiMusic_TableTd red";
+						document.getElementById(this.playItems[index2]+this.AlbumData.Items[index].Id).className = "guiMusic_TableTd SelectedButton";
 					} else {
 						document.getElementById(this.playItems[index2]+this.AlbumData.Items[index].Id).className = "guiMusic_TableTd";
 					}
 				}
 			} else {
-				document.getElementById(this.AlbumData.Items[index].Id).style.color = "white";
+				document.getElementById(this.AlbumData.Items[index].Id).className = "guiMusic_TableTd";
 				for (var index2 = 0; index2 < this.playItems.length; index2++) {
 					document.getElementById(this.playItems[index2]+this.AlbumData.Items[index].Id).className = "guiMusic_TableTd";
 				}
@@ -252,7 +251,7 @@ GuiPage_Playlist.openMenu = function() {
 	if (this.selectedItem == -1) {
 		GuiMainMenu.requested("GuiPage_Playlist",this.topMenuItems[this.selectedItem],"guiMusic_Global green");
 	} else {
-		GuiMainMenu.requested("GuiPage_Playlist",this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"guiMusic_TableTd green");
+		GuiMainMenu.requested("GuiPage_Playlist",this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"guiMusic_TableTd SelectedButton");
 	}
 }
 

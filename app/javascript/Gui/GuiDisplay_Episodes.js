@@ -61,7 +61,7 @@ GuiDisplay_Episodes.start = function(title,url,selectedItem,topLeftItem) {
 		
 		//Set backdrop
 		if (this.ItemData.Items[0].ParentBackdropImageTags){
-			var imgsrc = Server.getBackgroundImageURL(this.ItemData.Items[0].ParentBackdropItemId,"Backdrop",Main.width,Main.height,0,false,0,this.ItemData.Items[0].ParentBackdropImageTags.length);
+			var imgsrc = Server.getBackgroundImageURL(this.ItemData.Items[0].ParentBackdropItemId,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,this.ItemData.Items[0].ParentBackdropImageTags.length);
 			Support.fadeImage(imgsrc);
 		}
 		
@@ -157,10 +157,6 @@ GuiDisplay_Episodes.updateDisplayedItems = function() {
 	}
 }
 
-GuiDisplay_Episodes.updateOneDisplayedItem = function() {
-	Support.updateOneDisplayedItem(this.ItemData.Items[this.selectedItem],"",this.isResume,this.genreType,false,"GuiDisplay_Episodes",false);
-}
-
 //Function sets CSS Properties so show which user is selected
 GuiDisplay_Episodes.updateSelectedItems = function () {
 	Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
@@ -197,7 +193,7 @@ GuiDisplay_Episodes.updateSelectedItems = function () {
 	    	} else {
 	    		starsImage = "images/star_full-46x40.png";
 	    	}
-	    	htmlSubData += "<td class=MetadataItemVSmall style=background-image:url("+starsImage+")></td>";
+	    	htmlSubData += "<td class=MetadataItemIcon style=background-image:url("+starsImage+")></td>";
 	    	htmlSubData += "<td class=MetadataItemVSmall>" + stars + "</td>";
 		}
 		if (this.ItemData.Items[this.selectedItem].PremiereDate !== undefined) {
@@ -211,7 +207,7 @@ GuiDisplay_Episodes.updateSelectedItems = function () {
 		}
 		
 		if (this.ItemData.Items[this.selectedItem].HasSubtitles) {
-			htmlSubData += "<td class=MetadataItemVSmall style=background-image:url(images/cc-50x40.png)></td>";
+			htmlSubData += "<td class=MetadataItemIcon style=background-image:url(images/cc-50x40.png)></td>";
 		}
 		
 		htmlSubData += "</tr></table>";
@@ -247,7 +243,7 @@ GuiDisplay_Episodes.updateSelectedItems = function () {
 			if (GuiDisplay_Episodes.selectedItem == currentSelectedItem) {
 				//Set Background
 				if (GuiDisplay_Episodes.ItemData.Items[currentSelectedItem].BackdropImageTags.length > 0) {
-					var imgsrc = Server.getBackgroundImageURL(GuiDisplay_Episodes.ItemData.Items[currentSelectedItem].Id,"Backdrop",Main.width,Main.height,0,false,0,GuiDisplay_Episodes.ItemData.Items[currentSelectedItem].BackdropImageTags.length);
+					var imgsrc = Server.getBackgroundImageURL(GuiDisplay_Episodes.ItemData.Items[currentSelectedItem].Id,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,GuiDisplay_Episodes.ItemData.Items[currentSelectedItem].BackdropImageTags.length);
 					Support.fadeImage(imgsrc);
 				}
 			}
@@ -346,7 +342,8 @@ GuiDisplay_Episodes.keyDown = function() {
 						Server.setWatchedStatus(this.ItemData.Items[this.selectedItem].Id);
 						this.ItemData.Items[this.selectedItem].UserData.Played = true
 					}
-					Support.updateOneDisplayedItem(this.ItemData.Items[this.selectedItem],"",this.isResume,this.genreType,false,"GuiDisplay_Episodes",false);
+					this.updateDisplayedItems();
+					this.updateSelectedItems();
 				}
 			}
 			break;
@@ -360,7 +357,8 @@ GuiDisplay_Episodes.keyDown = function() {
 					Server.setFavourite(this.ItemData.Items[this.selectedItem].Id);
 					this.ItemData.Items[this.selectedItem].UserData.IsFavorite = true;
 				}
-				Support.updateOneDisplayedItem(this.ItemData.Items[this.selectedItem],"",this.isResume,this.genreType,false,"GuiDisplay_Episodes",false);
+				this.updateDisplayedItems();
+				this.updateSelectedItems();
 			}
 			break;		
 		case tvKey.KEY_BLUE:	

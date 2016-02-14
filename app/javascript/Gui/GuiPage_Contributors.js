@@ -1,6 +1,6 @@
 var GuiPage_Contributors = {
 		MainDevs : ["ChessDragon136","cmcg"],
-		ContribDevs : ["Cragjagged","DrWatson","im85288"],
+		ContribDevs : ["Cragjagged","DrWatson","im85288","arcticwaters"],
 		DonateSupport : ["c0m3r","Cbers","crashkelly","DaN","FrostByte","gbone8106","ginganinja","grimfandango","SamES","fc7","shorty1483","paulsalter","fluffykiwi","oleg","MongooseMan","SilentAssassin","gogreenpower","Ultroman","Spaceboy","JeremyG","strugglez"]
 }
 

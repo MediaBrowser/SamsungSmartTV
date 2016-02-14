@@ -28,6 +28,7 @@
 		<script src="app/javascript/Support/Sha1.js"></script>
 		<script src="app/javascript/Support/GuiHelper.js"></script>
 		<script src="app/javascript/Support/GuiNotifications.js"></script>
+		<script src="app/javascript/Support/polyfill.js"></script>
 		<script src="app/javascript/Support/ServerVersion.js"></script>
 		<script src="app/javascript/Support/srt-parser.js"></script>
 		<script src="app/javascript/Gui/GuiPage_NewServer.js"></script>
@@ -66,7 +67,7 @@
 		<script src="app/javascript/Gui/GuiPage_Playlist.js"></script>
 		<script src="app/javascript/Gui/GuiPage_AddToPlaylist.js"></script>
 		<script src="app/javascript/Gui/GuiPage_Search.js"></script>
-		<script src="app/javascript/Support/polyfill.js"></script>
+		<script src="app/javascript/Gui/GuiPage_TvChannel.js"></script>
 		
 		<object id="pluginPlayer" border=0 classid="clsid:SAMSUNG-INFOLINK-PLAYER"></object>
         <object id="pluginObjectAudio" border=0 classid="clsid:SAMSUNG-INFOLINK-AUDIO"></object>
@@ -75,7 +76,6 @@
         <object id="pluginObjectTVMW" border=0 classid="clsid:SAMSUNG-INFOLINK-TVMW"></object>
         <object id="pluginObjectNNavi" border=0 classid="clsid:SAMSUNG-INFOLINK-NNAVI"></object>
         <object id="pluginObjectTV" border=0 classid="clsid:SAMSUNG-INFOLINK-TV"></object> 
-
 	</head>
 
 	<body onload="Main.onLoad();" onunload="Main.onUnload();">
@@ -129,6 +129,7 @@
 		<a href="javascript:void(0);" id="GuiPage_Playlist" onkeydown="GuiPage_Playlist.keyDown();"></a>
 		<a href="javascript:void(0);" id="GuiPage_AddToPlaylist" onkeydown="GuiPage_AddToPlaylist.keyDown();" onfocus="GuiPage_AddToPlaylist.onFocus();"></a>
 		<a href="javascript:void(0);" id="GuiPage_Search" onkeydown="GuiPage_Search.keyDown();" onfocus="GuiPage_Search.onFocus();"></a>
+		<a href="javascript:void(0);" id="GuiPage_TvChannel" onkeydown="GuiPage_TvChannel.keyDown();" onfocus="GuiPage_TvChannel.onFocus();"></a>
 
 		<!-- IME (on-screen keypad) loader has to be in the body. -->
         <script src="$MANAGER_WIDGET/Common/IME/ime2.js"></script>
@@ -150,8 +151,9 @@
 			
 			<!-- Background image -->
 			<div id="pageBackgroundHolder" class="pageBackground"></div>
-			<div id="pageBackground" style = "display:none" class="pageBackground"></div>
+			<div id="pageBackground" class="pageBackground"></div>
 			<div id="pageBackgroundFade" class="pageBackgroundFade"></div>
+			<div id="itemBackgroundFade" class="itemBackgroundFade"></div>
 			
 			<!-- Main page content -->
 			<div id="page" class="page">
@@ -171,6 +173,8 @@
 				 <form style="padding-top:20px;padding-left:80px;"><input id="guiPlayListNew" style="z-index:10;" type="text" size="45" value=""/></form>
 				 <div id="guiPlayListResult"></div>
 				</div>
+				
+				<div id="guiDisplay_SeriesIndexing" class="guiDisplay_SeriesIndexing" style="opacity:0"></div>
 				
 				<!--  Music Player -->
 				<div id="guiMusicPlayerDiv" class="guiMusicPlayerDiv" style="visibility:hidden">
@@ -196,6 +200,13 @@
 				<div id="guiYellowButton" class="YellowButton" style="visibility:hidden"></div>
 				<div id="guiBlueButton" class="BlueButton" style="visibility:hidden"></div>
 				<div id="guiReturnButton" class="ReturnButton" style="visibility:hidden"></div>	
+				
+				<div id="exitConfirm" class="exitConfirm">Are you sure you want exit Emby?
+					<div id="exitConfirmYes" class="exitConfirmYes">Yes</div>
+					<div id="exitConfirmNo" class="exitConfirmNo">No</div>
+				</div>	
+
+				<div id="guiLoading" class="videoLoading" style="visibility:hidden">Loading</div>
 				
 			</div>	
 			<!-- MUST KEEP OUTSIDE OF page div else its hidden during video playback -->	
@@ -238,8 +249,10 @@
 	
 			<!--  Menu -->
 			<div id="menu" class="menu" style="visibility:hidden">
-				<div id="menuUserImage" class="menu-userImage"></div>
-				<div id="menuUserName" class="menu-userName"></div>
+				<div id="menuUserImageContainer" class="menu-UserImageContainer">
+					<div id="menuUserImage" class="menu-userImage"></div>
+				</div>
+				<div id="menuUserName" class="menu-userName"></div> 
 				<div id="menuItems"></div>	
 				<div id="menuVersion" class="menu-version"></div>	  
 			</div>

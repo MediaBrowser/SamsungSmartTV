@@ -66,7 +66,7 @@ GuiPage_HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 		}
 		
 		//Set page content
-		document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div><div id=Center class='HomeOneCenter'><p id='title' style='font-size:1.4em'>"+title+"</p><div id=Content></div></div>";			
+		document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div><div id=Center class='HomeOneCenter'><p id='title' style='position:relative;font-size:1.4em;z-index:5;'>"+title+"</p><div id=Content></div></div>";			
 
 		//Set isResume based on title - used in UpdateDisplayedItems
 		this.isResume = (title == "Resume" ||  title == "Continue Watching" ) ? true : false;
@@ -90,33 +90,37 @@ GuiPage_HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 	
 		//Display first XX series
 		this.updateDisplayedItems();
-			
-		//Update Selected Collection CSS
-		this.updateSelectedItems();	
 		
+		//Update Selected Collection CSS
+		this.updateSelectedItems();
+
 		//Function to generate random backdrop
-/*		this.backdropTimeout = setTimeout(function(){
+		this.backdropTimeout = setTimeout(function(){
 			var randomImageURL = Server.getItemTypeURL("&SortBy=Random&IncludeItemTypes=Series,Movie&Recursive=true&CollapseBoxSetItems=false&Limit=20");
 			var randomImageData = Server.getContent(randomImageURL);
 			if (randomImageData == null) { return; }
 			
 			for (var index = 0; index < randomImageData.Items.length; index++) {
 				if (randomImageData.Items[index ].BackdropImageTags.length > 0) {
-					var imgsrc = Server.getBackgroundImageURL(randomImageData.Items[index ].Id,"Backdrop",Main.width,Main.height,0,false,0,randomImageData.Items[index ].BackdropImageTags.length);
+					var imgsrc = Server.getBackgroundImageURL(randomImageData.Items[index ].Id,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,randomImageData.Items[index ].BackdropImageTags.length);
 					Support.fadeImage(imgsrc);
 					break;
 				}
 			}
-		}, 500);*/
+		}, 500);
 		
 		//Set Focus for Key Events
 		document.getElementById("GuiPage_HomeOneItem").focus();
+		
 	} else {
 		//Set message to user
 		document.getElementById("pageContent").innerHTML = "<p id='title' class=pageTitle>"+title+"</p><div id=Content></div></div>";
 		document.getElementById("Counter").innerHTML = "";
 		document.getElementById("title").innerHTML = "Sorry";
 		document.getElementById("Content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid";
+		
+		//Set Background
+		Support.fadeImage("images/bg1.jpg"); 
 		
 		//As no content focus on menu bar and null null means user can't return off the menu bar
 		GuiMainMenu.requested(null,null);
@@ -302,7 +306,7 @@ GuiPage_HomeOneItem.processLeftKey = function() {
 		} else {
 			this.updateSelectedBannerItems();	
 		}
-	} else if (Support.isPower(this.selectedItem, this.MAXCOLUMNCOUNT)){
+	} else if (this.selectedItem % this.MAXCOLUMNCOUNT == 0){
 			this.openMenu(); //Going left from anywhere in the first column.
 	} else {
 		this.selectedItem--;

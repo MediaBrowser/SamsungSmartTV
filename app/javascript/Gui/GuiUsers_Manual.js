@@ -80,19 +80,7 @@ var GuiUsers_Manual_Input  = function(id) {
     
     var ime = new IMEShell(id, imeReady,'num');
     ime.setKeypadPos(1300,90);
-/*	ime.setKeypadChangeFunc('qwerty',onSwitchToQwerty);
-	ime.setKeypadChangeFunc('12key',onSwitchTo12key);
-	
-	function onSwitchToQwerty(arg){
-		alert("IME selected:"+arg);
-		document.getElementById("pageContent").className = "GuiPage_NewServerQwerty";
-	}
-	
-	function onSwitchTo12key(arg){
-		alert("IME selected:"+arg);
-		document.getElementById("pageContent").className = "GuiPage_NewServer12key";
-	}*/
-           
+  
     var installFocusKeyCallbacks = function () {
         ime.setKeyFunc(tvKey.KEY_ENTER, function (keyCode) {
             alert("Enter key pressed");  

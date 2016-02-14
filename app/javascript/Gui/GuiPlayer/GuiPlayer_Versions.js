@@ -38,7 +38,10 @@ GuiPlayer_Versions.start = function(playerData,resumeTicks,playedFromPage) {
 	//Check if HTTP
 	if (this.PlayerData.MediaSources[0].Protocol.toLowerCase() == "http") {
 		FileLog.write("Video : Is HTTP : Generate URL Directly");	
-		var streamparams = '/Stream.ts?VideoCodec=h264&Profile=high&Level=41&MaxVideoBitDepth=8&MaxWidth=1280&VideoBitrate=10000000&AudioCodec=aac&audioBitrate=360000&MaxAudioChannels=6&MediaSourceId='+this.PlayerData.MediaSources[0].Id + '&api_key=' + Server.getAuthToken();	
+		
+		var audioCodec = (File.getTVProperty("Dolby") && File.getTVProperty("AACtoDolby")) ? "ac3" : "aac";
+		
+		var streamparams = '/Stream.ts?VideoCodec=h264&Profile=high&Level=41&MaxVideoBitDepth=8&MaxWidth=1280&VideoBitrate=10000000&AudioCodec='+audioCodec+'&audioBitrate=360000&MaxAudioChannels=6&MediaSourceId='+this.PlayerData.MediaSources[0].Id + '&api_key=' + Server.getAuthToken();	
 		var url = Server.getServerAddr() + '/Videos/' + this.PlayerData.Id + streamparams + '&DeviceId='+Server.getDeviceID();
 		var httpPlayback = [0,url,"Transcode",-1,-1,-1];
 		GuiPlayer.startPlayback(httpPlayback,resumeTicks);

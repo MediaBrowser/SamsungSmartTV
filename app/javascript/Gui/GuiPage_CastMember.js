@@ -117,20 +117,20 @@ GuiPage_CastMember.updateSelectedItems = function () {
 			switch (this.ItemData.Items[index].Type) {
 			case "Episode":
 				if (this.ItemData.Items[index].ParentBackdropItemId) {
-					var imgsrc = Server.getBackgroundImageURL(this.ItemData.Items[index].ParentBackdropItemId,"Backdrop",Main.width,Main.height,0,false,0,this.ItemData.Items[index].ParentBackdropImageTags.length);
+					var imgsrc = Server.getBackgroundImageURL(this.ItemData.Items[index].ParentBackdropItemId,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,this.ItemData.Items[index].ParentBackdropImageTags.length);
 					Support.fadeImage(imgsrc);
 				}
 				break;
 			case "Movie":	
 			case "Series":
 				if (this.ItemData.Items[index].BackdropImageTags.length > 0) {
-					var imgsrc = Server.getBackgroundImageURL(this.ItemData.Items[index].Id,"Backdrop",Main.width,Main.height,0,false,0,this.ItemData.Items[index].BackdropImageTags.length);
+					var imgsrc = Server.getBackgroundImageURL(this.ItemData.Items[index].Id,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,this.ItemData.Items[index].BackdropImageTags.length);
 					Support.fadeImage(imgsrc);
 				}
 				break;
 			case "Photo":
 				if (this.ItemData.Items[index].ImageTags.Primary.length > 0) {
-					var imgsrc = Server.getImageURL(this.ItemData.Items[index].Id,"Primary",Main.width,Main.height,0,false,0);
+					var imgsrc = Server.getImageURL(this.ItemData.Items[index].Id,"Primary",Main.backdropWidth,Main.backdropHeight,0,false,0);
 					Support.fadeImage(imgsrc);
 				}
 				break;
