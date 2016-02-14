@@ -29,9 +29,9 @@ var GuiPage_Settings = {
 		TVSettingsName : ["Max Bitrate: ","Enable Dolby Digital Playback: ","Enable DTS Playback: ","Enable AAC Transcoding to Dolby: ","Item Paging: ","Clock Offset: "],
 		TVSettingsDefaults : [60,false,false,false,150,0],
 		
-		ServerSettings : ["DisplayMissingEpisodes","DisplayUnairedEpisodes","GroupMovieCollections","DefaultAudioLang","PlayDefaultAudioTrack","DefaultSubtitleLang", "SubtitleMode", "HidePlayedInLatest"],
-		ServerSettingsName : ["Display Missing Episodes: ", "Display Unaired Episodes: ","Group Movies into Collections: ","Default Audio Language: ","Play default audio track regardless of language: ", "Default Subtitle Language: ","Subtitle Mode:","Hide watched content from latest media:"], 
-		ServerSettingsDefaults : [false,false,false,"",true,"","default",false], //Not actually Used but implemented for clean code!!! Values read from Server so no default needed!
+		ServerSettings : ["DisplayMissingEpisodes","DisplayUnairedEpisodes","GroupMovieCollections","DefaultAudioLang","PlayDefaultAudioTrack","DefaultSubtitleLang", "SubtitleMode", "HidePlayedInLatest", "EnableCinemaMode"],
+		ServerSettingsName : ["Display Missing Episodes: ", "Display Unaired Episodes: ","Group Movies into Collections: ","Default Audio Language: ","Play default audio track regardless of language: ", "Default Subtitle Language: ","Subtitle Mode:","Hide watched content from latest media:","Enable cinema mode: "], 
+		ServerSettingsDefaults : [false,false,false,"",true,"","default",false,false], //Not actually Used but implemented for clean code!!! Values read from Server so no default needed!
 		
 		//Per Setting Options & Values
 		DefaultOptions : ["True","False"],
@@ -412,6 +412,14 @@ GuiPage_Settings.updateDisplayedItems = function() {
 				}
 			}
 			break;	
+		case "EnableCinemaMode":
+			for (var index2 = 0; index2 < this.DefaultValues.length; index2++) {
+				if (this.DefaultValues[index2] == this.ServerUserData.Configuration.EnableCinemaMode) {
+					Setting = this.DefaultOptions[index2];
+					break;
+				}
+			}
+			break;	
 		}
 		htmlToAdd += "<tr class=guiSettingsRow><td id="+index+">" + this.currentViewSettingsName[index] + "</td><td id=Value"+index+" class='guiSettingsTD'>"+Setting+"</td></tr>";
 	}
@@ -534,6 +542,7 @@ GuiPage_Settings.processSelectedItem = function() {
 		case "LargerView":
 		case "ForgetSavedPassword":
 		case "HidePlayedInLatest":
+		case "EnableCinemaMode":
 			this.CurrentSubSettings = this.DefaultOptions;
 			break;
 		case "View1":
@@ -896,6 +905,13 @@ GuiPage_Settings.processSelectedSubItem = function() {
 		//Update Server	
 		Server.updateUserConfiguration(JSON.stringify(this.ServerUserData.Configuration));
 		break;
+	case "EnableCinemaMode":
+		this.ServerUserData.Configuration.EnableCinemaMode = this.DefaultValues[this.selectedSubItem];
+		this.CurrentSettingValue = this.DefaultOptions[this.selectedSubItem];
+				
+		//Update Server	
+		Server.updateUserConfiguration(JSON.stringify(this.ServerUserData.Configuration));
+		break;
 	}
 		
 	switch (this.currentView) {
@@ -1124,6 +1140,10 @@ GuiPage_Settings.setOverview = function() {
 		case "HidePlayedInLatest":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Hide watched content from latest media";
 			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Watched items will not appear in the Latest TV or Latest Movies home views or pages.<br><br>This is a server option and will affect your Emby experience on all clients";
+			break;
+		case "EnableCinemaMode":
+			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Enable cinema mode";
+			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Cinema mode brings the theater experience straight to your living room with the ability to play trailers and custom intros before the main feature.<br><br>This is a server option and will affect your Emby experience on all clients";
 			break;
 		case "DisplayMissingEpisodes":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Display Missing Episodes within Seasons";

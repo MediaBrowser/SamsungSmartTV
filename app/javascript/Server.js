@@ -103,6 +103,10 @@ Server.getItemInfoURL = function(ParentID, SortParams) {
 	}		
 }
 
+Server.getItemIntrosUrl = function(itemId, SortParams) {
+	return  Server.getServerAddr() + "/Users/" + Server.getUserID() + "/Items/"+itemId+"/Intros"; //?format=json";
+}
+
 Server.getSearchURL = function(searchTermString) {
 	var parsedSearchTermString = Support.parseSearchTerm(searchTermString);
 	return Server.getServerAddr() + "/Search/Hints?format=json&UserId=" + Server.getUserID() + "&SearchTerm=" + parsedSearchTermString;

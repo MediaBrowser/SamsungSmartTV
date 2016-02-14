@@ -60,13 +60,13 @@ GuiPlayer.init = function() {
     this.plugin.SetTotalBufferSize(40*1024*1024);
 };
 
-GuiPlayer.start = function(title,url,startingPlaybackTick,playedFromPage) { 
+GuiPlayer.start = function(title,url,startingPlaybackTick,playedFromPage,isCinemaMode,featureUrl) { 
 	if (GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED") {
 		GuiMusicPlayer.stopPlayback();
 	}
 	
 	//Run only once in loading initial request - subsequent vids should go thru the startPlayback
-	this.startParams = [title,url,startingPlaybackTick,playedFromPage];
+	this.startParams = [title,url,startingPlaybackTick,playedFromPage,isCinemaMode,featureUrl];
 	
 	//Display Loading 
 	document.getElementById("guiPlayer_Loading").style.visibility = "";
@@ -80,12 +80,29 @@ GuiPlayer.start = function(title,url,startingPlaybackTick,playedFromPage) {
     	if (this.VideoData.TotalRecordCount == 0) {
     		return;
     	}
+    	if (this.startParams[4] === true && this.startParams[5] != null) {
+    		//We are in Cinema Mode. Add the main feature to the end of the intros playlist.
+    		this.featureData = Server.getContent(this.startParams[5]);
+    		this.VideoData.Items.push(this.featureData);
+    	}
     	this.PlayerData = this.VideoData.Items[this.PlayerIndex];
     } else {
     	if (this.VideoData.LocationType == "Virtual") {
     		return
     	}
-    	this.PlayerData = this.VideoData;
+    	//Enter Cinema Mode?
+    	var userDataUrl = Server.getServerAddr() + "/Users/" + Server.getUserID() + "?format=json";
+    	var userData = Server.getContent(userDataUrl);
+    	var introsUrl = Server.getItemIntrosUrl(this.VideoData.Id);
+    	var intros = Server.getContent(introsUrl);
+    	if (userData.Configuration.EnableCinemaMode === true && intros.TotalRecordCount > 0) {
+    		FileLog.write("Playback: Switching to Cinema Mode.");
+    		//Start again in Cinema Mode.
+    		GuiPlayer.start("PlayAll",introsUrl,0,"GuiPage_ItemDetails",true,this.startParams[1]);
+    		return;
+    	} else {
+    		this.PlayerData = this.VideoData;
+    	}
     }
 
     //Take focus to no input
