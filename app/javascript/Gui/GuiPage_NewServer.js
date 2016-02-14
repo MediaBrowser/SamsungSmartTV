@@ -23,9 +23,8 @@ GuiPage_NewServer.start = function() {
 		</div>";
 	
 	//Set Backdrop
-	if (document.getElementById("splashscreen").style.visibility != "hidden") {
-		document.getElementById("splashscreen").style.visibility="hidden";
-	}
+	Support.fadeImage("images/bg1.jpg");
+	document.getElementById("splashscreen").style.opacity=0;
 
 	//Prepare all input elements for IME
 	GuiPage_NewServer.createInputObjects();

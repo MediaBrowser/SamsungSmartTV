@@ -29,18 +29,14 @@ GuiMainMenu.start = function() {
 	this.menuItems = Support.generateMainMenu();
 	
 	//Get user details.
-	//document.getElementById("menuUserName").innerHTML = Server.getUserName();
-	alert(this.menuItems.length);
-	if (this.menuItems.length < 10){
-		document.getElementById("menuUserName").innerHTML = "<br>";
-	}
-	document.getElementById("menuUserName").style.visibility = "";
+	//document.getElementById("menuUserName").innerHTML = "<br>"+Server.getUserName()+"<br><br>";
 	var userURL = Server.getServerAddr() + "/Users/" + Server.getUserID() + "?format=json&Fields=PrimaryImageTag";
 	var UserData = Server.getContent(userURL);
 	if (UserData == null) { return; }
 	
+	//User Image
 	if (UserData.PrimaryImageTag) {
-		var imgsrc = Server.getImageURL(UserData.Id,"UsersPrimary",120,120,0,false,0);
+		var imgsrc = Server.getImageURL(UserData.Id,"UsersPrimary",70,70,0,false,0);
 		document.getElementById("menuUserImage").style.backgroundImage = "url(" + imgsrc + ")";	
 	} else {
 		document.getElementById("menuUserImage").style.backgroundImage = "url(images/loginusernoimage.png)";
@@ -62,21 +58,6 @@ GuiMainMenu.start = function() {
 	this.menuItems.push("Log-Out");
 	htmlToAdd += "<div id=Log-Out class='menu-item'><div id='menu-Icon' class='menu-icon' style='background-image:url(images/menu/Logout-46x37.png)'></div>Log Out</div>";	
 	document.getElementById("menuItems").innerHTML += htmlToAdd;
-	
-	//Function to generate random backdrop
-	this.backdropTimeout = setTimeout(function(){
-		var randomImageURL = Server.getItemTypeURL("&SortBy=Random&IncludeItemTypes=Series,Movie&Recursive=true&CollapseBoxSetItems=false&Limit=20");
-		var randomImageData = Server.getContent(randomImageURL);
-		if (randomImageData == null) { return; }
-		
-		for (var index = 0; index < randomImageData.Items.length; index++) {
-			if (randomImageData.Items[index ].BackdropImageTags.length > 0) {
-				var imgsrc = Server.getBackgroundImageURL(randomImageData.Items[index ].Id,"Backdrop",Main.width,Main.height,0,false,0,randomImageData.Items[index ].BackdropImageTags.length);
-				Support.fadeImage(imgsrc);
-				break;
-			}
-		}
-	}, 500);
 	
 	//Turn On Screensaver
 	Support.screensaverOn();
@@ -109,18 +90,9 @@ GuiMainMenu.requested = function(pageSelected, pageSelectedId, pageSelectedClass
 	}
 		
 	//Show Menu
-	$('.page').animate({
-		left: 350
-	}, 100, function() {
-		//animate complete.
-	});
 	document.getElementById("menu").style.visibility = "";
-	$('.menu').animate({
-		left: 0
-	}, 100, function() {
-		//animate complete.
-	});
-
+	document.getElementById("menu").style.left = "0px";
+	document.getElementById("page").style.left = "350px";
 
 	//Show submenu dependant on selectedMainMenuItem
 	this.updateSelectedItems();
@@ -206,39 +178,38 @@ GuiMainMenu.keyDown = function()
 }
 
 GuiMainMenu.processSelectedItems = function() {
+	
+	//Selecting home when you came from home just closes the menu.
+	if 	(this.menuItems[this.selectedMainMenuItem] == "Home" &&
+		(this.pageSelected == "GuiPage_HomeOneItem" || this.pageSelected == "GuiPage_HomeTwoItems")) {
+			this.processReturnKey();
+			return;
+	}
+	
 	//If a trailer was paused when we arrived in the menu, stop it now.
     if (GuiPage_ItemDetails.trailerState == sf.service.VideoPlayer.STATE_PAUSED) {
 	    sf.service.VideoPlayer.stop();
 	}
-	$('.menu').animate({
-		left: -350
-	}, 100, function() {
-		document.getElementById("menu").style.visibility = "hidden";
-	});
-	$('.page').animate({
-		left: 0
-	}, 100, function() {
-		//animate complete.
-	});
+
+    //Close the menu
+	document.getElementById("menu").style.visibility = "none";
+	document.getElementById("menu").style.left = "-350px";
+	document.getElementById("page").style.left = "0px";
+	
 	setTimeout(function(){
 		Support.processHomePageMenu(GuiMainMenu.menuItems[GuiMainMenu.selectedMainMenuItem]);
-	}, 310);
+	}, 200);
 }
 
 GuiMainMenu.playSelectedItem = function() {
 	//Pressing play on Photos in the main menu plays a random slideshow.
 	if (this.menuItems[this.selectedMainMenuItem] == "Photos") {
+
 		//Close the menu
-		$('.menu').animate({
-			left: -350
-		}, 100, function() {
-			document.getElementById("menu").style.visibility = "hidden";
-		});
-		$('.page').animate({
-			left: 0
-		}, 100, function() {
-			//animate complete.
-		});
+		document.getElementById("menu").style.visibility = "none";
+		document.getElementById("menu").style.left = "-350px";
+		document.getElementById("page").style.left = "0px";
+		
 		var userViews = Server.getUserViews();
 		for (var i = 0; i < userViews.Items.length; i++){
 			if (userViews.Items[i].CollectionType == "photos"){
@@ -260,17 +231,10 @@ GuiMainMenu.processReturnKey = function() {
 		this.updateSelectedItems();
 		this.selectedMainMenuItem = 0;
 		
-		//Hide Menu
-		$('.menu').animate({
-			left: -350
-		}, 100, function() {
-			document.getElementById("menu").style.visibility = "hidden";
-		});
-		$('.page').animate({
-			left: 0
-		}, 100, function() {
-			//animate complete.
-		});
+		//Close the menu
+		document.getElementById("menu").style.visibility = "none";
+		document.getElementById("menu").style.left = "-350px";
+		document.getElementById("page").style.left = "0px";
 		
 		if (this.pageSelected == "GuiMusicPlayer") {
 			GuiMusicPlayer.showMusicPlayer(this.pageSelectedId);

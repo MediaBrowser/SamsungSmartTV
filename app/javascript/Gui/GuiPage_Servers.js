@@ -31,8 +31,8 @@ GuiPage_Servers.start = function(runAutoLogin) {
 		//Change Display
 		document.getElementById("pageContent").innerHTML = "<div style='padding-top:60px;text-align:center'> \
 			<div id=GuiPage_Servers_allusers></div></div>" +
-					"<div id=GuiPage_Servers_addnew class=GuiPage_Servers_addnew>Add a New Server</div>" +
-					"<div style='text-align:center'>" +
+					"<div id=GuiPage_Servers_addnew class='GuiPage_Servers_addnew'>Add a New Server</div>" +
+					"<div style='text-align:center' class='loginOptions' >" +
 					"<p style='margin-top:15px'>Use the  <span style='color: red'>RED</span> button to set the selected server as the default auto connect server</p>" +
 					"<p>Use the <span style='color: #2ad'>BLUE</span> button to delete the selected server</p></div>";
 				

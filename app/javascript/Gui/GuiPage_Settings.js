@@ -21,17 +21,17 @@ var GuiPage_Settings = {
 		CurrentSettingValue : null,
 		
 		//Per Setting Type List of settings, names & defaults
-		Settings : ["Default","ContinueWatching","View1","View2","LargerView","AudioTheme", "SkipShow","SeasonLabel","AutoPlay","ShowDisc","SubtitleSize","SubtitleColour","ImagePlayerImageTime","ScreensaverImages","ScreensaverTimeout","ScreensaverImageTime","ForgetSavedPassword"],
-		SettingsName : ["Default User: ","Continue Watching:","Home View 1: ","Home View 2: ","Show Larger Icons: ", "Play Audio Themes: ", "Skip TV Show Page: ","Use Alternate Season Label: ","Auto Play Next Episode: ","Show Disc Art: ","Subtitle Text Size: ","Subtitle Text Colour: ","Image Player Rotate Speed: ", "Screensaver Image Source: ", "Screensaver Timeout: ", "Screensaver Rotate Speed: ", "Forget Password at Log Out:"],
-		SettingsDefaults : [false,true,"ddddd","aaaaa",false,false,false,false,false,true,"50px","white",10000,"Media",300000,10000,false],
+		Settings : ["Default","ContinueWatching","View1","View2","LargerView","AudioTheme","MusicView","SkipMusicAZ","SkipShow","SeasonLabel","AutoPlay","ShowDisc","SubtitleSize","SubtitleColour","ImagePlayerImageTime","ScreensaverImages","ScreensaverTimeout","ScreensaverImageTime","ForgetSavedPassword"],
+		SettingsName : ["Default User: ","Continue Watching:","Home View 1: ","Home View 2: ","Show Larger Icons: ", "Play Audio Themes: ", "Default Music View: ", "Skip Music A-Z: ", "Skip TV Show Page: ","Use Alternate Season Label: ","Auto Play Next Episode: ","Show Disc Art: ","Subtitle Text Size: ","Subtitle Text Colour: ","Image Player Rotate Speed: ", "Screensaver Image Source: ", "Screensaver Timeout: ", "Screensaver Rotate Speed: ", "Forget Password at Log Out:"],
+		SettingsDefaults : [false,true,"ddddd","aaaaa",false,false,"Album",false,false,false,false,true,"50px","white",10000,"Media",300000,10000,false],
 		
-		TVSettings : ["Bitrate","Dolby","DTS","AACtoDolby","TranscodeDSeries","ItemPaging","ClockOffset"],
-		TVSettingsName : ["Max Bitrate: ","Enable Dolby Digital Playback: ","Enable DTS Playback: ","Enable AAC Transcoding to Dolby: ","Enable Transcoding on D Series","Item Paging: ","Clock Offset: "],
-		TVSettingsDefaults : [60,false,false,false,false,150,0],
+		TVSettings : ["Bitrate","Dolby","DTS","AACtoDolby","ItemPaging","ClockOffset"],
+		TVSettingsName : ["Max Bitrate: ","Enable Dolby Digital Playback: ","Enable DTS Playback: ","Enable AAC Transcoding to Dolby: ","Item Paging: ","Clock Offset: "],
+		TVSettingsDefaults : [60,false,false,false,150,0],
 		
-		ServerSettings : ["DisplayMissingEpisodes","DisplayUnairedEpisodes","GroupMovieCollections","DefaultAudioLang","PlayDefaultAudioTrack","DefaultSubtitleLang", "SubtitleMode"],
-		ServerSettingsName : ["Display Missing Episodes: ", "Display Unaired Episodes: ","Group Movies into Collections: ","Default Audio Language: ","Play default audio track regardless of language: ", "Default Subtitle Language: ","Subtitle Mode:"], 
-		ServerSettingsDefaults : [false,false,false,"",true,"","default"], //Not actually Used but implemented for clean code!!! Values read from Server so no default needed!
+		ServerSettings : ["DisplayMissingEpisodes","DisplayUnairedEpisodes","GroupMovieCollections","DefaultAudioLang","PlayDefaultAudioTrack","DefaultSubtitleLang", "SubtitleMode", "HidePlayedInLatest", "EnableCinemaMode"],
+		ServerSettingsName : ["Display Missing Episodes: ", "Display Unaired Episodes: ","Group Movies into Collections: ","Default Audio Language: ","Play default audio track regardless of language: ", "Default Subtitle Language: ","Subtitle Mode:","Hide watched content from latest media:","Enable cinema mode: "], 
+		ServerSettingsDefaults : [false,false,false,"",true,"","default",false,false], //Not actually Used but implemented for clean code!!! Values read from Server so no default needed!
 		
 		//Per Setting Options & Values
 		DefaultOptions : ["True","False"],
@@ -42,6 +42,9 @@ var GuiPage_Settings = {
 		
 		View2Options : [], 
 		View2Values : [], 
+		
+		MusicViewOptions : ["Recent", "Frequent", "Album", "Album Artist", "Artist"],
+		MusicViewValues : ["Recent", "Frequent", "Album", "Album Artist", "Artist"],
 
 		TvConnectionOptions : ["120Mb/s","100Mb/s","80Mb/s","60Mb/s","40Mb/s","30Mb/s","20Mb/s","15Mb/s","10Mb/s","8Mb/s","6Mb/s","5Mb/s","4Mb/s","3Mb/s","2Mb/s","1Mb/s","0.5Mb/s"], 
 		TvConnectionValues : [120,100,80,60,40,30,20,15,10,8,6,5,4,3,2,1,0.5], 
@@ -84,7 +87,6 @@ GuiPage_Settings.getMaxDisplay = function() {
 }
 
 GuiPage_Settings.initiateViewValues = function() {
- 	//ResumeAllItemsURL = Server.getServerAddr() + "/Users/"+Server.getUserID()+"/Items?format=json&SortBy=DatePlayed&SortOrder=Descending&MediaTypes=Video&Filters=IsResumable&Limit=10&Recursive=true&Fields=PrimaryImageAspectRatio,SyncInfo&CollapseBoxSetItems=false&ExcludeLocationTypes=Virtual&ImageTypeLimit=1&EnableImageTypes=Primary,Backdrop,Banner,Thumb";
 	TVNextUp = Server.getServerAddr() + "/Shows/NextUp?format=json&UserId="+Server.getUserID()+"&IncludeItemTypes=Episode&ExcludeLocationTypes=Virtual&Limit=24&Fields=PrimaryImageAspectRatio,SeriesInfo,DateCreated,SyncInfo,SortName&ImageTypeLimit=1&EnableImageTypes=Primary,Backdrop,Banner,Thumb";
 	Favourites = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&Filters=IsFavorite&fields=SortName&recursive=true");
 	FavouriteMovies = Server.getServerAddr() + "/Users/"+Server.getUserID()+"/Items?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Movie&Filters=IsFavorite&Limit=10&Recursive=true&Fields=PrimaryImageAspectRatio,SyncInfo&CollapseBoxSetItems=false&ExcludeLocationTypes=Virtual";
@@ -227,6 +229,7 @@ GuiPage_Settings.updateDisplayedItems = function() {
 		case "ContinueWatching":
 		case "AudioTheme":
 		case "SkipShow":
+		case "SkipMusicAZ":
 		case "SeasonLabel":
 		case "AutoPlay":
 		case "ShowDisc":	
@@ -255,6 +258,15 @@ GuiPage_Settings.updateDisplayedItems = function() {
 				}
 			}
 			break;
+		
+		case "MusicView":
+			for (var index2 = 0; index2 < this.MusicViewValues.length; index2++) {
+				if (this.MusicViewValues[index2] == this.UserData[this.currentViewSettings[index]]) {
+					Setting = this.MusicViewOptions[index2];
+					break;
+				}
+			}
+			break;
 		case "SubtitleSize":
 			for (var index2 = 0; index2 < this.SubtitleSizeValues.length; index2++) {
 				if (this.SubtitleSizeValues[index2] == this.UserData[this.currentViewSettings[index]]) {
@@ -262,7 +274,7 @@ GuiPage_Settings.updateDisplayedItems = function() {
 					break;
 				}
 			}
-			break;
+			break;	
 		case "SubtitleColour":
 			for (var index2 = 0; index2 < this.SubtitleColourValues.length; index2++) {
 				if (this.SubtitleColourValues[index2] == this.UserData[this.currentViewSettings[index]]) {
@@ -306,7 +318,6 @@ GuiPage_Settings.updateDisplayedItems = function() {
 			break;
 		case "Dolby":
 		case "DTS":	
-		case "TranscodeDSeries":
 		case "AACtoDolby":	
 			for (var index2 = 0; index2 < this.DefaultValues.length; index2++) {
 				if (this.DefaultValues[index2] == this.AllData.TV[this.currentViewSettings[index]]) {
@@ -388,6 +399,22 @@ GuiPage_Settings.updateDisplayedItems = function() {
 		case "GroupMovieCollections":
 			for (var index2 = 0; index2 < this.DefaultValues.length; index2++) {
 				if (this.DefaultValues[index2] == this.ServerUserData.Configuration.GroupMoviesIntoBoxSets) {
+					Setting = this.DefaultOptions[index2];
+					break;
+				}
+			}
+			break;
+		case "HidePlayedInLatest":
+			for (var index2 = 0; index2 < this.DefaultValues.length; index2++) {
+				if (this.DefaultValues[index2] == this.ServerUserData.Configuration.HidePlayedInLatest) {
+					Setting = this.DefaultOptions[index2];
+					break;
+				}
+			}
+			break;	
+		case "EnableCinemaMode":
+			for (var index2 = 0; index2 < this.DefaultValues.length; index2++) {
+				if (this.DefaultValues[index2] == this.ServerUserData.Configuration.EnableCinemaMode) {
 					Setting = this.DefaultOptions[index2];
 					break;
 				}
@@ -501,6 +528,7 @@ GuiPage_Settings.processSelectedItem = function() {
 		case "ContinueWatching":
 		case "AudioTheme":
 		case "SkipShow":	
+		case "SkipMusicAZ":
 		case "SeasonLabel":	
 		case "AutoPlay":
 		case "Dolby":
@@ -508,12 +536,13 @@ GuiPage_Settings.processSelectedItem = function() {
 		case "DisplayMissingEpisodes":
 		case "DisplayUnairedEpisodes":	
 		case "GroupMovieCollections":
-		case "TranscodeDSeries":
 		case "PlayDefaultAudioTrack":
 		case "ShowDisc":	
 		case "AACtoDolby":	
 		case "LargerView":
 		case "ForgetSavedPassword":
+		case "HidePlayedInLatest":
+		case "EnableCinemaMode":
 			this.CurrentSubSettings = this.DefaultOptions;
 			break;
 		case "View1":
@@ -521,6 +550,9 @@ GuiPage_Settings.processSelectedItem = function() {
 			break;
 		case "View2":
 			this.CurrentSubSettings = this.View2Options;
+			break;
+		case "MusicView":
+			this.CurrentSubSettings = this.MusicViewOptions;
 			break;
 		case "SubtitleSize":
 			this.CurrentSubSettings = this.SubtitleSizeOptions;
@@ -747,7 +779,8 @@ GuiPage_Settings.processSelectedSubItem = function() {
 		break;
 	case "ContinueWatching":
 	case "AudioTheme":
-	case "SkipShow":	
+	case "SkipShow":
+	case "SkipMusicAZ":
 	case "SeasonLabel":	
 	case "AutoPlay":
 	case "ShowDisc":	
@@ -769,6 +802,10 @@ GuiPage_Settings.processSelectedSubItem = function() {
 		this.CurrentSettingValue = this.View2Options[this.selectedSubItem];
 	
 		Support.updateHomePageURLs(this.UserData.View2Name ,this.UserData.View2,this.UserData.View2Name,false);
+		break;
+	case "MusicView":
+		this.UserData.MusicView = this.MusicViewValues[this.selectedSubItem];
+		this.CurrentSettingValue = this.MusicViewOptions[this.selectedSubItem];
 		break;
 	case "SubtitleSize":
 		this.UserData.SubtitleSize = this.SubtitleSizeValues[this.selectedSubItem];
@@ -800,7 +837,6 @@ GuiPage_Settings.processSelectedSubItem = function() {
 		break;
 	case "Dolby":
 	case "DTS":
-	case "TranscodeDSeries":
 	case "AACtoDolby":	
 		this.AllData.TV[this.currentViewSettings[this.selectedItem]] = this.DefaultValues[this.selectedSubItem];
 		this.CurrentSettingValue = this.DefaultOptions[this.selectedSubItem];
@@ -862,6 +898,20 @@ GuiPage_Settings.processSelectedSubItem = function() {
 		//Update Server	
 		Server.updateUserConfiguration(JSON.stringify(this.ServerUserData.Configuration));
 		break;	
+	case "HidePlayedInLatest":
+		this.ServerUserData.Configuration.HidePlayedInLatest = this.DefaultValues[this.selectedSubItem];
+		this.CurrentSettingValue = this.DefaultOptions[this.selectedSubItem];
+				
+		//Update Server	
+		Server.updateUserConfiguration(JSON.stringify(this.ServerUserData.Configuration));
+		break;
+	case "EnableCinemaMode":
+		this.ServerUserData.Configuration.EnableCinemaMode = this.DefaultValues[this.selectedSubItem];
+		this.CurrentSettingValue = this.DefaultOptions[this.selectedSubItem];
+				
+		//Update Server	
+		Server.updateUserConfiguration(JSON.stringify(this.ServerUserData.Configuration));
+		break;
 	}
 		
 	switch (this.currentView) {
@@ -965,25 +1015,35 @@ GuiPage_Settings.setOverview = function() {
 		case "Default":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Default User";
 			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Setting the default user to True allows for the app to sign in the user automatically." +
-					"<br><br>Changing this setting to True will change all other users to False";
+					"<br><br>Changing this setting to True will change all other users to False.";
 			break;
 		case "ContinueWatching":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Continue Watching";
 			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Show partially watched items on the home page." +
-					"<br><br>If you have any partially watched programs they will be shown on the home page instead of the second home page view.";
+					"<br><br>If you have any partially watched programs they will be shown on the home page along with Home View 1.";
 			break;
 		case "View1":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Home View 1";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Sets the content of the first view of the Home page" +
-					"<br><br>Available Choices<ul style='padding-left:22px'><li>Next Up</li><li>All Favourites</li><li>Favourite Movies</li><li>Favourite Series</li><li>Favourite Episodes</li><li>Suggested For You</li><li>Media Folders</li><li>Latest TV</li><li>Latest Movies</li></ul>" +
-					"<br><br>Setting Home View 2 to None will show more content of this view";
+			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Sets the content of the first view on the Home page." +
+					"<br><br>Available Choices:<br>&nbsp;<ul style='padding-left:22px'><li>Next Up</li><li>All Favourites</li><li>Favourite Movies</li><li>Favourite Series</li><li>Favourite Episodes</li><li>Suggested For You</li><li>Media Folders</li><li>Latest TV</li><li>Latest Movies</li></ul>" +
+					"<br><br>Setting Home View 2 to None will show more content in this view.";
 			break; 
 		case "View2":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Home View 2";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Sets the content of the first view of the Home page" +
-					"<br><br>Available Choices<ul style='padding-left:22px'><li>None</li><li>Next Up</li><li>All Favourites</li><li>Favourite Movies</li><li>Favourite Series</li><li>Favourite Episodes</li><li>Suggested For You</li><li>Media Folders</li><li>Latest TV</li><li>Latest Movies</li></ul>" +
-					"<br><br>Setting this to None will show more content from Home View 1";
+			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Sets the content of the second view on the Home page." +
+					"<br><br>Available Choices:<br>&nbsp;<ul style='padding-left:22px'><li>None</li><li>Next Up</li><li>All Favourites</li><li>Favourite Movies</li><li>Favourite Series</li><li>Favourite Episodes</li><li>Suggested For You</li><li>Media Folders</li><li>Latest TV</li><li>Latest Movies</li></ul>" +
+					"<br><br>Setting this to None will show more content from Home View 1.";
 			break;	
+		case "MusicView":
+			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Default Music view";
+			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Sets the default view the Music page will open up on." +
+					"<br><br>Available Choices:<br>&nbsp;<ul style='padding-left:22px'><li>Recent</li><li>Frequent</li><li>Album</li><li>Album Artist</li><li>Artist</li></ul>";
+			break;	
+		case "SkipMusicAZ":
+			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Skip A-Z Page When Entering Music";
+			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Go directly to your entire music collection instead of to the A-Z page." +
+					"<br><br>Only set this True if you have a workable combination of the following:<br>&nbsp;<ul style='padding-left:22px'><li>A modest size music collection.</li><li>A reasonably powerful Emby server.</li><li>A little patience.</li></ul>";
+			break;
 		case "LargerView":	
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Display Larger View";
 			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Enabling this changes the TV & Movies view from 9 items across to 7 items across, allowing for larger images for each item.";
@@ -1057,10 +1117,6 @@ GuiPage_Settings.setOverview = function() {
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Enable AAC Transcoding to Dolby";
 			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Set this option only if you have an external receiver capable of receiving Dolby but not AAC<br><br>Will be ignored if Enable Dolby Digital Playback is false";
 			break;
-		case "TranscodeDSeries":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Enable Transcoding on D Series TV's";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Enable this if you want to transcode videos to your D Series TV<br><br>This is off by default as it is not reliable and may cause issues, and as such is unsupported.";
-			break;
 		case "ItemPaging":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Item Paging";
 			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "As nobody likes waiting, items on screen are loaded in batches, with each new batch called when needed, as opposed to loading everything and making you wait until its all ready.<br><br>Change the number of items loaded in a batch dependant on how fast your server is.";
@@ -1081,6 +1137,14 @@ GuiPage_Settings.setOverview = function() {
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Subtitle Mode";
 			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Select the default behaviour of when subtitles are loaded<br><br>Default: Subtitles matching the language preference will be loaded when the audio is in a foreign language.<br><br>Only Forced Subtitles: Only subtitles marked as forced will be loaded.<br><br>Always Play Subtitles: Subtitles matching the language preference will be loaded regardless of the audio language.<br><br>None: Subtitles will not be loaded by default.<br><br>This is a server option and will affect your Emby experience on all clients";
 			break;	
+		case "HidePlayedInLatest":
+			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Hide watched content from latest media";
+			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Watched items will not appear in the Latest TV or Latest Movies home views or pages.<br><br>This is a server option and will affect your Emby experience on all clients";
+			break;
+		case "EnableCinemaMode":
+			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Enable cinema mode";
+			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Cinema mode brings the theater experience straight to your living room with the ability to play trailers and custom intros before the main feature.<br><br>This is a server option and will affect your Emby experience on all clients";
+			break;
 		case "DisplayMissingEpisodes":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Display Missing Episodes within Seasons";
 			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Display missing episodes within TV seasons<br><br>This is a server option and will affect your Emby experience on all clients";

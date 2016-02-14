@@ -103,6 +103,10 @@ Server.getItemInfoURL = function(ParentID, SortParams) {
 	}		
 }
 
+Server.getItemIntrosUrl = function(itemId, SortParams) {
+	return  Server.getServerAddr() + "/Users/" + Server.getUserID() + "/Items/"+itemId+"/Intros"; //?format=json";
+}
+
 Server.getSearchURL = function(searchTermString) {
 	var parsedSearchTermString = Support.parseSearchTerm(searchTermString);
 	return Server.getServerAddr() + "/Search/Hints?format=json&UserId=" + Server.getUserID() + "&SearchTerm=" + parsedSearchTermString;
@@ -124,44 +128,77 @@ Server.getImageURL = function(itemId,imagetype,maxwidth,maxheight,unplayedcount,
 	var query = "";
 	switch (imagetype) {
 	case "Primary":
-		query = Server.getServerAddr() + "/Items/"+ itemId +"/Images/Primary/0?maxwidth="+maxwidth+"&maxheight="+maxheight;
+		query = "/Items/"+ itemId +"/Images/Primary/0?maxwidth="+maxwidth+"&maxheight="+maxheight + "&quality=90";
 		break;
 	case "Banner":
-		query = Server.getServerAddr() + "/Items/"+ itemId +"/Images/Banner/0?maxwidth="+maxwidth+"&maxheight="+maxheight;
+		query = "/Items/"+ itemId +"/Images/Banner/0?maxwidth="+maxwidth+"&maxheight="+maxheight + "&quality=90";
 		break;
 	case "Backdrop":
-		query = Server.getServerAddr() + "/Items/"+ itemId +"/Images/Backdrop/0?maxwidth="+maxwidth+"&maxheight="+maxheight;
+		query = "/Items/"+ itemId +"/Images/Backdrop/0?maxwidth="+maxwidth+"&maxheight="+maxheight + "&quality=90";
 		break;
 	case "Thumb":
-		query = Server.getServerAddr() + "/Items/"+ itemId +"/Images/Thumb/0?maxwidth="+maxwidth+"&maxheight="+maxheight;
+		query = "/Items/"+ itemId +"/Images/Thumb/0?maxwidth="+maxwidth+"&maxheight="+maxheight + "&quality=90";
 		break;	
 	case "Logo":
-		query = Server.getServerAddr() + "/Items/"+ itemId +"/Images/Logo/0?maxwidth="+maxwidth+"&maxheight="+maxheight;
+		query = "/Items/"+ itemId +"/Images/Logo/0?maxwidth="+maxwidth+"&maxheight="+maxheight + "&quality=90";
 		break;
 	case "Disc":
-		query = Server.getServerAddr() + "/Items/"+ itemId +"/Images/Disc/0?maxwidth="+maxwidth+"&maxheight="+maxheight;
+		query = "/Items/"+ itemId +"/Images/Disc/0?maxwidth="+maxwidth+"&maxheight="+maxheight + "&quality=90";
 		break;
 	case "UsersPrimary":
-		query = Server.getServerAddr() + "/Users/" + itemId + "/Images/Primary?maxwidth="+maxwidth+"&maxheight="+maxheight;
+		query = "/Users/" + itemId + "/Images/Primary?maxwidth="+maxwidth+"&maxheight="+maxheight + "&quality=90";
 		break;
 	case "Chapter":
-		query = Server.getServerAddr() + "/Items/" + itemId + "/Images/Chapter/" + chapter + "?maxwidth="+maxwidth+"&maxheight="+maxheight;
+		query = "/Items/" + itemId + "/Images/Chapter/" + chapter + "?maxwidth="+maxwidth+"&maxheight="+maxheight + "&quality=90";
 		break;
 	}
-
-	query = query + "&Quality=90";
 	
-	return query;
+	if (Main.isImageCaching()) {
+			var found = false;
+			
+			for (var i = 0; i <Support.imageCachejson.Images.length; i++) {
+				//Is image in cache - If so use it
+				if (Support.imageCachejson.Images[i].URL == query) {
+					found = true;
+					break;
+				}
+			}
+
+			if (found == true) {
+				//Use data URI from file			
+				return Support.imageCachejson.Images[i].DataURI;
+			} else {			
+				//Use URL & Add to Cache
+				var full = Server.getServerAddr() +  query;
+
+				var xhr = new XMLHttpRequest();
+				xhr.open('GET', full, true);
+				xhr.responseType = 'blob';
+
+				xhr.onload = function(e) {
+				  if (this.status == 200) {
+				    var blob = this.response;
+				    Support.imageCachejson.Images[Support.imageCachejson.Images.length] = {"URL":query,"DataURI":window.URL.createObjectURL(blob)};
+				  }
+				};
+				xhr.send();
+				
+				
+				return full;
+			}
+	} else {
+		return Server.getServerAddr() +  query;
+	}
 }
 
 Server.getScreenSaverImageURL = function(itemId,imagetype,maxwidth,maxheight) {
 	var query = "";
 	switch (imagetype) {
 		case "Backdrop":
-			query =   Server.getServerAddr() + "/Items/"+ itemId +"/Images/Backdrop/0?maxwidth="+maxwidth+"&maxheight="+maxheight;
+			query =   Server.getServerAddr() + "/Items/"+ itemId +"/Images/Backdrop/0?quality=90&maxwidth="+maxwidth+"&maxheight="+maxheight;
 			break;
 		case "Primary":
-			query =   Server.getServerAddr() + "/Items/"+ itemId +"/Images/Primary/0?maxwidth="+maxwidth+"&maxheight="+maxheight;
+			query =   Server.getServerAddr() + "/Items/"+ itemId +"/Images/Primary/0?quality=90&maxwidth="+maxwidth+"&maxheight="+maxheight;
 			break;	
 	}	
 	return query;

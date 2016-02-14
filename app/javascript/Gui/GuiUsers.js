@@ -29,6 +29,7 @@ GuiUsers.start = function(runAutoLogin) {
 	this.rememberPassword = true;
 	
 	Support.destroyURLHistory();
+	Support.fadeImage("images/bg1.jpg");
 	document.getElementById("NotificationText").innerHTML = "";
 	document.getElementById("Notifications").style.visibility = "hidden";
 	
@@ -73,13 +74,14 @@ GuiUsers.start = function(runAutoLogin) {
 		document.getElementById("pageContent").innerHTML = "<div style='padding-top:100px;text-align:center'>" +
 			"<div id=guiUsers_allusers></div>" +
 			"<div id='guiUsers_pwd' style='visibility:hidden'>" +
-			"<br>Password:    <input id='guiUsers_Password' type='text' size='20'/>" +
+			"<br>Password:    <input id='guiUsers_Password' type='password' size='20'/>" +
 			"<br><span id='guiUsers_rempwd'>Remember Password </span> : <span id='guiUsers_rempwdvalue'>" + this.rememberPassword + "</span>" + 
 	    	"</div><br>" +
-	    	"<div id='ManualLogin'>Manual Login</div>" +
-	    	"<div id='ChangeServer'>Change Server</div> " +
-	    	"<div><br>Available options for each page are shown at the bottom.<br>Once logged in, move left on any page to access the main menu.</div>" +
-	    	"</div>";
+	    	"<div id='loginOptions' class='loginOptions'>" +
+	    		"<div id='ManualLogin'>Manual Login</div>" +
+	    		"<div id='ChangeServer'>Change Server</div> " +
+	    		"<div><br>Available options for each page are shown at the bottom.<br>Once logged in, move left on any page to access the main menu.</div>" +
+	    	"</div></div>";
 		
 		if (this.UserData.length != 0) {
 			GuiUsers.updateDisplayedUsers();
@@ -117,6 +119,11 @@ GuiUsers.updateSelectedUser = function () {
 GuiUsers.processSelectedUser = function () {
 	var selectedUserId = this.UserData[this.selectedUser].Id;
 
+	//Remove Focus & Display Loading
+	
+	document.getElementById("NoItems").focus();
+	document.getElementById("guiLoading").style.visibility = "";
+
 	//Load JSON File
 	var userInFile = false;
 	var fileJson = JSON.parse(File.loadFile()); 
@@ -136,12 +143,18 @@ GuiUsers.processSelectedUser = function () {
     			//Authenticate with MB3 - if fail somehow bail?					
 				var authenticateSuccess = Server.Authenticate(UserId, User, Password);		
 				if (authenticateSuccess) {
+					//Hide loading
+					document.getElementById("guiLoading").style.visibility = "hidden";
+					//document.getElementById("GuiUsers").focus();
 					//Set File User Entry
 					File.setUserEntry(index);
 					//Change Focus and call function in GuiMain to initiate the page!
 					GuiMainMenu.start();
 				} else {
 					//Doesn't delete, allows user to correct password for the user.
+					//Hide loading
+					document.getElementById("guiLoading").style.visibility = "hidden";
+					document.getElementById("GuiUsers").focus();
 					
 					//Saved password failed - likely due to a user changing their password or user forgetting passwords!
 					new GuiUsers_Input("guiUsers_Password");				
@@ -153,17 +166,25 @@ GuiUsers.processSelectedUser = function () {
 	if (userInFile == false){
 		if (this.UserData[this.selectedUser].HasPassword) {
 			//Has password - Load IME	
+			//Hide loading
+			document.getElementById("guiLoading").style.visibility = "hidden";
+			document.getElementById("GuiUsers").focus();
 			new GuiUsers_Input("guiUsers_Password");
 		} else {
 			var pwdSHA1 = Sha1.hash("",true);
 			var authenticateSuccess = Server.Authenticate(this.UserData[this.selectedUser].Id, this.UserData[this.selectedUser].Name, pwdSHA1);		
 			if (authenticateSuccess) {
 				//Reset GUI to as new - Not Required as it already is!!
+				//Hide loading
+				document.getElementById("guiLoading").style.visibility = "hidden";
 				//Add Username & Password to DB
 				File.addUser(this.UserData[this.selectedUser].Id,this.UserData[this.selectedUser].Name,pwdSHA1,this.rememberPassword);
 				//Change Focus and call function in GuiMain to initiate the page!
 				GuiMainMenu.start();
 			} else {
+				//Hide loading
+				document.getElementById("guiLoading").style.visibility = "hidden";
+				document.getElementById("GuiUsers").focus();
 				//Div to display Network Failure - No password therefore no password error
 				//This event should be impossible under normal circumstances
 				GuiNotifications.setNotification("Network Error");
@@ -314,7 +335,7 @@ var GuiUsers_Input  = function(id) {
     }
     
     var ime = new IMEShell(id, imeReady,'en');
-    ime.setKeypadPos(680,90);
+    ime.setKeypadPos(1300,90);
         
     var installFocusKeyCallbacks = function () {
         ime.setKeyFunc(tvKey.KEY_ENTER, function (keyCode) {

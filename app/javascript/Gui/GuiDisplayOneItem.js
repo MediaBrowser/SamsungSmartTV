@@ -37,13 +37,20 @@ GuiDisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 	this.genreType = null;
 	
 	//Load Data
-	this.ItemData = Server.getContent(url);
+	this.ItemData = Server.getContent(url + "&Limit="+File.getTVProperty("ItemPaging"));
 	if (this.ItemData == null) { return; }
+
+	//Once we've browsed the channels down to a content folder we should display them using GuiDisplay_Series.
+	if (this.ItemData.Items[0].Type == "ChannelVideoItem" || this.ItemData.Items[0].Type == "ChannelAudioItem") {
+		GuiDisplay_Series.start(title,url,selectedItem,topLeftItem,this.ItemData);
+		return;
+	}
 
 	//Setup display width height based on title
 	switch (title) {
 	case "Media Folders":
 	case "Collections":
+	case "Channels":
 		this.MAXCOLUMNCOUNT = 3;
 		this.MAXROWCOUNT = 2;
 		break;
@@ -71,7 +78,7 @@ GuiDisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 		this.isResume = (title == "Resume") ? true : false;
 		
 		//Alter to only allow indexing on certain pages??
-		this.ItemIndexData = Support.processIndexing(this.ItemData.Items); 
+		//this.ItemIndexData = Support.processIndexing(this.ItemData.Items); 
 	
 		//Display first XX series
 		this.updateDisplayedItems();
@@ -210,7 +217,7 @@ GuiDisplayOneItem.openMenu = function() {
 }
 
 GuiDisplayOneItem.processLeftKey = function() {
-	if (Support.isPower(this.selectedItem, this.MAXCOLUMNCOUNT)){
+	if (this.selectedItem % this.MAXCOLUMNCOUNT == 0){
 		this.openMenu(); //Going left from anywhere in the first column.
 	} else {
 		this.selectedItem--;

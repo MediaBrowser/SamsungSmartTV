@@ -7,7 +7,6 @@ var GuiPage_ItemDetails = {
 		
 		menuItems : [],
 		selectedItem : 0,
-		updateBackdrop : true,
 		
 		trailerItems : [],
 		trailerUrl : "",
@@ -31,7 +30,7 @@ GuiPage_ItemDetails.getMaxDisplay2 = function() {
 	return this.MAXCOLUMNCOUNT2 * this.MAXROWCOUNT2;
 };
 
-GuiPage_ItemDetails.start = function(title,url,selectedItem,updateBackdrop) {
+GuiPage_ItemDetails.start = function(title,url,selectedItem) {
 	alert("Page Enter : GuiPage_ItemDetails");
 	
 	//Clear previous trailer
@@ -43,10 +42,6 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem,updateBackdrop) {
 	
 	//Save Start Params
 	this.startParams = [title,url];
-	alert("updateBackdrop: "+updateBackdrop);
-	this.updateBackdrop = updateBackdrop;
-
-	alert (url);
 	
 	//Reset Vars
 	this.trailerUrl = "";
@@ -71,7 +66,7 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem,updateBackdrop) {
 					<div id='guiTV_Show_Metadata' style='margin-left:-5px;'class='MetaDataSeasonTable'></div> \
 					<div id='guiTV_Show_Overview' class='guiFilm_Overview'></div> \
 			</div> \
-			<div id='guiTV_Show_CDArt' class='guiFilm_CDArt'></div> \
+			<div id='imageDisk' class='imageDisk'></div> \
 			<div id='guiTV_Show_Poster' class='guiFilm_Poster'></div>";
 	
 	//Get Page Items
@@ -157,7 +152,7 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem,updateBackdrop) {
 		//Set Backdrop
 		this.backdropTimeout = setTimeout(function(){
 			if (GuiPage_ItemDetails.ItemData.ParentBackdropImageTags) {
-				var imgsrc = Server.getBackgroundImageURL(GuiPage_ItemDetails.ItemData.ParentBackdropItemId,"Backdrop",Main.width,Main.height,0,false,0,GuiPage_ItemDetails.ItemData.ParentBackdropImageTags.length);
+				var imgsrc = Server.getBackgroundImageURL(GuiPage_ItemDetails.ItemData.ParentBackdropItemId,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,GuiPage_ItemDetails.ItemData.ParentBackdropImageTags.length);
 				Support.fadeImage(imgsrc);		
 			}	
 		}, 1000);
@@ -215,24 +210,19 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem,updateBackdrop) {
 			if (this.ItemData.ImageTags.Disc) {
 				var diskImgsrc = Server.getImageURL(this.ItemData.Id,"Disc",250,250,0,false,0);
 				setTimeout(function(){
-					document.getElementById("guiTV_Show_CDArt").style.backgroundImage="url('" + diskImgsrc + "')";  
-					$('#guiTV_Show_CDArt').animate({
-						bottom: 300,
-					}, 3000, function() {
-						//animate complete.
-					});
-					GuiPage_ItemDetails.AnimateRotate();
-				}, 500);
+					document.getElementById("imageDisk").style.backgroundImage="url('" + diskImgsrc + "')";
+					document.getElementById("imageDisk").className="imageDisk imageDiskEndPosition";
+				}, 1000);
 			}
 		}
 		
 		//Set Film Backdrop
-		this.backdropTimeout = setTimeout(function(){
-			if (GuiPage_ItemDetails.ItemData.BackdropImageTags.length > 0 && GuiPage_ItemDetails.updateBackdrop) {
-				var imgsrc = Server.getBackgroundImageURL(GuiPage_ItemDetails.ItemData.Id,"Backdrop",Main.width,Main.height,0,false,0,GuiPage_ItemDetails.ItemData.BackdropImageTags.length);
+		//this.backdropTimeout = setTimeout(function(){
+			if (GuiPage_ItemDetails.ItemData.BackdropImageTags.length > 0) {
+				var imgsrc = Server.getBackgroundImageURL(GuiPage_ItemDetails.ItemData.Id,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,GuiPage_ItemDetails.ItemData.BackdropImageTags.length);
 				Support.fadeImage(imgsrc);
 			}
-		}, 10);
+		//}, 10);
 		
 		//If cover art use that else use text
 		if (this.ItemData.ImageTags.Logo) {
@@ -266,7 +256,7 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem,updateBackdrop) {
 		} else {
 			tomsImage = "images/rotten-40x40.png";
 		}
-		htmlForMetaData += "<td class=MetadataItemVSmall style=background-image:url("+tomsImage+")></td>";
+		htmlForMetaData += "<td class=MetadataItemIcon style=background-image:url("+tomsImage+")></td>";
 		htmlForMetaData += "<td class=MetadataItemVSmall )>" + toms + "%</td>";
 	}
 	if (stars){
@@ -277,7 +267,7 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem,updateBackdrop) {
     	} else {
     		starsImage = "images/star_full-46x40.png";
     	}
-    	htmlForMetaData += "<td class=MetadataItemVSmall style=background-image:url("+starsImage+")></td>";
+    	htmlForMetaData += "<td class=MetadataItemIcon style=background-image:url("+starsImage+")></td>";
     	htmlForMetaData += "<td class=MetadataItemVSmall>" + stars + "</td>";
 	}
 	
@@ -302,7 +292,7 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem,updateBackdrop) {
 	}
 	
 	if (this.ItemData.HasSubtitles) {
-		htmlForMetaData += "<td class=MetadataItemVSmall style=background-image:url(images/cc-50x40.png)></td>";
+		htmlForMetaData += "<td class=MetadataItemIcon style=background-image:url(images/cc-50x40.png)></td>";
 	}
 	
 	htmlForMetaData += "</tr></table>";
@@ -340,18 +330,6 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem,updateBackdrop) {
 		GuiMusicPlayer.start("Theme", null, "GuiPage_ItemDetails",null,this.ItemData.Id,this.ItemData.Id);
 	}
 };
-
-//Rotate the DVD disk image.
-GuiPage_ItemDetails.AnimateRotate = function () {
-    $({deg: -250}).animate({deg: 0}, {
-        duration: 4000,
-        step: function(now) {
-        	$('#guiTV_Show_CDArt').css({
-            	WebkitTransform: 'rotate(' + now + 'deg)'
-            });
-        }
-    });
-}
 
 //Function sets CSS Properties so show which user is selected
 GuiPage_ItemDetails.updateSelectedItems = function () {
