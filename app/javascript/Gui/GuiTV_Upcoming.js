@@ -32,7 +32,7 @@ GuiTV_Upcoming.start = function() {
 	GuiHelper.setControlButtons(null,null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
 	
 	//Load Data
-	var url = Server.getCustomURL("/Shows/Upcoming?format=json&Limit=40&UserId=" + Server.getUserID());
+	var url = Server.getCustomURL("/Shows/Upcoming?format=json&Limit=40&Fields=AirTime,UserData,SeriesStudio,SyncInfo&UserId=" + Server.getUserID());
 	var ItemData = Server.getContent(url);
 	if (ItemData == null) { return; }
 	
@@ -69,8 +69,8 @@ GuiTV_Upcoming.start = function() {
 	//Set PageContent
 	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div>" +
 			"<div id=Center class='HomeOneCenter'>" + 
-			"<p id='title1' style='font-size:1.2em;padding-left:22px;'></p><div id='TopRow' style='margin-bottom:60px'><div id=Content></div></div>" +
-			"<p id='title2' style='font-size:1.2em;padding-left:22px;'></p><div id='BottomRow'><div id=Content2></div></div>" +
+			"<p id='title1' style='position:relative;font-size:1.2em;padding-left:22px;z-index:5;'></p><div id='TopRow' style='margin-bottom:60px'><div id=Content></div></div>" +
+			"<p id='title2' style='position:relative;font-size:1.2em;padding-left:22px;z-index:5;'></p><div id='BottomRow'><div id=Content2></div></div>" +
 			"</div>";
 	
 	
@@ -216,6 +216,7 @@ GuiTV_Upcoming.keyDown = function()
 			this.selectedBannerItem--;
 			if (this.selectedBannerItem < 0) {
 				this.selectedBannerItem = 0;
+				this.openMenu();
 			}
 			this.updateSelectedBannerItems();	
 			this.updateCounter();
@@ -223,6 +224,7 @@ GuiTV_Upcoming.keyDown = function()
 			this.selectedItem--;
 			if (this.selectedItem < 0) {
 				this.selectedItem++;
+				this.openMenu();
 			} else {
 				if (this.selectedItem < this.topLeftItem) {
 					this.topLeftItem--;
@@ -334,18 +336,7 @@ GuiTV_Upcoming.keyDown = function()
 			break;	
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);	
-			//Return added here - deleted in MainMenu if user does return
-			if (this.selectedItem == -2) {		
-				if (this.selectedBannerItem != this.bannerItems.length-1) {
-					document.getElementById("bannerItem"+this.selectedBannerItem).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding";
-				} else {
-					document.getElementById("bannerItem"+this.selectedBannerItem).className = "guiDisplay_Series-BannerItem";
-				}
-				this.selectedItem = 0;
-				this.topLeftItem = 0;
-			}
-			Support.updateURLHistory("GuiTV_Upcoming",null,null,null,null,this.selectedItem,this.topLeftItem,true);
-			GuiMainMenu.requested("GuiTV_Upcoming",this.divprepend1 + this.upcomingData[this.selectedDayItem][this.selectedItem].Id);
+			this.openMenu();
 			break;
 		case tvKey.KEY_RETURN:
 			alert("RETURN");
@@ -362,6 +353,21 @@ GuiTV_Upcoming.keyDown = function()
 	}
 }
 
+GuiTV_Upcoming.openMenu = function() {
+	if (this.selectedItem == -2) { //Banner menu
+		if (this.selectedBannerItem == this.bannerItems.length-1) {
+			document.getElementById("bannerItem"+this.selectedBannerItem).className = "guiDisplay_Series-BannerItem";
+		} else if (this.selectedBannerItem == this.bannerItems.length-2) {
+			document.getElementById("bannerItem"+this.selectedBannerItem).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding blue";
+		} else {
+			document.getElementById("bannerItem"+this.selectedBannerItem).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding";
+		}
+		GuiMainMenu.requested("GuiTV_Upcoming","bannerItem"+this.selectedBannerItem,"guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding green");
+	} else {
+		Support.updateURLHistory("GuiTV_Upcoming",null,null,null,null,this.selectedItem,this.topLeftItem,true);
+		GuiMainMenu.requested("GuiTV_Upcoming",this.divprepend1 + this.upcomingData[this.selectedDayItem][this.selectedItem].Id);
+	}
+}
 
 //---------------------------------------------------------------------------------------------------
 //      BOTTOM ITEMS HANDLERS
@@ -416,6 +422,7 @@ GuiTV_Upcoming.bottomKeyDown = function()
 			this.selectedItem2--;
 			if (this.selectedItem2 < 0) {
 				this.selectedItem2++;
+				this.openMenu2();
 			} else {
 				if (this.selectedItem2 < this.topLeftItem2) {
 					this.topLeftItem2--;
@@ -489,8 +496,7 @@ GuiTV_Upcoming.bottomKeyDown = function()
 			break;	
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
-			Support.updateURLHistory("GuiTV_Upcoming",null,null,null,null,this.selectedItem2,this.topLeftItem2,false);				
-			GuiMainMenu.requested("GuiTV_UpcomingBottom",this.divprepend2 + this.upcomingData[this.selectedDayItem][this.selectedItem2].Id);
+			this.openMenu2();
 			break;
 		case tvKey.KEY_RETURN:
 			alert("RETURN BOTTOM");
@@ -505,6 +511,11 @@ GuiTV_Upcoming.bottomKeyDown = function()
 			widgetAPI.sendExitEvent();
 			break;
 	}
+}
+
+GuiTV_Upcoming.openMenu2 = function() {
+	Support.updateURLHistory("GuiTV_Upcoming",null,null,null,null,this.selectedItem2,this.topLeftItem2,false);				
+	GuiMainMenu.requested("GuiTV_UpcomingBottom",this.divprepend2 + this.upcomingData[this.selectedDayItem][this.selectedItem2].Id);
 }
 
 //--------------------------------------------------------------------------------------------------------
