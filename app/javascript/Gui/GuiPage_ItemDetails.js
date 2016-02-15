@@ -1004,7 +1004,7 @@ GuiPage_ItemDetails.setTrailerPosition = function() {
 	// Sets the mini-player position.
 	sf.service.VideoPlayer.setPosition({
 		left: 1080,
-	    top: 40,
+	    top: 35,
 	    width: 800,
 	    height: 600
 	});

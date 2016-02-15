@@ -299,13 +299,12 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 				}
 			//----------------------------------------------------------------------------------------------
 			} else if (Items[index].Type == "Episode") {
-				var title = this.getNameFormat(Items[index].SeriesName, Items[index].ParentIndexNumber, Items[index].Name, Items[index].IndexNumber);	
-				
+				var title = this.getNameFormat(Items[index].SeriesName, Items[index].ParentIndexNumber, Items[index].Name, Items[index].IndexNumber,  Items[index].SeriesStudio?Items[index].SeriesStudio:undefined, Items[index].AirTime?Items[index].AirTime:undefined);				
 				var imageData = "";	
 				if (Items[index].SeriesThumbImageTag) {	
 					var imgsrc = Server.getImageURL(Items[index].SeriesId,"Thumb",Main.posterWidth,Main.posterHeight,0,Items[index].UserData.Played,0);
 					imageData = "'background-image:url(" +imgsrc+ ");background-size:contain'";
-					title = this.getNameFormat("", Items[index].ParentIndexNumber, Items[index].Name, Items[index].IndexNumber);
+					title = this.getNameFormat("", Items[index].ParentIndexNumber, Items[index].Name, Items[index].IndexNumber,  Items[index].SeriesStudio?Items[index].SeriesStudio:undefined, Items[index].AirTime?Items[index].AirTime:undefined);
 				} else 	if (Items[index].ImageTags.Primary) {	
 					var imgsrc = Server.getImageURL(Items[index].Id,"Primary",Main.posterWidth,Main.posterHeight,0,Items[index].UserData.Played,0);	
 					imageData = "'background-image:url(" +imgsrc+ ");background-size:contain'";
@@ -551,81 +550,88 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 
 //-----------------------------------------------------------------------------------------------------------------------------------------
 
-Support.getNameFormat = function(SeriesName, SeriesNo, EpisodeName, EpisodeNo) {
-	 if (File.getUserProperty("SeasonLabel")){
-		 if (SeriesName == "" || SeriesName == null) {
-				if (SeriesNo !== undefined && EpisodeNo !== undefined) {
-					
-					var seasonNumber = SeriesNo;
-					var seasonString = "";
-					if (seasonNumber < 10){
-						seasonString = "0" + seasonNumber;
-					}
-					else{
-						seasonString = seasonNumber;
-					}
-					
-					var episodeNumber = EpisodeNo;
-					var episodeString = "";
-					if (episodeNumber < 10){
-						episodeString = "0" + episodeNumber;
-					}
-					else{
-						episodeString = episodeNumber;
-					}
-					
-					if (EpisodeName == "" || EpisodeName == null) {
-						return "S" + seasonString + "E" + episodeString;	
-					} else {
-						return "S" + seasonString + "E" + episodeString + " - " + EpisodeName;	
-					}	
+Support.getNameFormat = function(SeriesName, SeriesNo, EpisodeName, EpisodeNo, SeriesStudio, AirTime) {
+	var nameLabel;
+	if (File.getUserProperty("SeasonLabel")){
+		if (SeriesName == "" || SeriesName == null) {
+			if (SeriesNo !== undefined && EpisodeNo !== undefined) {
+				
+				var seasonNumber = SeriesNo;
+				var seasonString = "";
+				if (seasonNumber < 10){
+					seasonString = "0" + seasonNumber;
 				} else {
-					return EpisodeName;
+					seasonString = seasonNumber;
 				}
+				
+				var episodeNumber = EpisodeNo;
+				var episodeString = "";
+				if (episodeNumber < 10){
+					episodeString = "0" + episodeNumber;
+				} else {
+					episodeString = episodeNumber;
+				}
+				
+				if (EpisodeName == "" || EpisodeName == null) {
+					nameLabel = "S" + seasonString + "E" + episodeString;	
+				} else {
+					nameLabel = "S" + seasonString + "E" + episodeString + " - " + EpisodeName;	
+				}	
 			} else {
-				if (SeriesNo !== undefined && EpisodeNo !== undefined) {
-					var seasonNumber = SeriesNo;
-					var seasonString = "";
-					if (seasonNumber < 10){
-						seasonString = "0" + seasonNumber;
-					}
-					else{
-						seasonString = seasonNumber;
-					}
-					
-					var episodeNumber = EpisodeNo;
-					var episodeString = "";
-					if (episodeNumber < 10){
-						episodeString = "0" + episodeNumber;
-					}
-					else{
-						episodeString = episodeNumber;
-					}
-
-					return SeriesName + "<br>S" + seasonString + "E" + episodeString + " - " + EpisodeName;		
-				} else {
-					return SeriesName + "<br>"+EpisodeName;
-				}
+				return EpisodeName;
 			}
-	 }else{
+		} else {
+			if (SeriesNo !== undefined && EpisodeNo !== undefined) {
+				var seasonNumber = SeriesNo;
+				var seasonString = "";
+				if (seasonNumber < 10){
+					seasonString = "0" + seasonNumber;
+				} else {
+					seasonString = seasonNumber;
+				}
+				
+				var episodeNumber = EpisodeNo;
+				var episodeString = "";
+				if (episodeNumber < 10){
+					episodeString = "0" + episodeNumber;
+				} else {
+					episodeString = episodeNumber;
+				}
+	
+				nameLabel = SeriesName + "<br>S" + seasonString + "E" + episodeString + " - " + EpisodeName;		
+			} else {
+				nameLabel = SeriesName + "<br>"+EpisodeName;
+			}
+		}
+	} else {
 		 if (SeriesName == "" || SeriesName == null) {
 				if (SeriesNo !== undefined && EpisodeNo !== undefined) {					
 					if (EpisodeName == "" || EpisodeName == null) {
-						return "S" + SeriesNo + ",E" + EpisodeNo;	
+						nameLabel = "S" + SeriesNo + ",E" + EpisodeNo;	
 					} else {
-						return "S" + SeriesNo + ",E" + EpisodeNo + " - " + EpisodeName;	
+						nameLabel = "S" + SeriesNo + ",E" + EpisodeNo + " - " + EpisodeName;	
 					}	
 				} else {
-					return EpisodeName;
+					var nameLabel = EpisodeName;
 				}
 			} else {
 				if (SeriesNo !== undefined && EpisodeNo !== undefined) {
-					return SeriesName + "<br>S" + SeriesNo + ",E" + EpisodeNo + " - " + EpisodeName;		
+					nameLabel = SeriesName + "<br>S" + SeriesNo + ",E" + EpisodeNo + " - " + EpisodeName;		
 				} else {
-					return SeriesName + "<br>"+EpisodeName;
+					nameLabel = eriesName + "<br>"+EpisodeName;
 				}
 			}
-	 }
+	}
+	if (AirTime !== undefined){
+		nameLabel += "<br>" + AirTime;
+	}
+	if (AirTime !== undefined && SeriesStudio !== undefined){
+		nameLabel += " on ";
+	}
+	if (SeriesStudio !== undefined){
+		nameLabel += SeriesStudio;	
+	}
+	return nameLabel;
 }
 
 //-----------------------------------------------------------------------------------------------------------------------------------------
@@ -1410,11 +1416,22 @@ Support.AirDate = function(apiDate, type) {
 	var year = apiDate.substring(0,4);
 	var month = apiDate.substring(5,7);
 	var day = apiDate.substring(8,10);
+	
+	var d = new Date(apiDate);
+	var weekday = new Array(7);
+	weekday[0]=  "Sunday";
+	weekday[1] = "Monday";
+	weekday[2] = "Tuesday";
+	weekday[3] = "Wednesday";
+	weekday[4] = "Thursday";
+	weekday[5] = "Friday";
+	weekday[6] = "Saturday";
+	var dayName = weekday[d.getDay()]; 
 
 	if (type != "Episode") {
 		return year;
 	} else {
-		return day + '/' + month + '/' + year;
+		return dayName + " " + day + '/' + month + '/' + year;
 	}
 }
 
