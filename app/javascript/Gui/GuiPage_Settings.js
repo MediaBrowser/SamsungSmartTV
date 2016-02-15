@@ -1130,7 +1130,7 @@ GuiPage_Settings.setOverview = function() {
 			break;
 		case "EnableCinemaMode":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Enable cinema mode";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Cinema mode brings the theater experience straight to your living room with the ability to play trailers and custom intros before the main feature.<br><br>This is a server option and will affect your Emby experience on all clients";
+			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Cinema mode brings the theater experience straight to your living room with the ability to play trailers and custom intros before the main feature.";
 			break;
 		case "DisplayMissingEpisodes":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Display Missing Episodes within Seasons";
