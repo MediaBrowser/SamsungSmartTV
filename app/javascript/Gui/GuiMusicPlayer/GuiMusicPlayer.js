@@ -132,8 +132,12 @@ GuiMusicPlayer.start = function(title, url, playedFromPage,isQueue,showThemeId,i
 		//If reset this will be true, if not it will be added to queued items
 		if (this.Status == "STOPPED") {
 			this.currentPlayingItem = 0;
-		    this.videoURL = Server.getServerAddr() + '/Audio/'+this.queuedItems[this.currentPlayingItem].Id+'/Stream.mp3?static=true&MediaSource='+this.queuedItems[this.currentPlayingItem].MediaSources[0].Id;
-		    
+			if (this.queuedItems[this.currentPlayingItem].Type == "ChannelAudioItem") {
+				this.videoURL = Server.getCustomURL("/audio/"+this.queuedItems[this.currentPlayingItem].Id+"/stream.mp3?DeviceId="+Server.getDeviceID()+"&AudioCodec=mp3&AudioBitrate=192000&MaxAudioChannels=2");
+			} else {
+				this.videoURL = Server.getServerAddr() + '/Audio/'+this.queuedItems[this.currentPlayingItem].Id+'/Stream.mp3?static=true&MediaSource='+this.queuedItems[this.currentPlayingItem].MediaSources[0].Id;
+			}
+		       
 		    //Update selected Item
 		    this.updateSelectedItem();
 		    
