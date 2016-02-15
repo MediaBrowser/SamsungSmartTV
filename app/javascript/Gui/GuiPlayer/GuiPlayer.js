@@ -91,11 +91,9 @@ GuiPlayer.start = function(title,url,startingPlaybackTick,playedFromPage,isCinem
     		return
     	}
     	//Enter Cinema Mode?
-    	var userDataUrl = Server.getServerAddr() + "/Users/" + Server.getUserID() + "?format=json";
-    	var userData = Server.getContent(userDataUrl);
     	var introsUrl = Server.getItemIntrosUrl(this.VideoData.Id);
     	var intros = Server.getContent(introsUrl);
-    	if (userData.Configuration.EnableCinemaMode === true && intros.TotalRecordCount > 0) {
+    	if (File.getUserProperty("EnableCinemaMode") && intros.TotalRecordCount > 0) {
     		FileLog.write("Playback: Switching to Cinema Mode.");
     		//Start again in Cinema Mode.
     		GuiPlayer.start("PlayAll",introsUrl,0,"GuiPage_ItemDetails",true,this.startParams[1]);
