@@ -21,17 +21,17 @@ var GuiPage_Settings = {
 		CurrentSettingValue : null,
 		
 		//Per Setting Type List of settings, names & defaults
-		Settings : ["Default","ContinueWatching","View1","View2","LargerView","AudioTheme","MusicView","SkipMusicAZ","SkipShow","SeasonLabel","AutoPlay","ShowDisc","SubtitleSize","SubtitleColour","ImagePlayerImageTime","ScreensaverImages","ScreensaverTimeout","ScreensaverImageTime","ForgetSavedPassword"],
-		SettingsName : ["Default User: ","Continue Watching:","Home View 1: ","Home View 2: ","Show Larger Icons: ", "Play Audio Themes: ", "Default Music View: ", "Skip Music A-Z: ", "Skip TV Show Page: ","Use Alternate Season Label: ","Auto Play Next Episode: ","Show Disc Art: ","Subtitle Text Size: ","Subtitle Text Colour: ","Image Player Rotate Speed: ", "Screensaver Image Source: ", "Screensaver Timeout: ", "Screensaver Rotate Speed: ", "Forget Password at Log Out:"],
-		SettingsDefaults : [false,true,"ddddd","aaaaa",false,false,"Album",false,false,false,false,true,"50px","white",10000,"Media",300000,10000,false],
+		Settings : ["Default","ContinueWatching","View1","View2","LargerView","AudioTheme","MusicView","SkipMusicAZ","SkipShow","SeasonLabel","AutoPlay","EnableCinemaMode","ShowDisc","SubtitleSize","SubtitleColour","ImagePlayerImageTime","ScreensaverImages","ScreensaverTimeout","ScreensaverImageTime","ForgetSavedPassword"],
+		SettingsName : ["Default User: ","Continue Watching:","Home View 1: ","Home View 2: ","Show Larger Icons: ", "Play Audio Themes: ", "Default Music View: ", "Skip Music A-Z: ", "Skip TV Show Page: ","Use Alternate Season Label: ","Auto Play Next Episode: ","Enable cinema mode: ","Show Disc Art: ","Subtitle Text Size: ","Subtitle Text Colour: ","Image Player Rotate Speed: ", "Screensaver Image Source: ", "Screensaver Timeout: ", "Screensaver Rotate Speed: ", "Forget Password at Log Out:"],
+		SettingsDefaults : [false,true,"ddddd","aaaaa",false,false,"Album",false,false,false,false,true,true,"50px","white",10000,"Media",300000,10000,false],
 		
 		TVSettings : ["Bitrate","Dolby","DTS","AACtoDolby","ItemPaging","ClockOffset"],
 		TVSettingsName : ["Max Bitrate: ","Enable Dolby Digital Playback: ","Enable DTS Playback: ","Enable AAC Transcoding to Dolby: ","Item Paging: ","Clock Offset: "],
 		TVSettingsDefaults : [60,false,false,false,150,0],
 		
-		ServerSettings : ["DisplayMissingEpisodes","DisplayUnairedEpisodes","GroupMovieCollections","DefaultAudioLang","PlayDefaultAudioTrack","DefaultSubtitleLang", "SubtitleMode", "HidePlayedInLatest", "EnableCinemaMode"],
-		ServerSettingsName : ["Display Missing Episodes: ", "Display Unaired Episodes: ","Group Movies into Collections: ","Default Audio Language: ","Play default audio track regardless of language: ", "Default Subtitle Language: ","Subtitle Mode:","Hide watched content from latest media:","Enable cinema mode: "], 
-		ServerSettingsDefaults : [false,false,false,"",true,"","default",false,false], //Not actually Used but implemented for clean code!!! Values read from Server so no default needed!
+		ServerSettings : ["DisplayMissingEpisodes","DisplayUnairedEpisodes","GroupMovieCollections","DefaultAudioLang","PlayDefaultAudioTrack","DefaultSubtitleLang", "SubtitleMode", "HidePlayedInLatest"],
+		ServerSettingsName : ["Display Missing Episodes: ", "Display Unaired Episodes: ","Group Movies into Collections: ","Default Audio Language: ","Play default audio track regardless of language: ", "Default Subtitle Language: ","Subtitle Mode:","Hide watched content from latest media:"], 
+		ServerSettingsDefaults : [false,false,false,"",true,"","default",false], //Not actually Used but implemented for clean code!!! Values read from Server so no default needed!
 		
 		//Per Setting Options & Values
 		DefaultOptions : ["True","False"],
@@ -232,6 +232,7 @@ GuiPage_Settings.updateDisplayedItems = function() {
 		case "SkipMusicAZ":
 		case "SeasonLabel":
 		case "AutoPlay":
+		case "EnableCinemaMode":
 		case "ShowDisc":	
 		case "LargerView":
 		case "ForgetSavedPassword":
@@ -411,15 +412,7 @@ GuiPage_Settings.updateDisplayedItems = function() {
 					break;
 				}
 			}
-			break;	
-		case "EnableCinemaMode":
-			for (var index2 = 0; index2 < this.DefaultValues.length; index2++) {
-				if (this.DefaultValues[index2] == this.ServerUserData.Configuration.EnableCinemaMode) {
-					Setting = this.DefaultOptions[index2];
-					break;
-				}
-			}
-			break;	
+			break;			
 		}
 		htmlToAdd += "<tr class=guiSettingsRow><td id="+index+">" + this.currentViewSettingsName[index] + "</td><td id=Value"+index+" class='guiSettingsTD'>"+Setting+"</td></tr>";
 	}
@@ -783,6 +776,7 @@ GuiPage_Settings.processSelectedSubItem = function() {
 	case "SkipMusicAZ":
 	case "SeasonLabel":	
 	case "AutoPlay":
+	case "EnableCinemaMode":
 	case "ShowDisc":	
 	case "LargerView":
 	case "ForgetSavedPassword":
@@ -900,13 +894,6 @@ GuiPage_Settings.processSelectedSubItem = function() {
 		break;	
 	case "HidePlayedInLatest":
 		this.ServerUserData.Configuration.HidePlayedInLatest = this.DefaultValues[this.selectedSubItem];
-		this.CurrentSettingValue = this.DefaultOptions[this.selectedSubItem];
-				
-		//Update Server	
-		Server.updateUserConfiguration(JSON.stringify(this.ServerUserData.Configuration));
-		break;
-	case "EnableCinemaMode":
-		this.ServerUserData.Configuration.EnableCinemaMode = this.DefaultValues[this.selectedSubItem];
 		this.CurrentSettingValue = this.DefaultOptions[this.selectedSubItem];
 				
 		//Update Server	
