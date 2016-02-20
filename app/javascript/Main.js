@@ -193,6 +193,9 @@ Main.onLoad = function()
 
 	setTimeout(function(){
 		document.getElementById("splashscreen").style.opacity=0;
+		setTimeout(function(){
+			document.getElementById("splashscreen").style.visibility="hidden";
+		}, 1100);
 		FileLog.write("Ready to start. Removing the splash screen.");
 	}, 2500);
 };
