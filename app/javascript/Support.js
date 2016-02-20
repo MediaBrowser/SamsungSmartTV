@@ -44,6 +44,9 @@ Support.logout = function() {
 
 	//Turn off screensaver
 	Support.screensaverOff();
+	if (GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED"){
+		GuiMusicPlayer.handleStopKey();
+	}
 	FileLog.write("User "+ Server.getUserName() + " logged out.");
 	document.getElementById("menuUserImage").style.backgroundImage = "";
 	document.getElementById("menuItems").innerHTML = "";
@@ -836,9 +839,9 @@ Support.playSelectedItem = function(page,ItemData,startParams,selectedItem,topLe
 		var url = Server.getItemInfoURL(ItemData.Items[selectedItem].Id,"&ExcludeLocationTypes=Virtual");
 		GuiPlayer.start("PLAY",url,ItemData.Items[selectedItem].UserData.PlaybackPositionTicks / 10000,page);	
 	} else if (ItemData.Items[selectedItem].Type == "Playlist") {
-		Support.updateURLHistory(page,startParams[0],startParams[1],startParams[2],startParams[3],selectedItem,topLeftItem,isTop);
 		var url = Server.getCustomURL("/Playlists/"+ItemData.Items[selectedItem].Id+"/Items?userId="+Server.getUserID()+"&StartIndex=0&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,MediaSources");
 		if (ItemData.Items[selectedItem].MediaType == "Video"){
+			Support.updateURLHistory(page,startParams[0],startParams[1],startParams[2],startParams[3],selectedItem,topLeftItem,isTop);
 			GuiPlayer.start("PlayAll",url,0,page);
 		} else if (ItemData.Items[selectedItem].MediaType == "Audio"){
 			GuiMusicPlayer.start("Album",url,page,false);
