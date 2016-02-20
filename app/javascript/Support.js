@@ -618,7 +618,7 @@ Support.getNameFormat = function(SeriesName, SeriesNo, EpisodeName, EpisodeNo, S
 				if (SeriesNo !== undefined && EpisodeNo !== undefined) {
 					nameLabel = SeriesName + "<br>S" + SeriesNo + ",E" + EpisodeNo + " - " + EpisodeName;		
 				} else {
-					nameLabel = eriesName + "<br>"+EpisodeName;
+					nameLabel = SeriesName + "<br>"+EpisodeName;
 				}
 			}
 	}
