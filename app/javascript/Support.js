@@ -828,13 +828,23 @@ Support.playSelectedItem = function(page,ItemData,startParams,selectedItem,topLe
 			Support.updateURLHistory(page,startParams[0],startParams[1],startParams[2],startParams[3],selectedItem,topLeftItem,isTop);
 			GuiImagePlayer.start(ItemData,selectedItem,true);	
 		}
-	} else if (ItemData.Items[selectedItem].MediaType == "Video" && ItemData.Items[selectedItem].Type != "TvChannel") {
+	} else if (ItemData.Items[selectedItem].MediaType == "Video" && ItemData.Items[selectedItem].Type != "TvChannel" && ItemData.Items[selectedItem].Type != "Playlist") {
 		if (ItemData.Items[selectedItem].LocationType == "Virtual"){
 			return;
 		}
 		Support.updateURLHistory(page,startParams[0],startParams[1],startParams[2],startParams[3],selectedItem,topLeftItem,isTop);
 		var url = Server.getItemInfoURL(ItemData.Items[selectedItem].Id,"&ExcludeLocationTypes=Virtual");
 		GuiPlayer.start("PLAY",url,ItemData.Items[selectedItem].UserData.PlaybackPositionTicks / 10000,page);	
+	} else if (ItemData.Items[selectedItem].Type == "Playlist") {
+		Support.updateURLHistory(page,startParams[0],startParams[1],startParams[2],startParams[3],selectedItem,topLeftItem,isTop);
+		var url = Server.getCustomURL("/Playlists/"+ItemData.Items[selectedItem].Id+"/Items?userId="+Server.getUserID()+"&StartIndex=0&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,MediaSources");
+		if (ItemData.Items[selectedItem].MediaType == "Video"){
+			GuiPlayer.start("PlayAll",url,0,page);
+		} else if (ItemData.Items[selectedItem].MediaType == "Audio"){
+			GuiMusicPlayer.start("Album",url,page,false);
+		} else {
+			return;
+		}
 	} else if (ItemData.Items[selectedItem].MediaType == "ChannelVideoItem") {
 		Support.updateURLHistory(page,startParams[0],startParams[1],startParams[2],startParams[3],selectedItem,topLeftItem,isTop);
 		var url = Server.getItemInfoURL(ItemData.Items[selectedItem].Id,"&ExcludeLocationTypes=Virtual");
