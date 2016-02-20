@@ -311,7 +311,7 @@ GuiPlayer.handleOnRenderingComplete = function() {
 	if (this.startParams[0] == "PlayAll") {
 	////Call Resume Option - Check playlist first, then AutoPlay property, then return
 		this.PlayerIndex++;
-		if (this.VideoData.Items.length >= this.PlayerIndex) {	
+		if (this.VideoData.Items.length > this.PlayerIndex) {	
 			//Take focus to no input
 			document.getElementById("NoKeyInput").focus();
 			
