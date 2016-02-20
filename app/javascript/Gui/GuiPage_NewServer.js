@@ -25,6 +25,9 @@ GuiPage_NewServer.start = function() {
 	//Set Backdrop
 	Support.fadeImage("images/bg1.jpg");
 	document.getElementById("splashscreen").style.opacity=0;
+	setTimeout(function(){
+		document.getElementById("splashscreen").style.visibility="hidden";
+	}, 1100);
 
 	//Prepare all input elements for IME
 	GuiPage_NewServer.createInputObjects();
@@ -150,7 +153,9 @@ var GuiPage_NewServer_Input  = function(id,previousId, nextId) {
     	    if (fileJson.Servers.length > 0) {
     	    	document.getElementById("pageContent").focus();  
     	    	GuiPage_Servers.start();
-    	    }
+    	   	} else {
+    			widgetAPI.sendReturnEvent();
+    		}
     	    return false;
         });
         ime.setKeyFunc(tvKey.KEY_EXIT, function (keyCode) {

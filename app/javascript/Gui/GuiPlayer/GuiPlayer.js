@@ -93,7 +93,7 @@ GuiPlayer.start = function(title,url,startingPlaybackTick,playedFromPage,isCinem
     	//Enter Cinema Mode?
     	var introsUrl = Server.getItemIntrosUrl(this.VideoData.Id);
     	var intros = Server.getContent(introsUrl);
-    	if (File.getUserProperty("EnableCinemaMode") && intros.TotalRecordCount > 0) {
+    	if (File.getUserProperty("EnableCinemaMode") && intros.TotalRecordCount > 0 && startingPlaybackTick == 0) {
     		FileLog.write("Playback: Switching to Cinema Mode.");
     		//Start again in Cinema Mode.
     		GuiPlayer.start("PlayAll",introsUrl,0,"GuiPage_ItemDetails",true,this.startParams[1]);
@@ -311,7 +311,7 @@ GuiPlayer.handleOnRenderingComplete = function() {
 	if (this.startParams[0] == "PlayAll") {
 	////Call Resume Option - Check playlist first, then AutoPlay property, then return
 		this.PlayerIndex++;
-		if (this.VideoData.Items.length >= this.PlayerIndex) {	
+		if (this.VideoData.Items.length > this.PlayerIndex) {	
 			//Take focus to no input
 			document.getElementById("NoKeyInput").focus();
 			

@@ -14,7 +14,7 @@ GuiPage_Servers.getMaxDisplay = function() {
 
 GuiPage_Servers.start = function(runAutoLogin) {
 	alert("Page Enter : GuiPage_Servers");
-	GuiHelper.setControlButtons("Default",null,null,"Delete","Return");
+	GuiHelper.setControlButtons("Default ",null,null,"Delete","Exit");
 	
 	//Reset Properties
 	this.selectedItem = 0;
@@ -38,7 +38,9 @@ GuiPage_Servers.start = function(runAutoLogin) {
 				
 		this.updateDisplayedUsers();
 		this.updateSelectedUser();
-			
+		
+		//Set Backdrop
+		Support.fadeImage("images/bg1.jpg");
 		
 		//Set focus to element in Index that defines keydown method! This enables keys to work :D
 		document.getElementById("GuiPage_Servers").focus();	
@@ -89,8 +91,7 @@ GuiPage_Servers.keyDown = function()
 	{
 		case tvKey.KEY_RETURN:
 			alert("RETURN");
-			widgetAPI.blockNavigation(event);
-	    	GuiUsers.start();
+			widgetAPI.sendReturnEvent();
 			break;
 		case tvKey.KEY_LEFT:
 			alert("LEFT");	
