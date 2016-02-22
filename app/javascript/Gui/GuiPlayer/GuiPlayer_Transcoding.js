@@ -105,7 +105,7 @@ GuiPlayer_Transcoding.checkCodec = function() {
 	FileLog.write("Video : Container Compatibility: " + this.isContainer + " : " + this.MediaSource.Container);
 	FileLog.write("Video : Resolution Compatibility: " + this.isResolution + " : " +this.MediaSource.MediaStreams[this.videoIndex].Width + "x" + this.MediaSource.MediaStreams[this.videoIndex].Height);
 	FileLog.write("Video : BitRate Compatibility: " + this.isBitRate + " : " + this.MediaSource.MediaStreams[this.videoIndex].BitRate + " : " + this.bitRateToUse);
-	FileLog.write("Video : FrameRate Compatibility: " + this.isFrameRate + " : " + this.MediaSource.MediaStreams[this.videoIndex].RealFrameRate);
+	FileLog.write("Video : FrameRate Compatibility: " + this.isFrameRate + " : " + this.MediaSource.MediaStreams[this.videoIndex].AverageFrameRate);
 	FileLog.write("Video : Level Compatibility: " + this.isLevel + " : " + this.MediaSource.MediaStreams[this.videoIndex].Level);
 	FileLog.write("Video : Profile Compatibility: " + this.isProfile + " : " + this.MediaSource.MediaStreams[this.videoIndex].Profile);
 	
@@ -191,7 +191,7 @@ GuiPlayer_Transcoding.checkBitRate = function(maxBitRate) {
 GuiPlayer_Transcoding.checkFrameRate = function(maxFrameRate) {
 	if (maxFrameRate == null) {
 		return false;
-	} else if (this.MediaSource.MediaStreams[this.videoIndex].RealFrameRate <= maxFrameRate) {
+	} else if (this.MediaSource.MediaStreams[this.videoIndex].AverageFrameRate <= maxFrameRate) {
 		return true;
 	} else {
 		return false;
