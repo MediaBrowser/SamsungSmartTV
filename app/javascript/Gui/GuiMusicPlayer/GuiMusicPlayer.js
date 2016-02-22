@@ -494,28 +494,41 @@ GuiMusicPlayer.setCurrentTime = function(time){
 		this.currentTime = time;
 		this.updateTimeCount++;
 		
-		//Update Server every 8 ticks (Don't want to spam!
-		if (this.updateTimeCount == 8) {
-			this.updateTimeCount = 0;
-			//Update Server
-			Server.videoPaused(this.queuedItems[this.currentPlayingItem].Id,this.queuedItems[this.currentPlayingItem].MediaSources[0].Id,this.currentTime,"DirectStream");
-			
+		if (this.queuedItems[this.currentPlayingItem].Type == "ChannelAudioItem") {
+			document.getElementById("guiMusicPlayerTime").innerHTML = Support.convertTicksToTimeSingle(this.currentTime);
+		} else {
+			//Update Server every 8 ticks
+			if (this.updateTimeCount == 8) {
+				this.updateTimeCount = 0;
+				//Update Server
+				Server.videoPaused(this.queuedItems[this.currentPlayingItem].Id,this.queuedItems[this.currentPlayingItem].MediaSources[0].Id,this.currentTime,"DirectStream");
+			}
+			document.getElementById("guiMusicPlayerTime").innerHTML = Support.convertTicksToTime(this.currentTime, (this.queuedItems[this.currentPlayingItem].RunTimeTicks / 10000));
 		}
-		document.getElementById("guiMusicPlayerTime").innerHTML = Support.convertTicksToTime(this.currentTime, (this.queuedItems[this.currentPlayingItem].RunTimeTicks / 10000));
 	}
 }
 
 GuiMusicPlayer.OnStreamInfoReady = function() {
 	var playingTitle = "";
 	if (this.isThemeMusicPlaying == false) {
-		if (this.queuedItems[this.currentPlayingItem].IndexNumber < 10) {
-			playingTitle = " - " + "0"+this.queuedItems[this.currentPlayingItem].IndexNumber+" - ";
-		} else {
-			playingTitle = " - " + this.queuedItems[this.currentPlayingItem].IndexNumber+" - ";
+		if (this.queuedItems[this.currentPlayingItem].IndexNumber){
+			if (this.queuedItems[this.currentPlayingItem].IndexNumber < 10) {
+				playingTitle = " - " + "0"+this.queuedItems[this.currentPlayingItem].IndexNumber+" - ";
+			} else {
+				playingTitle = " - " + this.queuedItems[this.currentPlayingItem].IndexNumber+" - ";
+			}	
 		}
-		
 		var songName = this.queuedItems[this.currentPlayingItem].Name;
-		var title = this.queuedItems[this.currentPlayingItem].Artists + " " + playingTitle + songName;
+		var title = "";
+		if (this.queuedItems[this.currentPlayingItem].Artists) {
+			title += this.queuedItems[this.currentPlayingItem].Artists + " ";
+		}
+		if (playingTitle) {
+			title += playingTitle;
+		}
+		if (this.queuedItems[this.currentPlayingItem].Name) {
+			title += this.queuedItems[this.currentPlayingItem].Name;
+		}
 		//Truncate long title.
 		if (title.length > 67){
 			title = title.substring(0,65) + "..."; 

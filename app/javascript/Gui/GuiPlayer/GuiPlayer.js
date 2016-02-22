@@ -172,21 +172,13 @@ GuiPlayer.startPlayback = function(TranscodeAlg, resumeTicksSamsung) {
 	Server.videoStarted(this.PlayerData.Id,this.playingMediaSource.Id,this.PlayMethod);
     
 	//Update URL with resumeticks
-	if (Main.getModelYear() == "D" && this.PlayMethod != "DirectPlay") {
-		FileLog.write("Playback : D Series Playback OR HTTP - Load URL");
-		var url = this.playingURL + '&StartTimeTicks=' + (resumeTicksSamsung*10000) + '|COMPONENT=HLS';
-		alert ("D Series Playback url : "+url);
-		var position = Math.round(resumeTicksSamsung / 1000);
-	    this.plugin.ResumePlay(url,position); 
-	} else {
-		FileLog.write("Playback : E+ Series Playback - Load URL");
-		var url = this.playingURL + '&StartTimeTicks=' + (resumeTicksSamsung*10000);
-		var position = 0;
-		if (this.PlayMethod == "DirectPlay") {
-			position = Math.round(resumeTicksSamsung / 1000);
-		}
-	    this.plugin.ResumePlay(url,position); 
+	FileLog.write("Playback : E+ Series Playback - Load URL");
+	var url = this.playingURL + '&StartTimeTicks=' + (resumeTicksSamsung*10000);
+	var position = 0;
+	if (this.PlayMethod == "DirectPlay") {
+		position = Math.round(resumeTicksSamsung / 1000);
 	}
+    this.plugin.ResumePlay(url,position); 
 };
 
 GuiPlayer.stopPlayback = function() {
@@ -415,24 +407,27 @@ GuiPlayer.setCurrentTime = function(time) {
 				document.getElementById("guiPlayer_Subtitles").style.visibility = "";
 			}
 		}
-		this.updateTimeCount++;
-		if (time > 0 && this.setThreeD == false) {
-			//Check 3D & Audio
-		    //Set Samsung Audio Output between DTS or PCM
-		    this.setupAudioConfiguration();
-		    this.setupThreeDConfiguration();			
-		    this.setThreeD = true;
-		}
+		
 		//Update GUIs
-		percentage = (100 * this.currentTime / (this.PlayerData.RunTimeTicks / 10000));	
-		document.getElementById("guiPlayer_Info_ProgressBar_Current").style.width = percentage + "%";	
-		document.getElementById("guiPlayer_Info_Time").innerHTML = Support.convertTicksToTime(this.currentTime, (this.PlayerData.RunTimeTicks / 10000));
-		//Update Server every 8 ticks (Don't want to spam!
-		if (this.updateTimeCount == 8) {
-			this.updateTimeCount = 0;
-
-			//Update Server
-			Server.videoTime(this.PlayerData.Id,this.playingMediaSource.Id,this.currentTime,this.PlayMethod);
+		if (this.PlayerData.Type == "ChannelVideoItem") {
+			document.getElementById("guiPlayer_Info_ProgressBar_Current").style.width = "0%";
+			document.getElementById("guiPlayer_Info_Time").innerHTML = Support.convertTicksToTimeSingle(this.currentTime);
+		} else {
+			if (time > 0 && this.setThreeD == false) {
+				//Check 3D & Audio
+			    //Set Samsung Audio Output between DTS or PCM
+			    this.setupAudioConfiguration();
+			    this.setupThreeDConfiguration();			
+			    this.setThreeD = true;
+			}
+			percentage = (100 * this.currentTime / (this.PlayerData.RunTimeTicks / 10000));	
+			document.getElementById("guiPlayer_Info_ProgressBar_Current").style.width = percentage + "%";
+			document.getElementById("guiPlayer_Info_Time").innerHTML = Support.convertTicksToTime(this.currentTime, (this.PlayerData.RunTimeTicks / 10000));
+			this.updateTimeCount++;
+			if (this.updateTimeCount == 8) {
+				this.updateTimeCount = 0;
+				Server.videoTime(this.PlayerData.Id,this.playingMediaSource.Id,this.currentTime,this.PlayMethod);
+			}
 		}
 	}
 };
@@ -454,6 +449,9 @@ GuiPlayer.onBufferingStart = function() {
 };
 
 GuiPlayer.onBufferingProgress = function(percent) {
+	if (document.getElementById("guiPlayer_Loading").style.visibility == "" && percent > 5){
+		document.getElementById("guiPlayer_Loading").innerHTML = "Buffering " + percent + "%";
+	}
 	FileLog.write("Playback : Buffering " + percent + "%");
 };
 
@@ -469,6 +467,7 @@ GuiPlayer.onBufferingComplete = function() {
 	}
     
     //Hide Loading Screen
+	document.getElementById("guiPlayer_Loading").innerHTML = "Loading";
     document.getElementById("guiPlayer_Loading").style.visibility = "hidden";
     
 	//Setup Volume & Mute Keys

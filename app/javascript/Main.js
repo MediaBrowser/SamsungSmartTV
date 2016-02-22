@@ -4,7 +4,7 @@ var tvKey = new Common.API.TVKeyValue();
 	
 var Main =
 {
-		version : "v2.1.3",
+		version : "v2.2.0a",
 		requiredServerVersion : "3.0.5211",
 		requiredDevServerVersion : "3.0.5507.2131",
 		
@@ -24,9 +24,9 @@ var Main =
 		forceDeleteSettings : false,
 		
 		enableMusic : true,
-		enableLiveTV : false,
+		enableLiveTV : true,
 		enableCollections : true,
-		enableChannels : false,
+		enableChannels : true,
 		enableImageCache : true,
 		
 		enableScreensaver : true,

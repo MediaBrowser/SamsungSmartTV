@@ -15,6 +15,7 @@ GuiPage_TvChannel.getMaxDisplay = function() {
 }
 
 GuiPage_TvChannel.start = function(title,url,selectedItem,topLeftItem) {	
+	alert("Page Enter : GuiPage_TvChannel");
 	//Save Start Params	
 	this.startParams = [title,url];
 	

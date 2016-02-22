@@ -415,8 +415,28 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 					var imgsrc = Server.getImageURL(Items[index].Id,"Primary",224,224,0,false,0);
 					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(" +imgsrc+ ")><div class=menuItem>"+ title + "</div></div>";	
 				} else {
-					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(images/artist.png)><div class=menuItem>"+ title + "</div></div>";
+					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style='background-position:center;background-color:rgba(63,81,181,0.8);background-image:url(images/Live-TV-108x98.png)')><div class=menuItem>"+ title + "</div></div>";
 				}
+				//----------------------------------------------------------------------------------------------	
+			} else if (Items[index].Type == "Recording") {
+				var title = Items[index].Name + "<br>" + Support.AirDate(Items[index].StartDate,"Recording");		
+				
+				if (Items[index].ImageTags.Primary) {			
+					var imgsrc = Server.getImageURL(Items[index].Id,"Primary",Main.posterWidth,Main.posterHeight,0,false,0);
+					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(" +imgsrc+ ")><div class=menuItem>"+ title + "</div>";	
+				} else {
+					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style='background-position:center;background-color:rgba(63,81,181,0.8);background-image:url(images/Live-TV-108x98.png)')><div class=menuItem>"+ title + "</div>";
+				}
+				//Add watched and favourite overlays.
+				if (Items[index].UserData.Played) {
+					htmlToAdd += "<div class=genreItemCount>&#10003</div>";	
+				} else if (Items[index].UserData.UnplayedItemCount > 0){
+					htmlToAdd += "<div class=genreItemCount>"+Items[index].UserData.UnplayedItemCount+"</div>";
+				}
+				if (Items[index].UserData.IsFavorite) {
+					htmlToAdd += "<div class=favItem></div>";
+				}
+				htmlToAdd += "</div>";
 			//----------------------------------------------------------------------------------------------
 			} else if (Items[index].Type == "Season") {
 				if (Items[index].BackdropImageTags.length > 0) {			
@@ -457,18 +477,6 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 				} else {
 					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-color:rgba(0,0,0,0.5);><div class=menuItem>"+ title + "</div></div>";
 				}
-			//----------------------------------------------------------------------------------------------
-			} else if (Items[index].Type == "Recording") {
-				var title = Items[index].Name;		
-				if (Items[index].ImageTags.Thumb) {		
-					var imgsrc = Server.getImageURL(Items[index].Id,"Thumb",Main.posterWidth,Main.posterHeight,0,false,0);
-					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(" +imgsrc+ ")><div class=menuItem>"+ title + "</div></div>";
-				} else if (Items[index].BackdropImageTags.length > 0) {			
-					var imgsrc = Server.getBackgroundImageURL(Items[index].Id,"Backdrop",Main.posterWidth,Main.posterHeight,0,false,0,Items[index].BackdropImageTags.length);
-					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(" +imgsrc+ ")><div class=menuItem>"+ title + "</div></div>";	
-				} else {
-					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-color:rgba(0,0,0,0.5);><div class=menuItem>"+ title + "</div></div>";
-				}	
 			//----------------------------------------------------------------------------------------------
 			} else if (Items[index].Type == "Playlist" || Items[index].Type == "CollectionFolder" ) {
 				var title = Items[index].Name;	
@@ -1119,7 +1127,7 @@ Support.processHomePageMenu = function (menuItem) {
 		GuiPage_TvChannel.start("Live TV",url,0,0);
 		break;	
 	case "Recordings":
-		var url = Server.getCustomURL("/LiveTV/Recordings?IsInProgress=false&SortBy=SortName&SortOrder=Ascending&StartIndex=0&fields=SortName&format=json");
+		var url = Server.getCustomURL("/LiveTV/Recordings?userId=" + Server.getUserID() + "&IsInProgress=false&SortBy=StartDate&SortOrder=Descending&StartIndex=0&fields=SortName");
 		GuiDisplayOneItem.start("Recordings", url,0,0);
 		break;	
 	case "Home-Movies":
@@ -1426,9 +1434,12 @@ Support.SeriesRun = function(type, prodyear, status, enddate) {
 //Cannot parse the date from the API into a Date Object
 //Substring out relevant areas
 Support.AirDate = function(apiDate, type) {
+	var dateString = "";
 	var year = apiDate.substring(0,4);
 	var month = apiDate.substring(5,7);
 	var day = apiDate.substring(8,10);
+	var hour = apiDate.substring(11,13);
+	var min = apiDate.substring(14,16);
 	
 	var d = new Date(apiDate);
 	var weekday = new Array(7);
@@ -1439,13 +1450,26 @@ Support.AirDate = function(apiDate, type) {
 	weekday[4] = "Thursday";
 	weekday[5] = "Friday";
 	weekday[6] = "Saturday";
-	var dayName = weekday[d.getDay()]; 
+	var dayName = weekday[d.getDay()];
+	
+	var shortWeekday = new Array(7);
+	shortWeekday[0]=  "Sun.";
+	shortWeekday[1] = "Mon.";
+	shortWeekday[2] = "Tues.";
+	shortWeekday[3] = "Wed.";
+	shortWeekday[4] = "Thurs.";
+	shortWeekday[5] = "Fri.";
+	shortWeekday[6] = "Sat.";
+	var shortDayName = shortWeekday[d.getDay()]; 
 
-	if (type != "Episode") {
-		return year;
+	if (type == "Recording"){
+		dateString = dayName + " " + day + '/' + month + '/' + year + " " + hour + ":" + min;
+	} else if (type != "Episode") {
+		dateString = year;
 	} else {
-		return dayName + " " + day + '/' + month + '/' + year;
+		dateString = dayName + " " + day + '/' + month + '/' + year;
 	}
+	return dateString;
 }
 
 Support.FutureDate = function(apiDate) {

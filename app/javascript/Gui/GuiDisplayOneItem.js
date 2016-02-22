@@ -41,9 +41,11 @@ GuiDisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 	if (this.ItemData == null) { return; }
 
 	//Once we've browsed the channels down to a content folder we should display them using GuiDisplay_Series.
-	if (this.ItemData.Items[0].Type == "ChannelVideoItem" || this.ItemData.Items[0].Type == "ChannelAudioItem") {
-		GuiDisplay_Series.start(title,url,selectedItem,topLeftItem,this.ItemData);
-		return;
+	if (this.ItemData.TotalRecordCount >0){
+		if (this.ItemData.Items[0].Type == "ChannelVideoItem" || this.ItemData.Items[0].Type == "ChannelAudioItem") {
+			GuiDisplay_Series.start(title,url,selectedItem,topLeftItem,this.ItemData);
+			return;
+		}	
 	}
 
 	//Setup display width height based on title
