@@ -25,9 +25,9 @@ var GuiPage_Settings = {
 		SettingsName : ["Default User: ","Continue Watching:","Home View 1: ","Home View 2: ","Show Larger Icons: ", "Play Audio Themes: ", "Default Music View: ", "Skip Music A-Z: ", "Skip TV Show Page: ","Use Alternate Season Label: ","Auto Play Next Episode: ","Enable cinema mode: ","Show Disc Art: ","Subtitle Text Size: ","Subtitle Text Colour: ","Image Player Rotate Speed: ", "Screensaver Image Source: ", "Screensaver Timeout: ", "Screensaver Rotate Speed: ", "Forget Password at Log Out:"],
 		SettingsDefaults : [false,true,"ddddd","aaaaa",false,false,"Album",false,false,false,false,true,true,"50px","white",10000,"Media",300000,10000,false],
 		
-		TVSettings : ["Bitrate","Dolby","DTS","AACtoDolby","ItemPaging","ClockOffset"],
-		TVSettingsName : ["Max Bitrate: ","Enable Dolby Digital Playback: ","Enable DTS Playback: ","Enable AAC Transcoding to Dolby: ","Item Paging: ","Clock Offset: "],
-		TVSettingsDefaults : [60,false,false,false,150,0],
+		TVSettings : ["Bitrate","Dolby","DTS","AACtoDolby","ItemPaging","ClockOffset","ModelOverride"],
+		TVSettingsName : ["Max Bitrate: ","Enable Dolby Digital Playback: ","Enable DTS Playback: ","Enable AAC Transcoding to Dolby: ","Item Paging: ","Clock Offset: ","Override Model Year: "],
+		TVSettingsDefaults : [60,false,false,false,150,0,"None"],
 		
 		ServerSettings : ["DisplayMissingEpisodes","DisplayUnairedEpisodes","GroupMovieCollections","DefaultAudioLang","PlayDefaultAudioTrack","DefaultSubtitleLang", "SubtitleMode", "HidePlayedInLatest"],
 		ServerSettingsName : ["Display Missing Episodes: ", "Display Unaired Episodes: ","Group Movies into Collections: ","Default Audio Language: ","Play default audio track regardless of language: ", "Default Subtitle Language: ","Subtitle Mode:","Hide watched content from latest media:"], 
@@ -75,7 +75,10 @@ var GuiPage_Settings = {
 		LanguageValues : ["","eng","fre","ger","spa","ita"],
 		
 		SubtitleModeOptions : ["Default","Only Forced Subtitles", "Always Play Subtitles", "None"],
-		SubtitleModeValues : ["Default","OnlyForced", "Always", "None"]
+		SubtitleModeValues : ["Default","OnlyForced", "Always", "None"],
+
+		ModelOverrideOptions : ["No override","2012 E-Series","2013 F-Series","2014 H-Series"],
+		ModelOverrideValues : ["None","E","F","H"]
 }
 
 GuiPage_Settings.onFocus = function() {
@@ -313,6 +316,14 @@ GuiPage_Settings.updateDisplayedItems = function() {
 			for (var index2 = 0; index2 < this.ClockOffsetValues.length; index2++) {
 				if (this.ClockOffsetValues[index2] == this.AllData.TV[this.currentViewSettings[index]]) {
 					Setting = this.ClockOffsetOptions[index2];
+					break;
+				}
+			}
+			break;
+		case "ModelOverride":
+			for (var index2 = 0; index2 < this.ModelOverrideValues.length; index2++) {
+				if (this.ModelOverrideValues[index2] == this.AllData.TV[this.currentViewSettings[index]]) {
+					Setting = this.ModelOverrideOptions[index2];
 					break;
 				}
 			}
@@ -565,6 +576,9 @@ GuiPage_Settings.processSelectedItem = function() {
 			break;	
 		case "ClockOffset":
 			this.CurrentSubSettings = this.ClockOffsetOptions;
+			break;	
+		case "ModelOverride":
+			this.CurrentSubSettings = this.ModelOverrideOptions;
 			break;	
 		case "ItemPaging":
 			this.CurrentSubSettings = this.ItemPagingOptions;
@@ -829,6 +843,10 @@ GuiPage_Settings.processSelectedSubItem = function() {
 		this.AllData.TV.ClockOffset = this.ClockOffsetValues[this.selectedSubItem];
 		this.CurrentSettingValue = this.ClockOffsetOptions[this.selectedSubItem];
 		break;
+	case "ModelOverride":
+		this.AllData.TV.ModelOverride = this.ModelOverrideValues[this.selectedSubItem];
+		this.CurrentSettingValue = this.ModelOverrideOptions[this.selectedSubItem];
+		break;
 	case "Dolby":
 	case "DTS":
 	case "AACtoDolby":	
@@ -1087,6 +1105,10 @@ GuiPage_Settings.setOverview = function() {
 		case "ClockOffset":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Clock Offset";
 			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Some devices report their system time incorrectly. Use this option to apply a correction.";
+			break;	
+		case "ModelOverride":
+			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Override Model Year";
+			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "If you have purchased an Evo Kit to enhance your TV, select the model year that the Evo Kit feature set provides.<br>Restart the Emby client for the change to take affect.";
 			break;	
 		case "Bitrate":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Max Bitrate";

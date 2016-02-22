@@ -158,6 +158,12 @@ Main.onLoad = function()
 	    	} 	File.writeAll(fileJson);
 	    }
 	    
+	    //Allow Evo Kit owners to override the model year.
+	    if (fileJson.TV.ModelOverride != "None") {
+	    	this.modelYear = fileJson.TV.ModelOverride;
+	    	FileLog.write("Model Year Override: " + this.modelYear);
+	    }
+	    
 	    //Check if Server exists
 	    if (fileJson.Servers.length > 1) {
 	    	//If no default show user Servers page (Can set default on that page)
