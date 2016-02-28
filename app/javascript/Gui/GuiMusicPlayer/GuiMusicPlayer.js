@@ -12,6 +12,8 @@ var GuiMusicPlayer = {
 		
 		selectedItem : 0,
 		playedFromPage : null,
+		selectedDivId : 0,
+		selectedDivClass : "",
 		previousImagePlayerOverlay : 0,
 		
 		queuedItems : [],
@@ -44,10 +46,30 @@ GuiMusicPlayer.init = function() {
     this.pluginMusic.SetDisplayArea(0, 0, 0, 0);
 }
 
-GuiMusicPlayer.showMusicPlayer = function(playedFromPage) {
+GuiMusicPlayer.showMusicPlayer = function(playedFromPage,selectedDivId,selectedDivClass) {
 	if (this.Status != "STOPPED") {
+
 		this.playedFromPage = playedFromPage;
-		if (this.playedFromPage == "GuiImagePlayer") {
+		this.selectedDivId = selectedDivId;
+		
+		//Unhighlight the page's selected content
+		if (selectedDivId != null) {
+			if (selectedDivClass === undefined) {
+				this.selectedDivClass = "UNDEFINED";
+			} else {
+				this.selectedDivClass = selectedDivClass;
+			}
+			alert("selectedDivId "+selectedDivId);
+			alert("selectedDivClass "+selectedDivClass);
+			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("GuiPage_Setting_Changing arrowUpDown","");
+			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("EpisodeListSelected","");
+			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("BannerSelected","");
+			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("seriesSelected","");
+			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("Selected","");
+			alert(document.getElementById(selectedDivId).className);
+		}
+		
+		if (playedFromPage == "GuiImagePlayer") {
 			clearTimeout(GuiImagePlayer.infoTimer);
 			document.getElementById("GuiImagePlayer_ScreensaverOverlay").style.visibility="hidden";
 			document.getElementById("guiButtonShade").style.visibility = "";
@@ -64,9 +86,8 @@ GuiMusicPlayer.showMusicPlayer = function(playedFromPage) {
 	}
 }
 
-GuiMusicPlayer.start = function(title, url, playedFromPage,isQueue,showThemeId,itemId) { 
+GuiMusicPlayer.start = function(title,url,playedFromPage,isQueue,showThemeId,itemId) { 
 	this.selectedItem = 0;
-	this.playedFromPage = playedFromPage;
 	
 	//Initiate Player for Music if required.
 	//Set to null on end of playlist or stop.
@@ -137,25 +158,15 @@ GuiMusicPlayer.start = function(title, url, playedFromPage,isQueue,showThemeId,i
 			} else {
 				this.videoURL = Server.getServerAddr() + '/Audio/'+this.queuedItems[this.currentPlayingItem].Id+'/Stream.mp3?static=true&MediaSource='+this.queuedItems[this.currentPlayingItem].MediaSources[0].Id;
 			}
-		       
+			
 		    //Update selected Item
 		    this.updateSelectedItem();
 		    
-			//Show Content
-		    document.getElementById("guiMusicPlayerDiv").style.bottom = "-60px";
-			document.getElementById("guiMusicPlayerDiv").style.visibility = "";
-			$('.guiMusicPlayerDiv').animate({
-				bottom: 0
-			}, 400, function() {
-				//animate complete.
-				document.getElementById("Counter").style.visibility = "hidden";
-			});
-		    
-			//set focus
-			document.getElementById("GuiMusicPlayer").focus();
-			
 			//Start Playback
 			this.handlePlayKey();
+			
+			//Show Content
+			this.showMusicPlayer(playedFromPage,itemId,"Music seriesSelected");
 		}
 	}
 }
@@ -168,10 +179,10 @@ GuiMusicPlayer.updateSelectedItem = function() {
 			document.getElementById("guiMusicPlayerNowPlaying").style.color = "#27a436";
 			break;*/
 		case 0:
-			document.getElementById("guiMusicPlayerScreenOff").style.color = "#27a436";
+			document.getElementById("guiMusicPlayerScreenOff").className = "guiMusicPlayerScreenOff SelectedButton";
 			break;
 		default:
-			document.getElementById("guiMusicPlayerNowPlaying").style.color = "#27a436";
+			document.getElementById("guiMusicPlayerNowPlaying").className = "guiMusicPlayerNowPlaying SelectedButton";
 			break;
 		}
 }
@@ -278,19 +289,24 @@ GuiMusicPlayer.keyDown = function() {
 					document.getElementById("GuiImagePlayer_ScreensaverOverlay").style.visibility="";
 				}
 				//Hide the music player.
-/*				$('.guiMusicPlayerDiv').animate({
-					bottom: -60
-				}, 300, function() {*/
-					document.getElementById("guiMusicPlayerDiv").style.visibility = "hidden";
-					document.getElementById("guiMusicPlayerDiv").style.bottom = "0";
-				//});
+				document.getElementById("guiMusicPlayerDiv").style.visibility = "hidden";
+				document.getElementById("guiMusicPlayerDiv").style.bottom = "0";
 				document.getElementById("Counter").style.visibility = "";
 				
 				//Hide colour buttons if a slideshow is running.
 				if (GuiImagePlayer.ImageViewer != null){
 					GuiHelper.setControlButtons(null,null,null,null,null);
 				}
-				document.getElementById(this.playedFromPage).focus();	
+				
+				//Set Page GUI elements Correct & Set Focus
+				if (this.selectedDivId != null) {
+					if (this.selectedDivClass == "UNDEFINED") {
+						document.getElementById(this.selectedDivId).className = document.getElementById(this.selectedDivId).className + " Selected";		
+					} else {
+						document.getElementById(this.selectedDivId).className = this.selectedDivClass;
+					}
+				}
+				document.getElementById(this.playedFromPage).focus();
 			}
 			break;
 		case tvKey.KEY_EXIT:
@@ -368,15 +384,19 @@ GuiMusicPlayer.returnToPage = function() {
 	this.queuedItems.length = 0;
 	
     if (document.getElementById("guiMusicPlayerDiv").style.visibility == "") {
-/*		$('.guiMusicPlayerDiv').animate({
-			bottom: -60
-		}, 400, function() {*/
-			document.getElementById("guiMusicPlayerDiv").style.visibility = "hidden";
-			document.getElementById("guiMusicPlayerDiv").style.bottom = "0";
-		//});
-    	
-    	document.getElementById(this.playedFromPage).focus();	
-    }		
+		document.getElementById("guiMusicPlayerDiv").style.visibility = "hidden";
+		document.getElementById("guiMusicPlayerDiv").style.bottom = "0";	
+    }
+    
+	//Set Page GUI elements Correct & Set Focus
+	if (this.selectedDivId != null) {
+		if (this.selectedDivClass == "UNDEFINED") {
+			document.getElementById(this.selectedDivId).className = document.getElementById(this.selectedDivId).className + " Selected";		
+		} else {
+			document.getElementById(this.selectedDivId).className = this.selectedDivClass;
+		}
+	}
+	document.getElementById(this.playedFromPage).focus();
 }
 
 GuiMusicPlayer.handleNextKey = function() {

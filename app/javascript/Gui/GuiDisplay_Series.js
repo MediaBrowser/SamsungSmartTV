@@ -370,9 +370,9 @@ GuiDisplay_Series.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.bannerItems.length; index++) {	
 		if (index == this.selectedBannerItem) {
 			if (index != this.bannerItems.length-1) {
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding red";
+				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding BannerSelected";
 			} else {
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem red";
+				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem BannerSelected";
 			}		
 		} else {
 			if (index != this.bannerItems.length-1) {
@@ -486,8 +486,17 @@ GuiDisplay_Series.keyDown = function() {
 				GuiDisplay_Series.processIndexing();
 			}
 			break;
-		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiDisplay_Series");
+		case tvKey.KEY_BLUE:
+			//Focus the music player
+			if (this.selectedItem == -1) {		
+				if (this.selectedBannerItem == this.bannerItems.length-1) {
+					GuiMusicPlayer.showMusicPlayer("GuiDisplay_Series","bannerItem"+this.selectedBannerItem,"guiDisplay_Series-BannerItem BannerSelected");
+				} else {
+					GuiMusicPlayer.showMusicPlayer("GuiDisplay_Series","bannerItem"+this.selectedBannerItem,"guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding BannerSelected");
+				}
+			} else {
+				GuiMusicPlayer.showMusicPlayer("GuiDisplay_Series",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
+			}
 			break;	
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);

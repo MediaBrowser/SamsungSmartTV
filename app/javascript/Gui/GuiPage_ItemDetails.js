@@ -541,8 +541,8 @@ GuiPage_ItemDetails.keyDown = function()
 				}
 			}
 			break;
-		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiPage_ItemDetails");
+		case tvKey.KEY_BLUE:
+			GuiMusicPlayer.showMusicPlayer("GuiPage_ItemDetails",this.menuItems[this.selectedItem],document.getElementById(this.menuItems[this.selectedItem]).className);
 			break;	
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY");
@@ -904,7 +904,7 @@ GuiPage_ItemDetails.subKeyDown = function() {
 			}
 			break;
 		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiPage_ItemDetails");
+			GuiMusicPlayer.showMusicPlayer("GuiPage_ItemDetailsSub",this.selectedItem2,document.getElementById(this.selectedItem2).className);
 			break;	
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);

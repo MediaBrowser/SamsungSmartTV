@@ -236,7 +236,11 @@ GuiPage_Playlist.keyDown = function() {
 			//Favourites - May not be needed on this page
 			break;			
 		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiPage_Playlist");
+			if (this.selectedItem == -1) {
+				GuiMusicPlayer.showMusicPlayer("GuiPage_Playlist",this.topMenuItems[this.selectedItem2],"guiMusic_Global SelectedButton");
+			} else {
+				GuiMusicPlayer.showMusicPlayer("GuiPage_Playlist",this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"guiMusic_TableTd SelectedButton");
+			}
 			break;	
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY");

@@ -814,7 +814,7 @@ Support.processSelectedItem = function(page,ItemData,startParams,selectedItem,to
 			case "Audio":
 				Support.removeLatestURL(); //Music player loads within the previous page - thus remove!
 				var url = Server.getItemInfoURL(ItemData.Items[selectedItem].Id,null);
-				GuiMusicPlayer.start("Song",url,page,false);
+				GuiMusicPlayer.start("Song",url,page,false,false,ItemData.Items[selectedItem].Id);
 				break;
 			default:
 				Support.removeLatestURL();

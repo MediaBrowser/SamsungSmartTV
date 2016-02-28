@@ -189,8 +189,8 @@ GuiDisplayOneItem.keyDown = function() {
 		case tvKey.KEY_YELLOW:	
 			//Favourites - May not be needed on this page
 			break;	
-		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiDisplayOneItem");
+		case tvKey.KEY_BLUE:
+			GuiMusicPlayer.showMusicPlayer("GuiDisplayOneItem",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
 			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);

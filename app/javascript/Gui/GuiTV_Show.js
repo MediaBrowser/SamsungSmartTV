@@ -56,7 +56,9 @@ GuiTV_Show.start = function(title,url,selectedItem,topLeftItem) {
 		GuiDisplay_Episodes.start(this.ShowData.Name + " " + this.ItemData.Items[this.selectedItem].Name,url,0,0);
 	} else {
 		if (this.ItemData.Items.length > 0) {				
-			document.getElementById("pageContent").innerHTML = "<div id=allOptions><span id='playAll' style='padding-right:70px'>Play All</span><span id='shuffleAll'>Shuffle All</span></div><div id=Content></div>" + 
+			document.getElementById("pageContent").innerHTML = "<div id=allOptions>" +
+			"<span id='bannerItem0'>Play All</span>" +
+			"<span id='bannerItem1'>Shuffle All</span></div><div id=Content></div>" + 
 			"<div id='ShowSeriesInfo'></div>" + 
 			"<div id='ShowImage'></div>" + 
 			"<div id='InfoContainer' class='showItemContainer'>" + 
@@ -106,6 +108,7 @@ GuiTV_Show.start = function(title,url,selectedItem,topLeftItem) {
 		
 			//Display first XX series
 			this.updateDisplayedItems();
+			this.updateSelectedBannerItems();
 				
 			//Update Selected Collection CSS
 			this.updateSelectedItems();	
@@ -223,17 +226,16 @@ GuiTV_Show.updateSelectedItems = function () {
 };
 
 GuiTV_Show.updateSelectedBannerItems = function() {
-	if (this.selectedItem == -1) {
-		if (this.selectedBannerItem == 0) {
-			document.getElementById("playAll").style.color = "#27a436";
-			document.getElementById("shuffleAll").style.color = "#f9f9f9";
+	for (var index = 0; index < 2; index++) {	
+		if (this.selectedItem == -1) {
+			if (this.selectedBannerItem == index) {
+				document.getElementById("bannerItem"+index).className = "button buttonSelected";
+			} else {
+				document.getElementById("bannerItem"+index).className = "button";
+			}		
 		} else {
-			document.getElementById("playAll").style.color = "#f9f9f9";
-			document.getElementById("shuffleAll").style.color = "#27a436";
+			document.getElementById("bannerItem"+index).className = "button";
 		}
-	} else {
-		document.getElementById("playAll").style.color = "#f9f9f9";
-		document.getElementById("shuffleAll").style.color = "#f9f9f9";
 	}
 }
 
@@ -338,7 +340,11 @@ GuiTV_Show.keyDown = function() {
 	    		}, 150);
 			}
 		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiTV_Show");
+			if (this.selectedItem == -1) {		
+				GuiMusicPlayer.showMusicPlayer("GuiTV_Show","bannerItem"+this.selectedBannerItem,"button buttonSelected");
+			} else {
+				GuiMusicPlayer.showMusicPlayer("GuiTV_Show",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
+			}
 			break;	
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
@@ -445,25 +451,25 @@ GuiTV_Show.processChannelUpKey = function() {
 }
 
 GuiTV_Show.openMenu = function() {
+	Support.updateURLHistory("GuiTV_Show",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
 	if (this.selectedItem == -1) {
 		if (this.selectedBannerItem == -1) {
 			this.selectedBannerItem = 0;
-			document.getElementById("playAll").style.color = "#f9f9f9";
+			document.getElementById("bannerItem"+this.selectedBannerItem).className = "button";
 		}
-		this.selectedItem = 0;
-		this.topLeftItem = 0;
+		GuiMainMenu.requested("GuiTV_Show","bannerItem"+this.selectedBannerItem,"button buttonSelected");
+	} else {
+		GuiMainMenu.requested("GuiTV_Show",this.ItemData.Items[this.selectedItem].Id,"ShowListSingle EpisodeListSelected");
 	}
-	Support.updateURLHistory("GuiTV_Show",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
-	GuiMainMenu.requested("GuiTV_Show",this.ItemData.Items[this.selectedItem].Id,"ShowListSingle EpisodeListSelected","ShowListSingle");
 }
 
 GuiTV_Show.processLeftKey = function() {
 	if (this.selectedItem == -1) {
 		this.selectedBannerItem--;
+		this.updateSelectedBannerItems();
 		if (this.selectedBannerItem == -1) {
 			this.openMenu(); //Going left from the Play All / Shuffle All menu.
 		}
-		this.updateSelectedBannerItems();
 	} else {
 		this.openMenu(); //There's no left/right in the list of series, always open the menu.
 	}

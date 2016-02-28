@@ -65,9 +65,9 @@ GuiPage_SettingsLog.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.bannerItems.length; index++) {
 		if (index == this.selectedBannerItem) {
 			if (index != this.bannerItems.length-1) { //Don't put padding on the last one.
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding green";
+				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding BannerSelected";
 			} else {
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem green";
+				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem BannerSelected";
 			}		
 		} else {
 			if (index != this.bannerItems.length-1) { //Don't put padding on the last one.
@@ -144,7 +144,7 @@ GuiPage_SettingsLog.keyDown = function() {
 			GuiPage_SettingsLog.start(); //relead
 			break;
 		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiPage_SettingsLog");
+			GuiMusicPlayer.showMusicPlayer("GuiPage_SettingsLog","bannerItem"+this.selectedBannerItem,"guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding BannerSelected");
 			break;		
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);

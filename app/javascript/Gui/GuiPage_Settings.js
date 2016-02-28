@@ -451,9 +451,9 @@ GuiPage_Settings.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.bannerItems.length; index++) {
 		if (index == this.selectedBannerItem) {
 			if (index != this.bannerItems.length-1) { //Don't put padding on the last one.
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding green";
+				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding BannerSelected";
 			} else {
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem green";
+				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem BannerSelected";
 			}		
 		} else {
 			if (index != this.bannerItems.length-1) { //Don't put padding on the last one.
@@ -668,8 +668,16 @@ GuiPage_Settings.keyDown = function() {
 		case tvKey.KEY_YELLOW:	
 			//Favourites - Not needed on this page!
 			break;	
-		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiPage_Settings");
+		case tvKey.KEY_BLUE:
+			if (this.selectedItem == -1) {		
+				if (this.selectedBannerItem == this.bannerItems.length-1) {
+					GuiMusicPlayer.showMusicPlayer("GuiPage_Settings","bannerItem"+this.selectedBannerItem,"guiDisplay_Series-BannerItem BannerSelected");
+				} else {
+					GuiMusicPlayer.showMusicPlayer("GuiPage_Settings","bannerItem"+this.selectedBannerItem,"guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding BannerSelected");
+				}
+			} else {
+				GuiMusicPlayer.showMusicPlayer("GuiPage_Settings",this.selectedItem,document.getElementById(this.selectedItem).className);
+			}
 			break;		
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
@@ -689,7 +697,7 @@ GuiPage_Settings.openMenu = function() {
 		} else {
 			document.getElementById("bannerItem0").className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding";
 		}
-		GuiMainMenu.requested("GuiPage_Settings","bannerItem0","guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding green");
+		GuiMainMenu.requested("GuiPage_Settings","bannerItem0","guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding BannerSelected");
 	} else {
 		document.getElementById(this.selectedItem).className = "guiSettingsTD GuiPage_Setting_UnSelected";
 		GuiMainMenu.requested("GuiPage_Settings",this.selectedItem,"guiSettingsTD GuiPage_Setting_Selected");
@@ -995,7 +1003,7 @@ GuiPage_Settings.bottomKeyDown = function() {
 			this.processSelectedSubItem();
 			break;
 		case tvKey.KEY_BLUE:	
-			Support.logout();
+			GuiMusicPlayer.showMusicPlayer("GuiPage_SettingsBottom","Value"+this.selectedItem,document.getElementById("Value"+this.selectedItem).className);
 			break;		
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
