@@ -50,7 +50,6 @@ GuiDisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 
 	//Setup display width height based on title
 	switch (title) {
-	case "Media Folders":
 	case "Collections":
 	case "Channels":
 		this.MAXCOLUMNCOUNT = 3;
