@@ -26,7 +26,7 @@ var GuiPage_Settings = {
 		SettingsDefaults : [false,true,"ddddd","aaaaa",false,false,"Album",false,false,false,false,true,true,"50px","white",10000,"Media",300000,10000,false],
 		
 		TVSettings : ["Bitrate","Dolby","DTS","AACtoDolby","ItemPaging","ClockOffset","ModelOverride"],
-		TVSettingsName : ["Max Bitrate: ","Enable Dolby Digital Playback: ","Enable DTS Playback: ","Enable AAC Transcoding to Dolby: ","Item Paging: ","Clock Offset: ","Override Model Year: "],
+		TVSettingsName : ["Max Bitrate: ","Enable Dolby Digital Playback: ","Enable DTS Playback: ","Enable AAC Transcoding to Dolby: ","Item Paging: ","Clock Offset: ","Evolution Kit: "],
 		TVSettingsDefaults : [60,false,false,false,150,0,"None"],
 		
 		ServerSettings : ["DisplayMissingEpisodes","DisplayUnairedEpisodes","GroupMovieCollections","DefaultAudioLang","PlayDefaultAudioTrack","DefaultSubtitleLang", "SubtitleMode", "HidePlayedInLatest"],
@@ -77,8 +77,8 @@ var GuiPage_Settings = {
 		SubtitleModeOptions : ["Default","Only Forced Subtitles", "Always Play Subtitles", "None"],
 		SubtitleModeValues : ["Default","OnlyForced", "Always", "None"],
 
-		ModelOverrideOptions : ["No override","2012 E-Series","2013 F-Series","2014 H-Series"],
-		ModelOverrideValues : ["None","E","F","H"]
+		ModelOverrideOptions : ["None","SEK-1000","SEK-2000","SEK-2500"],
+		ModelOverrideValues : ["None","SEK1000","SEK2000","SEK2500"]
 }
 
 GuiPage_Settings.onFocus = function() {
@@ -1115,8 +1115,8 @@ GuiPage_Settings.setOverview = function() {
 			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Some devices report their system time incorrectly. Use this option to apply a correction.";
 			break;	
 		case "ModelOverride":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Override Model Year";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "If you have purchased an Evo Kit to enhance your TV, select the model year that the Evo Kit feature set provides.<br>Restart the Emby client for the change to take affect.";
+			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Samsung Evolution Kit";
+			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "If you have purchased a Samsung Evolution Kit to enhance your TV, select the model number to unlock the addition codec support provided.<br><br>Restart the Emby client for the change to take affect.";
 			break;	
 		case "Bitrate":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Max Bitrate";

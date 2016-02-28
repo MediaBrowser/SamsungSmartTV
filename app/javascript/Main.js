@@ -160,7 +160,17 @@ Main.onLoad = function()
 	    
 	    //Allow Evo Kit owners to override the model year.
 	    if (fileJson.TV.ModelOverride != "None") {
-	    	this.modelYear = fileJson.TV.ModelOverride;
+	    	switch(fileJson.TV.ModelOverride){
+	    	case "SEK1000":
+	    		this.modelYear = "F";
+	    		break;
+	    	case "SEK2000":
+	    		this.modelYear = "H";
+	    		break;
+	    	case "SEK2500":
+	    		this.modelYear = "H";
+	    		break;
+	    	}
 	    	FileLog.write("Model Year Override: " + this.modelYear);
 	    }
 	    
