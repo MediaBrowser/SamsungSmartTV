@@ -882,6 +882,14 @@ Support.playSelectedItem = function(page,ItemData,startParams,selectedItem,topLe
 		Support.updateURLHistory(page,startParams[0],startParams[1],null,null,selectedItem,topLeftItem,null);
 		var url = Server.getItemInfoURL(ItemData.Items[selectedItem].Id,"&ExcludeLocationTypes=Virtual");
 		GuiPlayer.start("PLAY",url,0,page);
+	} else if (ItemData.Items[selectedItem].Type == "MusicAlbum") {
+		Support.updateURLHistory(page,startParams[0],startParams[1],null,null,selectedItem,topLeftItem,null);
+		var url = Server.getChildItemsURL(ItemData.Items[selectedItem].Id,"&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Audio&Recursive=true&CollapseBoxSetItems=false&Fields=MediaSources");
+		GuiMusicPlayer.start("Album",url,"GuiDisplay_Series",false);
+	} else if (ItemData.Items[selectedItem].Type == "Audio") {
+		Support.updateURLHistory(page,startParams[0],startParams[1],null,null,selectedItem,topLeftItem,null);
+		var url = Server.getItemInfoURL(ItemData.Items[selectedItem].Id);
+		GuiMusicPlayer.start("Song",url,"GuiDisplay_Series",false);
 	}
 }
 
