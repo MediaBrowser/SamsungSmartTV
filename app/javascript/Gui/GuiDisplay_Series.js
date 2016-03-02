@@ -17,6 +17,7 @@ var GuiDisplay_Series = {
 		tvBannerItems : ["All","Unwatched","Latest","Upcoming", "Genre", "A-Z"],
 		movieBannerItems : ["All","Unwatched","Latest","Genre", "A-Z"],
 		musicBannerItems : ["Recent","Frequent","Album","Album Artist", "Artist"],
+		liveTvBannerItems : ["Channels","Guide","Recordings"],
 		
 		indexSeekPos : -1,
 		indexTimeout : null,
@@ -34,6 +35,9 @@ GuiDisplay_Series.onFocus = function() {
 	switch (this.currentMediaType) {
 	case "Movies":
 		GuiHelper.setControlButtons("Favourite","Watched","Next Index",GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
+	break;
+	case "LiveTV":
+		GuiHelper.setControlButtons("Favourite",null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
 	break;
 	default:
 		GuiHelper.setControlButtons("Favourite",null,"Next Index",GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
@@ -81,13 +85,17 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem,items) {
 	Support.pageLoadTimes("GuiDisplay_Series","RetrievedServerData",false);
 	
 	//Update Padding on pageContent
-	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div><div id=Center class='SeriesCenter'><div id=Content></div></div>" +
-	"<div id=SeriesContent class='SeriesContent'><div id='SeriesTitle' style='position:relative; height:40px; font-size:1.6em;'></div>" +
-	"<div id='SeriesSubData' style='padding-top:2px;color:#2ad;font-size:1.8em;'></div>" +
-	"<div id='SeriesOverview' style='margin-top:6px;padding-right:10px;font-size:1.1em;max-height:150px;overflow-y:hidden;'></div>" +
-	"</div>";
+	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div>" +
+			"<div id=Center class='SeriesCenter'>" +
+				"<div id=Content></div>" +
+			"</div>" +
+			"<div id=SeriesContent class='SeriesContent'>" +
+				"<div id='SeriesTitle' class='SeriesTitle'></div>" +
+				"<div id='SeriesSubData' class='SeriesSubData'></div>" +
+				"<div id='SeriesOverview' class='SeriesOverview'></div>" +
+			"</div>";
 	
-	//Split Name - 1st Element = View, 2nd = Type (Collections being the odd one out!)
+	//Split Name - 1st Element = View, 2nd = Type
 	var titleArray = title.split(" ");
 	this.currentView = titleArray[0];
 	this.currentMediaType = titleArray[1];
@@ -138,6 +146,14 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem,items) {
 		this.bannerItems = this.musicBannerItems;
 		document.getElementById("SeriesContent").style.top="880px";
 		document.getElementById("SeriesOverview").style.height="0px";
+		break;
+	case "LiveTV":
+		this.MAXCOLUMNCOUNT = 7;
+		this.MAXROWCOUNT = 3;
+		this.isTvOrMovies = 2;
+		this.bannerItems = this.liveTvBannerItems;
+		document.getElementById("SeriesContent").style.top="880px";
+		document.getElementById("SeriesOverview").style.height="250px";
 		break;
 	default:
 		this.isTvOrMovies = 1;
@@ -191,7 +207,9 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem,items) {
 		}
 	
 		//Indexing Algorithm
-		this.ItemIndexData = Support.processIndexing(this.ItemData.Items); 
+		if (this.currentMediaType != "LiveTV") {
+			this.ItemIndexData = Support.processIndexing(this.ItemData.Items); 
+		}
 	
 		//Display first XX series
 		this.updateDisplayedItems();
@@ -328,10 +346,20 @@ GuiDisplay_Series.updateSelectedItems = function () {
 		htmlForOverview = this.ItemData.Items[this.selectedItem].Overview;
 	}
 	if (this.isTvOrMovies == 2) {
-		document.getElementById("SeriesTitle").innerHTML = htmlForTitle;
-		document.getElementById("SeriesSubData").innerHTML = htmlForSubData;
-		document.getElementById("SeriesOverview").innerHTML = htmlForOverview;
-		Support.scrollingText("SeriesOverview");
+		if (this.ItemData.Items[this.selectedItem].CurrentProgram !== undefined) {
+			var programmeURL = Server.getItemInfoURL(this.ItemData.Items[this.selectedItem].CurrentProgram.Id,"");
+			var ProgrammeData = Server.getContent(programmeURL);
+			document.getElementById("SeriesTitle").innerHTML = this.ItemData.Items[this.selectedItem].Name;
+			document.getElementById("SeriesSubData").innerHTML = "<font color='red'>On Now: </font>"+this.ItemData.Items[this.selectedItem].CurrentProgram.Name;
+			document.getElementById("SeriesOverview").style.top = 
+			document.getElementById("SeriesOverview").innerHTML = ProgrammeData.Overview;
+			Support.scrollingText("SeriesOverview");
+		} else {
+			document.getElementById("SeriesTitle").innerHTML = htmlForTitle;
+			document.getElementById("SeriesSubData").innerHTML = htmlForSubData;
+			document.getElementById("SeriesOverview").innerHTML = htmlForOverview;
+			Support.scrollingText("SeriesOverview");
+		}
 	} else {
 		if (File.getUserProperty("LargerView") == true){
 			document.getElementById("SeriesTitle").innerHTML = htmlForTitle;
@@ -554,6 +582,18 @@ GuiDisplay_Series.processSelectedItem = function() {
 				GuiDisplay_Series.start("Genre TV",url1,0,0);
 			}		
 		break;
+		case "Channels":
+			var url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&EnableFavoriteSorting=true&userId=" + Server.getUserID());
+			GuiDisplay_Series.start("Channels LiveTV",url,0,0);
+			break;
+		case "Recordings":
+			var url = Server.getCustomURL("/LiveTV/Recordings?IsInProgress=false&SortBy=StartDate&SortOrder=Descending&StartIndex=0&fields=SortName&UserId=" + Server.getUserID());
+			GuiDisplay_Series.start("Recordings LiveTV",url,0,0);
+			break;
+		case "Guide":
+			var url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&Limit=100&EnableFavoriteSorting=true&UserId=" + Server.getUserID());
+			GuiPage_TvGuide.start("Guide",url,0,0,0,0);
+			break;
 		case "Recent":
 		case "Frequent":
 		case "Album":	
@@ -821,6 +861,9 @@ GuiDisplay_Series.processChannelDownKey = function() {
 }
 
 GuiDisplay_Series.processIndexing = function() {
+	if (this.currentMediaType == "LiveTV") {
+		return;
+	}
 	if (this.selectedItem > -1) {
 		var indexLetter = this.ItemIndexData[0];
 		var indexPos = this.ItemIndexData[1];

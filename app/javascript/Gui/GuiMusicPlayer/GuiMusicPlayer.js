@@ -59,14 +59,11 @@ GuiMusicPlayer.showMusicPlayer = function(playedFromPage,selectedDivId,selectedD
 			} else {
 				this.selectedDivClass = selectedDivClass;
 			}
-			alert("selectedDivId "+selectedDivId);
-			alert("selectedDivClass "+selectedDivClass);
 			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("GuiPage_Setting_Changing arrowUpDown","");
 			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("EpisodeListSelected","");
 			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("BannerSelected","");
 			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("seriesSelected","");
 			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("Selected","");
-			alert(document.getElementById(selectedDivId).className);
 		}
 		
 		if (playedFromPage == "GuiImagePlayer") {

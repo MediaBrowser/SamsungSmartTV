@@ -795,8 +795,7 @@ Support.processSelectedItem = function(page,ItemData,startParams,selectedItem,to
 			GuiDisplayOneItem.start(ItemData.Items[selectedItem].Name,url,0,0);
 			break;	
 		case "TvChannel":
-			alert ("TV Live Channel Page Not Implemented - Play Channel");
-			this.playSelectedItem("GuiDisplayOneItem",ItemData,startParams,selectedItem,topLeftItem,null);
+			this.playSelectedItem("GuiDisplay_Series",ItemData,startParams,selectedItem,topLeftItem,null);
 			break;		
 		case "Playlist":
 			var url = Server.getCustomURL("/Playlists/"+ItemData.Items[selectedItem].Id+"/Items?userId="+Server.getUserID()+"&fields=SortName&SortBy=SortName&SortOrder=Ascending&format=json");	
@@ -976,6 +975,7 @@ Support.generateMainMenu = function() {
 	}
 
 	//Check Live TV
+	var liveTvAdded = false;
 	var urlLiveTV = Server.getCustomURL("/LiveTV/Info?format=json");
 	var hasLiveTV = Server.getContent(urlLiveTV);
 	if (hasLiveTV == null) { return; }
@@ -983,6 +983,7 @@ Support.generateMainMenu = function() {
 		for (var index = 0; index < hasLiveTV.EnabledUsers.length; index++) {
 			if (Server.getUserID() == hasLiveTV.EnabledUsers[index]) {
 				menuItems.push("Live-TV");
+				liveTvAdded = true;
 				break;
 			}
 		}
@@ -996,7 +997,9 @@ Support.generateMainMenu = function() {
 	if (hasRecordings == null) { return; }
 	
 	if (hasRecordings.TotalRecordCount > 0) {
-		menuItems.push("Recordings");
+		if (!liveTvAdded){
+			menuItems.push("Live-TV");
+		}
 	}
 	
 	
@@ -1130,13 +1133,11 @@ Support.processHomePageMenu = function (menuItem) {
 		}
 		break;
 	case "Live-TV":
-		var url = Server.getCustomURL("/LiveTV/Channels?SortBy=SortName&SortOrder=Ascending&StartIndex=0&fields=SortName&format=json");
-		//GuiDisplayOneItem.start("Live TV", url,0,0);
-		GuiPage_TvChannel.start("Live TV",url,0,0);
-		break;	
-	case "Recordings":
-		var url = Server.getCustomURL("/LiveTV/Recordings?userId=" + Server.getUserID() + "&IsInProgress=false&SortBy=StartDate&SortOrder=Descending&StartIndex=0&fields=SortName");
-		GuiDisplayOneItem.start("Recordings", url,0,0);
+		/*var url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&Limit=100&EnableFavoriteSorting=true&UserId=" + Server.getUserID());
+		GuiPage_TvGuide.start("Guide",url,0,0,0,0);
+		break;*/
+		var url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&EnableFavoriteSorting=true&userId=" + Server.getUserID());
+		GuiDisplay_Series.start("Channels LiveTV",url,0,0);
 		break;	
 	case "Home-Movies":
 		var homeVideosFolderId = Server.getUserViewId("homevideos");
@@ -1578,3 +1579,47 @@ Support.getStarRatingImage = function(rating) {
 		break;
 	} 
 }
+
+///Returns the number of minutes since a program started or 0 if it hasn't started yet.
+Support.tvGuideProgramElapsedMins = function(program) {
+	var startDate = new Date(program.StartDate);
+	var now = new Date();
+	var elapsed = (now.getTime() - startDate.getTime()) / 60000;
+	elapsed = ~~elapsed;
+	if (elapsed < 0) {
+		elapsed = 0;
+	}
+	return elapsed;
+}
+
+///Returns the number of minutes of guide space the program should ocupy.
+Support.tvGuideProgramDurationMins = function(program) {
+	var startDate = new Date(program.StartDate);
+	var endDate = new Date(program.EndDate);
+	var duration = (endDate.getTime() - startDate.getTime()) / 60000;
+	duration = ~~duration;
+	if (duration < 0) {
+		duration = 0;
+	}
+	return duration;
+}
+
+///Returns a date object with the minutes reset to the most recent hour or half hour.
+Support.tvGuideStartTime = function() {
+	var d = new Date();
+	var mins = 0;
+	if (d.getMinutes() > 29) {
+		mins = 30;
+	}
+	d.setMinutes(mins);
+	return (d);
+}
+
+///Returns the number of minutes between the time shown at the start of the TV guide and now.
+Support.tvGuideOffsetMins = function() {
+	var now = new Date();
+	var guideStartTime = this.tvGuideStartTime();
+	var offset = (now.getTime() - guideStartTime.getTime()) / 60000;
+	return(~~offset);
+}
+

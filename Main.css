@@ -1107,6 +1107,25 @@ input[type="password"]
 	z-index:5
 }
 
+.SeriesTitle {
+	position:relative;
+	height:40px;
+	font-size:1.6em;
+}
+
+.SeriesSubData {
+	padding-top:5px;
+	color:#2ad;
+	font-size:1.2em;
+}
+
+.SeriesOverview {
+	padding-right:10px;
+	font-size:1.1em;
+	max-height:150px;
+	overflow-y:hidden;
+}
+
 .HomeOneCenter {
 	position:absolute;
 	text-align: left;
@@ -1787,7 +1806,140 @@ input[type="password"]
     background-color:rgba(0,0,0,0);
 }
 
-/* ---------------------------------------------------------------------------   */
+/* --------------------------------------------------------------------------- */
+
+.tvGuide {
+	position:absolute;
+	font-size:1em;
+	width:1800px;
+	height:800px;
+	left:60px;
+	top: 200px;
+	z-index:5;
+}
+
+.tvGuideTopLine {
+	position:relative;
+	display:inline-block;
+	vertical-align:top; 
+	width:1800px;
+	height:98px;
+}
+
+.tvGuideDay {
+	position:relative;
+	display:inline-block;
+	vertical-align:top; 
+	height:90px;
+	width:346px;
+    margin-top:2px;
+    margin-bottom:2px;
+    margin-right:2px;
+    margin-left:2px;
+	text-align:center;
+	background-color:rgba(82,181,75,0.9);
+	border:2px solid black;
+}
+
+.tvGuideHour {
+	position:relative;
+	display:inline-block;
+	vertical-align:top;
+	text-align:left;
+	height:90px;
+	width:233px;
+    margin-top:2px;
+    margin-bottom:2px;
+    margin-right:2px;
+    margin-left:2px;
+	background-color:rgba(82,181,75,0.9);
+	border:2px solid black;
+}
+
+.tvGuideChannelLine {
+	position:relative;
+	display:inline-block;
+	vertical-align:top;
+	white-space:nowrap;
+	overflow:hidden;
+	width:1800px;
+	height:98px;
+}
+
+.tvGuideChannelName {
+	position:relative;
+	display:inline-block;
+	vertical-align:top;
+	text-align:left;
+	height:90px;
+	width:346px;
+    margin-top:2px;
+    margin-bottom:2px;
+    margin-right:2px;
+    margin-left:2px;
+	background-color:rgba(48,48,48,0.9);
+	border:2px solid black;
+}
+
+.tvGuideProgram {
+	position:relative;
+	display:inline-block;
+	vertical-align:top;
+	white-space:initial;
+	overflow:hidden;
+	height:90px;
+	width:233px;
+    margin-top:2px;
+    margin-bottom:2px;
+    margin-right:2px;
+    margin-left:2px;
+	border:2px solid black;
+}
+
+.tvGuideProgramName {
+	position:relative;
+	display:inline-block;
+	vertical-align:top;
+	text-align:left;
+	white-space:nowrap;
+	overflow:hidden;
+	height:43px;
+	width:100%;
+	background-color:rgba(33,33,33,0.9);
+}
+
+.tvGuideProgramTime {
+	position:relative;
+	display:inline-block;
+	vertical-align:top;
+	text-align:left;
+	white-space:nowrap;
+	overflow:hidden;
+	height:43px;
+	width:100%;
+	background-color:rgba(33,33,33,0.9);
+}
+
+.tvGuideProgramGenre {
+	position:relative;
+	display:inline-block;
+	vertical-align:top;
+	height:4px;
+	width:100%;
+	background-color:rgba(33,33,33,0.9);
+}
+
+.tvGuideCurrentTime {
+	position:absolute;
+	width:4px;
+	height:104px;
+	left:600px;
+	top: 175px;
+	background-color:rgba(241,44,34,0.6);
+	z-index:5;
+}
+
+/* --------------------------------------------------------------------------- */
 
 .guiMusic_Title {
 	position:relative;
