@@ -175,8 +175,7 @@ GuiPlayer_Display.restorePreviousMenu = function() {
     
     //Reset Volume & Mute Keys
 	//Reset NAVI - Works
-	NNaviPlugin = document.getElementById("pluginObjectNNavi");
-    NNaviPlugin.SetBannerState(PL_NNAVI_STATE_BANNER_NONE);
+    pluginAPI.SetBannerState(0);
     pluginAPI.registKey(tvKey.KEY_VOL_UP);
     pluginAPI.registKey(tvKey.KEY_VOL_DOWN);
     pluginAPI.registKey(tvKey.KEY_MUTE);
@@ -201,13 +200,9 @@ GuiPlayer_Display.createToolsMenu = function() {
 	for (var index = 0;index < this.playingMediaSource.MediaStreams.length;index++) {
 		var Stream = this.playingMediaSource.MediaStreams[index];
 		if (Stream.Type == "Audio") {
-			if (Main.getModelYear() == "D" && File.getTVProperty("TranscodeDSeries") == false) {
-				//Don't add it!
-			} else {
-				this.audioIndexes.push(index);
-			}	
-		} 
-		
+			this.audioIndexes.push(index);
+		}
+
 		if (Stream.IsTextSubtitleStream) {
 			this.subtitleIndexes.push(index); //
 		} 
