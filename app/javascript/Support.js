@@ -1586,7 +1586,9 @@ Support.tvGuideProgramElapsedMins = function(program) {
 	var now = new Date();
 	var elapsed = (now.getTime() - startDate.getTime()) / 60000;
 	elapsed = ~~elapsed;
-	if (elapsed < 0) {
+	if (elapsed == 0) {
+		elapsed = 1; //When one program is ending and another starting, the latter is marked as live.
+	} else if (elapsed < 0) {
 		elapsed = 0;
 	}
 	return elapsed;
@@ -1605,21 +1607,22 @@ Support.tvGuideProgramDurationMins = function(program) {
 }
 
 ///Returns a date object with the minutes reset to the most recent hour or half hour.
-Support.tvGuideStartTime = function() {
-	var d = new Date();
+Support.tvGuideStartTime = function(date) {
+	if (date === undefined) {
+		date = new Date();
+	}
 	var mins = 0;
-	if (d.getMinutes() > 29) {
+	if (date.getMinutes() > 29) {
 		mins = 30;
 	}
-	d.setMinutes(mins);
-	return (d);
+	date.setMinutes(mins);
+	return (date);
 }
 
 ///Returns the number of minutes between the time shown at the start of the TV guide and now.
-Support.tvGuideOffsetMins = function() {
+Support.tvGuideOffsetMins = function(date) {
 	var now = new Date();
-	var guideStartTime = this.tvGuideStartTime();
-	var offset = (now.getTime() - guideStartTime.getTime()) / 60000;
+	var offset = (now.getTime() - GuiPage_TvGuide.startTime.getTime()) / 60000;
 	return(~~offset);
 }
 

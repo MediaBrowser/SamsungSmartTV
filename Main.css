@@ -1896,6 +1896,10 @@ input[type="password"]
 	border:2px solid black;
 }
 
+.tvGuideProgramBg {
+	background-color:rgba(33,33,33,0.9);
+}
+
 .tvGuideProgramName {
 	position:relative;
 	display:inline-block;
@@ -1905,7 +1909,6 @@ input[type="password"]
 	overflow:hidden;
 	height:43px;
 	width:100%;
-	background-color:rgba(33,33,33,0.9);
 }
 
 .tvGuideProgramTime {
@@ -1917,7 +1920,6 @@ input[type="password"]
 	overflow:hidden;
 	height:43px;
 	width:100%;
-	background-color:rgba(33,33,33,0.9);
 }
 
 .tvGuideProgramGenre {

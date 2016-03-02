@@ -6,6 +6,7 @@ var GuiPage_TvGuide = {
 		selectedColumn : 0,
 		topChannel : 0,
 		startTime : 0,
+		currentChannels : [],
 		
 		startParams : []
 }
@@ -39,28 +40,27 @@ GuiPage_TvGuide.start = function(title,url,selectedRow,selectedColumn,topChannel
 		}
 		
 		//Sort Date - %3A is Colon
-		var d = new Date();
+		var d = this.startTime;
 		var year = d.getUTCFullYear();
-		var month = d.getUTCMonth();
-		month++; //Month is a zero based list (inexplicably).
+		var month = d.getUTCMonth()+1;
 		var day = d.getUTCDate();
 		var nextDay = day++;
 		var hour = d.getUTCHours();
+		var min = d.getMinutes();
+		if (min < 10){min = "0"+min;}
 		if (month < 10){month = "0"+month;}
 		if (day < 10){day = "0"+day;}
 		if (nextDay < 10){nextDay = "0"+nextDay;}
 		if (hour < 10){hour = "0"+hour;}
 		
-		var maxStartDate = year + "-" + month + "-" + day + "T"+ hour + "%3A29%3A59.000Z";
-		var minEndDate =   year + "-" + month + "-" + nextDay + "T"+ hour + "%3A30%3A01.000Z";
+		var maxStartDate = year + "-" + month + "-" + day + "T"+ hour + "%3A" + min + "%3A59.000Z";
+		var minEndDate =   year + "-" + month + "-" + nextDay + "T"+ hour + "%3A" + min + "%3A01.000Z";
 
 		var programsURL = Server.getServerAddr() + "/LiveTv/Programs?UserId=" + Server.getUserID() + "&MaxStartDate="+maxStartDate+"&MinEndDate="+minEndDate+"&channelIds=" + channelIDs + "&ImageTypeLimit=1&EnableImages=false&SortBy=StartDate";
 		this.Programs = Server.getContent(programsURL);
 			
 		this.updateDisplayedItems();
-			
-		//Update Selected Collection CSS
-		//this.updateselectedRows();	
+		this.updateselectedItems();	
 			
 		//Set Focus for Key Events
 		document.getElementById("GuiPage_TvGuide").focus();
@@ -78,7 +78,7 @@ GuiPage_TvGuide.start = function(title,url,selectedRow,selectedColumn,topChannel
 
 GuiPage_TvGuide.updateDisplayedItems = function() {
 	//Create Table
-	var d = new Date();
+	var d = Support.tvGuideStartTime(this.startTime);
 	var hour = d.getUTCHours();
 	var minute = d.getMinutes();
 	var nextHour = hour+1;
@@ -108,15 +108,16 @@ GuiPage_TvGuide.updateDisplayedItems = function() {
 	}
 	htmlToAdd +=		"</div>";
 							
-	var channelLinesCount = 0;
 	for (var index = 0; index < this.Channels.Items.length; index++) {
-		channelLinesCount++;
-		htmlToAdd += 	"<div id='tvGuideChannelLine" + this.Channels.Items[index].Number + "' class=tvGuideChannelLine>" +
+		this.currentChannels[index] = "tvGuideChannelLine" + this.Channels.Items[index].Id;
+		htmlToAdd += 	"<div id='tvGuideChannelLine" + this.Channels.Items[index].Id + "' class=tvGuideChannelLine>" +
 							"<div id='tvGuideChannelName" + this.Channels.Items[index].Number + "' class='tvGuideChannelName'>" + this.Channels.Items[index].Number + ": " + this.Channels.Items[index].Name + "</div>";
 						
 		var channelLineWidth = 0;
+		var programsInThisLine = [];
 		for (var programIndex = 0; programIndex < this.Programs.Items.length; programIndex++) {
 			if (this.Channels.Items[index].Id == this.Programs.Items[programIndex].ChannelId) {
+				programsInThisLine.push("tvGuideProgram" + this.Programs.Items[programIndex].Id);
 				//7.9px = 1min (Obviously fractions of a pixels are not possible but we want to avoid compound error. We'll round it later with ~~programWidth.)
 				var programWidth = 0;
 				if (Support.tvGuideProgramElapsedMins(this.Programs.Items[programIndex]) > 0) {
@@ -127,7 +128,7 @@ GuiPage_TvGuide.updateDisplayedItems = function() {
 				var currentChannelLineWidth = channelLineWidth;
 				channelLineWidth = channelLineWidth + programWidth + 8; //the extra 8 pixels are the CSS border and margin.
 				if (channelLineWidth >= 1450) {
-					programWidth = 1450 - currentChannelLineWidth - 8;
+					programWidth = 1450 - currentChannelLineWidth;
 				}
 				if (programWidth > 0) {
 					var bgColour = "";
@@ -138,9 +139,9 @@ GuiPage_TvGuide.updateDisplayedItems = function() {
 					} else if (this.Programs.Items[programIndex].IsKids) {
 						bgColour = "background-color:rgba(11,72,125,1);";
 					}
-					htmlToAdd += 	"<div id='tvGuideProgram' class='tvGuideProgram' style='width:" + ~~programWidth + "px'>";
-
-					if (Support.tvGuideProgramElapsedMins(this.Programs.Items[programIndex]) > 0) {
+					htmlToAdd += 	"<div id='tvGuideProgram" + this.Programs.Items[programIndex].Id + "' class='tvGuideProgram' style='width:" + ~~programWidth + "px'>";
+					
+					if (Support.tvGuideProgramElapsedMins(this.Programs.Items[programIndex]) > 0 && Support.tvGuideProgramElapsedMins(this.Programs.Items[programIndex]) < Support.tvGuideProgramDurationMins(this.Programs.Items[programIndex])) {
 						htmlToAdd += 	"<div id='tvGuideProgramName' class=tvGuideProgramName><font color=red>Live: </font>" + this.Programs.Items[programIndex].Name + "</div>";
 					} else {
 						htmlToAdd += 	"<div id='tvGuideProgramName' class=tvGuideProgramName>" + this.Programs.Items[programIndex].Name + "</div>";
@@ -154,23 +155,31 @@ GuiPage_TvGuide.updateDisplayedItems = function() {
 				}
 			}
 		}
+		this.currentChannels[index] = programsInThisLine;
 		htmlToAdd += "</div>";
-		if (channelLinesCount == 7){
+		if (this.currentChannels.length == 7){
 			break;
 		}
 	}
 	htmlToAdd += "</div>";
-	var timeLineHeight = 104 + (channelLinesCount * 104);
-	var timeLinePos = 413 + (Support.tvGuideOffsetMins() * 7.9);
+	var timeLineHeight = 104 + (this.currentChannels.length * 104);
+	var timeLinePos = 415 + (Support.tvGuideOffsetMins() * 7.9);
 	htmlToAdd += "<div id='tvGuideCurrentTime' class='tvGuideCurrentTime' style='height:" + timeLineHeight + "px;left:" + timeLinePos + "px;'>";
 	
 	document.getElementById("pageContent").innerHTML = htmlToAdd;
 }
 
 //Function sets CSS Properties so show which user is selected
-GuiPage_TvGuide.updateselectedRows = function () {
-		Support.updateSelectedNEW(this.ItemData.Items,this.selectedRow,this.topChannel,
-				Math.min(this.topChannel + this.getMaxDisplay(),this.ItemData.Items.length),"Series Selected","Series","");
+GuiPage_TvGuide.updateselectedItems = function () {
+	for (var rowIndex = 0; rowIndex < this.currentChannels.length; rowIndex++) {
+		for (var columnIndex = 0; columnIndex < this.currentChannels[rowIndex].length; columnIndex++) {			
+			if (columnIndex == this.selectedColumn && rowIndex == this.selectedRow) {
+				document.getElementById(this.currentChannels[rowIndex][columnIndex]).className = "tvGuideProgram buttonSelected";
+			} else {
+				document.getElementById(this.currentChannels[rowIndex][columnIndex]).className = "tvGuideProgram tvGuideProgramBg";
+			}
+		}
+	}
 }
 
 GuiPage_TvGuide.keyDown = function() {
