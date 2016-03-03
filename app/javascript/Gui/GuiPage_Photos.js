@@ -241,7 +241,7 @@ GuiPage_Photos.keyDown = function() {
 			this.updateOneDisplayedItem(this.ItemData.Items[this.selectedItem],this.selectedItem)
 			break;	
 		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiPage_Photos");
+			GuiMusicPlayer.showMusicPlayer("GuiPage_Photos",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
 			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);

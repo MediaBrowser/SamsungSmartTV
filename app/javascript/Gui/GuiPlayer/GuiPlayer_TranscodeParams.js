@@ -14,7 +14,8 @@ var GuiPlayer_TranscodeParams = {
 // Special Thanks to gbone8106 for providing the H series Transcode Settings!
 
 
-GuiPlayer_TranscodeParams.getParameters = function(codec) {
+GuiPlayer_TranscodeParams.getParameters = function(codec,videoWidth) {
+	alert("videoWidth "+videoWidth);
 	switch (Main.getModelYear()) {
         case "H":
     		switch (codec) {
@@ -32,7 +33,11 @@ GuiPlayer_TranscodeParams.getParameters = function(codec) {
     			this.container = ["asf","avi","mkv","mp4","3gpp","mpg","mpeg","ts","m4v","m2ts","mov","vro","tp","trp","flv","vob","svi","mts","divx"];
     			this.resolution = [1920,1080];
     			this.bitrate = 30720000;
-    			this.framerate = 30;
+    			if (videoWidth > 720){
+    				this.framerate = 30;
+    			} else {
+    				this.framerate = 60;
+    			}
     			this.level = true;
     			this.profile = true;
     			break;

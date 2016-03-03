@@ -110,7 +110,7 @@ File.setDefaultServer = function (defaultIndex) {
 		openWrite.writeLine(JSON.stringify(fileJson)); 
 		fileSystemObj.closeCommonFile(openWrite); 
 	}
-	GuiNotifications.setNotification(fileJson.Servers[defaultIndex].Name + " is now your default Server and will be logged in autiomatically from now on","Default Server Changed",true);
+	GuiNotifications.setNotification(fileJson.Servers[defaultIndex].Name + " is now your default Server and will be logged in autiomatically from now on.","Default Server Changed",true);
 }
 
 File.deleteServer = function (index) {

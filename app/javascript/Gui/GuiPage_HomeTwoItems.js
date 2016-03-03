@@ -26,6 +26,7 @@ var GuiPage_HomeTwoItems = {
 
 GuiPage_HomeTwoItems.onFocus = function() {
 	GuiHelper.setControlButtons("Favourite","Watched","Help",GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Exit  ");
+	alert(this.selectedItem+" "+this.selectedItem2);
 }
 
 GuiPage_HomeTwoItems.getMaxDisplay = function() {
@@ -343,8 +344,16 @@ GuiPage_HomeTwoItems.keyDown = function()
 				}, 250);
 			}
 			break;		
-		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiPage_HomeTwoItems");
+		case tvKey.KEY_BLUE:
+			if (this.selectedItem == -2) {		
+				if (this.selectedBannerItem == this.menuItems.length-1) {
+					GuiMusicPlayer.showMusicPlayer("GuiPage_HomeTwoItems","bannerItem"+this.selectedBannerItem,"guiDisplay_Series-BannerItem BannerSelected");
+				} else {
+					GuiMusicPlayer.showMusicPlayer("GuiPage_HomeTwoItems","bannerItem"+this.selectedBannerItem,"guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding BannerSelected");
+				}
+			} else {
+				GuiMusicPlayer.showMusicPlayer("GuiPage_HomeTwoItems",this.divprepend1 + this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.divprepend1 + this.ItemData.Items[this.selectedItem].Id).className);			
+			}
 			break;	
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY");
@@ -544,8 +553,8 @@ GuiPage_HomeTwoItems.bottomKeyDown = function()
 				}, 250);
 			}
 			break;		
-		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiPage_HomeTwoItems");
+		case tvKey.KEY_BLUE:
+			GuiMusicPlayer.showMusicPlayer("GuiPage_HomeTwoItemsBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id,document.getElementById(this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id).className);
 			break;	
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY BOTTOM");

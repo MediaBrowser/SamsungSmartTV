@@ -25,6 +25,9 @@ var GuiPage_MusicArtist = {
 		startParams : []
 }
 
+GuiPage_MusicArtist.onFocus = function() {
+	GuiHelper.setControlButtons(null,null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
+}
 GuiPage_MusicArtist.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
 }
@@ -35,7 +38,6 @@ GuiPage_MusicArtist.getMaxDisplay2 = function() {
 
 GuiPage_MusicArtist.start = function(title1, url1, selectedItem, topLeftItem) {
 	alert("Page Enter : GuiPage_MusicArtist");
-	GuiHelper.setControlButtons(null,null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
 	
 	//Save Start Vars
 	Support.pageLoadTimes("GuiPage_MusicArtist","Start",true);
@@ -260,8 +262,19 @@ GuiPage_MusicArtist.keyDown = function() {
 		case tvKey.KEY_YELLOW:	
 			//Favourites
 			break;		
-		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiPage_MusicArtist");
+		case tvKey.KEY_BLUE:
+			//Focus the music player
+			if (this.selectedItem == -1) {		
+				if (this.selectedBannerItem == this.bannerItems.length-1) {
+					GuiMusicPlayer.showMusicPlayer("GuiPage_MusicArtist","bannerItem"+this.selectedBannerItem,"guiDisplay_Series-BannerItem BannerSelected");
+				} else {
+					GuiMusicPlayer.showMusicPlayer("GuiPage_MusicArtist","bannerItem"+this.selectedBannerItem,"guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding BannerSelected");
+				}
+			} else {
+				GuiMusicPlayer.showMusicPlayer("GuiPage_MusicArtist",this.divprepend1 + this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.divprepend1 + this.ItemData.Items[this.selectedItem].Id).className);
+			}
+			
+			
 			break;	
 		case tvKey.KEY_EXIT:
 			clearTimeout(this.timeout)
@@ -546,7 +559,7 @@ GuiPage_MusicArtist.bottomKeyDown = function() {
 			//Favourites
 			break;			
 		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiPage_MusicArtist");	
+			GuiMusicPlayer.showMusicPlayer("GuiPage_MusicArtistBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id,document.getElementById(this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id).className);
 			break;		
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY BOTTOM");
@@ -561,9 +574,9 @@ GuiPage_MusicArtist.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.bannerItems.length; index++) {
 		if (index == this.selectedBannerItem) {
 			if (index != this.bannerItems.length-1) {
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding red";
+				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding BannerSelected";
 			} else {
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem red";
+				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem BannerSelected";
 			}		
 		} else {
 			if (index != this.bannerItems.length-1) {

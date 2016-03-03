@@ -255,8 +255,16 @@ GuiPage_HomeOneItem.keyDown = function() {
 	    		}, 200);
 			}
 			break;	
-		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiPage_HomeOneItem");
+		case tvKey.KEY_BLUE:
+			if (this.selectedItem == -1) {		
+				if (this.selectedBannerItem == this.menuItems.length-1) {
+					GuiMusicPlayer.showMusicPlayer("GuiPage_HomeOneItem","bannerItem"+this.selectedBannerItem,"guiDisplay_Series-BannerItem BannerSelected");
+				} else {
+					GuiMusicPlayer.showMusicPlayer("GuiPage_HomeOneItem","bannerItem"+this.selectedBannerItem,"guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding BannerSelected");
+				}
+			} else {
+				GuiMusicPlayer.showMusicPlayer("GuiPage_HomeOneItem",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);			
+			}
 			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);

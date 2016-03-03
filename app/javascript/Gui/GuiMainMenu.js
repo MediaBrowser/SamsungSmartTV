@@ -3,8 +3,8 @@ var GuiMainMenu = {
 		menuItemsHomePages : [],
 
 		pageSelected : "",
-		pageSelectedId : 0,
-		pageSelectedClass : "",
+		selectedDivId : 0,
+		selectedDivClass : "",
 		
 		testModeCount : 0,
 		testModeTimeout : null,
@@ -68,25 +68,26 @@ GuiMainMenu.start = function() {
 }
 
 //Entry Point when called from any page displaying the menu
-GuiMainMenu.requested = function(pageSelected, pageSelectedId, pageSelectedClass) {
+GuiMainMenu.requested = function(pageSelected, selectedDivId, selectedDivClass) {
 	//Reset Menus
 	this.selectedMainMenuItem = 0;
 	this.selectedSubMenuItem = 0;
 	
 	//UnSelect Selected Item on whatever page is loaded
 	this.pageSelected = pageSelected;
-	this.pageSelectedId = pageSelectedId;
+	this.selectedDivId = selectedDivId;
 	
 	//Unhighlights the page's selected content
-	if (this.pageSelectedId != null) {
-		if (pageSelectedClass === undefined) {
-			this.pageSelectedClass = "UNDEFINED";
+	if (this.selectedDivId != null) {
+		if (selectedDivClass === undefined) {
+			this.selectedDivClass = "UNDEFINED";
 		} else {
-			this.pageSelectedClass = pageSelectedClass;
+			this.selectedDivClass = selectedDivClass;
 		}
-		alert("pageSelectedId: "+pageSelectedId);
-		document.getElementById(pageSelectedId).className = document.getElementById(pageSelectedId).className.replace("Selected","");
-		document.getElementById(pageSelectedId).className = document.getElementById(pageSelectedId).className.replace("EpisodeListSelected","");
+		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("EpisodeListSelected","");
+		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("BannerSelected","");
+		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("seriesSelected","");
+		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("Selected","");
 	}
 		
 	//Show Menu
@@ -237,15 +238,15 @@ GuiMainMenu.processReturnKey = function() {
 		document.getElementById("page").style.left = "0px";
 		
 		if (this.pageSelected == "GuiMusicPlayer") {
-			GuiMusicPlayer.showMusicPlayer(this.pageSelectedId);
+			GuiMusicPlayer.showMusicPlayer(this.selectedDivId);
 		}
 		
 		//Set Page GUI elements Correct & Set Focus
-		if (this.pageSelectedId != null) {
-			if (this.pageSelectedClass == "UNDEFINED") {
-				document.getElementById(this.pageSelectedId).className = document.getElementById(this.pageSelectedId).className + " Selected";		
+		if (this.selectedDivId != null) {
+			if (this.selectedDivClass == "UNDEFINED") {
+				document.getElementById(this.selectedDivId).className = document.getElementById(this.selectedDivId).className + " Selected";		
 			} else {
-				document.getElementById(this.pageSelectedId).className = this.pageSelectedClass;
+				document.getElementById(this.selectedDivId).className = this.selectedDivClass;
 			}
 		}
 		

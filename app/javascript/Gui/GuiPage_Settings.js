@@ -25,9 +25,9 @@ var GuiPage_Settings = {
 		SettingsName : ["Default User: ","Continue Watching:","Home View 1: ","Home View 2: ","Show Larger Icons: ", "Play Audio Themes: ", "Default Music View: ", "Skip Music A-Z: ", "Skip TV Show Page: ","Use Alternate Season Label: ","Auto Play Next Episode: ","Enable cinema mode: ","Show Disc Art: ","Subtitle Text Size: ","Subtitle Text Colour: ","Image Player Rotate Speed: ", "Screensaver Image Source: ", "Screensaver Timeout: ", "Screensaver Rotate Speed: ", "Forget Password at Log Out:"],
 		SettingsDefaults : [false,true,"ddddd","aaaaa",false,false,"Album",false,false,false,false,true,true,"50px","white",10000,"Media",300000,10000,false],
 		
-		TVSettings : ["Bitrate","Dolby","DTS","AACtoDolby","ItemPaging","ClockOffset"],
-		TVSettingsName : ["Max Bitrate: ","Enable Dolby Digital Playback: ","Enable DTS Playback: ","Enable AAC Transcoding to Dolby: ","Item Paging: ","Clock Offset: "],
-		TVSettingsDefaults : [60,false,false,false,150,0],
+		TVSettings : ["Bitrate","Dolby","DTS","AACtoDolby","ItemPaging","ClockOffset","ModelOverride"],
+		TVSettingsName : ["Max Bitrate: ","Enable Dolby Digital Playback: ","Enable DTS Playback: ","Enable AAC Transcoding to Dolby: ","Item Paging: ","Clock Offset: ","Evolution Kit: "],
+		TVSettingsDefaults : [60,false,false,false,150,0,"None"],
 		
 		ServerSettings : ["DisplayMissingEpisodes","DisplayUnairedEpisodes","GroupMovieCollections","DefaultAudioLang","PlayDefaultAudioTrack","DefaultSubtitleLang", "SubtitleMode", "HidePlayedInLatest"],
 		ServerSettingsName : ["Display Missing Episodes: ", "Display Unaired Episodes: ","Group Movies into Collections: ","Default Audio Language: ","Play default audio track regardless of language: ", "Default Subtitle Language: ","Subtitle Mode:","Hide watched content from latest media:"], 
@@ -75,7 +75,10 @@ var GuiPage_Settings = {
 		LanguageValues : ["","eng","fre","ger","spa","ita"],
 		
 		SubtitleModeOptions : ["Default","Only Forced Subtitles", "Always Play Subtitles", "None"],
-		SubtitleModeValues : ["Default","OnlyForced", "Always", "None"]
+		SubtitleModeValues : ["Default","OnlyForced", "Always", "None"],
+
+		ModelOverrideOptions : ["None","SEK-1000","SEK-2000","SEK-2500"],
+		ModelOverrideValues : ["None","SEK1000","SEK2000","SEK2500"]
 }
 
 GuiPage_Settings.onFocus = function() {
@@ -317,6 +320,14 @@ GuiPage_Settings.updateDisplayedItems = function() {
 				}
 			}
 			break;
+		case "ModelOverride":
+			for (var index2 = 0; index2 < this.ModelOverrideValues.length; index2++) {
+				if (this.ModelOverrideValues[index2] == this.AllData.TV[this.currentViewSettings[index]]) {
+					Setting = this.ModelOverrideOptions[index2];
+					break;
+				}
+			}
+			break;
 		case "Dolby":
 		case "DTS":	
 		case "AACtoDolby":	
@@ -440,9 +451,9 @@ GuiPage_Settings.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.bannerItems.length; index++) {
 		if (index == this.selectedBannerItem) {
 			if (index != this.bannerItems.length-1) { //Don't put padding on the last one.
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding green";
+				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding BannerSelected";
 			} else {
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem green";
+				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem BannerSelected";
 			}		
 		} else {
 			if (index != this.bannerItems.length-1) { //Don't put padding on the last one.
@@ -566,6 +577,9 @@ GuiPage_Settings.processSelectedItem = function() {
 		case "ClockOffset":
 			this.CurrentSubSettings = this.ClockOffsetOptions;
 			break;	
+		case "ModelOverride":
+			this.CurrentSubSettings = this.ModelOverrideOptions;
+			break;	
 		case "ItemPaging":
 			this.CurrentSubSettings = this.ItemPagingOptions;
 			break;	
@@ -654,8 +668,16 @@ GuiPage_Settings.keyDown = function() {
 		case tvKey.KEY_YELLOW:	
 			//Favourites - Not needed on this page!
 			break;	
-		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiPage_Settings");
+		case tvKey.KEY_BLUE:
+			if (this.selectedItem == -1) {		
+				if (this.selectedBannerItem == this.bannerItems.length-1) {
+					GuiMusicPlayer.showMusicPlayer("GuiPage_Settings","bannerItem"+this.selectedBannerItem,"guiDisplay_Series-BannerItem BannerSelected");
+				} else {
+					GuiMusicPlayer.showMusicPlayer("GuiPage_Settings","bannerItem"+this.selectedBannerItem,"guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding BannerSelected");
+				}
+			} else {
+				GuiMusicPlayer.showMusicPlayer("GuiPage_Settings",this.selectedItem,document.getElementById(this.selectedItem).className);
+			}
 			break;		
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
@@ -675,7 +697,7 @@ GuiPage_Settings.openMenu = function() {
 		} else {
 			document.getElementById("bannerItem0").className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding";
 		}
-		GuiMainMenu.requested("GuiPage_Settings","bannerItem0","guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding green");
+		GuiMainMenu.requested("GuiPage_Settings","bannerItem0","guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding BannerSelected");
 	} else {
 		document.getElementById(this.selectedItem).className = "guiSettingsTD GuiPage_Setting_UnSelected";
 		GuiMainMenu.requested("GuiPage_Settings",this.selectedItem,"guiSettingsTD GuiPage_Setting_Selected");
@@ -829,6 +851,10 @@ GuiPage_Settings.processSelectedSubItem = function() {
 		this.AllData.TV.ClockOffset = this.ClockOffsetValues[this.selectedSubItem];
 		this.CurrentSettingValue = this.ClockOffsetOptions[this.selectedSubItem];
 		break;
+	case "ModelOverride":
+		this.AllData.TV.ModelOverride = this.ModelOverrideValues[this.selectedSubItem];
+		this.CurrentSettingValue = this.ModelOverrideOptions[this.selectedSubItem];
+		break;
 	case "Dolby":
 	case "DTS":
 	case "AACtoDolby":	
@@ -977,7 +1003,7 @@ GuiPage_Settings.bottomKeyDown = function() {
 			this.processSelectedSubItem();
 			break;
 		case tvKey.KEY_BLUE:	
-			Support.logout();
+			GuiMusicPlayer.showMusicPlayer("GuiPage_SettingsBottom","Value"+this.selectedItem,document.getElementById("Value"+this.selectedItem).className);
 			break;		
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
@@ -1087,6 +1113,10 @@ GuiPage_Settings.setOverview = function() {
 		case "ClockOffset":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Clock Offset";
 			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Some devices report their system time incorrectly. Use this option to apply a correction.";
+			break;	
+		case "ModelOverride":
+			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Samsung Evolution Kit";
+			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "If you have purchased a Samsung Evolution Kit to enhance your TV, select the model number to unlock the addition codec support provided.<br><br>Restart the Emby client for the change to take affect.";
 			break;	
 		case "Bitrate":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Max Bitrate";

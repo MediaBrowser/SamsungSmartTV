@@ -17,6 +17,7 @@
         <script src="$MANAGER_WIDGET/Common/Plugin/Define.js"></script>
    		<script src="$MANAGER_WIDGET/Common/API/CImageViewer.js"></script>
 		<script src="$MANAGER_WIDGET/Common/af/2.0.0/loader.js"></script>
+		<script src="$MANAGER_WIDGET/Common/webapi/1.0/webapis.js"></script>
 
 		<!-- Javascript code -->	
 		<script src="app/javascript/Main.js"></script>
@@ -58,7 +59,6 @@
 		<script src="app/javascript/Gui/GuiPage_CastMember.js"></script>
 		<script src="app/javascript/Gui/GuiPage_Settings.js"></script>
 		<script src="app/javascript/Gui/GuiPage_SettingsLog.js"></script>
-		<script src="app/javascript/Gui/GuiPage_TvChannel.js"></script>
 		<script src="app/javascript/Gui/GuiPage_TvGuide.js"></script>
 		<script src="app/javascript/Gui/GuiPage_Photos.js"></script>
 		<script src="app/javascript/Gui/GuiPage_PhotoNavigation.js"></script>
@@ -68,11 +68,8 @@
 		<script src="app/javascript/Gui/GuiPage_AddToPlaylist.js"></script>
 		<script src="app/javascript/Gui/GuiPage_Search.js"></script>
 		<script src="app/javascript/Gui/GuiPage_TvChannel.js"></script>
-		
-		<object id="pluginPlayer" border=0 classid="clsid:SAMSUNG-INFOLINK-PLAYER"></object>
+
         <object id="pluginObjectAudio" border=0 classid="clsid:SAMSUNG-INFOLINK-AUDIO"></object>
-        <object id="pluginScreen" border=0 classid="clsid:SAMSUNG-INFOLINK-SCREEN"></object>
-        <object id="pluginObjectNetwork" border=0 classid="clsid:SAMSUNG-INFOLINK-NETWORK"></object>
         <object id="pluginObjectTVMW" border=0 classid="clsid:SAMSUNG-INFOLINK-TVMW"></object>
         <object id="pluginObjectNNavi" border=0 classid="clsid:SAMSUNG-INFOLINK-NNAVI"></object>
         <object id="pluginObjectTV" border=0 classid="clsid:SAMSUNG-INFOLINK-TV"></object> 
@@ -114,16 +111,15 @@
 		<a href="javascript:void(0);" id="GuiPage_HomeOneItem" onkeydown="GuiPage_HomeOneItem.keyDown();" onfocus="GuiPage_HomeOneItem.onFocus();"></a>
 		<a href="javascript:void(0);" id="GuiPage_HomeTwoItems" onkeydown="GuiPage_HomeTwoItems.keyDown();" onfocus="GuiPage_HomeTwoItems.onFocus();"></a>
 		<a href="javascript:void(0);" id="GuiPage_HomeTwoItemsBottom" onkeydown="GuiPage_HomeTwoItems.bottomKeyDown();"></a>	
-		<a href="javascript:void(0);" id="GuiPage_MusicArtist" onkeydown="GuiPage_MusicArtist.keyDown();"></a>
-		<a href="javascript:void(0);" id="GuiPage_MusicArtistBottom" onkeydown="GuiPage_MusicArtist.bottomKeyDown();"></a>	
+		<a href="javascript:void(0);" id="GuiPage_MusicArtist" onkeydown="GuiPage_MusicArtist.keyDown();" onfocus="GuiPage_MusicArtist.onFocus();"></a>
+		<a href="javascript:void(0);" id="GuiPage_MusicArtistBottom" onkeydown="GuiPage_MusicArtist.bottomKeyDown();" onfocus="GuiPage_MusicArtist.onFocus();"></a>
 		<a href="javascript:void(0);" id="GuiPage_Music" onkeydown="GuiPage_Music.keyDown();" onfocus="GuiPage_Music.onFocus();"></a>	
 		<a href="javascript:void(0);" id="GuiPage_MusicAZ" onkeydown="GuiPage_MusicAZ.keyDown();" onfocus="GuiPage_MusicAZ.onFocus();"></a>	
 		<a href="javascript:void(0);" id="GuiPage_CastMember" onkeydown="GuiPage_CastMember.keyDown();"></a>	
 		<a href="javascript:void(0);" id="GuiPage_Settings" onkeydown="GuiPage_Settings.keyDown();" onfocus="GuiPage_Settings.onFocus();"></a>	
 		<a href="javascript:void(0);" id="GuiPage_SettingsBottom" onkeydown="GuiPage_Settings.bottomKeyDown();"></a>
 		<a href="javascript:void(0);" id="GuiPage_SettingsLog" onkeydown="GuiPage_SettingsLog.keyDown();" onfocus="GuiPage_SettingsLog.onFocus();"></a>		
-		<a href="javascript:void(0);" id="GuiPage_TvChannel" onkeydown="GuiPage_TvChannel.keyDown();"></a>
-		<a href="javascript:void(0);" id="GuiPage_TvGuide" onkeydown="GuiPage_TvGuide.keyDown();"></a>
+		<a href="javascript:void(0);" id="GuiPage_TvGuide" onkeydown="GuiPage_TvGuide.keyDown();"onfocus="GuiPage_TvGuide.onFocus();"></a>
 		<a href="javascript:void(0);" id="GuiPage_Photos" onkeydown="GuiPage_Photos.keyDown();" onfocus="GuiPage_Photos.onFocus();"></a>	
 		<a href="javascript:void(0);" id="GuiPage_PhotoNavigation" onkeydown="GuiPage_PhotoNavigation.keyDown();"></a>	
 		<a href="javascript:void(0);" id="GuiPage_Playlist" onkeydown="GuiPage_Playlist.keyDown();"></a>
@@ -180,7 +176,7 @@
 				<div id="guiMusicPlayerDiv" class="guiMusicPlayerDiv" style="visibility:hidden">
 					<div id="guiMusicPlayerTitle" class="guiMusicPlayerTitle"></div>
 					<div id="guiMusicPlayerNowPlaying" class="guiMusicPlayerNowPlaying">Now Playing</div>	
-					<div id="guiMusicPlayerScreenOff" class="guiMusicPlayerScreenOff"> Screen</div>
+					<div id="guiMusicPlayerScreenOff" class="guiMusicPlayerScreenOff">Screen Off</div>
 					<div id="guiMusicPlayerTime"  class="guiMusicPlayerTime"></div>	
 					<div id="guiMusicPlayerPlay" class="guiMusicPlayerPlay"></div>
 					<div id="guiMusicPlayerStop" class="guiMusicPlayerStop"></div>

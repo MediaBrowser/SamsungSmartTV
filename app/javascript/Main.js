@@ -4,7 +4,7 @@ var tvKey = new Common.API.TVKeyValue();
 	
 var Main =
 {
-		version : "v2.1.3",
+		version : "v2.2.0a",
 		requiredServerVersion : "3.0.5211",
 		requiredDevServerVersion : "3.0.5507.2131",
 		
@@ -24,9 +24,9 @@ var Main =
 		forceDeleteSettings : false,
 		
 		enableMusic : true,
-		enableLiveTV : false,
+		enableLiveTV : true,
 		enableCollections : true,
-		enableChannels : false,
+		enableChannels : true,
 		enableImageCache : true,
 		
 		enableScreensaver : true,
@@ -106,40 +106,35 @@ Main.onLoad = function()
 	//Set Version Number & initialise clock
 	//document.getElementById("menuVersion").innerHTML = this.version;
 	Support.clock();
-	
-	//Set DeviceID & Device Name
-	var NNaviPlugin = document.getElementById("pluginObjectNNavi");
-	var pluginNetwork = document.getElementById("pluginObjectNetwork");
-	var pluginTV = document.getElementById("pluginObjectTV");
-	FileLog.write("Plugins initialised.");
-	
-	var ProductType = pluginNetwork.GetActiveType();
-	FileLog.write("Product type is "+ProductType);
-	var phyConnection = pluginNetwork.CheckPhysicalConnection(ProductType); //returns -1
-	FileLog.write("Check physical connection returned "+phyConnection);
-	var http = pluginNetwork.CheckHTTP(ProductType); //returns -1
-	FileLog.write("Check HTTP returned "+http);
-	var gateway = pluginNetwork.CheckGateway(ProductType); //returns -1
-	FileLog.write("Check gateway returned "+gateway);
-	
+
 	//Get the model year - Used for transcoding
-	if (pluginTV.GetProductCode(0).substring(0,2) == "HT" || pluginTV.GetProductCode(0).substring(0,2) == "BD"){
-		this.modelYear = pluginTV.GetProductCode(0).substring(3,4);
+	var matches = [];
+	if (webapis.tv.info.getProduct() === webapis.tv.info.PRODUCT_TYPE_BD) {
+		matches = (webapis.tv.info.getModel() || '').match(/^\w\w(\w)/);
 	} else {
-		this.modelYear = pluginTV.GetProductCode(0).substring(4,5);
+		matches = (webapis.tv.info.getModel() || '').match(/^\w+\d+(\w)/);
 	}
 
-	FileLog.write("Model Year is " + this.modelYear);
-	
-	if (phyConnection && http && gateway) {
-		var MAC = pluginNetwork.GetMAC(1);
-		if (MAC == false || MAC == null) { //Set mac to fake	
-			MAC = "0123456789ab" ;
+	if (!matches || !matches.length) {
+		FileLog.write("Unknown product type, assuming D series");
+		this.modelYear = "D";
+	} else {
+		this.modelYear = matches[1];
+		FileLog.write("Model Year is " + this.modelYear);
+	}
+
+	webapis.network.getAvailableNetworks(function(networks) {
+		var activeNetwork = networks.find(function(network) { return network.isActive(); });
+		if (!activeNetwork) {
+			// failsafe, should never get here
+			FileLog.write('Found available networks but none are active');
+			document.getElementById("pageContent").innerHTML = "You have no network connectivity to the TV - Please check the settings on the TV";
+			return;
 		}
-		FileLog.write("MAC address is "+MAC);
-		Server.setDevice ("Samsung " + pluginTV.GetProductCode(0));
-		Server.setDeviceID(NNaviPlugin.GetDUID(MAC));
-		
+
+		Server.setDevice ("Samsung " + webapis.tv.info.getModel());
+		Server.setDeviceID(webapis.tv.info.getDeviceID() || "0123456789ab");
+
 	    //Load Settings File - Check if file needs to be deleted due to development
 	    var fileJson = JSON.parse(File.loadFile()); 
 	    var version = File.checkVersion(fileJson);
@@ -156,6 +151,22 @@ Main.onLoad = function()
 	    		//Update version in settings file to current version
 	    		fileJson.Version = this.version;
 	    	} 	File.writeAll(fileJson);
+	    }
+	    
+	    //Allow Evo Kit owners to override the model year.
+	    if (fileJson.TV.ModelOverride != "None") {
+	    	switch(fileJson.TV.ModelOverride){
+	    	case "SEK1000":
+	    		this.modelYear = "F";
+	    		break;
+	    	case "SEK2000":
+	    		this.modelYear = "H";
+	    		break;
+	    	case "SEK2500":
+	    		this.modelYear = "H";
+	    		break;
+	    	}
+	    	FileLog.write("Model Year Override: " + this.modelYear);
 	    }
 	    
 	    //Check if Server exists
@@ -185,9 +196,9 @@ Main.onLoad = function()
 	    	FileLog.write("No server defined. Loading the new server page.");
 	    	GuiPage_NewServer.start();
 	    }
-	} else {
+	}, function() {
 		document.getElementById("pageContent").innerHTML = "You have no network connectivity to the TV - Please check the settings on the TV";
-	}
+	});
 	widgetAPI.sendReadyEvent();
 	Support.clock();
 

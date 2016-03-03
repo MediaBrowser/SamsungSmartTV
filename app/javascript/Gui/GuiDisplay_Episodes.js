@@ -49,7 +49,9 @@ GuiDisplay_Episodes.start = function(title,url,selectedItem,topLeftItem) {
 	
 	if (this.ItemData.Items.length > 0) {
 		
-		document.getElementById("pageContent").innerHTML = "<div id=allOptions class='EpisodesAllOptions'><span id='playAll' style='padding-right:70px'>Play All</span><span id='shuffleAll'>Shuffle All</span></div><div id=Content class='EpisodesList'></div>" +
+		document.getElementById("pageContent").innerHTML = "<div id=allOptions class='EpisodesAllOptions'>" +
+		"<span id='bannerItem0'>Play All</span>" +
+		"<span id='bannerItem1'>Shuffle All</span></div><div id=Content class='EpisodesList'></div>" +
 		"<div id='EpisodesSeriesInfo' class='EpisodesSeriesInfo'></div>" + 
 		"<div id='EpisodesImage' class='EpisodesImage'></div>" + 
 		"<div id='EpisodesInfo' class='EpisodesInfo'>" +
@@ -80,6 +82,7 @@ GuiDisplay_Episodes.start = function(title,url,selectedItem,topLeftItem) {
 	
 		//Display first XX series
 		this.updateDisplayedItems();
+		this.updateSelectedBannerItems();
 			
 		//Update Selected Collection CSS
 		this.updateSelectedItems();	
@@ -253,17 +256,16 @@ GuiDisplay_Episodes.updateSelectedItems = function () {
 
 
 GuiDisplay_Episodes.updateSelectedBannerItems = function() {
-	if (this.selectedItem == -1) {
-		if (this.selectedBannerItem == 0) {
-			document.getElementById("playAll").style.color = "#27a436";
-			document.getElementById("shuffleAll").style.color = "#f9f9f9";
+	for (var index = 0; index < 2; index++) {	
+		if (this.selectedItem == -1) {
+			if (this.selectedBannerItem == index) {
+				document.getElementById("bannerItem"+index).className = "button buttonSelected";
+			} else {
+				document.getElementById("bannerItem"+index).className = "button";
+			}		
 		} else {
-			document.getElementById("playAll").style.color = "#f9f9f9";
-			document.getElementById("shuffleAll").style.color = "#27a436";
+			document.getElementById("bannerItem"+index).className = "button";
 		}
-	} else {
-		document.getElementById("playAll").style.color = "#f9f9f9";
-		document.getElementById("shuffleAll").style.color = "#f9f9f9";
 	}
 }
 
@@ -361,8 +363,12 @@ GuiDisplay_Episodes.keyDown = function() {
 				this.updateSelectedItems();
 			}
 			break;		
-		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiDisplay_Episodes");
+		case tvKey.KEY_BLUE:
+			if (this.selectedItem == -1) {		
+				GuiMusicPlayer.showMusicPlayer("GuiDisplay_Episodes","bannerItem"+this.selectedBannerItem,"button buttonSelected");
+			} else {
+				GuiMusicPlayer.showMusicPlayer("GuiDisplay_Episodes",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
+			}
 			break;	
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
@@ -467,25 +473,25 @@ GuiDisplay_Episodes.processChannelUpKey = function() {
 }
 
 GuiDisplay_Episodes.openMenu = function() {
+	Support.updateURLHistory("GuiDisplay_Episodes",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
 	if (this.selectedItem == -1) {
 		if (this.selectedBannerItem == -1) {
 			this.selectedBannerItem = 0;
-			document.getElementById("playAll").style.color = "#f9f9f9";
+			document.getElementById("bannerItem"+this.selectedBannerItem).className = "button";
 		}
-		this.selectedItem = 0;
-		this.topLeftItem = 0;
+		GuiMainMenu.requested("GuiDisplay_Episodes","bannerItem"+this.selectedBannerItem,"button buttonSelected");
+	} else {
+		GuiMainMenu.requested("GuiDisplay_Episodes",this.ItemData.Items[this.selectedItem].Id,"EpisodeListSingle EpisodeListSelected");
 	}
-	Support.updateURLHistory("GuiDisplay_Episodes",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
-	GuiMainMenu.requested("GuiDisplay_Episodes",this.ItemData.Items[this.selectedItem].Id,"EpisodeListSingle EpisodeListSelected");
 }
 
 GuiDisplay_Episodes.processLeftKey = function() {
 	if (this.selectedItem == -1) {
 		this.selectedBannerItem--;
+		this.updateSelectedBannerItems();
 		if (this.selectedBannerItem == -1) {
 			this.openMenu(); //Going left from the Play All / Shuffle All menu.
 		}
-		this.updateSelectedBannerItems();
 	} else {
 		this.openMenu(); //There's no left/right in the list of episodes, always open the menu.
 	}	

@@ -41,14 +41,15 @@ GuiDisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 	if (this.ItemData == null) { return; }
 
 	//Once we've browsed the channels down to a content folder we should display them using GuiDisplay_Series.
-	if (this.ItemData.Items[0].Type == "ChannelVideoItem" || this.ItemData.Items[0].Type == "ChannelAudioItem") {
-		GuiDisplay_Series.start(title,url,selectedItem,topLeftItem,this.ItemData);
-		return;
+	if (this.ItemData.TotalRecordCount >0){
+		if (this.ItemData.Items[0].Type == "ChannelVideoItem" || this.ItemData.Items[0].Type == "ChannelAudioItem") {
+			GuiDisplay_Series.start(title,url,selectedItem,topLeftItem,this.ItemData);
+			return;
+		}	
 	}
 
 	//Setup display width height based on title
 	switch (title) {
-	case "Media Folders":
 	case "Collections":
 	case "Channels":
 		this.MAXCOLUMNCOUNT = 3;
@@ -187,8 +188,8 @@ GuiDisplayOneItem.keyDown = function() {
 		case tvKey.KEY_YELLOW:	
 			//Favourites - May not be needed on this page
 			break;	
-		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiDisplayOneItem");
+		case tvKey.KEY_BLUE:
+			GuiMusicPlayer.showMusicPlayer("GuiDisplayOneItem",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
 			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);

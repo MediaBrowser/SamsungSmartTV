@@ -1,7 +1,6 @@
 var GuiMusicPlayer = {	
-		pluginMusic : null,
-		pluginAudioMusic : null,
-		
+		player : null,
+
 		currentPlayingItem : 0,
 		
 		Status : "STOPPED",
@@ -12,6 +11,8 @@ var GuiMusicPlayer = {
 		
 		selectedItem : 0,
 		playedFromPage : null,
+		selectedDivId : 0,
+		selectedDivClass : "",
 		previousImagePlayerOverlay : 0,
 		
 		queuedItems : [],
@@ -24,30 +25,58 @@ GuiMusicPlayer.onFocus = function() {
 	GuiHelper.setControlButtons(null,null,null,null,"Return");
 }
 
-GuiMusicPlayer.init = function() {
+GuiMusicPlayer.init = function(callback) {
 	GuiPlayer.stopOnAppExit();
 
-	this.pluginMusic = document.getElementById("pluginPlayer");
-	this.pluginAudioMusic = document.getElementById("pluginObjectAudio");
-	
-	//Set up Player
-	this.pluginMusic.OnConnectionFailed = 'GuiMusicPlayer.handleConnectionFailed';
-	this.pluginMusic.OnAuthenticationFailed = 'GuiMusicPlayer.handleAuthenticationFailed';
-	this.pluginMusic.OnNetworkDisconnected = 'GuiMusicPlayer.handleOnNetworkDisconnected';
-	this.pluginMusic.OnRenderError = 'GuiMusicPlayer.handleRenderError';
-	this.pluginMusic.OnStreamNotFound = 'GuiMusicPlayer.handleStreamNotFound';
-	this.pluginMusic.OnRenderingComplete = 'GuiMusicPlayer.handleOnRenderingComplete';
-	this.pluginMusic.OnCurrentPlayTime = 'GuiMusicPlayer.setCurrentTime';
-    this.pluginMusic.OnStreamInfoReady = 'GuiMusicPlayer.OnStreamInfoReady'; 
-    
-    //Set Display Size to 0
-    this.pluginMusic.SetDisplayArea(0, 0, 0, 0);
+	webapis.avplay.getAVPlay(function (player) {
+		if (this.player && this.player !== player) {
+			this.player.destroy();
+		}
+		this.player = player;
+		player.init({
+			displayRect: {
+				top: 0,
+				left: 0,
+				width: 0,
+				height: 0,
+			},
+			bufferingCallback: {
+				onbufferingstart: GuiMusicPlayer.OnStreamInfoReady.bind(this),
+			},
+			playCallback: {
+				oncurrentplaytime: GuiMusicPlayer.setCurrentTime.bind(this),
+				onstreamcompleted: GuiMusicPlayer.handleOnRenderingComplete.bind(this),
+				onerror: GuiMusicPlayer.handleError.bind(this),
+			},
+		});
+
+		if (typeof callback === 'function') {
+			callback(player);
+		}
+	}.bind(this));
 }
 
-GuiMusicPlayer.showMusicPlayer = function(playedFromPage) {
+GuiMusicPlayer.showMusicPlayer = function(playedFromPage,selectedDivId,selectedDivClass) {
 	if (this.Status != "STOPPED") {
+
 		this.playedFromPage = playedFromPage;
-		if (this.playedFromPage == "GuiImagePlayer") {
+		this.selectedDivId = selectedDivId;
+		
+		//Unhighlight the page's selected content
+		if (selectedDivId != null) {
+			if (selectedDivClass === undefined) {
+				this.selectedDivClass = "UNDEFINED";
+			} else {
+				this.selectedDivClass = selectedDivClass;
+			}
+			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("GuiPage_Setting_Changing arrowUpDown","");
+			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("EpisodeListSelected","");
+			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("BannerSelected","");
+			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("seriesSelected","");
+			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("Selected","");
+		}
+		
+		if (playedFromPage == "GuiImagePlayer") {
 			clearTimeout(GuiImagePlayer.infoTimer);
 			document.getElementById("GuiImagePlayer_ScreensaverOverlay").style.visibility="hidden";
 			document.getElementById("guiButtonShade").style.visibility = "";
@@ -64,95 +93,92 @@ GuiMusicPlayer.showMusicPlayer = function(playedFromPage) {
 	}
 }
 
-GuiMusicPlayer.start = function(title, url, playedFromPage,isQueue,showThemeId,itemId) { 
+GuiMusicPlayer.start = function(title,url,playedFromPage,isQueue,showThemeId,itemId) {
 	this.selectedItem = 0;
-	this.playedFromPage = playedFromPage;
-	
+	var start = function (player) {
+		if (title == "Theme") {
+			//Only play music is no real music is playing!
+			if (this.Status == "STOPPED" || this.isThemeMusicPlaying == true) {
+				//Check if Theme Playback is enabled
+				if (File.getUserProperty("AudioTheme")) {
+					//Check if show Id has changed
+					if (showThemeId != this.showThemeId) {
+						var urlTheme = Server.getThemeMedia(itemId);
+						this.ItemData = Server.getContent(urlTheme);
+						if (this.ItemData == null) { return; }
+
+						if (this.ItemData.ThemeSongsResult.Items.length > 0) {
+							//Play something
+							if (this.Status != "STOPPED") {
+								this.stopPlayback();
+							}
+							this.currentPlayingItem = 0;
+							this.showThemeId = showThemeId;
+							this.isThemeMusicPlaying = true;
+
+							for (var index = 0; index < this.ItemData.ThemeSongsResult.Items.length; index++){
+								this.queuedItems.push(this.ItemData.ThemeSongsResult.Items[index]);
+							}
+
+							this.videoURL = Server.getServerAddr() + '/Audio/'+this.queuedItems[this.currentPlayingItem].Id+'/Stream.mp3?static=true&MediaSource='+this.queuedItems[this.currentPlayingItem].MediaSources[0].Id;
+							this.updateSelectedItem();
+							//Start Playback
+							this.handlePlayKey();
+						} else {
+							this.showThemeId = null;
+							this.isThemeMusicPlaying = false;
+						}
+					}
+				}
+			}
+		} else {
+			//get info from URL
+			this.ItemData = Server.getContent(url);
+			if (this.ItemData == null) { return; }
+
+			//See if item is to be added to playlist or not - if not reset playlist
+			if (this.Status != "STOPPED" && (this.isThemeMusicPlaying == true || isQueue == false)) {
+				this.stopPlayback();
+			}
+
+			if (title != "Song") {
+				for (var index = 0; index < this.ItemData.Items.length; index++) {
+					this.queuedItems.push(this.ItemData.Items[index]);
+				}
+			} else {
+				//Is Individual Song
+				this.queuedItems.push(this.ItemData);
+			}
+
+			//Only start if not already playing!
+			//If reset this will be true, if not it will be added to queued items
+			if (this.Status == "STOPPED") {
+				this.currentPlayingItem = 0;
+				if (this.queuedItems[this.currentPlayingItem].Type == "ChannelAudioItem") {
+					this.videoURL = Server.getCustomURL("/audio/"+this.queuedItems[this.currentPlayingItem].Id+"/stream.mp3?DeviceId="+Server.getDeviceID()+"&AudioCodec=mp3&AudioBitrate=192000&MaxAudioChannels=2");
+				} else {
+					this.videoURL = Server.getServerAddr() + '/Audio/'+this.queuedItems[this.currentPlayingItem].Id+'/Stream.mp3?static=true&MediaSource='+this.queuedItems[this.currentPlayingItem].MediaSources[0].Id;
+				}
+
+				//Update selected Item
+				this.updateSelectedItem();
+
+				//Start Playback
+				this.handlePlayKey();
+
+				//Show Content
+				this.showMusicPlayer(playedFromPage,itemId,"Music seriesSelected");
+			}
+		}
+	}.bind(this);
+
+
 	//Initiate Player for Music if required.
 	//Set to null on end of playlist or stop.
-	if (this.pluginMusic == null) {
-		this.init();
-	}
-	
-	if (title == "Theme") {
-		//Only play music is no real music is playing!
-		if (this.Status == "STOPPED" || this.isThemeMusicPlaying == true) {
-			//Check if Theme Playback is enabled
-			if (File.getUserProperty("AudioTheme")) {
-				//Check if show Id has changed
-				if (showThemeId != this.showThemeId) {		
-					var urlTheme = Server.getThemeMedia(itemId);
-					this.ItemData = Server.getContent(urlTheme);
-					if (this.ItemData == null) { return; }
-					
-					if (this.ItemData.ThemeSongsResult.Items.length > 0) {
-						//Play something
-						if (this.Status != "STOPPED") {
-							this.stopPlayback();
-						}
-						this.currentPlayingItem = 0;
-						this.showThemeId = showThemeId;
-						this.isThemeMusicPlaying = true;
-						
-						for (var index = 0; index < this.ItemData.ThemeSongsResult.Items.length; index++){
-							this.queuedItems.push(this.ItemData.ThemeSongsResult.Items[index]);
-						}
-						
-						this.videoURL = Server.getServerAddr() + '/Audio/'+this.queuedItems[this.currentPlayingItem].Id+'/Stream.mp3?static=true&MediaSource='+this.queuedItems[this.currentPlayingItem].MediaSources[0].Id;
-						this.updateSelectedItem();
-						//Start Playback
-						this.handlePlayKey();
-					} else {
-						this.showThemeId = null;
-						this.isThemeMusicPlaying = false;
-					}	
-				}
-			}	
-		}
+	if (this.player == null) {
+		this.init(start);
 	} else {
-		//get info from URL
-		this.ItemData = Server.getContent(url);
-		if (this.ItemData == null) { return; }	
-			
-		//See if item is to be added to playlist or not - if not reset playlist
-		if (this.Status != "STOPPED" && (this.isThemeMusicPlaying == true || isQueue == false)) {
-			this.stopPlayback();			
-		}
-
-		if (title != "Song") { 	
-	    	for (var index = 0; index < this.ItemData.Items.length; index++) {
-	    		this.queuedItems.push(this.ItemData.Items[index]);
-	    	}
-	    } else {
-	    	//Is Individual Song
-	        this.queuedItems.push(this.ItemData);
-	    }
-		
-		//Only start if not already playing!
-		//If reset this will be true, if not it will be added to queued items
-		if (this.Status == "STOPPED") {
-			this.currentPlayingItem = 0;
-		    this.videoURL = Server.getServerAddr() + '/Audio/'+this.queuedItems[this.currentPlayingItem].Id+'/Stream.mp3?static=true&MediaSource='+this.queuedItems[this.currentPlayingItem].MediaSources[0].Id;
-		    
-		    //Update selected Item
-		    this.updateSelectedItem();
-		    
-			//Show Content
-		    document.getElementById("guiMusicPlayerDiv").style.bottom = "-60px";
-			document.getElementById("guiMusicPlayerDiv").style.visibility = "";
-			$('.guiMusicPlayerDiv').animate({
-				bottom: 0
-			}, 400, function() {
-				//animate complete.
-				document.getElementById("Counter").style.visibility = "hidden";
-			});
-		    
-			//set focus
-			document.getElementById("GuiMusicPlayer").focus();
-			
-			//Start Playback
-			this.handlePlayKey();
-		}
+		start(this.player);
 	}
 }
 
@@ -164,10 +190,10 @@ GuiMusicPlayer.updateSelectedItem = function() {
 			document.getElementById("guiMusicPlayerNowPlaying").style.color = "#27a436";
 			break;*/
 		case 0:
-			document.getElementById("guiMusicPlayerScreenOff").style.color = "#27a436";
+			document.getElementById("guiMusicPlayerScreenOff").className = "guiMusicPlayerScreenOff SelectedButton";
 			break;
 		default:
-			document.getElementById("guiMusicPlayerNowPlaying").style.color = "#27a436";
+			document.getElementById("guiMusicPlayerNowPlaying").className = "guiMusicPlayerNowPlaying SelectedButton";
 			break;
 		}
 }
@@ -274,19 +300,24 @@ GuiMusicPlayer.keyDown = function() {
 					document.getElementById("GuiImagePlayer_ScreensaverOverlay").style.visibility="";
 				}
 				//Hide the music player.
-/*				$('.guiMusicPlayerDiv').animate({
-					bottom: -60
-				}, 300, function() {*/
-					document.getElementById("guiMusicPlayerDiv").style.visibility = "hidden";
-					document.getElementById("guiMusicPlayerDiv").style.bottom = "0";
-				//});
+				document.getElementById("guiMusicPlayerDiv").style.visibility = "hidden";
+				document.getElementById("guiMusicPlayerDiv").style.bottom = "0";
 				document.getElementById("Counter").style.visibility = "";
 				
 				//Hide colour buttons if a slideshow is running.
 				if (GuiImagePlayer.ImageViewer != null){
 					GuiHelper.setControlButtons(null,null,null,null,null);
 				}
-				document.getElementById(this.playedFromPage).focus();	
+				
+				//Set Page GUI elements Correct & Set Focus
+				if (this.selectedDivId != null) {
+					if (this.selectedDivClass == "UNDEFINED") {
+						document.getElementById(this.selectedDivId).className = document.getElementById(this.selectedDivId).className + " Selected";		
+					} else {
+						document.getElementById(this.selectedDivId).className = this.selectedDivClass;
+					}
+				}
+				document.getElementById(this.playedFromPage).focus();
 			}
 			break;
 		case tvKey.KEY_EXIT:
@@ -297,18 +328,19 @@ GuiMusicPlayer.keyDown = function() {
 }
 
 GuiMusicPlayer.handlePlayKey = function() {
-	if (this.Status != "PLAYING") {	
-		this.pluginAudioMusic.SetUserMute(0);   
-		
+	if (this.Status != "PLAYING") {
+		webapis.audiocontrol.setMute(false);
+
 		if (this.Status == "PAUSED") {
-			this.pluginMusic.Resume();
+			this.player.resume();
 		} else {
 			//Clear down any variables
 			this.currentTime = 0;
 		    this.updateTimeCount = 0;
-		    
+
 			//Calculate position in seconds
-		    this.pluginMusic.Play(this.videoURL);
+			this.player.open(this.videoURL);
+			this.player.play(function() {}, GuiMusicPlayer.handleError, this.currentTime);
 		}
 		document.getElementById("guiMusicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-active-29x37.png')";
 		document.getElementById("guiMusicPlayerPause").style.backgroundImage="url('images/musicplayer/pause-32x37.png')";
@@ -317,7 +349,7 @@ GuiMusicPlayer.handlePlayKey = function() {
 }
 
 GuiMusicPlayer.handlePauseKey = function() {
-	this.pluginMusic.Pause();
+	this.player.pause();
 	Server.videoPaused(this.queuedItems[this.currentPlayingItem].Id,this.queuedItems[this.currentPlayingItem].MediaSources[0].Id,this.currentTime,"DirectStream");
 	document.getElementById("guiMusicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-29x37.png')";
 	document.getElementById("guiMusicPlayerPause").style.backgroundImage="url('images/musicplayer/pause-active-32x37.png')";
@@ -333,8 +365,8 @@ GuiMusicPlayer.stopPlayback = function() {
 	this.isThemeMusicPlaying = false;
 	this.currentPlayingItem = 0;
 	this.queuedItems.length = 0;
-	this.pluginMusic.Stop();
-	
+	this.player.stop();
+
 	document.getElementById("guiMusicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-29x37.png')";
 	document.getElementById("guiMusicPlayerPause").style.backgroundImage="url('images/musicplayer/pause-32x37.png')";
 	document.getElementById("guiMusicPlayerStop").style.backgroundImage="url('images/musicplayer/stop-active-37x37.png')";
@@ -352,8 +384,7 @@ GuiMusicPlayer.handleStopKey = function() {
 
 GuiMusicPlayer.returnToPage = function() {
 	//Reset NAVI - Works
-	NNaviPlugin = document.getElementById("pluginObjectNNavi");
-    NNaviPlugin.SetBannerState(PL_NNAVI_STATE_BANNER_NONE);
+    pluginAPI.SetBannerState(0);
     pluginAPI.registKey(tvKey.KEY_VOL_UP);
     pluginAPI.registKey(tvKey.KEY_VOL_DOWN);
     pluginAPI.registKey(tvKey.KEY_MUTE);
@@ -364,22 +395,26 @@ GuiMusicPlayer.returnToPage = function() {
 	this.queuedItems.length = 0;
 	
     if (document.getElementById("guiMusicPlayerDiv").style.visibility == "") {
-/*		$('.guiMusicPlayerDiv').animate({
-			bottom: -60
-		}, 400, function() {*/
-			document.getElementById("guiMusicPlayerDiv").style.visibility = "hidden";
-			document.getElementById("guiMusicPlayerDiv").style.bottom = "0";
-		//});
-    	
-    	document.getElementById(this.playedFromPage).focus();	
-    }		
+		document.getElementById("guiMusicPlayerDiv").style.visibility = "hidden";
+		document.getElementById("guiMusicPlayerDiv").style.bottom = "0";	
+    }
+    
+	//Set Page GUI elements Correct & Set Focus
+	if (this.selectedDivId != null) {
+		if (this.selectedDivClass == "UNDEFINED") {
+			document.getElementById(this.selectedDivId).className = document.getElementById(this.selectedDivId).className + " Selected";		
+		} else {
+			document.getElementById(this.selectedDivId).className = this.selectedDivClass;
+		}
+	}
+	document.getElementById(this.playedFromPage).focus();
 }
 
 GuiMusicPlayer.handleNextKey = function() {
 	
 	//Stop Any Playback
 	Server.videoStopped(this.queuedItems[this.currentPlayingItem].Id,this.queuedItems[this.currentPlayingItem].MediaSources[0].Id,this.currentTime,"DirectStream");
-	this.pluginMusic.Stop();
+	this.player.stop();
 	this.Status = "STOPPED";
 		
 	this.currentPlayingItem++;
@@ -406,11 +441,11 @@ GuiMusicPlayer.handleNextKey = function() {
 GuiMusicPlayer.handlePreviousKey = function() {
 	//Stop Any Playback
 	var timeOfStoppedSong = Math.floor((this.currentTime % 60000) / 1000);
-		
+
 	Server.videoStopped(this.queuedItems[this.currentPlayingItem].Id,this.queuedItems[this.currentPlayingItem].MediaSources[0].Id,this.currentTime,"DirectStream");
-	this.pluginMusic.Stop();
+	this.playe.stop();
 	this.Status = "STOPPED";
-		
+	
 	//If song over 5 seconds long, previous song returns to start of current song, else go back to previous
 	this.currentPlayingItem = (timeOfStoppedSong > 5 ) ? this.currentPlayingItem : this.currentPlayingItem-1;
 		
@@ -465,61 +500,58 @@ GuiMusicPlayer.handleOnRenderingComplete = function() {
 	this.handleNextKey();
 }
 
-GuiMusicPlayer.handleOnNetworkDisconnected = function() {
-	alert ("Network Disconnect")
-}
-
-GuiMusicPlayer.handleConnectionFailed = function() {
-	alert ("Connection Failed")
-}
-
-GuiMusicPlayer.handleAuthenticationFailed = function() {
-	alert ("Authentication Failed")
-}
-
-GuiMusicPlayer.handleRenderError = function(RenderErrorType) {
-	alert ("Render Error")
-}
-
-GuiMusicPlayer.handleStreamNotFound = function() {
-	alert ("Stream not found")
+GuiMusicPlayer.handleError = function(error) {
+	alert("Error : " + error.name + " : " + error.message);
 }
 
 GuiMusicPlayer.setCurrentTime = function(time){
 	if (this.Status == "PLAYING") {
-		this.currentTime = time;
+		this.currentTime = time.millisecond;
 		this.updateTimeCount++;
 		
-		//Update Server every 8 ticks (Don't want to spam!
-		if (this.updateTimeCount == 8) {
-			this.updateTimeCount = 0;
-			//Update Server
-			Server.videoPaused(this.queuedItems[this.currentPlayingItem].Id,this.queuedItems[this.currentPlayingItem].MediaSources[0].Id,this.currentTime,"DirectStream");
-			
+		if (this.queuedItems[this.currentPlayingItem].Type == "ChannelAudioItem") {
+			document.getElementById("guiMusicPlayerTime").innerHTML = Support.convertTicksToTimeSingle(this.currentTime);
+		} else {
+			//Update Server every 8 ticks
+			if (this.updateTimeCount == 8) {
+				this.updateTimeCount = 0;
+				//Update Server
+				Server.videoPaused(this.queuedItems[this.currentPlayingItem].Id,this.queuedItems[this.currentPlayingItem].MediaSources[0].Id,this.currentTime,"DirectStream");
+			}
+			document.getElementById("guiMusicPlayerTime").innerHTML = Support.convertTicksToTime(this.currentTime, (this.queuedItems[this.currentPlayingItem].RunTimeTicks / 10000));
 		}
-		document.getElementById("guiMusicPlayerTime").innerHTML = Support.convertTicksToTime(this.currentTime, (this.queuedItems[this.currentPlayingItem].RunTimeTicks / 10000));
 	}
 }
 
 GuiMusicPlayer.OnStreamInfoReady = function() {
 	var playingTitle = "";
 	if (this.isThemeMusicPlaying == false) {
-		if (this.queuedItems[this.currentPlayingItem].IndexNumber < 10) {
-			playingTitle = " - " + "0"+this.queuedItems[this.currentPlayingItem].IndexNumber+" - ";
-		} else {
-			playingTitle = " - " + this.queuedItems[this.currentPlayingItem].IndexNumber+" - ";
+		if (this.queuedItems[this.currentPlayingItem].IndexNumber){
+			if (this.queuedItems[this.currentPlayingItem].IndexNumber < 10) {
+				playingTitle = " - " + "0"+this.queuedItems[this.currentPlayingItem].IndexNumber+" - ";
+			} else {
+				playingTitle = " - " + this.queuedItems[this.currentPlayingItem].IndexNumber+" - ";
+			}	
 		}
-		
 		var songName = this.queuedItems[this.currentPlayingItem].Name;
-		var title = this.queuedItems[this.currentPlayingItem].Artists + " " + playingTitle + songName;
+		var title = "";
+		if (this.queuedItems[this.currentPlayingItem].Artists) {
+			title += this.queuedItems[this.currentPlayingItem].Artists + " ";
+		}
+		if (playingTitle) {
+			title += playingTitle;
+		}
+		if (this.queuedItems[this.currentPlayingItem].Name) {
+			title += this.queuedItems[this.currentPlayingItem].Name;
+		}
 		//Truncate long title.
 		if (title.length > 67){
 			title = title.substring(0,65) + "..."; 
 		}
-		
+
 		document.getElementById("guiMusicPlayerTitle").innerHTML = title;
 	} else {
-		document.getElementById("guiMusicPlayerTitle").innerHTML = "Theme Music";	
+		document.getElementById("guiMusicPlayerTitle").innerHTML = "Theme Music";
 	}
 
 	document.getElementById("guiMusicPlayerTime").innerHTML = Support.convertTicksToTime(this.currentTime, (this.queuedItems[this.currentPlayingItem].RunTimeTicks / 10000));
@@ -528,17 +560,15 @@ GuiMusicPlayer.OnStreamInfoReady = function() {
 	Server.videoStarted(this.queuedItems[this.currentPlayingItem].Id,this.queuedItems[this.currentPlayingItem].MediaSources[0].Id,"DirectStream");
 	
     //Volume & Mute Control - Works!
-	NNaviPlugin = document.getElementById("pluginObjectNNavi");
-    NNaviPlugin.SetBannerState(PL_NNAVI_STATE_BANNER_VOL);
+    pluginAPI.SetBannerState(1);
     pluginAPI.unregistKey(tvKey.KEY_VOL_UP);
     pluginAPI.unregistKey(tvKey.KEY_VOL_DOWN);
     pluginAPI.unregistKey(tvKey.KEY_MUTE);
 }
 
 GuiMusicPlayer.stopOnAppExit = function() {
-	if (this.pluginMusic != null) {
-		this.pluginMusic.Stop();
-		this.pluginMusic = null;
-		this.pluginAudioMusic = null;
-	}		
+	if (this.player != null) {
+		this.player.destroy();
+		this.player = null;
+	}
 }

@@ -203,8 +203,8 @@ GuiPage_CastMember.keyDown = function()
 		case tvKey.KEY_YELLOW:	
 			//Favourites
 			break;	
-		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiPage_CastMember");
+		case tvKey.KEY_BLUE:
+			GuiMusicPlayer.showMusicPlayer("GuiPage_CastMember",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
 			break;	
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);

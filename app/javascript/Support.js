@@ -415,8 +415,28 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 					var imgsrc = Server.getImageURL(Items[index].Id,"Primary",224,224,0,false,0);
 					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(" +imgsrc+ ")><div class=menuItem>"+ title + "</div></div>";	
 				} else {
-					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(images/artist.png)><div class=menuItem>"+ title + "</div></div>";
+					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style='background-position:center;background-color:rgba(63,81,181,0.8);background-image:url(images/Live-TV-108x98.png)')><div class=menuItem>"+ title + "</div></div>";
 				}
+				//----------------------------------------------------------------------------------------------	
+			} else if (Items[index].Type == "Recording") {
+				var title = Items[index].Name + "<br>" + Support.AirDate(Items[index].StartDate,"Recording");		
+				
+				if (Items[index].ImageTags.Primary) {			
+					var imgsrc = Server.getImageURL(Items[index].Id,"Primary",Main.posterWidth,Main.posterHeight,0,false,0);
+					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(" +imgsrc+ ")><div class=menuItem>"+ title + "</div>";	
+				} else {
+					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style='background-position:center;background-color:rgba(63,81,181,0.8);background-image:url(images/Live-TV-108x98.png)')><div class=menuItem>"+ title + "</div>";
+				}
+				//Add watched and favourite overlays.
+				if (Items[index].UserData.Played) {
+					htmlToAdd += "<div class=genreItemCount>&#10003</div>";	
+				} else if (Items[index].UserData.UnplayedItemCount > 0){
+					htmlToAdd += "<div class=genreItemCount>"+Items[index].UserData.UnplayedItemCount+"</div>";
+				}
+				if (Items[index].UserData.IsFavorite) {
+					htmlToAdd += "<div class=favItem></div>";
+				}
+				htmlToAdd += "</div>";
 			//----------------------------------------------------------------------------------------------
 			} else if (Items[index].Type == "Season") {
 				if (Items[index].BackdropImageTags.length > 0) {			
@@ -457,18 +477,6 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 				} else {
 					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-color:rgba(0,0,0,0.5);><div class=menuItem>"+ title + "</div></div>";
 				}
-			//----------------------------------------------------------------------------------------------
-			} else if (Items[index].Type == "Recording") {
-				var title = Items[index].Name;		
-				if (Items[index].ImageTags.Thumb) {		
-					var imgsrc = Server.getImageURL(Items[index].Id,"Thumb",Main.posterWidth,Main.posterHeight,0,false,0);
-					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(" +imgsrc+ ")><div class=menuItem>"+ title + "</div></div>";
-				} else if (Items[index].BackdropImageTags.length > 0) {			
-					var imgsrc = Server.getBackgroundImageURL(Items[index].Id,"Backdrop",Main.posterWidth,Main.posterHeight,0,false,0,Items[index].BackdropImageTags.length);
-					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(" +imgsrc+ ")><div class=menuItem>"+ title + "</div></div>";	
-				} else {
-					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-color:rgba(0,0,0,0.5);><div class=menuItem>"+ title + "</div></div>";
-				}	
 			//----------------------------------------------------------------------------------------------
 			} else if (Items[index].Type == "Playlist" || Items[index].Type == "CollectionFolder" ) {
 				var title = Items[index].Name;	
@@ -787,8 +795,7 @@ Support.processSelectedItem = function(page,ItemData,startParams,selectedItem,to
 			GuiDisplayOneItem.start(ItemData.Items[selectedItem].Name,url,0,0);
 			break;	
 		case "TvChannel":
-			alert ("TV Live Channel Page Not Implemented - Play Channel");
-			this.playSelectedItem("GuiDisplayOneItem",ItemData,startParams,selectedItem,topLeftItem,null);
+			this.playSelectedItem("GuiDisplay_Series",ItemData,startParams,selectedItem,topLeftItem,null);
 			break;		
 		case "Playlist":
 			var url = Server.getCustomURL("/Playlists/"+ItemData.Items[selectedItem].Id+"/Items?userId="+Server.getUserID()+"&fields=SortName&SortBy=SortName&SortOrder=Ascending&format=json");	
@@ -806,7 +813,7 @@ Support.processSelectedItem = function(page,ItemData,startParams,selectedItem,to
 			case "Audio":
 				Support.removeLatestURL(); //Music player loads within the previous page - thus remove!
 				var url = Server.getItemInfoURL(ItemData.Items[selectedItem].Id,null);
-				GuiMusicPlayer.start("Song",url,page,false);
+				GuiMusicPlayer.start("Song",url,page,false,false,ItemData.Items[selectedItem].Id);
 				break;
 			default:
 				Support.removeLatestURL();
@@ -874,6 +881,14 @@ Support.playSelectedItem = function(page,ItemData,startParams,selectedItem,topLe
 		Support.updateURLHistory(page,startParams[0],startParams[1],null,null,selectedItem,topLeftItem,null);
 		var url = Server.getItemInfoURL(ItemData.Items[selectedItem].Id,"&ExcludeLocationTypes=Virtual");
 		GuiPlayer.start("PLAY",url,0,page);
+	} else if (ItemData.Items[selectedItem].Type == "MusicAlbum") {
+		Support.updateURLHistory(page,startParams[0],startParams[1],null,null,selectedItem,topLeftItem,null);
+		var url = Server.getChildItemsURL(ItemData.Items[selectedItem].Id,"&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Audio&Recursive=true&CollapseBoxSetItems=false&Fields=MediaSources");
+		GuiMusicPlayer.start("Album",url,"GuiDisplay_Series",false);
+	} else if (ItemData.Items[selectedItem].Type == "Audio") {
+		Support.updateURLHistory(page,startParams[0],startParams[1],null,null,selectedItem,topLeftItem,null);
+		var url = Server.getItemInfoURL(ItemData.Items[selectedItem].Id);
+		GuiMusicPlayer.start("Song",url,"GuiDisplay_Series",false);
 	}
 }
 
@@ -960,6 +975,7 @@ Support.generateMainMenu = function() {
 	}
 
 	//Check Live TV
+	var liveTvAdded = false;
 	var urlLiveTV = Server.getCustomURL("/LiveTV/Info?format=json");
 	var hasLiveTV = Server.getContent(urlLiveTV);
 	if (hasLiveTV == null) { return; }
@@ -967,6 +983,7 @@ Support.generateMainMenu = function() {
 		for (var index = 0; index < hasLiveTV.EnabledUsers.length; index++) {
 			if (Server.getUserID() == hasLiveTV.EnabledUsers[index]) {
 				menuItems.push("Live-TV");
+				liveTvAdded = true;
 				break;
 			}
 		}
@@ -980,7 +997,9 @@ Support.generateMainMenu = function() {
 	if (hasRecordings == null) { return; }
 	
 	if (hasRecordings.TotalRecordCount > 0) {
-		menuItems.push("Recordings");
+		if (!liveTvAdded){
+			menuItems.push("Live-TV");
+		}
 	}
 	
 	
@@ -1114,13 +1133,11 @@ Support.processHomePageMenu = function (menuItem) {
 		}
 		break;
 	case "Live-TV":
-		var url = Server.getCustomURL("/LiveTV/Channels?SortBy=SortName&SortOrder=Ascending&StartIndex=0&fields=SortName&format=json");
-		//GuiDisplayOneItem.start("Live TV", url,0,0);
-		GuiPage_TvChannel.start("Live TV",url,0,0);
-		break;	
-	case "Recordings":
-		var url = Server.getCustomURL("/LiveTV/Recordings?IsInProgress=false&SortBy=SortName&SortOrder=Ascending&StartIndex=0&fields=SortName&format=json");
-		GuiDisplayOneItem.start("Recordings", url,0,0);
+		/*var url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&Limit=100&EnableFavoriteSorting=true&UserId=" + Server.getUserID());
+		GuiPage_TvGuide.start("Guide",url,0,0,0,0);
+		break;*/
+		var url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&EnableFavoriteSorting=true&userId=" + Server.getUserID());
+		GuiDisplay_Series.start("Channels LiveTV",url,0,0);
 		break;	
 	case "Home-Movies":
 		var homeVideosFolderId = Server.getUserViewId("homevideos");
@@ -1426,9 +1443,12 @@ Support.SeriesRun = function(type, prodyear, status, enddate) {
 //Cannot parse the date from the API into a Date Object
 //Substring out relevant areas
 Support.AirDate = function(apiDate, type) {
+	var dateString = "";
 	var year = apiDate.substring(0,4);
 	var month = apiDate.substring(5,7);
 	var day = apiDate.substring(8,10);
+	var hour = apiDate.substring(11,13);
+	var min = apiDate.substring(14,16);
 	
 	var d = new Date(apiDate);
 	var weekday = new Array(7);
@@ -1439,13 +1459,26 @@ Support.AirDate = function(apiDate, type) {
 	weekday[4] = "Thursday";
 	weekday[5] = "Friday";
 	weekday[6] = "Saturday";
-	var dayName = weekday[d.getDay()]; 
+	var dayName = weekday[d.getDay()];
+	
+	var shortWeekday = new Array(7);
+	shortWeekday[0]=  "Sun.";
+	shortWeekday[1] = "Mon.";
+	shortWeekday[2] = "Tues.";
+	shortWeekday[3] = "Wed.";
+	shortWeekday[4] = "Thurs.";
+	shortWeekday[5] = "Fri.";
+	shortWeekday[6] = "Sat.";
+	var shortDayName = shortWeekday[d.getDay()]; 
 
-	if (type != "Episode") {
-		return year;
+	if (type == "Recording"){
+		dateString = dayName + " " + day + '/' + month + '/' + year + " " + hour + ":" + min;
+	} else if (type != "Episode") {
+		dateString = year;
 	} else {
-		return dayName + " " + day + '/' + month + '/' + year;
+		dateString = dayName + " " + day + '/' + month + '/' + year;
 	}
+	return dateString;
 }
 
 Support.FutureDate = function(apiDate) {
@@ -1546,3 +1579,50 @@ Support.getStarRatingImage = function(rating) {
 		break;
 	} 
 }
+
+///Returns the number of minutes since a program started or 0 if it hasn't started yet.
+Support.tvGuideProgramElapsedMins = function(program) {
+	var startDate = new Date(program.StartDate);
+	var now = new Date();
+	var elapsed = (now.getTime() - startDate.getTime()) / 60000;
+	elapsed = ~~elapsed;
+	if (elapsed == 0) {
+		elapsed = 1; //When one program is ending and another starting, the latter is marked as live.
+	} else if (elapsed < 0) {
+		elapsed = 0;
+	}
+	return elapsed;
+}
+
+///Returns the number of minutes of guide space the program should ocupy.
+Support.tvGuideProgramDurationMins = function(program) {
+	var startDate = new Date(program.StartDate);
+	var endDate = new Date(program.EndDate);
+	var duration = (endDate.getTime() - startDate.getTime()) / 60000;
+	duration = ~~duration;
+	if (duration < 0) {
+		duration = 0;
+	}
+	return duration;
+}
+
+///Returns a date object with the minutes reset to the most recent hour or half hour.
+Support.tvGuideStartTime = function(date) {
+	if (date === undefined) {
+		date = new Date();
+	}
+	var mins = 0;
+	if (date.getMinutes() > 29) {
+		mins = 30;
+	}
+	date.setMinutes(mins);
+	return (date);
+}
+
+///Returns the number of minutes between the time shown at the start of the TV guide and now.
+Support.tvGuideOffsetMins = function(date) {
+	var now = new Date();
+	var offset = (now.getTime() - GuiPage_TvGuide.startTime.getTime()) / 60000;
+	return(~~offset);
+}
+
