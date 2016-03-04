@@ -317,7 +317,12 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 				htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style="+imageData+">";
 				//Add overlays.
 				if (Items[index].LocationType == "Virtual"){
-					var imageMissingOrUnaired = (Support.FutureDate(Items[index].PremiereDate) == true) ? "ShowListSingleUnaired" : "ShowListSingleMissing";
+					var imageMissingOrUnaired = "";
+					if (Items[index].AirTime) {
+						imageMissingOrUnaired = (Support.FutureDate(Items[index].PremiereDate,Items[index].AirTime) == true) ? "ShowListSingleUnaired" : "ShowListSingleMissing";
+					} else {
+						imageMissingOrUnaired = (Support.FutureDate(Items[index].PremiereDate) == true) ? "ShowListSingleUnaired" : "ShowListSingleMissing";
+					}
 					htmlToAdd += "<div class='"+imageMissingOrUnaired+"'></div>";
 				}
 				if (Items[index].UserData.Played) {
@@ -1481,15 +1486,33 @@ Support.AirDate = function(apiDate, type) {
 	return dateString;
 }
 
-Support.FutureDate = function(apiDate) {
+Support.FutureDate = function(apiDate,airTime) {
 	var year = apiDate.substring(0,4);
 	var month = apiDate.substring(5,7);
 	var day = apiDate.substring(8,10);
+	var hour = 0;
+	var min = 0;
+	var twelveHr = "AM";
+	if (airTime){
+		if (airTime.length > 7){
+			hour = airTime.substring(0,2);
+			twelveHr = airTime.substring(6,8);
+			min = airTime.substring(3,5);
+		} else {
+			hour = airTime.substring(0,1);
+			twelveHr = airTime.substring(5,7);
+			min = airTime.substring(2,4);
+		}
+	}
 	
-	var airdate = new Date(year,month-1,day); //Month is stored in array starting at index 0!
-	var now = new Date()
+	if (twelveHr == "PM") {
+		hour = parseInt(hour, 10) +12;
+	}
 
-	if (now < airdate){
+	var airdate = new Date(year,month-1,day,hour,min,0); //Month is stored in array starting at index 0!
+	var now = new Date();
+	var secsInFuture = (airdate.getTime() - now.getTime()) / 1000;
+	if (secsInFuture > 0){
 		return true;
 	} else {
 		return false;
