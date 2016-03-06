@@ -17,7 +17,7 @@ var GuiDisplay_Series = {
 		tvBannerItems : ["All","Unwatched","Latest","Upcoming", "Genre", "A-Z"],
 		movieBannerItems : ["All","Unwatched","Latest","Genre", "A-Z"],
 		musicBannerItems : ["Recent","Frequent","Album","Album Artist", "Artist"],
-		liveTvBannerItems : ["Channels","Guide","Recordings"],
+		liveTvBannerItems : ["Guide","Channels","Recordings"],
 		
 		indexSeekPos : -1,
 		indexTimeout : null,

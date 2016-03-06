@@ -1138,12 +1138,16 @@ Support.processHomePageMenu = function (menuItem) {
 		}
 		break;
 	case "Live-TV":
-		/*var url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&Limit=100&EnableFavoriteSorting=true&UserId=" + Server.getUserID());
-		GuiPage_TvGuide.start("Guide",url,0,0,0,0);
-		break;*/
-		var url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&EnableFavoriteSorting=true&userId=" + Server.getUserID());
+		var url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&Limit=100&EnableFavoriteSorting=true&UserId=" + Server.getUserID());
+		var guideTime = new Date();
+		var timeMsec = guideTime.getTime();
+		var startTime = timeMsec - 900000; //rewind the clock fifteen minutes.
+		guideTime.setTime(startTime);
+		GuiPage_TvGuide.start("Guide",url,0,0,0,guideTime);
+		break;
+		/*var url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&EnableFavoriteSorting=true&userId=" + Server.getUserID());
 		GuiDisplay_Series.start("Channels LiveTV",url,0,0);
-		break;	
+		break;*/
 	case "Home-Movies":
 		var homeVideosFolderId = Server.getUserViewId("homevideos");
 		if (homeVideosFolderId != null){

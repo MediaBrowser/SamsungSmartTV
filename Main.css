@@ -1814,7 +1814,7 @@ input[type="password"]
 	width:1800px;
 	height:800px;
 	left:60px;
-	top: 200px;
+	top: 90px;
 	z-index:5;
 }
 
@@ -1936,9 +1936,36 @@ input[type="password"]
 	width:4px;
 	height:104px;
 	left:600px;
-	top: 175px;
+	top:-10px;
 	background-color:rgba(241,44,34,0.6);
 	z-index:5;
+}
+
+.tvGuideProgramDetails {
+	position:absolute;
+	top:880px;
+	left:62px;
+	width:1850px;
+	z-index:5
+}
+
+.tvGuideTitle {
+	position:relative;
+	height:40px;
+	font-size:1.6em;
+}
+
+.tvGuideSubData {
+	padding-top:5px;
+	color:#2ad;
+	font-size:1.2em;
+}
+
+.tvGuideOverview {
+	padding-right:10px;
+	font-size:1.1em;
+	max-height:150px;
+	overflow-y:hidden;
 }
 
 /* --------------------------------------------------------------------------- */
