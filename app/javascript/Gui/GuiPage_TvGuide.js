@@ -154,7 +154,7 @@ GuiPage_TvGuide.updateDisplayedItems = function() {
 				var currentChannelLineWidth = channelLineWidth;
 				channelLineWidth = channelLineWidth + programWidth + 8; //the extra 8 pixels are the CSS border and margin.
 				if (channelLineWidth >= 1450) {
-					programWidth = 1450 - currentChannelLineWidth;
+					programWidth = 1450 - currentChannelLineWidth - 8;
 				}
 				if (programWidth > 10) {
 					var bgColour = "";
@@ -174,8 +174,14 @@ GuiPage_TvGuide.updateDisplayedItems = function() {
 						htmlToAdd += 	"<div id='tvGuideProgramName' class=tvGuideProgramName>" + this.Programs.Items[programIndex].Name + "</div>";
 					}
 					htmlToAdd +=		"<div id='tvGuideProgramTime' class=tvGuideProgramTime>" + this.Programs.Items[programIndex].StartDate.substring(11,16) + " - " + this.Programs.Items[programIndex].EndDate.substring(11,16) + "</div>" +
-										"<div id='tvGuideProgramGenre' class=tvGuideProgramGenre style='" + bgColour + "'></div>" +
-									"</div>";
+										"<div id='tvGuideProgramGenre' class=tvGuideProgramGenre style='" + bgColour + "'></div>";
+					if (this.Programs.Items[programIndex].TimerId){
+						htmlToAdd +=	"<div id='tvGuideProgramScheduled' class=tvGuideProgramScheduled></div>";
+					}
+					if (this.Programs.Items[programIndex].SeriesTimerId){
+						htmlToAdd +=	"<div id='tvGuideSeriesScheduled' class=tvGuideSeriesScheduled></div>";
+					}
+					htmlToAdd +=	"</div>";
 					programsInThisLine.push([this.Channels.Items[index].Id,this.Programs.Items[programIndex].Id]);
 				}
 				if (channelLineWidth >= 1450) {

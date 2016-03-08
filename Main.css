@@ -1971,6 +1971,26 @@ input[type="password"]
 	overflow-y:hidden;
 }
 
+.tvGuideProgramScheduled {
+	position:absolute;
+	bottom:17px;
+	right:5px;
+	width:24px;
+	height:24px;
+	border-radius:12px;
+	background-color:rgba(255,0,0,0.6);
+}
+
+.tvGuideSeriesScheduled {
+	position:absolute;
+	bottom:17px;
+	right:15px;
+	width:24px;
+	height:24px;
+	border-radius:12px;
+	background-color:rgba(255,0,0,0.4);
+}
+
 /* --------------------------------------------------------------------------- */
 
 .guiMusic_Title {
