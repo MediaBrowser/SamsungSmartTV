@@ -253,6 +253,7 @@ GuiPage_TvGuide.updateSelectedItems = function () {
 			}
 		}
 	}
+	//Add program details under the guide.
 	if (this.selectedRow >= 0) {
 		var programmeURL = "";
 		if (this.selectedColumn == -1) {
@@ -260,12 +261,36 @@ GuiPage_TvGuide.updateSelectedItems = function () {
 		} else {
 			programmeURL = Server.getItemInfoURL(this.programGrid[this.selectedRow][this.selectedColumn][1],"");
 		}
-		
-		var ProgrammeData = Server.getContent(programmeURL);
-		document.getElementById("tvGuideTitle").innerHTML = ProgrammeData.ChannelName;
-		document.getElementById("tvGuideSubData").innerHTML = ProgrammeData.Name;
-		document.getElementById("tvGuideOverview").innerHTML = ProgrammeData.Overview;
-		Support.scrollingText("tvGuideOverview");
+		var ProgrammeDetails = Server.getContent(programmeURL);
+		var title = "";
+		var subdata = "";
+		var overview = "";
+		if (this.selectedColumn == -1) {
+			title = this.Channels.Items[this.selectedRow + this.topChannel].Name;
+			subdata = this.Channels.Items[this.selectedRow + this.topChannel].CurrentProgram.Name + ": " +
+			                              this.Channels.Items[this.selectedRow + this.topChannel].CurrentProgram.StartDate.substring(11,16) +
+			                              " - " + this.Channels.Items[this.selectedRow + this.topChannel].CurrentProgram.EndDate.substring(11,16);
+			overview = ProgrammeDetails.Overview;
+		} else {
+			for (var programIndex = 0; programIndex < this.Programs.Items.length; programIndex++) {
+				if (this.Programs.Items[programIndex].Id == this.programGrid[this.selectedRow][this.selectedColumn][1]) {
+					title = this.Channels.Items[this.selectedRow + this.topChannel].Name;
+					subdata = this.Programs.Items[programIndex].Name + ": " +
+												this.Programs.Items[programIndex].StartDate.substring(11,16) +
+					                            " - " + this.Programs.Items[programIndex].EndDate.substring(11,16);
+					if (this.Programs.Items[programIndex].TimerId){
+						subdata +=	"<div id='tvGuideSubDataProgramScheduled' class=tvGuideSubDataProgramScheduled></div>";
+					}
+					if (this.Programs.Items[programIndex].SeriesTimerId){
+						subdata +=	"<div id='tvGuideSubDataSeriesScheduled' class=tvGuideSubDataSeriesScheduled></div>";
+					}
+					overview = ProgrammeDetails.Overview;
+				}
+			}
+		}
+		document.getElementById("tvGuideTitle").innerHTML = title;
+		document.getElementById("tvGuideSubData").innerHTML = subdata;
+		document.getElementById("tvGuideOverview").innerHTML = overview;
 	}
 }
 

@@ -1955,10 +1955,11 @@ input[type="password"]
 .tvGuideTitle {
 	position:relative;
 	height:40px;
-	font-size:1.5em;
+	font-size:1.4em;
 }
 
 .tvGuideSubData {
+	position:relative;
 	padding-top:5px;
 	color:#2ad;
 	font-size:1.2em;
@@ -1987,6 +1988,26 @@ input[type="password"]
 	right:15px;
 	width:24px;
 	height:24px;
+	border-radius:12px;
+	background-color:rgba(255,0,0,0.4);
+}
+
+.tvGuideSubDataProgramScheduled {
+	position:relative;
+	display:inline-block;
+	width:24px;
+	height:24px;
+	margin-left:10px;
+	border-radius:12px;
+	background-color:rgba(255,0,0,0.6);
+}
+
+.tvGuideSubDataSeriesScheduled {
+	position:relative;
+	display:inline-block;
+	width:24px;
+	height:24px;
+	margin-left:-13px;
 	border-radius:12px;
 	background-color:rgba(255,0,0,0.4);
 }
