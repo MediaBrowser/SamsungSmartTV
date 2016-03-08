@@ -281,7 +281,6 @@ GuiPage_TvGuide.keyDown = function() {
 			this.processSelectedItem();
 			break;
 		case tvKey.KEY_PLAY:
-			alert(this.programGrid[this.selectedRow][this.selectedColumn][0]);
 			this.playSelectedItem();
 			break;	
 		case tvKey.KEY_BLUE:	
@@ -393,7 +392,7 @@ GuiPage_TvGuide.processSelectedItem = function () {
 }
 
 GuiPage_TvGuide.playSelectedItem = function () {
-	if (this.selectedRow >= -0) {
+	if (this.selectedRow >= 0) {
 		Support.updateURLHistory("GuiPage_TvGuide",this.startParams[0],this.startParams[1],null,null,this.selectedRow,this.topChannel,null);
 		var url = Server.getItemInfoURL(this.programGrid[this.selectedRow][this.selectedColumn][0],"&ExcludeLocationTypes=Virtual");
 		GuiPlayer.start("PLAY",url,0,page);	

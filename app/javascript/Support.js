@@ -178,6 +178,13 @@ Support.processReturnURLHistory = function() {
 			case "GuiPage_Settings": 	
 				GuiPage_Settings.start();
 				break;	
+			case "GuiPage_TvGuide":
+				var guideTime = new Date();
+				var timeMsec = guideTime.getTime();
+				var startTime = timeMsec - 900000; //rewind the clock fifteen minutes.
+				guideTime.setTime(startTime);
+				GuiPage_TvGuide.start("Guide",url,selectedItem,0,topLeftItem,guideTime);
+				break;
 			default:
 				break;
 		}
