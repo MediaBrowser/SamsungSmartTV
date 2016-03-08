@@ -1877,8 +1877,11 @@ input[type="password"]
     margin-bottom:2px;
     margin-right:2px;
     margin-left:2px;
-	background-color:rgba(48,48,48,0.9);
 	border:2px solid black;
+}
+
+.tvGuideChannelNameBg {
+	background-color:rgba(48,48,48,0.9);
 }
 
 .tvGuideProgram {
