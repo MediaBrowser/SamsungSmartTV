@@ -1944,7 +1944,7 @@ input[type="password"]
 .tvGuideProgramDetails {
 	position:absolute;
 	top:880px;
-	left:62px;
+	left:60px;
 	width:1850px;
 	z-index:5
 }
@@ -1952,7 +1952,7 @@ input[type="password"]
 .tvGuideTitle {
 	position:relative;
 	height:40px;
-	font-size:1.6em;
+	font-size:1.5em;
 }
 
 .tvGuideSubData {
