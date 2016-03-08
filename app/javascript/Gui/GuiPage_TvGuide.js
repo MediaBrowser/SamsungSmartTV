@@ -7,7 +7,7 @@ var GuiPage_TvGuide = {
 		selectedColumn : 0,
 		selectedBannerItem : 0,
 		topChannel : 0,
-		startTime : 0,
+		guideStartTime : 0,
 		
 		bannerItems : ["Guide","Channels","Recordings"],
 		currentView : "Guide",
@@ -28,7 +28,7 @@ GuiPage_TvGuide.start = function(title,url,selectedRow,selectedColumn,topChannel
 	this.selectedColumn = selectedColumn;
 	this.selectedBannerItem = 0;
 	this.topChannel = topChannel;
-	this.startTime = startTime;
+	this.guideStartTime = startTime;
 	document.getElementById("Counter").innerHTML = "";
 	
 	//Create the banner menu and program details.
@@ -64,14 +64,18 @@ GuiPage_TvGuide.start = function(title,url,selectedRow,selectedColumn,topChannel
 		}
 		
 		//Sort Date - %3A is Colon
-		var d = this.startTime;
+		var d = this.guideStartTime;
 		var year = d.getUTCFullYear();
 		var month = d.getUTCMonth()+1;
 		var day = d.getUTCDate();
 		var nextDay = day++;
 		var hour = d.getUTCHours();
 		var min = d.getMinutes();
-		if (min < 10){min = "0"+min;}
+		if (min > 29){
+			min = "30";
+		} else {
+			min = "00";
+		}
 		if (month < 10){month = "0"+month;}
 		if (day < 10){day = "0"+day;}
 		if (nextDay < 10){nextDay = "0"+nextDay;}
@@ -102,7 +106,7 @@ GuiPage_TvGuide.start = function(title,url,selectedRow,selectedColumn,topChannel
 
 GuiPage_TvGuide.updateDisplayedItems = function() {
 	//Create Table
-	var d = Support.tvGuideStartTime(this.startTime);
+	var d = Support.tvGuideStartTime(this.guideStartTime);
 	var hour = d.getUTCHours();
 	var minute = d.getMinutes();
 	var nextHour = hour+1;
@@ -130,32 +134,29 @@ GuiPage_TvGuide.updateDisplayedItems = function() {
 						"<div class='tvGuideHour'>" + finalHour + ":00</div>";
 	}
 	htmlToAdd +=	"</div>";
-							
 	for (var index = 0; index < this.Channels.Items.length; index++) {
 		htmlToAdd += 	"<div id='Row" + this.Channels.Items[index + this.topChannel].Id + "' class=tvGuideChannelLine>" +
 							"<div id='" + this.Channels.Items[index + this.topChannel].Id + "' class='tvGuideChannelName tvGuideChannelNameBg'>" + this.Channels.Items[index].Number + ": " + this.Channels.Items[index].Name + "</div>";
 						
 		var channelLineWidth = 0;
 		var programsInThisLine = [];
+		var live = false;
 		for (var programIndex = 0; programIndex < this.Programs.Items.length; programIndex++) {
 			if (this.Channels.Items[index].Id == this.Programs.Items[programIndex].ChannelId) {
 				//7.9px = 1min (Obviously fractions of a pixels are not possible but we want to avoid compound error. We'll round it later with ~~programWidth.)
 				var programWidth = 0;
-				if (Support.tvGuideProgramElapsedMins(this.Programs.Items[programIndex]) > 0) {
-					programWidth = (Support.tvGuideProgramDurationMins(this.Programs.Items[programIndex]) - Support.tvGuideProgramElapsedMins(this.Programs.Items[programIndex]) + Support.tvGuideOffsetMins()) *7.9;
-				} else {
-					programWidth = (Support.tvGuideProgramDurationMins(this.Programs.Items[programIndex])) *7.9;
+				var programStartDate = new Date(this.Programs.Items[programIndex].StartDate);
+				var hiddenMins = (this.guideStartTime.getTime() - programStartDate.getTime()) / 60000;
+				if (hiddenMins < 0) { 
+					hiddenMins = 0; 
 				}
+				programWidth = (Support.tvGuideProgramDurationMins(this.Programs.Items[programIndex]) - hiddenMins) *7.9;
 				var currentChannelLineWidth = channelLineWidth;
 				channelLineWidth = channelLineWidth + programWidth + 8; //the extra 8 pixels are the CSS border and margin.
 				if (channelLineWidth >= 1450) {
 					programWidth = 1450 - currentChannelLineWidth;
-					if (programWidth < 10) {
-						break;
-					}
 				}
-				programsInThisLine.push([this.Channels.Items[index].Id,this.Programs.Items[programIndex].Id]);
-				if (programWidth > 0) {
+				if (programWidth > 10) {
 					var bgColour = "";
 					if (this.Programs.Items[programIndex].IsNews) {
 						bgColour = "background-color:rgba(82,51,120,1);";
@@ -166,14 +167,16 @@ GuiPage_TvGuide.updateDisplayedItems = function() {
 					}
 					htmlToAdd += 	"<div id='" + this.Programs.Items[programIndex].Id + "' class='tvGuideProgram tvGuideProgramBg' style='width:" + ~~programWidth + "px'>";
 					
-					if (Support.tvGuideProgramElapsedMins(this.Programs.Items[programIndex]) > 0 && Support.tvGuideProgramElapsedMins(this.Programs.Items[programIndex]) < Support.tvGuideProgramDurationMins(this.Programs.Items[programIndex])) {
+					if (live == false && Support.tvGuideProgramElapsedMins(this.Programs.Items[programIndex]) > 0 && Support.tvGuideProgramElapsedMins(this.Programs.Items[programIndex]) < Support.tvGuideProgramDurationMins(this.Programs.Items[programIndex])) {
 						htmlToAdd += 	"<div id='tvGuideProgramName' class=tvGuideProgramName><font color=red>Live: </font>" + this.Programs.Items[programIndex].Name + "</div>";
+						live = true;
 					} else {
 						htmlToAdd += 	"<div id='tvGuideProgramName' class=tvGuideProgramName>" + this.Programs.Items[programIndex].Name + "</div>";
 					}
 					htmlToAdd +=		"<div id='tvGuideProgramTime' class=tvGuideProgramTime>" + this.Programs.Items[programIndex].StartDate.substring(11,16) + " - " + this.Programs.Items[programIndex].EndDate.substring(11,16) + "</div>" +
 										"<div id='tvGuideProgramGenre' class=tvGuideProgramGenre style='" + bgColour + "'></div>" +
 									"</div>";
+					programsInThisLine.push([this.Channels.Items[index].Id,this.Programs.Items[programIndex].Id]);
 				}
 				if (channelLineWidth >= 1450) {
 					break;
@@ -355,14 +358,14 @@ GuiPage_TvGuide.processLeftKey = function() {
 		this.updateSelectedItems();
 	} else if (this.selectedColumn == -1) {
 		//Open the main menu.
-	} else if (nowTime.getTime() - this.startTime.getTime()  > 900000){
+	} else if (nowTime.getTime() - this.guideStartTime.getTime()  > 300000){
 		//Move to the channel names column.
 		this.selectedColumn = -1;
 		this.updateSelectedItems();
 	} else {
 		//Refocus the guide time.
 		var guideTime = new Date();
-		guideTime.setTime(this.startTime.getTime() - 9000000); //move the clock back 2.5 hours.
+		guideTime.setTime(this.guideStartTime.getTime() - 9000000); //move the clock back 2.5 hours.
 		GuiPage_TvGuide.start("Guide",this.startParams[1],this.selectedRow,0,0,guideTime);
 	}
 }
@@ -379,8 +382,8 @@ GuiPage_TvGuide.processRightKey = function() {
 		this.updateSelectedItems();
 	} else {
 		var guideTime = new Date();
-		guideTime.setTime(this.startTime.getTime() + 9000000); //move the clock forward 2.5 hours.
-		//this.startTime = guideTime;
+		guideTime.setTime(this.guideStartTime.getTime() + 9000000); //move the clock forward 2.5 hours.
+		//this.guideStartTime = guideTime;
 		//this.updateDisplayedItems();
 		//this.updateSelectedItems();
 		GuiPage_TvGuide.start("Guide",this.startParams[1],this.selectedRow,0,0,guideTime);
@@ -422,7 +425,7 @@ GuiPage_TvGuide.processSelectedItem = function () {
 			var url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&Limit=100&EnableFavoriteSorting=true&UserId=" + Server.getUserID());
 			var guideTime = new Date();
 			var timeMsec = guideTime.getTime();
-			var startTime = timeMsec - 900000; //rewind the clock fifteen minutes.
+			var startTime = timeMsec - 300000; //rewind the clock five minutes.
 			guideTime.setTime(startTime);
 			GuiPage_TvGuide.start("Guide",url,0,0,0,guideTime);
 			break;

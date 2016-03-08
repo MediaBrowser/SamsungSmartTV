@@ -1148,7 +1148,7 @@ Support.processHomePageMenu = function (menuItem) {
 		var url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&Limit=100&EnableFavoriteSorting=true&UserId=" + Server.getUserID());
 		var guideTime = new Date();
 		var timeMsec = guideTime.getTime();
-		var startTime = timeMsec - 900000; //rewind the clock fifteen minutes.
+		var startTime = timeMsec - 300000; //rewind the clock five minutes.
 		guideTime.setTime(startTime);
 		GuiPage_TvGuide.start("Guide",url,0,0,0,guideTime);
 		break;
@@ -1656,7 +1656,7 @@ Support.tvGuideStartTime = function(date) {
 ///Returns the number of minutes between the time shown at the start of the TV guide and now.
 Support.tvGuideOffsetMins = function(date) {
 	var now = new Date();
-	var offset = (now.getTime() - GuiPage_TvGuide.startTime.getTime()) / 60000;
+	var offset = (now.getTime() - GuiPage_TvGuide.guideStartTime.getTime()) / 60000;
 	return(~~offset);
 }
 
