@@ -1488,7 +1488,7 @@ Support.AirDate = function(apiDate, type) {
 	var shortDayName = shortWeekday[d.getDay()]; 
 
 	if (type == "Recording"){
-		dateString = dayName + " " + day + '/' + month + '/' + year + " " + hour + ":" + min;
+		dateString = day + '/' + month + '/' + year + " " + hour + ":" + min;
 	} else if (type != "Episode") {
 		dateString = year;
 	} else {

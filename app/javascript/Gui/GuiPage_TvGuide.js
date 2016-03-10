@@ -42,11 +42,7 @@ GuiPage_TvGuide.start = function(title,url,selectedRow,selectedColumn,topChannel
 	
 	//Populate the banner menu.
 	for (var index = 0; index < this.bannerItems.length; index++) {
-		if (index != this.bannerItems.length-1) {
-			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding'>"+this.bannerItems[index].replace(/-/g, ' ').toUpperCase()+"</div>";			
-		} else {
-			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem'>"+this.bannerItems[index].replace(/-/g, ' ').toUpperCase()+"</div>";					
-		}
+		document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "'>"+this.bannerItems[index].replace(/-/g, ' ').toUpperCase()+"</div>";
 	}
 	
 	//Load Data
@@ -86,22 +82,19 @@ GuiPage_TvGuide.start = function(title,url,selectedRow,selectedColumn,topChannel
 
 		var programsURL = Server.getServerAddr() + "/LiveTv/Programs?UserId=" + Server.getUserID() + "&MaxStartDate="+maxStartDate+"&MinEndDate="+minEndDate+"&channelIds=" + channelIDs + "&ImageTypeLimit=1&EnableImages=false&SortBy=StartDate";
 		this.Programs = Server.getContent(programsURL);
-			
+	}
+	if (this.Programs.Items.length > 0) {
 		this.updateDisplayedItems();
 		this.updateSelectedItems();	
 			
-		//Set Focus for Key Events
-		document.getElementById("GuiPage_TvGuide").focus();
 	} else {
-		//Set message to user
-		document.getElementById("Counter").innerHTML = "";
-		document.getElementById("title").innerHTML = "Sorry";
-		document.getElementById("pageContent").className = "padding60";
-		document.getElementById("Content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid";
-		
-		//As no content focus on menu bar and null null means user can't return off the menu bar
-		GuiMainMenu.requested(null,null);
-	}	
+		document.getElementById("tvGuideTitle").innerHTML = "Sorry";
+		document.getElementById("tvGuideSubData").innerHTML = "It looks like there is no guide data right now I'm afraid.";
+		this.selectedRow = -1;
+		this.updateSelectedItems();	
+	}
+	//Set Focus for Key Events
+	document.getElementById("GuiPage_TvGuide").focus();
 }
 
 GuiPage_TvGuide.updateDisplayedItems = function() {
@@ -374,13 +367,24 @@ GuiPage_TvGuide.keyDown = function() {
 	}
 }
 
+GuiPage_TvGuide.openMenu = function() {
+	if (this.selectedRow == -1) { //Banner menu
+		document.getElementById("bannerItem0").className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding blue";
+		GuiMainMenu.requested("GuiPage_TvGuide","bannerItem0","guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding BannerSelected");
+	} else { //Channel column
+		document.getElementById(this.Channels.Items[this.selectedRow + this.topChannel].Id).className = "tvGuideChannelName tvGuideChannelNameBg";
+		GuiMainMenu.requested("GuiPage_TvGuide",this.Channels.Items[this.selectedRow + this.topChannel].Id,"tvGuideChannelName buttonSelected");
+	}
+}
+
 GuiPage_TvGuide.processLeftKey = function() {
 	var nowTime = new Date();
 	if (this.selectedRow < 0) {
 		//Move left along the banner menu.
 		this.selectedBannerItem--;
 		if (this.selectedBannerItem == -1){
-			this.selectedBannerItem++;
+			this.selectedBannerItem = 0;
+			this.openMenu();
 		}
 		this.updateSelectedItems();
 	} else if (this.selectedColumn > 0) {
@@ -389,6 +393,7 @@ GuiPage_TvGuide.processLeftKey = function() {
 		this.updateSelectedItems();
 	} else if (this.selectedColumn == -1) {
 		//Open the main menu.
+		this.openMenu();
 	} else if (nowTime.getTime() - this.guideStartTime.getTime()  > 300000){
 		//Move to the channel names column.
 		this.selectedColumn = -1;
@@ -465,7 +470,7 @@ GuiPage_TvGuide.processSelectedItem = function () {
 			GuiDisplay_Series.start("Channels LiveTV",url,0,0);
 			break;
 		case "Recordings":
-			var url = Server.getCustomURL("/LiveTV/Recordings?IsInProgress=false&SortBy=StartDate&SortOrder=Descending&StartIndex=0&fields=SortName&UserId=" + Server.getUserID());
+			var url = Server.getCustomURL("/LiveTV/Recordings?SortBy=StartDate&SortOrder=Descending&StartIndex=0&fields=SortName&UserId=" + Server.getUserID());
 			GuiDisplay_Series.start("Recordings LiveTV",url,0,0);
 			break;
 		}
