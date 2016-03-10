@@ -19,11 +19,13 @@ GuiPage_TvGuide.onFocus = function() {
 }
 
 GuiPage_TvGuide.start = function(title,url,selectedRow,selectedColumn,topChannel,startTime) {	
-	this.programGrid = [];
 	//Save Start Params	
 	this.startParams = [title,url];
 	
 	//Reset Values
+	this.Programs = null;
+	this.Channels = null;
+	this.programGrid = [];
 	this.selectedRow = selectedRow;
 	this.selectedColumn = selectedColumn;
 	this.selectedBannerItem = 0;
@@ -129,13 +131,12 @@ GuiPage_TvGuide.updateDisplayedItems = function() {
 	htmlToAdd +=	"</div>";
 	for (var index = 0; index < this.Channels.Items.length; index++) {
 		htmlToAdd += 	"<div id='Row" + this.Channels.Items[index + this.topChannel].Id + "' class=tvGuideChannelLine>" +
-							"<div id='" + this.Channels.Items[index + this.topChannel].Id + "' class='tvGuideChannelName tvGuideChannelNameBg'>" + this.Channels.Items[index].Number + ": " + this.Channels.Items[index].Name + "</div>";
-						
+							"<div id='" + this.Channels.Items[index + this.topChannel].Id + "' class='tvGuideChannelName tvGuideChannelNameBg'>" + this.Channels.Items[index + this.topChannel].Number + ": " + this.Channels.Items[index + this.topChannel].Name + "</div>";			
 		var channelLineWidth = 0;
 		var programsInThisLine = [];
 		var live = false;
 		for (var programIndex = 0; programIndex < this.Programs.Items.length; programIndex++) {
-			if (this.Channels.Items[index].Id == this.Programs.Items[programIndex].ChannelId) {
+			if (this.Channels.Items[index + this.topChannel].Id == this.Programs.Items[programIndex].ChannelId) {
 				//7.9px = 1min (Obviously fractions of a pixels are not possible but we want to avoid compound error. We'll round it later with ~~programWidth.)
 				var programWidth = 0;
 				var programStartDate = new Date(this.Programs.Items[programIndex].StartDate);
@@ -175,15 +176,15 @@ GuiPage_TvGuide.updateDisplayedItems = function() {
 						htmlToAdd +=	"<div id='tvGuideSeriesScheduled' class=tvGuideSeriesScheduled></div>";
 					}
 					htmlToAdd +=	"</div>";
-					programsInThisLine.push([this.Channels.Items[index].Id,this.Programs.Items[programIndex].Id]);
+					programsInThisLine.push([this.Channels.Items[index + this.topChannel].Id,this.Programs.Items[programIndex].Id]);
 				}
 				if (channelLineWidth >= 1450) {
 					break;
 				}
 			}
 		}
-		this.programGrid[index] = programsInThisLine;
 		htmlToAdd += "</div>";
+		this.programGrid[index] = programsInThisLine;
 		if (this.programGrid.length == 7){
 			break;
 		}
@@ -191,7 +192,6 @@ GuiPage_TvGuide.updateDisplayedItems = function() {
 	var timeLineHeight = 80 + (this.programGrid.length * 104);
 	var timeLinePos = 355 + (Support.tvGuideOffsetMins() * 7.9);
 	htmlToAdd += "<div id='tvGuideCurrentTime' class='tvGuideCurrentTime' style='height:" + timeLineHeight + "px;left:" + timeLinePos + "px;'>";
-	
 	document.getElementById("tvGuide").innerHTML = htmlToAdd;
 }
 
@@ -433,8 +433,13 @@ GuiPage_TvGuide.processUpKey = function() {
 		}
 		this.selectedRow--;
 		this.updateSelectedItems();
-	} else if (this.topChannel > 0) { //Scroll up a row.
-		
+	} else if (this.topChannel > 0) { //Scroll up a page.
+		var newTopChannel = this.topChannel - 6;
+		if (this.selectedColumn == -1) {
+			GuiPage_TvGuide.start("Guide",this.startParams[1],6,-1,newTopChannel,this.guideStartTime);
+		} else {
+			GuiPage_TvGuide.start("Guide",this.startParams[1],6,0,newTopChannel,this.guideStartTime);
+		}
 	} else { //Move up to the banner menu.
 		this.selectedRow--;
 		if (this.selectedRow < -1) {
@@ -445,12 +450,19 @@ GuiPage_TvGuide.processUpKey = function() {
 }
 
 GuiPage_TvGuide.processDownKey = function() {
-	if (this.selectedRow < this.programGrid.length-1) {
+	if (this.selectedRow < this.programGrid.length-1) { //Move down a row.
 		while (this.selectedColumn > this.programGrid[this.selectedRow+1].length-1) {
 			this.selectedColumn--;
 		}
 		this.selectedRow++;
 		this.updateSelectedItems();
+	} else if (this.Channels.Items.length > this.topChannel + 7) { //Scroll down a page.
+		var newTopChannel = this.topChannel + 6;
+		if (this.selectedColumn == -1) {
+			GuiPage_TvGuide.start("Guide",this.startParams[1],0,-1,newTopChannel,this.guideStartTime);
+		} else {
+			GuiPage_TvGuide.start("Guide",this.startParams[1],0,0,newTopChannel,this.guideStartTime);
+		}
 	}
 }
 
