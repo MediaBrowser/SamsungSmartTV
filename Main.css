@@ -29,6 +29,39 @@ input[type="password"]
     font-size: 1em;
 }
 
+.loading{
+    position:absolute;
+    top:440px;
+    left:860px;
+    height:200px;
+    width:200px;
+    background-repeat: no-repeat;
+    background-position:center;
+    background-size:contain;
+    background-image: url('images/loading.png');
+    -webkit-animation-name: spin;
+    -webkit-animation-duration: 2000ms;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    animation-name: spin;
+    animation-duration: 2000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    z-index:15;
+}
+@-webkit-keyframes spin {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
+}
+
 .splash{ 
 	position: fixed;
 	top: 0px;

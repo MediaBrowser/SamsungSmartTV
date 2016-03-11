@@ -40,6 +40,13 @@ Support.clock = function() {
     this.clockVar = setTimeout(function(){Support.clock();},900);
 }
 
+Support.loading = function(mSecs) {
+	document.getElementById("loading").style.visibility = "";
+	setTimeout(function(){
+		document.getElementById("loading").style.visibility = "hidden";
+	}, mSecs);
+}
+
 Support.logout = function() {
 
 	//Turn off screensaver

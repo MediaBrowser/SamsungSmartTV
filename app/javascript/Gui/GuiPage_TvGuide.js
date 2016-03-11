@@ -1,3 +1,14 @@
+//The currently visible TV guide is held in a multidimensional array called programGrid.
+//programGrid gets refilled each time the TV guides moves either to an earlier or later time or up or down the list of channels.
+//Each row is an array of programs. Each program is an array containing the channel ID and the program ID.
+//Therefore this.programGrid[this.selectedRow][this.selectedColumn][1] is the ID of the currently selected program.
+//Some other examples might be..
+//this.programGrid[this.selectedRow][this.selectedColumn][0] = the ID of this channel.
+//this.programGrid[this.selectedRow][this.selectedColumn+1][1] = the ID of the program on next.
+//this.programGrid[this.selectedRow+1][this.selectedColumn][1] = the ID of the current program on the next channel.
+//Once you've got your ID you can go look for it in this.Channels or this.Programs to find out more.
+//Row -1 is the banner menu. Column -1 is the channel name list.
+
 var GuiPage_TvGuide = {
 		Programs : null,
 		Channels : null,
@@ -158,6 +169,8 @@ GuiPage_TvGuide.updateDisplayedItems = function() {
 						bgColour = "background-color:rgba(10,124,51,1);";
 					} else if (this.Programs.Items[programIndex].IsKids) {
 						bgColour = "background-color:rgba(11,72,125,1);";
+					} else if (this.Programs.Items[programIndex].IsMovie) {
+						bgColour = "background-color:rgba(164,57,19,1);";
 					}
 					htmlToAdd += 	"<div id='" + this.Programs.Items[programIndex].Id + "' class='tvGuideProgram tvGuideProgramBg' style='width:" + ~~programWidth + "px'>";
 					
@@ -265,20 +278,17 @@ GuiPage_TvGuide.updateSelectedItems = function () {
 			                              " - " + this.Channels.Items[this.selectedRow + this.topChannel].CurrentProgram.EndDate.substring(11,16);
 			overview = ProgrammeDetails.Overview;
 		} else {
-			for (var programIndex = 0; programIndex < this.Programs.Items.length; programIndex++) {
-				if (this.Programs.Items[programIndex].Id == this.programGrid[this.selectedRow][this.selectedColumn][1]) {
-					title = this.Channels.Items[this.selectedRow + this.topChannel].Name;
-					subdata = this.Programs.Items[programIndex].Name + ": " +
-												this.Programs.Items[programIndex].StartDate.substring(11,16) +
-					                            " - " + this.Programs.Items[programIndex].EndDate.substring(11,16);
-					if (this.Programs.Items[programIndex].TimerId){
-						subdata +=	"<div id='tvGuideSubDataProgramScheduled' class=tvGuideSubDataProgramScheduled></div>";
-					}
-					if (this.Programs.Items[programIndex].SeriesTimerId){
-						subdata +=	"<div id='tvGuideSubDataSeriesScheduled' class=tvGuideSubDataSeriesScheduled></div>";
-					}
-					overview = ProgrammeDetails.Overview;
+			var program = this.getProgramFromId(this.programGrid[this.selectedRow][this.selectedColumn][1]);
+			if (program) {
+				title = this.Channels.Items[this.selectedRow + this.topChannel].Name;
+				subdata = program.Name + ": " + program.StartDate.substring(11,16) + " - " + program.EndDate.substring(11,16);
+				if (program.TimerId){
+					subdata +=	"<div id='tvGuideSubDataProgramScheduled' class=tvGuideSubDataProgramScheduled></div>";
 				}
+				if (program.SeriesTimerId){
+					subdata +=	"<div id='tvGuideSubDataSeriesScheduled' class=tvGuideSubDataSeriesScheduled></div>";
+				}
+				overview = ProgrammeDetails.Overview;
 			}
 		}
 		document.getElementById("tvGuideTitle").innerHTML = title;
@@ -286,6 +296,16 @@ GuiPage_TvGuide.updateSelectedItems = function () {
 		document.getElementById("tvGuideOverview").innerHTML = overview;
 	}
 }
+
+GuiPage_TvGuide.getProgramFromId = function(programId){
+	var program = null;
+	for (var programIndex = 0; programIndex < this.Programs.Items.length; programIndex++) {
+		if (this.Programs.Items[programIndex].Id == programId) {
+			program = this.Programs.Items[programIndex];
+		}
+	}
+	return program;
+} 
 
 GuiPage_TvGuide.keyDown = function() {
 	var keyCode = event.keyCode;
@@ -315,7 +335,6 @@ GuiPage_TvGuide.keyDown = function() {
 	}
 	
 	switch(keyCode) {
-		//Need Logout Key
 		case tvKey.KEY_LEFT:
 			alert("LEFT");	
 			this.processLeftKey();
@@ -351,6 +370,10 @@ GuiPage_TvGuide.keyDown = function() {
 			break;
 		case tvKey.KEY_PLAY:
 			this.playCurrentChannel();
+			break;
+		case 192:
+			alert("RECORD");
+			this.processRecord();
 			break;	
 		case tvKey.KEY_BLUE:	
 			Support.logout();
@@ -465,6 +488,53 @@ GuiPage_TvGuide.processDownKey = function() {
 		}
 	}
 }
+
+GuiPage_TvGuide.processRecord = function () {
+	if (this.selectedRow >= 0 && this.selectedColumn >= 0) {
+		var programId = this.programGrid[this.selectedRow][this.selectedColumn][1];
+		var program = this.getProgramFromId(programId);
+		if (!program.TimerId){
+			timer = this.getNewLiveTvTimerDefaults(programId);
+			this.createLiveTvTimer(timer);
+		} else if (!program.SeriesTimerId){
+			//this
+		}
+	}
+}
+
+GuiPage_TvGuide.getTimers = function() {
+    var url = Server.getServerAddr() + "/LiveTv/Timers";
+    return Server.getContent(url);
+};
+
+GuiPage_TvGuide.getNewLiveTvTimerDefaults = function (options) {
+	
+    options = options || {};
+    
+    var url = Server.getServerAddr() + "/LiveTv/Timers/Defaults?programId=" + options;
+    
+    return Server.getContent(url);
+};
+
+GuiPage_TvGuide.createLiveTvTimer = function (item) {
+	
+    if (!item) {
+        return;
+    }
+    
+    var url = Server.getServerAddr() + "/LiveTv/Timers";
+    
+    Server.POST(url, item);
+    Support.loading(4000);
+    document.getElementById("NoItems").focus();
+    setTimeout(function(){
+    	var timers = GuiPage_TvGuide.getTimers();
+    }, 3000);
+    setTimeout(function(){
+    	GuiPage_TvGuide.start("Guide",GuiPage_TvGuide.startParams[1],GuiPage_TvGuide.selectedRow,GuiPage_TvGuide.selectedColumn,GuiPage_TvGuide.topChannel,GuiPage_TvGuide.guideStartTime);
+	}, 4000);
+}
+
 
 GuiPage_TvGuide.processSelectedItem = function () {
 	if (this.selectedRow == -1) {

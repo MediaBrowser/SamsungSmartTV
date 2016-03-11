@@ -443,6 +443,19 @@ Server.removeFromPlaylist = function(playlistId, ids) {
 		xmlHttp.send(null);
 	}
 }
+
+Server.POST = function(url, item) {
+	xmlHttp = new XMLHttpRequest();
+	if (xmlHttp) {
+		xmlHttp.open("POST", url , true); //must be true!
+		xmlHttp = this.setRequestHeaders(xmlHttp);
+		if (item){
+			xmlHttp.send(JSON.stringify(item));
+		} else {
+			xmlHttp.send(null);
+		}
+	}
+}
 //------------------------------------------------------------
 //      GuiIP Functions
 //------------------------------------------------------------
