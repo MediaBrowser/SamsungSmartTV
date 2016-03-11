@@ -84,9 +84,11 @@ GuiMainMenu.requested = function(pageSelected, selectedDivId, selectedDivClass) 
 		} else {
 			this.selectedDivClass = selectedDivClass;
 		}
+		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("GuiPage_Setting_Changing arrowUpDown","");
 		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("EpisodeListSelected","");
 		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("BannerSelected","");
 		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("seriesSelected","");
+		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("buttonSelected","");
 		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("Selected","");
 	}
 		

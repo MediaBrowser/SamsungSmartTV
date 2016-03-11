@@ -456,6 +456,19 @@ Server.POST = function(url, item) {
 		}
 	}
 }
+
+Server.DELETE = function(url, item) {
+	xmlHttp = new XMLHttpRequest();
+	if (xmlHttp) {
+		xmlHttp.open("DELETE", url , true); //must be true!
+		xmlHttp = this.setRequestHeaders(xmlHttp);
+		if (item){
+			xmlHttp.send(JSON.stringify(item));
+		} else {
+			xmlHttp.send(null);
+		}
+	}
+}
 //------------------------------------------------------------
 //      GuiIP Functions
 //------------------------------------------------------------

@@ -26,7 +26,7 @@ var GuiPage_TvGuide = {
 }
 
 GuiPage_TvGuide.onFocus = function() {
-	GuiHelper.setControlButtons(null,null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
+	GuiHelper.setControlButtons("Record  ",null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
 }
 
 GuiPage_TvGuide.start = function(title,url,selectedRow,selectedColumn,topChannel,startTime) {	
@@ -371,12 +371,23 @@ GuiPage_TvGuide.keyDown = function() {
 		case tvKey.KEY_PLAY:
 			this.playCurrentChannel();
 			break;
-		case 192:
+		case tvKey.KEY_RED:
 			alert("RECORD");
 			this.processRecord();
 			break;	
-		case tvKey.KEY_BLUE:	
-			Support.logout();
+		case tvKey.KEY_BLUE:
+			//Focus the music player
+			if (this.selectedRow == -1) {		
+				if (this.selectedBannerItem == this.bannerItems.length-1) {
+					GuiMusicPlayer.showMusicPlayer("GuiPage_TvGuide","bannerItem"+this.selectedBannerItem,"guiDisplay_Series-BannerItem BannerSelected");
+				} else {
+					GuiMusicPlayer.showMusicPlayer("GuiPage_TvGuide","bannerItem"+this.selectedBannerItem,"guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding BannerSelected");
+				}
+			} else if (this.selectedColumn == -1) {
+				GuiMusicPlayer.showMusicPlayer("GuiPage_TvGuide",this.Channels.Items[this.selectedRow + this.topChannel].Id,"tvGuideChannelName buttonSelected");
+			} else {
+				GuiMusicPlayer.showMusicPlayer("GuiPage_TvGuide",this.programGrid[this.selectedRow][this.selectedColumn][1],"tvGuideProgram buttonSelected");
+			}
 			break;		
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
@@ -493,11 +504,21 @@ GuiPage_TvGuide.processRecord = function () {
 	if (this.selectedRow >= 0 && this.selectedColumn >= 0) {
 		var programId = this.programGrid[this.selectedRow][this.selectedColumn][1];
 		var program = this.getProgramFromId(programId);
+		var timer = this.getNewLiveTvTimerDefaults(programId);
 		if (!program.TimerId){
-			timer = this.getNewLiveTvTimerDefaults(programId);
 			this.createLiveTvTimer(timer);
-		} else if (!program.SeriesTimerId){
-			//this
+		} else if (program.IsSeries && !program.SeriesTimerId){
+			if (program.TimerId){
+				this.cancelLiveTvTimer(program.TimerId);
+			}
+			this.createLiveTvSeriesTimer(timer);
+		} else {
+			if (program.SeriesTimerId){
+				this.cancelLiveTvSeriesTimer(program.SeriesTimerId);
+			}
+			if (program.TimerId){
+				this.cancelLiveTvTimer(program.TimerId);
+			}
 		}
 	}
 }
@@ -525,14 +546,59 @@ GuiPage_TvGuide.createLiveTvTimer = function (item) {
     var url = Server.getServerAddr() + "/LiveTv/Timers";
     
     Server.POST(url, item);
-    Support.loading(4000);
+    Support.loading(10000);
     document.getElementById("NoItems").focus();
     setTimeout(function(){
-    	var timers = GuiPage_TvGuide.getTimers();
-    }, 3000);
+    	GuiPage_TvGuide.start("Guide",GuiPage_TvGuide.startParams[1],GuiPage_TvGuide.selectedRow,GuiPage_TvGuide.selectedColumn,GuiPage_TvGuide.topChannel,GuiPage_TvGuide.guideStartTime);
+	}, 10000);
+}
+
+GuiPage_TvGuide.createLiveTvSeriesTimer = function (item) {
+	
+    if (!item) {
+        return;
+    }
+    
+    var url = Server.getServerAddr() + "/LiveTv/SeriesTimers";
+    
+    Server.POST(url, item);
+    Support.loading(10000);
+    document.getElementById("NoItems").focus();
     setTimeout(function(){
     	GuiPage_TvGuide.start("Guide",GuiPage_TvGuide.startParams[1],GuiPage_TvGuide.selectedRow,GuiPage_TvGuide.selectedColumn,GuiPage_TvGuide.topChannel,GuiPage_TvGuide.guideStartTime);
-	}, 4000);
+	}, 10000);
+}
+
+GuiPage_TvGuide.cancelLiveTvSeriesTimer = function (id) {
+	
+    if (!id) {
+        return;
+    }
+    
+    var url = Server.getServerAddr() + "/LiveTv/SeriesTimers/" + id;
+    
+    Server.DELETE(url);
+    Support.loading(10000);
+    document.getElementById("NoItems").focus();
+    setTimeout(function(){
+    	GuiPage_TvGuide.start("Guide",GuiPage_TvGuide.startParams[1],GuiPage_TvGuide.selectedRow,GuiPage_TvGuide.selectedColumn,GuiPage_TvGuide.topChannel,GuiPage_TvGuide.guideStartTime);
+	}, 10000);
+}
+
+GuiPage_TvGuide.cancelLiveTvTimer = function (id) {
+	
+    if (!id) {
+        return;
+    }
+    
+    var url = Server.getServerAddr() + "/LiveTv/Timers/" + id;
+    
+    Server.DELETE(url);
+    Support.loading(10000);
+    document.getElementById("NoItems").focus();
+    setTimeout(function(){
+    	GuiPage_TvGuide.start("Guide",GuiPage_TvGuide.startParams[1],GuiPage_TvGuide.selectedRow,GuiPage_TvGuide.selectedColumn,GuiPage_TvGuide.topChannel,GuiPage_TvGuide.guideStartTime);
+	}, 10000);
 }
 
 

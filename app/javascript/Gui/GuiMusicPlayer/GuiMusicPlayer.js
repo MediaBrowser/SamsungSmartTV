@@ -63,6 +63,7 @@ GuiMusicPlayer.showMusicPlayer = function(playedFromPage,selectedDivId,selectedD
 			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("EpisodeListSelected","");
 			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("BannerSelected","");
 			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("seriesSelected","");
+			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("buttonSelected","");
 			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("Selected","");
 		}
 		
