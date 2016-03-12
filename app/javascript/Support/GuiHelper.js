@@ -7,7 +7,6 @@ var GuiHelper = {
 //------------------------------------------------------------------------------------------------
 GuiHelper.toggleHelp = function(helpPage) {
 	this.helpPage = helpPage;
-	alert ("Selected page: " + helpPage + "  -  Set page: " + this.helpPage);
 	if (document.getElementById("GuiImagePlayer_ScreensaverOverlay").style.visibility == ""){
 		document.getElementById("GuiImagePlayer_ScreensaverOverlay").style.visibility = "hidden";
 	}

@@ -24,11 +24,9 @@ GuiPage_CastMember.start = function(title,url,selectedItem,topLeftItem) {
 	this.topLeftItem = topLeftItem;
 	
 	//Load Data
-	alert (url);
 	this.CastData = Server.getContent(url);
 	if (this.CastData == null) { return; }
 	var Itemurl = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&Recursive=true&Limit=100&ExcludeLocationTypes=Virtual&fields=ParentId&Person=" + this.CastData.Name.replace(/ /g, '+'));
-	alert (Itemurl);
 	this.ItemData = Server.getContent(Itemurl);
 	if (this.ItemData == null) { return; }
 	

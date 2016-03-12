@@ -15,7 +15,6 @@ var GuiPlayer_TranscodeParams = {
 
 
 GuiPlayer_TranscodeParams.getParameters = function(codec,videoWidth) {
-	alert("videoWidth "+videoWidth);
 	switch (Main.getModelYear()) {
         case "H":
     		switch (codec) {

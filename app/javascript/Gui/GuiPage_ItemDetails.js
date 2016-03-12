@@ -1154,7 +1154,6 @@ GuiPage_ItemDetails.getMediaInfo = function() {
 	//this.ItemData.MediaSources[0].Name is in the format 3D/Resolution/videoCodec/audioCodec. 3D/ is omitted for 2D.
 	var container = this.ItemData.MediaSources[0].Container;
 	var res = this.ItemData.MediaSources[0].Name.split("/");
-	alert("Name: "+this.ItemData.MediaSources[0].Name);
 	var videoCodec = null; var videoRatio = null; var audioCodec = null; var audioChannels = null;
 	
 	var MEDIASTREAMS = this.ItemData.MediaSources[0].MediaStreams;
@@ -1186,7 +1185,6 @@ GuiPage_ItemDetails.getMediaInfo = function() {
 
 GuiPage_ItemDetails.processMediaInfo = function(itemsArray) {
 	var htmlToAdd = "";
-	alert("itemsArray.length: "+itemsArray.length);
 	for (var index = 0; index < itemsArray.length; index++) {
 		switch (itemsArray[index]) {
 		//Container
