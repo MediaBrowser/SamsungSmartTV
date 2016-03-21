@@ -1906,10 +1906,14 @@ input[type="password"]
 	text-align:left;
 	height:90px;
 	width:346px;
+	line-height:90px;
     margin-top:2px;
     margin-bottom:2px;
     margin-right:2px;
     margin-left:2px;
+    background-repeat:no-repeat;
+    background-position:right;
+    background-size:contain;
 	border:2px solid black;
 }
 
@@ -1980,28 +1984,39 @@ input[type="password"]
 .tvGuideProgramDetails {
 	position:absolute;
 	top:880px;
-	left:60px;
-	width:1850px;
+	left:360px;
+	width:1650px;
 	z-index:5
 }
 
-.tvGuideTitle {
-	position:relative;
-	height:40px;
-	font-size:1.4em;
+.tvGuideProgramImage {
+	position:absolute;
+	top:880px;
+	left:60px;
+	height:170px;
+	width:300px;
+	background-repeat:no-repeat;
+    background-position:right;
+    background-size:contain;
+	z-index:5
 }
 
 .tvGuideSubData {
 	position:relative;
+	padding-left:10px;
 	padding-top:5px;
-	color:#2ad;
-	font-size:1.2em;
+	width:1490px;
+	color:#fff;
+	font-size:1.4em;
 }
 
 .tvGuideOverview {
+	padding-left:10px;
 	padding-right:10px;
 	font-size:1.1em;
-	max-height:150px;
+	color:#aaa;
+	width:1480px;
+	max-height:110px;
 	overflow-y:hidden;
 }
 

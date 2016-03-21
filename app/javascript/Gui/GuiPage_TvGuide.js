@@ -47,8 +47,8 @@ GuiPage_TvGuide.start = function(title,url,selectedRow,selectedColumn,topChannel
 	//Create the banner menu and program details.
 	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div>" +
 			"<div id='tvGuide' class='tvGuide'></div>" +
+			"<div id='tvGuideProgramImage' class='tvGuideProgramImage'></div>" +
 			"<div id=tvGuideProgramDetails class='tvGuideProgramDetails'>" +
-				"<div id='tvGuideTitle' class='tvGuideTitle'></div>" +
 				"<div id='tvGuideSubData' class='tvGuideSubData'></div>" +
 				"<div id='tvGuideOverview' class='tvGuideOverview'></div>" +
 			"</div>";
@@ -141,8 +141,13 @@ GuiPage_TvGuide.updateDisplayedItems = function() {
 	}
 	htmlToAdd +=	"</div>";
 	for (var index = 0; index < this.Channels.Items.length - this.topChannel; index++) {
-		htmlToAdd += 	"<div id='Row" + this.Channels.Items[index + this.topChannel].Id + "' class=tvGuideChannelLine>" +
-							"<div id='" + this.Channels.Items[index + this.topChannel].Id + "' class='tvGuideChannelName tvGuideChannelNameBg'>" + this.Channels.Items[index + this.topChannel].Number + ": " + this.Channels.Items[index + this.topChannel].Name + "</div>";			
+		htmlToAdd += 	"<div id='Row" + this.Channels.Items[index + this.topChannel].Id + "' class=tvGuideChannelLine>";
+		if (this.Channels.Items[index + this.topChannel].ImageTags.Primary){
+			var imgsrc = Server.getImageURL(this.Channels.Items[index + this.topChannel].Id,"Primary",300,300,0,false,0);
+			htmlToAdd += 	"<div id='" + this.Channels.Items[index + this.topChannel].Id + "' class='tvGuideChannelName tvGuideChannelNameBg' style=background-image:url(" +imgsrc+ ")>" + this.Channels.Items[index + this.topChannel].Number + ":</div>";
+		} else {
+			htmlToAdd += 	"<div id='" + this.Channels.Items[index + this.topChannel].Id + "' class='tvGuideChannelName tvGuideChannelNameBg'>" + this.Channels.Items[index + this.topChannel].Number + ": " + this.Channels.Items[index + this.topChannel].Name + "</div>";
+		}
 		var channelLineWidth = 0;
 		var programsInThisLine = [];
 		var live = false;
@@ -270,6 +275,7 @@ GuiPage_TvGuide.updateSelectedItems = function () {
 	//Add program details under the guide.
 	if (this.selectedRow >= 0) {
 		var programmeURL = "";
+		var programImage = "";
 		if (this.selectedColumn == -1 && this.Channels.Items[this.selectedRow + this.topChannel].CurrentProgram !== undefined) {
 			programmeURL = Server.getItemInfoURL(this.Channels.Items[this.selectedRow + this.topChannel].CurrentProgram.Id,"");
 		} else if (this.programGrid[this.selectedRow][this.selectedColumn] !== undefined) {
@@ -277,19 +283,19 @@ GuiPage_TvGuide.updateSelectedItems = function () {
 		}
 		if (programmeURL != ""){
 			var ProgrammeDetails = Server.getContent(programmeURL);
-			var title = "";
 			var subdata = "";
 			var overview = "";
 			if (this.selectedColumn == -1) {
-				title = this.Channels.Items[this.selectedRow + this.topChannel].Name;
 				subdata = this.Channels.Items[this.selectedRow + this.topChannel].CurrentProgram.Name + ": " +
 				                              this.Channels.Items[this.selectedRow + this.topChannel].CurrentProgram.StartDate.substring(11,16) +
 				                              " - " + this.Channels.Items[this.selectedRow + this.topChannel].CurrentProgram.EndDate.substring(11,16);
 				overview = ProgrammeDetails.Overview;
+				if (this.Channels.Items[this.selectedRow + this.topChannel].CurrentProgram.ImageTags.Primary){
+					programImage = Server.getImageURL(this.Channels.Items[this.selectedRow + this.topChannel].CurrentProgram.Id,"Primary",300,300,0,false,0);
+				}
 			} else {
 				var program = this.getProgramFromId(this.programGrid[this.selectedRow][this.selectedColumn][1]);
 				if (program) {
-					title = this.Channels.Items[this.selectedRow + this.topChannel].Name;
 					subdata = program.Name + ": " + program.StartDate.substring(11,16) + " - " + program.EndDate.substring(11,16);
 					if (program.TimerId){
 						subdata +=	"<div id='tvGuideSubDataProgramScheduled' class=tvGuideSubDataProgramScheduled></div>";
@@ -299,8 +305,11 @@ GuiPage_TvGuide.updateSelectedItems = function () {
 					}
 					overview = ProgrammeDetails.Overview;
 				}
+				if (ProgrammeDetails.ImageTags.Primary){
+					programImage = Server.getImageURL(ProgrammeDetails.Id,"Primary",300,300,0,false,0);
+				}
 			}
-			document.getElementById("tvGuideTitle").innerHTML = title;
+			document.getElementById("tvGuideProgramImage").style.backgroundImage = "url(" +programImage+ ")";
 			document.getElementById("tvGuideSubData").innerHTML = subdata;
 			document.getElementById("tvGuideOverview").innerHTML = overview;
 		}
