@@ -367,12 +367,12 @@ GuiPlayer.handleAuthenticationFailed = function() {
 
 GuiPlayer.handleRenderError = function(RenderErrorType) {
 	if (RenderErrorType == 7 && this.PlayMethod == "DirectPlay") {
-    	FileLog.write("Playback : Render Error (7) while trying to DirectPlay.  Attempting playback with Transcoding...");
-    	GuiNotifications.setNotification("Render Error (7) while trying to DirectPlay.<br>Attempting playback with Transcoding...");
+	    FileLog.write("Playback : Render Error (7) while trying to DirectPlay.  Attempting playback with Transcoding...");
+	    GuiNotifications.setNotification("Render Error (7) while trying to DirectPlay.<br>Attempting playback with Transcoding...");
 	    GuiPlayer.stopPlayback();
-    	GuiPlayer_Versions.start(this.PlayerData,0,this.startParams[3],true);
-	}else {
-		FileLog.write("Playback : Render Error " + RenderErrorType);
+	    GuiPlayer_Versions.start(this.PlayerData,0,this.startParams[3],true);
+	} else {
+	    FileLog.write("Playback : Render Error " + RenderErrorType);
 	    GuiNotifications.setNotification("Render Error Type : " + RenderErrorType);
 	    GuiPlayer.stopPlayback();
 	    GuiPlayer_Display.restorePreviousMenu();
