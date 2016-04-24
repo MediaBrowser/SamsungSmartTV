@@ -35,7 +35,7 @@ var GuiPlayer_Transcoding = {
 }
 
 //--------------------------------------------------------------------------------------
-GuiPlayer_Transcoding.start = function(showId, MediaSource,MediaSourceIndex, videoIndex, audioIndex, isFirstAudioIndex, subtitleIndex) {	
+GuiPlayer_Transcoding.start = function(showId, MediaSource,MediaSourceIndex, videoIndex, audioIndex, isFirstAudioIndex, subtitleIndex,forceVideoTranscode) {	
 	//Set Class Vars
 	this.MediaSource = MediaSource;
 	this.videoIndex = videoIndex;
@@ -63,6 +63,11 @@ GuiPlayer_Transcoding.start = function(showId, MediaSource,MediaSourceIndex, vid
 	   streamAudioCodec = (File.getTVProperty("Dolby") && File.getTVProperty("AACtoDolby") && fileAudioCodec == "aac") ? "ac3" : fileAudioCodec;
 	}
 	
+	if (forceVideoTranscode !== undefined && forceVideoTranscode == true) {
+		FileLog.write("Forcing Video Transcoding");
+		this.isVideo = false;
+	}
+
 	if (this.isVideo && this.isAudio && convertAACtoDolby == false) {
 		if (isFirstAudioIndex == true) {
 			transcodeStatus = "Direct Play";
