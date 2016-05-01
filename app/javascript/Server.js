@@ -241,11 +241,19 @@ Server.setRequestHeaders = function (xmlHttp,UserId) {
 	return xmlHttp;
 }
 
-Server.getUserViewId = function (collectionType) {
+Server.getMoviesViewId = function() {
+	return Server.getUserViewId("movies", "UserView");
+}
+
+Server.getTvViewId = function() {
+	return Server.getUserViewId("tvshows", "UserView");
+}
+
+Server.getUserViewId = function (collectionType, Type) {
 	var folderId = null;
 	var userViews = Server.getUserViews();
 	for (var i = 0; i < userViews.Items.length; i++){
-		if (userViews.Items[i].CollectionType == collectionType){
+		if ((Type === undefined || userViews.Items[i].Type == Type) && userViews.Items[i].CollectionType == collectionType){
 			folderId = userViews.Items[i].Id;
 		}
 	}
