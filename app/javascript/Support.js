@@ -1130,11 +1130,11 @@ Support.processHomePageMenu = function (menuItem) {
 		GuiDisplay_Series.start("All Collections", url,0,0);
 		break;		
 	case "TV":
-		var url = Server.getItemTypeURL("&IncludeItemTypes=Series&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
+		var url = Server.getChildItemsURL(Server.getTvViewId(),"&IncludeItemTypes=Series&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
 		GuiDisplay_Series.start("All TV",url,0,0);
 		break;	
 	case "Movies":
-		var url = Server.getItemTypeURL("&IncludeItemTypes=Movie&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
+		var url = Server.getChildItemsURL(Server.getMoviesViewId(),"&IncludeItemTypes=Movie&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
 		GuiDisplay_Series.start("All Movies",url,0,0);
 		break;
 	case "Music":
