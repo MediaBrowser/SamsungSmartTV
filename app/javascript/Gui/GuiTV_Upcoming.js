@@ -525,11 +525,11 @@ GuiTV_Upcoming.processSelectedItem = function (isBottom) {
 	if (this.selectedItem == -2) {
 		switch (this.bannerItems[this.selectedBannerItem]) {
 		case "All":		
-			var url = Server.getItemTypeURL("&IncludeItemTypes=Series&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
+			var url = Server.getItemTypeURL("&IncludeItemTypes=Series"+Server.getTvViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
 			GuiDisplay_Series.start("All TV",url,0,0);
 		break;
 		case "Unwatched":
-			var url = Server.getItemTypeURL("&IncludeItemTypes=Series&SortBy=SortName&SortOrder=Ascending&isPlayed=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
+			var url = Server.getItemTypeURL("&IncludeItemTypes=Series"+Server.getTvViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&isPlayed=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
 			GuiDisplay_Series.start("Unwatched TV",url,0,0);
 		break;
 		case "Latest":		
@@ -538,7 +538,7 @@ GuiTV_Upcoming.processSelectedItem = function (isBottom) {
 					
 		break;
 		case "Genre":
-			var url1 = Server.getCustomURL("/Genres?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Series&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,ItemCounts&userId=" + Server.getUserID());
+			var url1 = Server.getCustomURL("/Genres?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Series"+Server.getTvViewQueryPart()+"&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,ItemCounts&userId=" + Server.getUserID());
 			GuiDisplay_Series.start("Genre TV",url1,0,0);	
 		break;
 		}

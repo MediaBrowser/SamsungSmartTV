@@ -150,7 +150,7 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem,items) {
 	}
 
 	//Determine if display is for all tv / movies or just a folder
-	if ((url.split("ParentId").length - 1) == 2 || title == "Collections") {
+	if (!(this.currentMediaType=="Movies" || this.currentMediaType=="TV")) {
 		alert ("Media Folder");
 		this.isAllorFolder = 1;
 		this.bannerItems = []; //NEEDED HERE! 
@@ -505,19 +505,19 @@ GuiDisplay_Series.processSelectedItem = function() {
 		switch (this.bannerItems[this.selectedBannerItem]) {
 		case "All":		
 			if (this.isTvOrMovies == 1) {	
-				var url = Server.getItemTypeURL("&IncludeItemTypes=Movie&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
+				var url = Server.getItemTypeURL("&IncludeItemTypes=Movie"+Server.getMoviesViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
 				GuiDisplay_Series.start("All Movies",url,0,0);
 			} else {
-				var url = Server.getItemTypeURL("&IncludeItemTypes=Series&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
+				var url = Server.getItemTypeURL("&IncludeItemTypes=Series"+Server.getTvViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
 				GuiDisplay_Series.start("All TV",url,0,0);
 			}
 		break;
 		case "Unwatched":
 			if (this.isTvOrMovies == 1) {	
-				var url = Server.getItemTypeURL("&IncludeItemTypes=Movie&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true&Filters=IsUnPlayed");
+				var url = Server.getItemTypeURL("&IncludeItemTypes=Movie"+Server.getMoviesViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true&Filters=IsUnPlayed");
 				GuiDisplay_Series.start("Unwatched Movies",url,0,0);
 			}	else {
-				var url = Server.getItemTypeURL("&IncludeItemTypes=Series&SortBy=SortName&SortOrder=Ascending&isPlayed=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
+				var url = Server.getItemTypeURL("&IncludeItemTypes=Series"+Server.getTvViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&isPlayed=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
 				GuiDisplay_Series.start("Unwatched TV",url,0,0);
 			}
 		break;
@@ -526,7 +526,7 @@ GuiDisplay_Series.processSelectedItem = function() {
 		break;
 		case "Latest":		
 			if (this.isTvOrMovies == 1) {
-				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Movie&IsFolder=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
+				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Movie"+Server.getMoviesViewQueryPart()+"&IsFolder=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
 				GuiDisplay_Series.start("Latest Movies",url,0,0);
 			} else if (this.isTvOrMovies == 0){
 				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Episode&IsFolder=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
@@ -538,10 +538,10 @@ GuiDisplay_Series.processSelectedItem = function() {
 		break;
 		case "Genre":
 			if (this.isTvOrMovies == 1) {	
-				var url1 = Server.getCustomURL("/Genres?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Movie&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,ItemCounts&userId=" + Server.getUserID());
+				var url1 = Server.getCustomURL("/Genres?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Movie"+Server.getMoviesViewQueryPart()+"&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,ItemCounts&userId=" + Server.getUserID());
 				GuiDisplay_Series.start("Genre Movies",url1,0,0);
 			} else {
-				var url1 = Server.getCustomURL("/Genres?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Series&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,ItemCounts&userId=" + Server.getUserID());
+				var url1 = Server.getCustomURL("/Genres?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Series"+Server.getTvViewQueryPart()+"&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,ItemCounts&userId=" + Server.getUserID());
 				GuiDisplay_Series.start("Genre TV",url1,0,0);
 			}		
 		break;
