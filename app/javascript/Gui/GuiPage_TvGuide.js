@@ -60,7 +60,7 @@ GuiPage_TvGuide.start = function(title,url,selectedRow,selectedColumn,topChannel
 	
 	//Load Data
 	this.Channels = Server.getContent(url);
-
+	
 	if (this.Channels.Items.length > 0) {
 		//Get Programs
 		var channelIDs = "";
@@ -101,8 +101,7 @@ GuiPage_TvGuide.start = function(title,url,selectedRow,selectedColumn,topChannel
 		this.updateSelectedItems();	
 			
 	} else {
-		document.getElementById("tvGuideTitle").innerHTML = "Sorry";
-		document.getElementById("tvGuideSubData").innerHTML = "It looks like there is no guide data right now I'm afraid.";
+		document.getElementById("tvGuide").innerHTML = "Hmm, it looks like there is no guide data right now.";
 		this.selectedRow = -1;
 		this.updateSelectedItems();	
 	}
