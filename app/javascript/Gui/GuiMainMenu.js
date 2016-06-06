@@ -63,6 +63,25 @@ GuiMainMenu.start = function() {
 	Support.screensaverOn();
 	Support.screensaver();
 	
+	//Validate and update home page URL's
+	//Convert views in http format to viewnames for settings in versions <=2.1.3
+	var url1 = File.getUserProperty("View1");
+	if (url1.substring(0,4) == "http") {
+		alert("Converting View1");
+		File.setUserProperty("View1","TVNextUp");
+		File.setUserProperty("View1Name","Next Up");
+	}
+
+	var url2 = File.getUserProperty("View2");
+	if (url2.substring(0,4) == "http") {
+		alert("Converting View2");
+		File.setUserProperty("View2","LatestMovies");
+		File.setUserProperty("View2Name","Latest Movies");
+	}
+
+	//Initialise view URL's
+	Support.initViewUrls();
+	
 	//Load Home Page
 	Support.processHomePageMenu("Home");
 }

@@ -241,11 +241,31 @@ Server.setRequestHeaders = function (xmlHttp,UserId) {
 	return xmlHttp;
 }
 
-Server.getUserViewId = function (collectionType) {
+Server.getMoviesViewQueryPart = function() {
+	var ParentId = Server.getUserViewId("movies", "UserView");
+	
+	if (ParentId == null) { 
+		return "";
+	} else {
+		return "&ParentId="+ParentId;
+	}
+}
+
+Server.getTvViewQueryPart = function() {
+	var ParentId = Server.getUserViewId("tvshows", "UserView");
+	
+	if (ParentId == null) { 
+		return "";
+	} else {
+		return "&ParentId="+ParentId;
+	}
+}
+
+Server.getUserViewId = function (collectionType, Type) {
 	var folderId = null;
 	var userViews = Server.getUserViews();
 	for (var i = 0; i < userViews.Items.length; i++){
-		if (userViews.Items[i].CollectionType == collectionType){
+		if ((Type === undefined || userViews.Items[i].Type == Type) && userViews.Items[i].CollectionType == collectionType){
 			folderId = userViews.Items[i].Id;
 		}
 	}

@@ -20,7 +20,18 @@ var Support = {
 		
 		clockVar : null,
 		
-		imageCachejson : null
+		imageCachejson : null,
+
+		TVNextUp : null,
+		Favourites : null,
+		FavouriteMovies : null,
+		FavouriteSeries : null,
+		FavouriteEpisodes : null,
+		SuggestedMovies : null,
+		MediaFolders : null,
+		LatestTV : null,
+		LatestMovies : null
+
 }
 
 Support.clock = function() {
@@ -1086,6 +1097,25 @@ Support.generateTopMenu = function() {
 	return menuItems;
 }
 
+Support.initViewUrls = function() {
+	alert("Initialising View URL's for this user");
+	this.TVNextUp = Server.getServerAddr() + "/Shows/NextUp?format=json&UserId="+Server.getUserID()+"&IncludeItemTypes=Episode&ExcludeLocationTypes=Virtual&Limit=24&Fields=PrimaryImageAspectRatio,SeriesInfo,DateCreated,SyncInfo,SortName&ImageTypeLimit=1&EnableImageTypes=Primary,Backdrop,Banner,Thumb";
+	this.Favourites = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&Filters=IsFavorite&fields=SortName&recursive=true");
+	this.FavouriteMovies = Server.getServerAddr() + "/Users/"+Server.getUserID()+"/Items?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Movie"+Server.getMoviesViewQueryPart()+"&Filters=IsFavorite&Limit=10&Recursive=true&Fields=PrimaryImageAspectRatio,SyncInfo&CollapseBoxSetItems=false&ExcludeLocationTypes=Virtual";
+	this.FavouriteSeries = Server.getServerAddr() + "/Users/"+Server.getUserID()+"/Items?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Series"+Server.getTvViewQueryPart()+"&Filters=IsFavorite&Limit=10&Recursive=true&Fields=PrimaryImageAspectRatio,SyncInfo&CollapseBoxSetItems=false&ExcludeLocationTypes=Virtual";
+	this.FavouriteEpisodes = Server.getServerAddr() + "/Users/"+Server.getUserID()+"/Items?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Episode&Filters=IsFavorite&Limit=10&Recursive=true&Fields=PrimaryImageAspectRatio,SyncInfo&CollapseBoxSetItems=false&ExcludeLocationTypes=Virtual";
+	this.SuggestedMovies = Server.getCustomURL("/Movies/Recommendations?format=json&userId="+Server.getUserID()+"&categoryLimit=2&ItemLimit=6&Fields=PrimaryImageAspectRatio,MediaSourceCount,SyncInfo&ImageTypeLimit=1&EnableImageTypes=Primary,Backdrop,Banner,Thumb");
+	this.MediaFolders = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&CollapseBoxSetItems=false&fields=SortName");
+	this.LatestTV = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Episode&IsFolder=false&fields=SortName,Overview,Genres,RunTimeTicks");
+	this.LatestMovies = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Movie"+Server.getMoviesViewQueryPart()+"&IsFolder=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
+}
+
+Support.getViewUrl = function(viewName) {
+	alert("returning url for "+viewName+" : "+this[viewName]);
+
+	return this[viewName];
+}
+
 //-----------------------------------------------------------------------------------------------------------------------------------------
 Support.processHomePageMenu = function (menuItem) {
 	switch (menuItem) {
@@ -1097,12 +1127,12 @@ Support.processHomePageMenu = function (menuItem) {
 		if (resumeItems.TotalRecordCount > 0 && File.getUserProperty("ContinueWatching") == true){
 			var url1 = url;
 			var title1 = "Continue Watching";
-			var url2 = File.getUserProperty("View1");
+			var url2 = Support.getViewUrl(File.getUserProperty("View1"));
 			var title2 = File.getUserProperty("View1Name");
 		} else {
-			var url1 = File.getUserProperty("View1");
+			var url1 = Support.getViewUrl(File.getUserProperty("View1"));
 			var title1 = File.getUserProperty("View1Name");
-			var url2 = File.getUserProperty("View2");
+			var url2 = Support.getViewUrl(File.getUserProperty("View2"));
 			var title2 = File.getUserProperty("View2Name");
 		}
 		
@@ -1130,11 +1160,11 @@ Support.processHomePageMenu = function (menuItem) {
 		GuiDisplay_Series.start("All Collections", url,0,0);
 		break;		
 	case "TV":
-		var url = Server.getItemTypeURL("&IncludeItemTypes=Series&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
+		var url = Server.getItemTypeURL("&IncludeItemTypes=Series"+Server.getTvViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
 		GuiDisplay_Series.start("All TV",url,0,0);
 		break;	
 	case "Movies":
-		var url = Server.getItemTypeURL("&IncludeItemTypes=Movie&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
+		var url = Server.getItemTypeURL("&IncludeItemTypes=Movie"+Server.getMoviesViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
 		GuiDisplay_Series.start("All Movies",url,0,0);
 		break;
 	case "Music":
