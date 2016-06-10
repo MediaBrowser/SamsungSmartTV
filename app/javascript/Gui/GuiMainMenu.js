@@ -73,11 +73,14 @@ GuiMainMenu.start = function() {
 	}
 
 	var url2 = File.getUserProperty("View2");
-	if (url2.substring(0,4) == "http") {
-		alert("Converting View2");
-		File.setUserProperty("View2","LatestMovies");
-		File.setUserProperty("View2Name","Latest Movies");
+	if (url2) {
+		if (url2.substring(0,4) == "http") {
+			alert("Converting View2");
+			File.setUserProperty("View2","LatestMovies");
+			File.setUserProperty("View2Name","Latest Movies");
+		}
 	}
+
 
 	//Initialise view URL's
 	Support.initViewUrls();
