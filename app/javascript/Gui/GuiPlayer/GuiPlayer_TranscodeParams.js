@@ -55,7 +55,7 @@ GuiPlayer_TranscodeParams.getParameters = function(codec,videoWidth) {
     	    	this.resolution = [1920,1080];
     	    	this.bitrate = 50720000;
     	    	this.framerate = 30;
-    	    	this.level = 120;			//  Level 4  (HEVC is x30 not x10 like h264)
+    	    	this.level = 153;			//  Level 4  (HEVC is x30 not x10 like h264)
     	    	this.profile = ["Base","Constrained Baseline","Baseline","Main","High"];
     	    	break;			
     	    case "h265":
@@ -382,7 +382,7 @@ GuiPlayer_TranscodeParams.getAudioParameters = function(audiocodec) {
 		case "dca":
 			this.audiocodec = true;
 			this.audiocontainer = ["asf","avi","mkv","mp4","3gpp","mpg","mpeg","ts","m4v","m2ts","mov","vro","tp","trp","flv","vob","svi","mts","divx"];
-			this.audiochannels = 7;
+			this.audiochannels = 8;
 			break;
 		case "eac3":	
 			this.audiocodec = true;
@@ -444,7 +444,7 @@ GuiPlayer_TranscodeParams.getAudioParameters = function(audiocodec) {
 		case "dca":
 			this.audiocodec = true;
 			this.audiocontainer = ["asf","avi","mkv","mp4","3gpp","mpg","mpeg","ts","m4v","m2ts","mov","vro","tp","trp","flv","vob","svi","mts","divx"];
-			this.audiochannels = 7;
+			this.audiochannels = 8;
 			break;
 		case "eac3":	
 			this.audiocodec = true;
@@ -506,7 +506,7 @@ GuiPlayer_TranscodeParams.getAudioParameters = function(audiocodec) {
 		case "dca":
 			this.audiocodec = true;
 			this.audiocontainer = ["asf","avi","mkv","mp4","3gpp","mpg","mpeg","ts","m4v","m2ts","mov","vro","tp","trp","flv","vob","svi","mts","divx"];
-			this.audiochannels = 6;
+			this.audiochannels = 8;
 			break;
 		case "eac3":	
 			this.audiocodec = true;
