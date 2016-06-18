@@ -276,8 +276,13 @@ GuiPlayer_Versions.getMainStreamIndex = function(MediaSource, MediaSourceIndex) 
 		//Check if item is 3D and if tv cannot support it don't add it to the list!
 		if (MediaSource.Video3DFormat !== undefined) {
 			//If TV Supports 3d
-			var pluginScreen = document.getElementById("pluginScreen");
-			if (pluginScreen.Flag3DEffectSupport()) {
+			var supports3d = false;
+			try {
+				supports3d = webapis.displaycontrol.check3DModeEnable() === webapis.displaycontrol.MODE_3D_ENABLE_OK;
+			} catch (err) {
+				// hardware doesn't support it
+			}
+			if (supports3d) {
 				FileLog.write("Video : Media Stream Added : 3D " + MediaSourceIndex + "," + videoIndex + "," + audioIndex + "," + audioStreamFirst + "," + subtitleIndex)
 				this.MediaOptions.push([MediaSourceIndex,videoIndex,audioIndex,audioStreamFirst,subtitleIndex]); //Index != Id!!!
 			} else {
