@@ -92,9 +92,9 @@ GuiPage_MusicArtist.start = function(title1, url1, selectedItem, topLeftItem) {
 		//Set Banner Items
 		for (var index = 0; index < this.bannerItems.length; index++) {
 			if (index != this.bannerItems.length-1) {
-				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding'>"+this.bannerItems[index].replace(/-/g, ' ').toUpperCase()+"</div>";			
+				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding'>"+this.bannerItems[index].replace(/-/g, ' ')+"</div>";			
 			} else {
-				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem'>"+this.bannerItems[index].replace(/-/g, ' ').toUpperCase()+"</div>";					
+				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem'>"+this.bannerItems[index].replace(/-/g, ' ')+"</div>";					
 			}
 		}
 		
@@ -581,13 +581,13 @@ GuiPage_MusicArtist.updateSelectedBannerItems = function() {
 		} else {
 			if (index != this.bannerItems.length-1) {
 				if (this.bannerItems[index] == this.startParams[0]) {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding blue";
+					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding offWhite";
 				} else {
 					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding";
 				}
 			} else {
 				if (this.bannerItems[index] == this.startParams[0]) {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem blue";
+					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem offWhite";
 				} else {
 					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem";
 				}
