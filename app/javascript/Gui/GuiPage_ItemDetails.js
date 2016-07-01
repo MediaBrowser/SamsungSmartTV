@@ -104,7 +104,8 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem) {
 		if (this.SeriesData == null) { return; }
 		
 		//Get Episode Data
-		this.EpisodeData = Server.getContent(Server.getSeasonEpisodesURL(this.ItemData.SeriesId,this.ItemData.SeasonId));
+		var episodesUrl = Server.getChildItemsURL(this.ItemData.SeasonId,"&IncludeItemTypes=Episode&fields=SortName,Overview");
+		this.EpisodeData = Server.getContent(episodesUrl);
 		if (this.EpisodeData == null) { return; }
 		
 		//Browse season episodes
