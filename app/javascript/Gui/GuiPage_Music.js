@@ -114,7 +114,7 @@ GuiPage_Music.updateSelectedItems = function () {
 		//Highlight the selected global item (PlayAll, Shuffle etc.)
 		for (var index = 0; index < this.topMenuItems.length; index++) {
 			if (index == this.selectedItem2) {
-				document.getElementById(this.topMenuItems[index]).className = "guiMusic_Global SelectedButton";
+				document.getElementById(this.topMenuItems[index]).className = "guiMusic_Global buttonSelected";
 			} else {
 				document.getElementById(this.topMenuItems[index]).className = "guiMusic_Global";
 			}
@@ -130,7 +130,7 @@ GuiPage_Music.updateSelectedItems = function () {
 			if (index == this.selectedItem) {
 				for (var index2 = 0; index2 < this.playItems.length; index2++) {
 					if (index2 == this.selectedItem2) {
-						document.getElementById(this.playItems[index2]+this.AlbumData.Items[index].Id).className = "guiMusic_TableTd SelectedButton";
+						document.getElementById(this.playItems[index2]+this.AlbumData.Items[index].Id).className = "guiMusic_TableTd buttonSelected";
 					} else {
 						document.getElementById(this.playItems[index2]+this.AlbumData.Items[index].Id).className = "guiMusic_TableTd";
 					}
@@ -204,9 +204,9 @@ GuiPage_Music.keyDown = function() {
 			break;	
 		case tvKey.KEY_BLUE:
 			if (this.selectedItem == -1) {
-				GuiMusicPlayer.showMusicPlayer("GuiPage_Music",this.topMenuItems[this.selectedItem2],"guiMusic_Global SelectedButton");
+				GuiMusicPlayer.showMusicPlayer("GuiPage_Music",this.topMenuItems[this.selectedItem2],"guiMusic_Global buttonSelected");
 			} else {
-				GuiMusicPlayer.showMusicPlayer("GuiPage_Music",this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"guiMusic_TableTd SelectedButton");
+				GuiMusicPlayer.showMusicPlayer("GuiPage_Music",this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"guiMusic_TableTd buttonSelected");
 			}
 			break;		
 		case tvKey.KEY_EXIT:
@@ -220,9 +220,9 @@ GuiPage_Music.openMenu = function() {
 	Support.updateURLHistory("GuiPage_Music",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,true);
 	
 	if (this.selectedItem == -1) {
-		GuiMainMenu.requested("GuiPage_Music",this.topMenuItems[this.selectedItem2],"guiMusic_Global SelectedButton");
+		GuiMainMenu.requested("GuiPage_Music",this.topMenuItems[this.selectedItem2],"guiMusic_Global buttonSelected");
 	} else {
-		GuiMainMenu.requested("GuiPage_Music",this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"guiMusic_TableTd SelectedButton");
+		GuiMainMenu.requested("GuiPage_Music",this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"guiMusic_TableTd buttonSelected");
 	}
 }
 
@@ -305,7 +305,7 @@ GuiPage_Music.processSelectedItem = function() {
 		switch (this.selectedItem2) {
 		case 0:
 			//Play All
-			document.getElementById(this.topMenuItems[this.selectedItem2]).className = document.getElementById(this.topMenuItems[this.selectedItem2]).className.replace("SelectedButton","");
+			document.getElementById(this.topMenuItems[this.selectedItem2]).className = document.getElementById(this.topMenuItems[this.selectedItem2]).className.replace("buttonSelected","");
 			GuiMusicPlayer.start("Album",this.startParams[1] + "&Fields=MediaSources","GuiPage_Music",false);
 			break;
 		case 1:
@@ -314,13 +314,13 @@ GuiPage_Music.processSelectedItem = function() {
 			break;
 		case 2:
 			//Shuffle
-			document.getElementById(this.topMenuItems[this.selectedItem2]).className = document.getElementById(this.topMenuItems[this.selectedItem2]).className.replace("SelectedButton","");
+			document.getElementById(this.topMenuItems[this.selectedItem2]).className = document.getElementById(this.topMenuItems[this.selectedItem2]).className.replace("buttonSelected","");
 			var url = this.startParams[1].replace("SortBy=SortName","SortBy=Random")
 			GuiMusicPlayer.start("Album",url + "&Fields=MediaSources","GuiPage_Music",false);
 			break;
 		case 3:
 			//Instant Mix
-			document.getElementById(this.topMenuItems[this.selectedItem2]).className = document.getElementById(this.topMenuItems[this.selectedItem2]).className.replace("SelectedButton","");
+			document.getElementById(this.topMenuItems[this.selectedItem2]).className = document.getElementById(this.topMenuItems[this.selectedItem2]).className.replace("buttonSelected","");
 			var url = Server.getCustomURL("/Albums/"+this.AlbumData.Items[0].AlbumId + "/InstantMix?format=json&Limit=50&UserId="+Server.getUserID());
 			GuiMusicPlayer.start("Album",url + "&Fields=MediaSources","GuiPage_Music",false);
 			break;	
@@ -329,7 +329,7 @@ GuiPage_Music.processSelectedItem = function() {
 		switch (this.selectedItem2) {
 		case 0:
 			//Play
-			document.getElementById(this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id).className = document.getElementById(this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id).className.replace("SelectedButton","");
+			document.getElementById(this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id).className = document.getElementById(this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id).className.replace("buttonSelected","");
 			var url = Server.getItemInfoURL(this.AlbumData.Items[this.selectedItem].Id);
 			GuiMusicPlayer.start("Song",url,"GuiPage_Music",false);
 			break;
@@ -340,7 +340,7 @@ GuiPage_Music.processSelectedItem = function() {
 			break;
 		case 2:
 			//Mix
-			document.getElementById(this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id).className = document.getElementById(this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id).className.replace("SelectedButton","");
+			document.getElementById(this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id).className = document.getElementById(this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id).className.replace("buttonSelected","");
 			var url = Server.getCustomURL("/Songs/"+this.AlbumData.Items[this.selectedItem].Id + "/InstantMix?format=json&Limit=50&UserId="+Server.getUserID());
 			GuiMusicPlayer.start("Album",url + "&Fields=MediaSources","GuiPage_Music",false);
 			break;

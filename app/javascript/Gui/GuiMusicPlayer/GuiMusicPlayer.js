@@ -177,10 +177,10 @@ GuiMusicPlayer.updateSelectedItem = function() {
 			document.getElementById("guiMusicPlayerNowPlaying").style.color = "#27a436";
 			break;*/
 		case 0:
-			document.getElementById("guiMusicPlayerScreenOff").className = "guiMusicPlayerScreenOff SelectedButton";
+			document.getElementById("guiMusicPlayerScreenOff").className = "guiMusicPlayerScreenOff buttonSelected";
 			break;
 		default:
-			document.getElementById("guiMusicPlayerNowPlaying").className = "guiMusicPlayerNowPlaying SelectedButton";
+			document.getElementById("guiMusicPlayerNowPlaying").className = "guiMusicPlayerNowPlaying buttonSelected";
 			break;
 		}
 }
