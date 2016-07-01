@@ -503,6 +503,23 @@ GuiPage_TvGuide.processUpKey = function() {
 	}
 }
 
+GuiPage_TvGuide.processChannelUpKey = function() {
+	if (this.topChannel > 0) { //Scroll up a page.
+		var newTopChannel = this.topChannel - 7;
+		if (this.selectedColumn == -1) {
+			GuiPage_TvGuide.start("Guide",this.startParams[1],0,-1,newTopChannel,this.guideStartTime);
+		} else {
+			GuiPage_TvGuide.start("Guide",this.startParams[1],0,0,newTopChannel,this.guideStartTime);
+		}
+	} else { // If we're already on the first page, jump to the top row.
+		if (this.selectedColumn == -1) {
+			GuiPage_TvGuide.start("Guide",this.startParams[1],0,-1,0,this.guideStartTime);
+		} else {
+			GuiPage_TvGuide.start("Guide",this.startParams[1],0,0,0,this.guideStartTime);
+		}
+	}
+}
+
 GuiPage_TvGuide.processDownKey = function() {
 	if (this.selectedRow < this.programGrid.length-1) { //Move down a row.
 		while (this.selectedColumn > this.programGrid[this.selectedRow+1].length-1) {
@@ -517,6 +534,20 @@ GuiPage_TvGuide.processDownKey = function() {
 		} else {
 			GuiPage_TvGuide.start("Guide",this.startParams[1],0,0,newTopChannel,this.guideStartTime);
 		}
+	}
+}
+
+GuiPage_TvGuide.processChannelDownKey = function() {
+	if (this.Channels.Items.length > this.topChannel + 7) { //Scroll down a page.
+		var newTopChannel = this.topChannel + 7;
+		if (this.selectedColumn == -1) {
+			GuiPage_TvGuide.start("Guide",this.startParams[1],0,-1,newTopChannel,this.guideStartTime);
+		} else {
+			GuiPage_TvGuide.start("Guide",this.startParams[1],0,0,newTopChannel,this.guideStartTime);
+		}
+	} else { // If we're already on the last page, jump to the bottom row.
+		this.selectedRow = this.Channels.Items.length % 8;
+		this.updateSelectedItems();
 	}
 }
 
