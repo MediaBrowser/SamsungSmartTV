@@ -669,10 +669,10 @@ input[type="password"]
 
 .ShowListSingleFav{
 	display:inline-block;
-	position:absolute;
-	right:50px;
-	height:38px;
-	width:35px;
+	float: right;
+	top:5px;
+	height:40px;
+	width:38px;
 	background-image:url('images/favorite-36x33.png');
 	background-repeat: no-repeat;
     background-position:center;
@@ -680,8 +680,7 @@ input[type="password"]
 
 .ShowListSingleWatched{
 	display:inline-block;
-	position:absolute;
-	right:0px;
+	float: right;
 	height:50px;
 	width:53px;
 	background-image:url('images/watched.png');
@@ -691,10 +690,9 @@ input[type="password"]
 
 .ShowListSingleMissing{
 	display:inline-block;
- 	position:absolute; 
-    right:0px;
-	height:60px;
-	width:140px;
+	float: right;
+	height:45px;
+	width:116px;
 	background-image:url('images/missing.png');
 	background-repeat: no-repeat;
     background-position:center;	
@@ -702,10 +700,9 @@ input[type="password"]
 
 .ShowListSingleUnaired{
 	display:inline-block;
- 	position:absolute; 
-    right:0px;
-	height:60px;
-	width:140px;
+	float: right;
+	height:45px;
+	width:116px;
 	background-image:url('images/unaired.png');
 	background-repeat: no-repeat;
     background-position:center;	
@@ -1055,11 +1052,10 @@ input[type="password"]
 }
 
 .moreEpisodesWatchedItem {
-	position:absolute;
-	top:0px;
-	right:0px;
-	width:36px;
-	height:36px;
+	display:inline-block;
+	float: right;
+	width:38px;
+	height:45px;
 	text-align:center;
 	background-image:url('images/watchedItemPage.png');
 	background-repeat: no-repeat;
@@ -1067,11 +1063,10 @@ input[type="password"]
 }
 
 .moreEpisodesFavouriteItem {
-	position:absolute;
-	top:40px;
-	right:0px;
-	width:33px;
-	height:36px;
+	display:inline-block;
+	float: right;
+	width:38px;
+	height:43px;
 	text-align:center;
 	background-image:url('images/favorite-36x33.png');
 	background-repeat: no-repeat;

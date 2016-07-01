@@ -138,7 +138,8 @@ GuiDisplay_Episodes.updateDisplayedItems = function() {
 		}
 		if (this.ItemData.Items[index].UserData.Played == true) {
 			htmlToAdd += "<div class='ShowListSingleWatched'></div>";
-		}else if (this.ItemData.Items[index].LocationType == "Virtual"){
+		}
+		if (this.ItemData.Items[index].LocationType == "Virtual"){
 			imageMissingOrUnaired = (Support.FutureDate(this.ItemData.Items[index].PremiereDate) == true) ? "ShowListSingleUnaired" : "ShowListSingleMissing";
 			htmlToAdd += "<div class='"+imageMissingOrUnaired+"'></div>";
 		}

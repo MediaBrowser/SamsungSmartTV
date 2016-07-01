@@ -713,6 +713,10 @@ GuiPage_ItemDetails.updateDisplayedItems2 = function() {
 			if (this.subMenuItems[index].UserData.IsFavorite) {
 				htmlToAdd2 += "<div class=moreEpisodesFavouriteItem></div>";
 			}
+			if (this.subMenuItems[index].LocationType == "Virtual"){
+				imageMissingOrUnaired = (Support.FutureDate(this.subMenuItems[index].PremiereDate) == true) ? "ShowListSingleUnaired" : "ShowListSingleMissing";
+				htmlToAdd2 += "<div class='"+imageMissingOrUnaired+"'></div>";
+			}
 			htmlToAdd2 += "</div>";
 			
 			break;
