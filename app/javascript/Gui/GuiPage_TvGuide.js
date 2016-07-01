@@ -55,7 +55,7 @@ GuiPage_TvGuide.start = function(title,url,selectedRow,selectedColumn,topChannel
 	
 	//Populate the banner menu.
 	for (var index = 0; index < this.bannerItems.length; index++) {
-		document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "'>"+this.bannerItems[index].replace(/-/g, ' ').toUpperCase()+"</div>";
+		document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "'>"+this.bannerItems[index].replace(/-/g, ' ')+"</div>";
 	}
 	
 	//Load Data
@@ -258,13 +258,13 @@ GuiPage_TvGuide.updateSelectedItems = function () {
 		} else {
 			if (index != this.bannerItems.length-1) {
 				if (this.bannerItems[index] == this.currentView) {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding blue";
+					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding offWhite";
 				} else {
 					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding";
 				}
 			} else {
 				if (this.bannerItems[index] == this.currentView) {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem blue";
+					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem offWhite";
 				} else {
 					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem";
 				}

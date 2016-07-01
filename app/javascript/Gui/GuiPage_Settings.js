@@ -448,13 +448,13 @@ GuiPage_Settings.updateSelectedBannerItems = function() {
 		} else {
 			if (index != this.bannerItems.length-1) { //Don't put padding on the last one.
 				if (index == this.currentPage) {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding blue";
+					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding offWhite";
 				} else {
 					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding";
 				}
 			} else {
 				if (index == this.currentPage) {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem blue";
+					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem offWhite";
 				} else {
 					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem";
 				}
