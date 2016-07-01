@@ -1,18 +1,8 @@
-@font-face {
-	font-family:Lato-Regular;
-	src:url('fonts/Lato-Regular.ttf');
-}
-
-@font-face {
-	font-family:Lato-Bold;
-	src:url('fonts/Lato-Bold.ttf');
-}
-
 * {
 	padding: 0px;
 	margin: 0px;
 	border: 0px;
- 	font-family:Lato-Regular;
+ 	font-family: 'Open Sans', sans-serif;
 }
 
 .everything{
