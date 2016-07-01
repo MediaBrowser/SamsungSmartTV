@@ -1,6 +1,6 @@
 var GuiPage_HomeTwoItems = {
 		
-		selectedBannerItem : 0,
+		selectedBannerItem : -1,
 		
 		ItemData : null,
 		selectedItem : 0,
@@ -26,6 +26,8 @@ var GuiPage_HomeTwoItems = {
 
 GuiPage_HomeTwoItems.onFocus = function() {
 	GuiHelper.setControlButtons("Favourite","Watched","Help",GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Exit  ");
+	this.selectedBannerItem = -1;
+	this.updateSelectedBannerItems();
 }
 
 GuiPage_HomeTwoItems.getMaxDisplay = function() {
@@ -103,8 +105,8 @@ GuiPage_HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,to
 		
 		//If to determine positioning of content
 		document.getElementById("Center").style.top = "180px";
-		document.getElementById("Center").style.left = "230px";
-		document.getElementById("Center").style.width = "1500px";
+		document.getElementById("Center").style.left = "170px";
+		document.getElementById("Center").style.width = "1620px";
 		
 		//Generate Banner Items
 		this.menuItems = GuiMainMenu.menuItemsHomePages;
@@ -112,9 +114,9 @@ GuiPage_HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,to
 		//Generate Banner display
 		for (var index = 0; index < this.menuItems.length; index++) {
 			if (index != this.menuItems.length-1) {
-				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding'>"+this.menuItems[index].replace(/-/g, ' ').toUpperCase()+"</div>";			
+				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding'>"+this.menuItems[index].replace(/-/g, ' ')+"</div>";			
 			} else {
-				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem'>"+this.menuItems[index].replace(/-/g, ' ').toUpperCase()+"</div>";					
+				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem'>"+this.menuItems[index].replace(/-/g, ' ')+"</div>";					
 			}
 		}
 		
@@ -134,6 +136,7 @@ GuiPage_HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,to
 		//Update Selected Collection CSS 
 		var updateCounter2 = (isTop == true) ? true : false;
 		this.updateSelectedItems2(updateCounter2);
+		this.updateSelectedBannerItems();
 		
 		//Function to generate random backdrop
 		this.backdropTimeout = setTimeout(function(){
@@ -172,7 +175,7 @@ GuiPage_HomeTwoItems.updateDisplayedItems = function() {
 //Function sets CSS Properties so show which user is selected
 GuiPage_HomeTwoItems.updateSelectedItems = function (bypassCounter) {
 	Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Series Collection Selected","Series Collection",this.divprepend1,bypassCounter);
+			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"HomePagePoster Collection Selected greenBoarder","HomePagePoster Collection",this.divprepend1,bypassCounter);
 }
 
 GuiPage_HomeTwoItems.updateSelectedBannerItems = function() {
@@ -185,9 +188,17 @@ GuiPage_HomeTwoItems.updateSelectedBannerItems = function() {
 			}		
 		} else {
 			if (index != this.menuItems.length-1) {
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding";
+				if (this.menuItems[index].replace(/-/g, ' ') == "TV" ) {
+					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding offWhite";
+				} else {
+					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding";
+				}
 			} else {
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem";
+				if (this.menuItems[index].replace(/-/g, ' ') == "TV" ) {
+					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem offWhite";
+				} else {
+					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem";
+				}
 			}
 		}
 	}
@@ -413,7 +424,7 @@ GuiPage_HomeTwoItems.updateDisplayedItems2 = function() {
 //Function sets CSS Properties so show which user is selected
 GuiPage_HomeTwoItems.updateSelectedItems2 = function (bypassCounter) {
 	Support.updateSelectedNEW(this.ItemData2.Items,this.selectedItem2,this.topLeftItem2,
-			Math.min(this.topLeftItem2 + this.getMaxDisplayBottom(),this.ItemData2.Items.length),"Series Collection Selected","Series Collection",this.divprepend2,bypassCounter);
+			Math.min(this.topLeftItem2 + this.getMaxDisplayBottom(),this.ItemData2.Items.length),"HomePagePoster Collection Selected greenBoarder","HomePagePoster Collection",this.divprepend2,bypassCounter);
 }
 
 

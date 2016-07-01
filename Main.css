@@ -98,7 +98,7 @@ input[type="password"]
     left:0px;
     height:100%;
     width:100%;
-    background-color:rgba(10,10,10,0.45);
+    background-color:rgba(10,10,10,0.85);
     z-index:1;
 }
 
@@ -828,11 +828,28 @@ input[type="password"]
     overflow: hidden; 
     background-repeat: no-repeat;
     background-position:center;
+    background-size:100%;
+}
+
+.HomePagePoster {
+	width: 471px;
+    height: 265px;
+    display:inline-block;
+    position:relative; 
+    margin:0px;
+	border:2px solid rgba(0,0,0,0); 
+	border-radius: 0px;
+    white-space:nowrap;
+    text-overflow:ellipsis; 
+    overflow: hidden; 
+    background-repeat: no-repeat;
+    background-position:center;
+    background-size:100%;
 }
 
 .SeriesPortrait {
 	width: 180px;
-    height: 270px;
+    height: 265px;
     display:inline-block;
     vertical-align: middle;
     position:relative; 
@@ -840,31 +857,33 @@ input[type="password"]
     margin-bottom: 6px;
     margin-right: 6px;
     margin-left: 6px;
-    border:2px solid transparent;
-    border-radius: 10px;
+    border:2px solid rgba(0,0,0,0);
+    border-radius: 0px;
     white-space:nowrap;
     text-overflow:ellipsis; 
     overflow: hidden; 
     background-repeat: no-repeat;
     background-position:center;
+    background-size:100%;
 }
 
 .SeriesPortraitLarge {
 	width: 235px;
-    height: 350px;
+    height: 348px;
     display:inline-block;
     position:relative; 
     margin-top: 0px;
     margin-bottom: 9px;
     margin-right: 8px;
     margin-left: 8px;
-    border:2px solid transparent;
-    border-radius: 10px;
+    border:2px solid rgba(0,0,0,0);
+    border-radius: 0px;
     white-space:nowrap;
     text-overflow:ellipsis; 
     overflow: hidden; 
     background-repeat: no-repeat;
     background-position:center;
+    background-size:100%;
 }
 
 .Music {
@@ -1078,8 +1097,8 @@ input[type="password"]
 	background-color:rgba(140,140,140,1);
 }
 
-.SelectedButton {
-	background-color:rgba(140,140,140,1);
+.greenBoarder {
+	border:2px solid #27a436; 
 }
 
 /*----------------------------------------------------------------------------------------------*/
@@ -1097,7 +1116,7 @@ input[type="password"]
 .guiDisplay_Series-BannerItem{
 	display: inline-block;
 	font-size: 1.5em;
-	color:#dad9d9;
+	color:#555555;
 }
 
 .guiDisplay_Series-BannerItemPadding{

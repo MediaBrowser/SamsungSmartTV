@@ -4,7 +4,7 @@ var tvKey = new Common.API.TVKeyValue();
 	
 var Main =
 {
-		version : "v2.2.0a",
+		version : "v2.2.0c",
 		requiredServerVersion : "3.0.5211",
 		requiredDevServerVersion : "3.0.5507.2131",
 		
@@ -14,8 +14,8 @@ var Main =
 		height : 1080,
 		backdropWidth : 1920,
 		backdropHeight : 1080,
-		posterWidth : 427,
-		posterHeight : 240,
+		posterWidth : 473,
+		posterHeight : 267,
 		seriesPosterWidth : 180,
 		seriesPosterHeight : 270,
 		seriesPosterLargeWidth : 235,
@@ -221,7 +221,6 @@ Main.initKeys = function() {
 	pluginAPI.registKey(tvKey.KEY_3D); 
 	return;
 }
-
 
 Main.onUnload = function()
 {
