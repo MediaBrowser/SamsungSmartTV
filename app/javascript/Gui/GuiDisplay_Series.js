@@ -199,9 +199,9 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem,items) {
 		if (this.isAllorFolder == 0) {
 			for (var index = 0; index < this.bannerItems.length; index++) {
 				if (index != this.bannerItems.length-1) {
-					document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding'>"+this.bannerItems[index].replace(/-/g, ' ').toUpperCase()+"</div>";			
+					document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding'>"+this.bannerItems[index].replace(/-/g, ' ')+"</div>";			
 				} else {
-					document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem'>"+this.bannerItems[index].replace(/-/g, ' ').toUpperCase()+"</div>";					
+					document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem'>"+this.bannerItems[index].replace(/-/g, ' ')+"</div>";					
 				}
 			}
 		}
@@ -253,10 +253,10 @@ GuiDisplay_Series.updateSelectedItems = function () {
 	} else {
 		if (File.getUserProperty("LargerView") == true) {
 			Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-					Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"SeriesPortraitLarge Selected","SeriesPortraitLarge","",false,this.totalRecordCount);
+					Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"SeriesPortraitLarge Selected greenBoarder","SeriesPortraitLarge","",false,this.totalRecordCount);
 		} else {
 			Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-					Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"SeriesPortrait seriesSelected","SeriesPortrait","",false,this.totalRecordCount);
+					Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"SeriesPortrait seriesSelected greenBoarder","SeriesPortrait","",false,this.totalRecordCount);
 		}
 		
 	}
@@ -405,13 +405,13 @@ GuiDisplay_Series.updateSelectedBannerItems = function() {
 		} else {
 			if (index != this.bannerItems.length-1) {
 				if (this.bannerItems[index] == this.currentView) {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding blue";
+					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding offWhite";
 				} else {
 					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding";
 				}
 			} else {
 				if (this.bannerItems[index] == this.currentView) {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem blue";
+					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem offWhite";
 				} else {
 					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem";
 				}
