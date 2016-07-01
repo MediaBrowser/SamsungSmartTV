@@ -665,10 +665,12 @@ GuiPage_TvGuide.processSelectedItem = function () {
 			GuiPage_TvGuide.start("Guide",url,0,0,0,guideTime);
 			break;
 		case "Channels":
+			Support.updateURLHistory("GuiPage_TvGuide",null,null,null,null,null,null,false);
 			var url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&EnableFavoriteSorting=true&userId=" + Server.getUserID());
 			GuiDisplay_Series.start("Channels LiveTV",url,0,0);
 			break;
 		case "Recordings":
+			Support.updateURLHistory("GuiPage_TvGuide",null,null,null,null,null,null,false);
 			var url = Server.getCustomURL("/LiveTV/Recordings?SortBy=StartDate&SortOrder=Descending&StartIndex=0&fields=SortName&UserId=" + Server.getUserID());
 			GuiDisplay_Series.start("Recordings LiveTV",url,0,0);
 			break;

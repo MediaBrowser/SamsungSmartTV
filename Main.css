@@ -2020,13 +2020,15 @@ input[type="password"]
 }
 
 .tvGuideOverview {
+	display: block;
 	padding-left:10px;
 	padding-right:10px;
 	font-size:1.1em;
 	color:#aaa;
 	width:1480px;
-	max-height:110px;
-	overflow-y:hidden;
+	max-height:80px;
+	overflow:hidden;
+	text-overflow:ellipsis;
 }
 
 .tvGuideProgramScheduled {

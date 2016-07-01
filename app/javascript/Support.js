@@ -197,11 +197,12 @@ Support.processReturnURLHistory = function() {
 				GuiPage_Settings.start();
 				break;	
 			case "GuiPage_TvGuide":
+				var url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&Limit=100&EnableFavoriteSorting=true&UserId=" + Server.getUserID());
 				var guideTime = new Date();
 				var timeMsec = guideTime.getTime();
 				var startTime = timeMsec - 900000; //rewind the clock fifteen minutes.
 				guideTime.setTime(startTime);
-				GuiPage_TvGuide.start("Guide",url,selectedItem,0,topLeftItem,guideTime);
+				GuiPage_TvGuide.start("Guide",url,0,0,0,guideTime);
 				break;
 			default:
 				break;

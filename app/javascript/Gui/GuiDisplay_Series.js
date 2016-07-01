@@ -114,6 +114,7 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem,items) {
 	if (this.ItemData.Items[0].Type == "ChannelAudioItem") {
 		this.currentMediaType = "Music";
 	}
+	alert(this.currentMediaType);
 	
 	switch (this.currentMediaType) {
 	case "TV":
@@ -165,15 +166,15 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem,items) {
 		break;
 	}
 
-	//Determine if display is for all tv / movies or just a folder
-	if (!(this.currentMediaType=="Movies" || this.currentMediaType=="TV")) {
+	//Determine if display is for tv / movies or just a folder
+	if (!(this.currentMediaType=="Movies" || this.currentMediaType=="TV" || this.currentMediaType=="LiveTV")) {
 		alert ("Media Folder");
 		this.isAllorFolder = 1;
 		this.bannerItems = []; //NEEDED HERE! 
 		document.getElementById("bannerSelection").style.paddingTop="25px";
 		document.getElementById("bannerSelection").style.paddingBottom="10px";
 	} else {
-		alert ("All TV or Movies");
+		alert ("TV or Movies");
 		this.isAllorFolder = 0;
 		document.getElementById("bannerSelection").style.paddingTop="25px";
 		document.getElementById("bannerSelection").style.paddingBottom="5px";
@@ -583,14 +584,17 @@ GuiDisplay_Series.processSelectedItem = function() {
 			}		
 		break;
 		case "Channels":
+			Support.updateURLHistory("GuiDisplay_Series",this.startParams[0],this.startParams[1],null,null,0,0,false);
 			var url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&EnableFavoriteSorting=true&userId=" + Server.getUserID());
 			GuiDisplay_Series.start("Channels LiveTV",url,0,0);
 			break;
 		case "Recordings":
+			Support.updateURLHistory("GuiDisplay_Series",this.startParams[0],this.startParams[1],null,null,0,0,false);
 			var url = Server.getCustomURL("/LiveTV/Recordings?IsInProgress=false&SortBy=StartDate&SortOrder=Descending&StartIndex=0&fields=SortName&UserId=" + Server.getUserID());
 			GuiDisplay_Series.start("Recordings LiveTV",url,0,0);
 			break;
 		case "Guide":
+			Support.updateURLHistory("GuiDisplay_Series",this.startParams[0],this.startParams[1],null,null,0,0,false);
 			var url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&Limit=100&EnableFavoriteSorting=true&UserId=" + Server.getUserID());
 			var guideTime = new Date();
 			var timeMsec = guideTime.getTime();
