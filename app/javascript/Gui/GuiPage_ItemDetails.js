@@ -372,6 +372,9 @@ GuiPage_ItemDetails.updateSelectedItems = function () {
 			}
 			if (this.EpisodeData.Items){
 				this.topLeftItem2 = Math.min(Math.max(this.ItemData.IndexNumber -2,0), this.EpisodeData.Items.length -4);
+				if (this.topLeftItem2 < 0){
+					this.topLeftItem2 = 0;
+				}
 			} else {
 				this.topLeftItem2 = 0;
 			}
