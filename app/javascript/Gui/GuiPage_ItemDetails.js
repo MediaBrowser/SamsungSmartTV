@@ -1201,6 +1201,10 @@ GuiPage_ItemDetails.processMediaInfo = function(itemsArray) {
 		case "h264":
 			htmlToAdd += "<div class='mediaInfo' style=background-image:url(images/MediaInfo/codec_h264.png)></div>";
 			break;
+		case "HEVC":
+		case "h265":
+			htmlToAdd += "<div class='mediaInfo' style=background-image:url(images/MediaInfo/codec_h265.png)></div>";
+			break;
 		case "mpeg4":
 			htmlToAdd += "<div class='mediaInfo' style=background-image:url(images/MediaInfo/codec_mpeg4visual.png)></div>";
 			break;	
