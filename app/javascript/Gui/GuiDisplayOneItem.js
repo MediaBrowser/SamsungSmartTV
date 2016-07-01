@@ -39,10 +39,11 @@ GuiDisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 	//Load Data
 	this.ItemData = Server.getContent(url + "&Limit="+File.getTVProperty("ItemPaging"));
 	if (this.ItemData == null) { return; }
-
 	//Once we've browsed the channels down to a content folder we should display them using GuiDisplay_Series.
 	if (this.ItemData.TotalRecordCount >0){
-		if (this.ItemData.Items[0].Type == "ChannelVideoItem" || this.ItemData.Items[0].Type == "ChannelAudioItem") {
+		if (this.ItemData.Items[0].Type == "ChannelVideoItem" || 
+				this.ItemData.Items[0].Type == "ChannelAudioItem" || 
+				this.ItemData.Items[0].Type == "Trailer") {
 			GuiDisplay_Series.start(title,url,selectedItem,topLeftItem,this.ItemData);
 			return;
 		}	

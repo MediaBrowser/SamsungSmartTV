@@ -404,7 +404,7 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(images/album.png)><div class=menuItem>"+ title + "</div></div>";
 				}
 			//----------------------------------------------------------------------------------------------
-			} else if (Items[index].Type == "Series" || Items[index].Type == "Movie" || Items[index].Type == "BoxSet" || Items[index].Type == "ChannelVideoItem") {
+			} else if (Items[index].Type == "Series" || Items[index].Type == "Movie" || Items[index].Type == "BoxSet" || Items[index].Type == "ChannelVideoItem" || Items[index].Type == "Trailer") {
 				var title = Items[index].Name;
 				if (showBackdrop == true) {
 					if (Items[index].ImageTags.Thumb) {		
