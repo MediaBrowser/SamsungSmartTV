@@ -40,7 +40,7 @@ GuiImagePlayer_Screensaver.start = function() {
 	Support.styleSubtitles("GuiImagePlayer_ScreensaverOverlay")
 	
 	if (this.imagesToUse == "Media") {
-		var randomImageURL = Server.getItemTypeURL("&SortBy=Random&MediaTypes=Photo&Recursive=true&CollapseBoxSetItems=false&Limit=500");
+		var randomImageURL = Server.getItemTypeURL("&SortBy=Random&MediaTypes=Photo&Recursive=true&CollapseBoxSetItems=false&Limit=1000");
 		var randomImageData = Server.getContent(randomImageURL);
 		if (randomImageData == null) { return; }
 		
@@ -58,7 +58,7 @@ GuiImagePlayer_Screensaver.start = function() {
 			}
 		}
 	} else {
-		var randomImageURL = Server.getItemTypeURL("&SortBy=Random&IncludeItemTypes=Series,Movie&Recursive=true&CollapseBoxSetItems=false&Limit=500");
+		var randomImageURL = Server.getItemTypeURL("&SortBy=Random&IncludeItemTypes=Series,Movie&Recursive=true&CollapseBoxSetItems=false&Limit=1000");
 		var randomImageData = Server.getContent(randomImageURL);
 		if (randomImageData == null) { return; }
 			

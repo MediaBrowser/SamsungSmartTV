@@ -423,7 +423,7 @@ GuiPage_Settings.updateDisplayedItems = function() {
 GuiPage_Settings.updateSelectedItems = function() {
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.currentViewSettings.length); index++) {
 		if (index == this.selectedItem) {
-			document.getElementById(index).className = "guiSettingsTD GuiPage_Setting_Selected";
+			document.getElementById(index).className = "guiSettingsTD buttonSelected";
 		} else {
 			document.getElementById(index).className = "guiSettingsTD";
 		}
@@ -515,7 +515,7 @@ GuiPage_Settings.processSelectedItem = function() {
 		this.updateSelectedBannerItems();
 	} else {
 		document.getElementById(this.selectedItem).className = "guiSettingsTD GuiPage_Setting_SubSelected";
-		document.getElementById("Value"+this.selectedItem).className = "guiSettingsTD GuiPage_Setting_Changing arrowUpDown";
+		document.getElementById("Value"+this.selectedItem).className = "guiSettingsTD buttonSelected arrowUpDown";
 		
 		switch (this.currentViewSettings[this.selectedItem]) {
 		case "Default":
@@ -690,7 +690,7 @@ GuiPage_Settings.openMenu = function() {
 		GuiMainMenu.requested("GuiPage_Settings","bannerItem0","guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding BannerSelected");
 	} else {
 		document.getElementById(this.selectedItem).className = "guiSettingsTD GuiPage_Setting_UnSelected";
-		GuiMainMenu.requested("GuiPage_Settings",this.selectedItem,"guiSettingsTD GuiPage_Setting_Selected");
+		GuiMainMenu.requested("GuiPage_Settings",this.selectedItem,"guiSettingsTD buttonSelected");
 	}
 }
 
@@ -928,7 +928,7 @@ GuiPage_Settings.processSelectedSubItem = function() {
 		
 	document.getElementById("Value"+this.selectedItem).innerHTML = this.CurrentSettingValue;
 	document.getElementById("Value"+this.selectedItem).className = "guiSettingsTD GuiPage_Setting_UnSelected";
-	document.getElementById(this.selectedItem).className = "guiSettingsTD GuiPage_Setting_Selected";
+	document.getElementById(this.selectedItem).className = "guiSettingsTD buttonSelected";
 	document.getElementById("GuiPage_Settings").focus();
 }
 
@@ -983,7 +983,7 @@ GuiPage_Settings.bottomKeyDown = function() {
 			widgetAPI.blockNavigation(event);
 			document.getElementById("Value"+this.selectedItem).innerHTML = this.CurrentSettingValue;		
 			document.getElementById("Value"+this.selectedItem).className = "guiSettingsTD GuiPage_Setting_UnSelected";
-			document.getElementById(this.selectedItem).className = "guiSettingsTD GuiPage_Setting_Selected";
+			document.getElementById(this.selectedItem).className = "guiSettingsTD buttonSelected";
 
 			document.getElementById("GuiPage_Settings").focus();
 			break;	
@@ -1000,7 +1000,7 @@ GuiPage_Settings.bottomKeyDown = function() {
 			document.getElementById("Value"+this.selectedItem).className = "guiSettingsTD GuiPage_Setting_UnSelected";
 			document.getElementById(this.selectedItem).className = "guiSettingsTD GuiPage_Setting_UnSelected";
 			document.getElementById("GuiPage_Settings").focus();
-			GuiMainMenu.requested("GuiPage_Settings",this.selectedItem,"guiSettingsTD GuiPage_Setting_Selected");
+			GuiMainMenu.requested("GuiPage_Settings",this.selectedItem,"guiSettingsTD buttonSelected");
 			break;	
 		case tvKey.KEY_INFO:
 			alert ("INFO KEY");

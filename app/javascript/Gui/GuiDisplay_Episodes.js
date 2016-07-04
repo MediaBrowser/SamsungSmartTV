@@ -164,7 +164,7 @@ GuiDisplay_Episodes.updateDisplayedItems = function() {
 //Function sets CSS Properties so show which user is selected
 GuiDisplay_Episodes.updateSelectedItems = function () {
 	Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"EpisodeListSingle EpisodeListSelected","EpisodeListSingle","");
+			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"EpisodeListSingle buttonSelected","EpisodeListSingle","");
 	
 	if (this.selectedItem > -1) {
 		//Update Displayed Image
@@ -482,7 +482,7 @@ GuiDisplay_Episodes.openMenu = function() {
 		}
 		GuiMainMenu.requested("GuiDisplay_Episodes","bannerItem"+this.selectedBannerItem,"button buttonSelected");
 	} else {
-		GuiMainMenu.requested("GuiDisplay_Episodes",this.ItemData.Items[this.selectedItem].Id,"EpisodeListSingle EpisodeListSelected");
+		GuiMainMenu.requested("GuiDisplay_Episodes",this.ItemData.Items[this.selectedItem].Id,"EpisodeListSingle buttonSelected");
 	}
 }
 

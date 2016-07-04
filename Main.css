@@ -98,7 +98,7 @@ input[type="password"]
     left:0px;
     height:100%;
     width:100%;
-    background-color:rgba(10,10,10,0.85);
+    background-color:rgba(10,10,10,0.65);
     z-index:1;
 }
 
@@ -173,17 +173,6 @@ input[type="password"]
 	line-height: 60px;
 	padding-left: 80px;
 	border-bottom: 2px solid grey;
-}
-
-.menu-itemSelected {
-	position: relative;
-	left: 0px; top: 0px;
-	width: 270px;
-	height: 65px;
-	line-height: 60px;
-	padding-left: 80px;
-	border-bottom: 2px solid grey;
-	background-color:rgba(140,140,140,1);
 }
 
 .menu-icon {
@@ -708,10 +697,6 @@ input[type="password"]
     background-position:center;	
 }
 
-.EpisodeListSelected {
-	background-color:rgba(140,140,140,0.9);
-}
-
 /*----------------------------------------------------------------------------------------------*/
 
 .guiPage_Settings_Title{
@@ -739,15 +724,6 @@ input[type="password"]
 	padding:20px 0px 20px 20px;
 	width:400px;
 	border-radius:10px;
-}
-
-.GuiPage_Setting_Selected {
-	background-color:rgba(140,140,140,1);
-}
-
-.GuiPage_Setting_Changing {
-	background-color:rgba(140,140,140,1);
-	color:red;
 }
 
 .GuiPage_Setting_SubSelected {
@@ -861,7 +837,7 @@ input[type="password"]
     overflow: hidden; 
     background-repeat: no-repeat;
     background-position:center;
-    background-size:100%;
+    background-size: 100% 100%;
 }
 
 .SeriesPortraitLarge {
@@ -880,7 +856,7 @@ input[type="password"]
     overflow: hidden; 
     background-repeat: no-repeat;
     background-position:center;
-    background-size:100%;
+    background-size: 100% 100%;
 }
 
 .Music {
@@ -1089,11 +1065,11 @@ input[type="password"]
 }
 
 .buttonSelected {
-	background-color:rgba(140,140,140,1);
+	background-color:rgba(39,164,54,0.85);
 }
 
 .greenBoarder {
-	border:2px solid #27a436; 
+	border:2px solid rgba(39,164,54,1);
 }
 
 /*----------------------------------------------------------------------------------------------*/

@@ -187,7 +187,7 @@ GuiTV_Show.updateDisplayedItems = function() {
 //Function sets CSS Properties so show which user is selected
 GuiTV_Show.updateSelectedItems = function () {
 	Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"ShowListSingle EpisodeListSelected","ShowListSingle","");
+			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"ShowListSingle buttonSelected","ShowListSingle","");
 
 	//Update Displayed Image - Prevent code running on banner items with if below!
 	if (this.selectedItem >= 0) {
@@ -459,7 +459,7 @@ GuiTV_Show.openMenu = function() {
 		}
 		GuiMainMenu.requested("GuiTV_Show","bannerItem"+this.selectedBannerItem,"button buttonSelected");
 	} else {
-		GuiMainMenu.requested("GuiTV_Show",this.ItemData.Items[this.selectedItem].Id,"ShowListSingle EpisodeListSelected");
+		GuiMainMenu.requested("GuiTV_Show",this.ItemData.Items[this.selectedItem].Id,"ShowListSingle buttonSelected");
 	}
 }
 

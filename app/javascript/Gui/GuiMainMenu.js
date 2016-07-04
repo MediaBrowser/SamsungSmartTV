@@ -107,7 +107,7 @@ GuiMainMenu.requested = function(pageSelected, selectedDivId, selectedDivClass) 
 			this.selectedDivClass = selectedDivClass;
 		}
 		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("GuiPage_Setting_Changing arrowUpDown","");
-		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("EpisodeListSelected","");
+		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("buttonSelected","");
 		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("BannerSelected","");
 		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("seriesSelected","");
 		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("buttonSelected","");
@@ -129,7 +129,7 @@ GuiMainMenu.requested = function(pageSelected, selectedDivId, selectedDivClass) 
 GuiMainMenu.updateSelectedItems = function () {		
 	for (var index = 0; index < this.menuItems.length; index++){	
 		if (index == this.selectedMainMenuItem) {
-			document.getElementById(this.menuItems[index]).className = "menu-itemSelected";		
+			document.getElementById(this.menuItems[index]).className = "menu-item buttonSelected";		
 		} else {
 			document.getElementById(this.menuItems[index]).className = "menu-item";
 		}	
