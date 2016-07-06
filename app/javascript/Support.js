@@ -1148,7 +1148,7 @@ Support.processHomePageMenu = function (menuItem) {
 		var url = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&Filters=IsFavorite&fields=SortName&recursive=true");
 		GuiDisplayOneItem.start("Favourites", url,0,0);
 		break;	
-	case "Media-Folders":
+	case "Media_Folders":
 		var url = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&CollapseBoxSetItems=false&fields=SortName");	
 		GuiDisplayOneItem.start("Media Folders", url,0,0);
 		break;
@@ -1182,7 +1182,7 @@ Support.processHomePageMenu = function (menuItem) {
 			GuiPage_Photos.start("Photos",url,0,0);
 		}
 		break;
-	case "Live-TV":
+	case "Live_TV":
 		var url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&Limit=100&EnableFavoriteSorting=true&UserId=" + Server.getUserID());
 		var guideTime = new Date();
 		var timeMsec = guideTime.getTime();
@@ -1193,7 +1193,7 @@ Support.processHomePageMenu = function (menuItem) {
 		/*var url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&EnableFavoriteSorting=true&userId=" + Server.getUserID());
 		GuiDisplay_Series.start("Channels LiveTV",url,0,0);
 		break;*/
-	case "Home-Movies":
+	case "Home_Movies":
 		var homeVideosFolderId = Server.getUserViewId("homevideos");
 		if (homeVideosFolderId != null){
 			var url = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&fields=PrimaryImageAspectRatio,SortName&ParentId="+homeVideosFolderId);
@@ -1206,7 +1206,7 @@ Support.processHomePageMenu = function (menuItem) {
 	case "Settings":
 		GuiPage_Settings.start();
 		break;		
-	case "Log-Out":
+	case "Log_Out":
 		if (File.getUserProperty("ForgetSavedPassword")) {
 			File.setUserProperty("Password","");
 			File.setUserProperty("ForgetSavedPassword",false);
