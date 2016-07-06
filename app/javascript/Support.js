@@ -1133,8 +1133,10 @@ Support.processHomePageMenu = function (menuItem) {
 		} else {
 			var url1 = Support.getViewUrl(File.getUserProperty("View1"));
 			var title1 = File.getUserProperty("View1Name");
-			var url2 = Support.getViewUrl(File.getUserProperty("View2"));
-			var title2 = File.getUserProperty("View2Name");
+			if (File.getUserProperty("View2") != null) {
+				var url2 = Support.getViewUrl(File.getUserProperty("View2"));
+				var title2 = File.getUserProperty("View2Name");
+			}
 		}
 		
 		if (url2 != null) {
