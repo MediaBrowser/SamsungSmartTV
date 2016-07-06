@@ -128,7 +128,9 @@ Main.onLoad = function()
 	} else {
 		this.modelYear = pluginTV.GetProductCode(0).substring(4,5);
 	}
-
+	if (this.modelYear == "H" && pluginTV.GetProductCode(0).substring(5,6) > 6){
+		this.modelYear = "HU";
+	}
 	FileLog.write("Model Year is " + this.modelYear);
 	
 	if (phyConnection && http && gateway) {
