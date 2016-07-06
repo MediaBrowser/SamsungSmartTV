@@ -154,17 +154,9 @@ GuiPage_HomeOneItem.updateSelectedBannerItems = function() {
 			}		
 		} else {
 			if (index != this.menuItems.length-1) {
-				if (this.menuItems[index].replace(/-/g, ' ') == "TV" ) {
-					document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding offWhite";
-				} else {
-					document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding";
-				}
+				document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding";
 			} else {
-				if (this.menuItems[index].replace(/-/g, ' ') == "TV" ) {
-					document.getElementById("bannerItem"+index).className = "bannerItem offWhite";
-				} else {
-					document.getElementById("bannerItem"+index).className = "bannerItem";
-				}
+				document.getElementById("bannerItem"+index).className = "bannerItem";
 			}
 		}
 	}

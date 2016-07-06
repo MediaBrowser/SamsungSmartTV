@@ -97,7 +97,11 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem,items) {
 	
 	//Split Name - 1st Element = View, 2nd = Type
 	var titleArray = title.split(" ");
-	this.currentView = titleArray[0];
+	if (title == "All TV"){
+		this.currentView = "Series";
+	} else {
+		this.currentView = titleArray[0];
+	}
 	this.currentMediaType = titleArray[1];
 	
 	switch (titleArray[0]) {
@@ -672,7 +676,7 @@ GuiDisplay_Series.playSelectedItem = function () {
 
 GuiDisplay_Series.openMenu = function() {
 	if (this.selectedItem == -1) { //Banner menu
-		if (this.currentView == "All") {
+		if (this.currentView == "All" || this.currentView == "Series") {
 			document.getElementById("bannerItem0").class = "bannerItem bannerItemPadding offWhite";
 			GuiMainMenu.requested("GuiDisplay_Series","bannerItem0","bannerItem bannerItemPadding highlightText");
 		} else {
