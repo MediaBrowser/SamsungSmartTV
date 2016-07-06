@@ -98,7 +98,7 @@ input[type="password"]
     left:0px;
     height:100%;
     width:100%;
-    background-color:rgba(10,10,10,0.65);
+    background-color:rgba(10,10,10,0.7);
     z-index:1;
 }
 
@@ -794,30 +794,30 @@ input[type="password"]
     display:inline-block;
     position:relative; 
     margin:4px;
-	border:2px solid rgba(0,0,0,0.8); 
+	border:3px solid rgba(0,0,0,0.8); 
 	border-radius: 10px;
     white-space:nowrap;
     text-overflow:ellipsis; 
     overflow: hidden; 
     background-repeat: no-repeat;
     background-position:center;
-    background-size:100%;
+    background-size:auto 100%;
 }
 
-.HomePagePoster {
+.homePagePoster {
 	width: 471px;
     height: 265px;
     display:inline-block;
     position:relative; 
     margin:0px;
-	border:2px solid rgba(0,0,0,0); 
+	border:3px solid rgba(0,0,0,0); 
 	border-radius: 0px;
     white-space:nowrap;
     text-overflow:ellipsis; 
     overflow: hidden; 
     background-repeat: no-repeat;
     background-position:center;
-    background-size:100%;
+    background-size:auto 100%;
 }
 
 .SeriesPortrait {
@@ -830,7 +830,7 @@ input[type="password"]
     margin-bottom: 6px;
     margin-right: 6px;
     margin-left: 6px;
-    border:2px solid rgba(0,0,0,0);
+    border:3px solid rgba(0,0,0,0);
     border-radius: 0px;
     white-space:nowrap;
     text-overflow:ellipsis; 
@@ -849,7 +849,7 @@ input[type="password"]
     margin-bottom: 9px;
     margin-right: 8px;
     margin-left: 8px;
-    border:2px solid rgba(0,0,0,0);
+    border:3px solid rgba(0,0,0,0);
     border-radius: 0px;
     white-space:nowrap;
     text-overflow:ellipsis; 
@@ -1064,17 +1064,9 @@ input[type="password"]
 	border-radius:10px;
 }
 
-.buttonSelected {
-	background-color:rgba(39,164,54,0.85);
-}
-
-.greenBoarder {
-	border:2px solid rgba(39,164,54,1);
-}
-
 /*----------------------------------------------------------------------------------------------*/
 
-.guiDisplay_Series-Banner {
+.bannerMenu {
 	position: absolute;
 	padding-top:25px;
 	padding-bottom:10px;
@@ -1084,15 +1076,17 @@ input[type="password"]
 	z-index:5;
 }
 
-.guiDisplay_Series-BannerItem{
+.bannerItem{
 	display: inline-block;
 	font-size: 1.5em;
-	color:#555555;
+	color:#666666;
 }
 
-.guiDisplay_Series-BannerItemPadding{
+.bannerItemPadding{
 	padding-right:60px;
 }
+
+/*----------------------------------------------------------------------------------------------*/
 
 .guiDisplay_Series-pageContent{
 	position: absolute;
@@ -1491,6 +1485,7 @@ input[type="password"]
     height: 400px;
     background-repeat: no-repeat;
     background-position:center;
+    background-size: 100% 100%;
     z-index:5;
 }
 
@@ -2230,20 +2225,20 @@ input[type="password"]
 	color:#27a436;
 }
 
-.green {
-	color:#27a436;
-}
-
-.BannerSelected {
-	color:#27a436;
-}
-
-.blue {
-	color:#66CCFF;
-}
-
 .offWhite {
 	color:#f9f9f9;
+}
+
+.highlightBackground {
+	background-color:rgba(39,164,54,0.85);
+}
+
+.highlightText {
+	color:#27a436;
+}
+
+.greenBoarder {
+	border:3px solid rgba(39,164,54,1);
 }
 
 .musicPlaylist {

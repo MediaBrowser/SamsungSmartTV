@@ -107,10 +107,10 @@ GuiMainMenu.requested = function(pageSelected, selectedDivId, selectedDivClass) 
 			this.selectedDivClass = selectedDivClass;
 		}
 		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("GuiPage_Setting_Changing arrowUpDown","");
-		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("buttonSelected","");
-		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("BannerSelected","");
+		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("highlightBackground","");
+		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("highlightText","");
 		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("seriesSelected","");
-		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("buttonSelected","");
+		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("highlightBackground","");
 		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("Selected","");
 	}
 		
@@ -129,7 +129,7 @@ GuiMainMenu.requested = function(pageSelected, selectedDivId, selectedDivClass) 
 GuiMainMenu.updateSelectedItems = function () {		
 	for (var index = 0; index < this.menuItems.length; index++){	
 		if (index == this.selectedMainMenuItem) {
-			document.getElementById(this.menuItems[index]).className = "menu-item buttonSelected";		
+			document.getElementById(this.menuItems[index]).className = "menu-item highlightBackground";		
 		} else {
 			document.getElementById(this.menuItems[index]).className = "menu-item";
 		}	
@@ -264,7 +264,8 @@ GuiMainMenu.processReturnKey = function() {
 		if (this.pageSelected == "GuiMusicPlayer") {
 			GuiMusicPlayer.showMusicPlayer(this.selectedDivId);
 		}
-		
+		alert(this.selectedDivId);
+		alert(this.selectedDivClass);
 		//Set Page GUI elements Correct & Set Focus
 		if (this.selectedDivId != null) {
 			if (this.selectedDivClass == "UNDEFINED") {

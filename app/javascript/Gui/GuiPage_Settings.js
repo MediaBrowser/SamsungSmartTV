@@ -127,7 +127,7 @@ GuiPage_Settings.start = function(viewToDisplay) {
 	
 	document.getElementById("pageContent").className = "";
 	document.getElementById("pageContent").style.color = "white"; 
-	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div><div id='guiTV_Show_Title' class='guiPage_Settings_Title'></div>" +
+	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div><div id='guiTV_Show_Title' class='guiPage_Settings_Title'></div>" +
 		"<div id='guiPage_Settings_Settings' class='guiPage_Settings_Settings'></div>" +
 		"<div id='guiPage_Settings_Overview' class='guiPage_Settings_Overview'>" +
 			"<div id=guiPage_Settings_Overview_Title></div>" +
@@ -137,9 +137,9 @@ GuiPage_Settings.start = function(viewToDisplay) {
 	//Create Banner Items
 	for (var index = 0; index < this.bannerItems.length; index++) {
 		if (index != this.bannerItems.length-1) {
-			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding'>"+this.bannerItems[index].replace(/-/g, ' ')+"</div>";			
+			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem bannerItemPadding'>"+this.bannerItems[index].replace(/-/g, ' ')+"</div>";			
 		} else {
-			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem'>"+this.bannerItems[index].replace(/-/g, ' ')+"</div>";					
+			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem'>"+this.bannerItems[index].replace(/-/g, ' ')+"</div>";					
 		}
 	}
 
@@ -423,7 +423,7 @@ GuiPage_Settings.updateDisplayedItems = function() {
 GuiPage_Settings.updateSelectedItems = function() {
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.currentViewSettings.length); index++) {
 		if (index == this.selectedItem) {
-			document.getElementById(index).className = "guiSettingsTD buttonSelected";
+			document.getElementById(index).className = "guiSettingsTD highlightBackground";
 		} else {
 			document.getElementById(index).className = "guiSettingsTD";
 		}
@@ -441,22 +441,22 @@ GuiPage_Settings.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.bannerItems.length; index++) {
 		if (index == this.selectedBannerItem) {
 			if (index != this.bannerItems.length-1) { //Don't put padding on the last one.
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding BannerSelected";
+				document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding highlightText";
 			} else {
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem BannerSelected";
+				document.getElementById("bannerItem"+index).className = "bannerItem highlightText";
 			}		
 		} else {
 			if (index != this.bannerItems.length-1) { //Don't put padding on the last one.
 				if (index == this.currentPage) {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding offWhite";
+					document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding offWhite";
 				} else {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding";
+					document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding";
 				}
 			} else {
 				if (index == this.currentPage) {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem offWhite";
+					document.getElementById("bannerItem"+index).className = "bannerItem offWhite";
 				} else {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem";
+					document.getElementById("bannerItem"+index).className = "bannerItem";
 				}
 			}
 		}
@@ -515,7 +515,7 @@ GuiPage_Settings.processSelectedItem = function() {
 		this.updateSelectedBannerItems();
 	} else {
 		document.getElementById(this.selectedItem).className = "guiSettingsTD GuiPage_Setting_SubSelected";
-		document.getElementById("Value"+this.selectedItem).className = "guiSettingsTD buttonSelected arrowUpDown";
+		document.getElementById("Value"+this.selectedItem).className = "guiSettingsTD highlightBackground arrowUpDown";
 		
 		switch (this.currentViewSettings[this.selectedItem]) {
 		case "Default":
@@ -661,9 +661,9 @@ GuiPage_Settings.keyDown = function() {
 		case tvKey.KEY_BLUE:
 			if (this.selectedItem == -1) {		
 				if (this.selectedBannerItem == this.bannerItems.length-1) {
-					GuiMusicPlayer.showMusicPlayer("GuiPage_Settings","bannerItem"+this.selectedBannerItem,"guiDisplay_Series-BannerItem BannerSelected");
+					GuiMusicPlayer.showMusicPlayer("GuiPage_Settings","bannerItem"+this.selectedBannerItem,"bannerItem highlightText");
 				} else {
-					GuiMusicPlayer.showMusicPlayer("GuiPage_Settings","bannerItem"+this.selectedBannerItem,"guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding BannerSelected");
+					GuiMusicPlayer.showMusicPlayer("GuiPage_Settings","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlightText");
 				}
 			} else {
 				GuiMusicPlayer.showMusicPlayer("GuiPage_Settings",this.selectedItem,document.getElementById(this.selectedItem).className);
@@ -683,14 +683,14 @@ GuiPage_Settings.keyDown = function() {
 GuiPage_Settings.openMenu = function() {
 	if (this.selectedItem == -1) {
 		if (this.currentPage == 0){
-			document.getElementById("bannerItem0").className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding blue";
+			document.getElementById("bannerItem0").className = "bannerItem bannerItemPadding offWhite";
 		} else {
-			document.getElementById("bannerItem0").className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding";
+			document.getElementById("bannerItem0").className = "bannerItem bannerItemPadding";
 		}
-		GuiMainMenu.requested("GuiPage_Settings","bannerItem0","guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding BannerSelected");
+		GuiMainMenu.requested("GuiPage_Settings","bannerItem0","bannerItem bannerItemPadding highlightText");
 	} else {
 		document.getElementById(this.selectedItem).className = "guiSettingsTD GuiPage_Setting_UnSelected";
-		GuiMainMenu.requested("GuiPage_Settings",this.selectedItem,"guiSettingsTD buttonSelected");
+		GuiMainMenu.requested("GuiPage_Settings",this.selectedItem,"guiSettingsTD highlightBackground");
 	}
 }
 
@@ -928,7 +928,7 @@ GuiPage_Settings.processSelectedSubItem = function() {
 		
 	document.getElementById("Value"+this.selectedItem).innerHTML = this.CurrentSettingValue;
 	document.getElementById("Value"+this.selectedItem).className = "guiSettingsTD GuiPage_Setting_UnSelected";
-	document.getElementById(this.selectedItem).className = "guiSettingsTD buttonSelected";
+	document.getElementById(this.selectedItem).className = "guiSettingsTD highlightBackground";
 	document.getElementById("GuiPage_Settings").focus();
 }
 
@@ -983,7 +983,7 @@ GuiPage_Settings.bottomKeyDown = function() {
 			widgetAPI.blockNavigation(event);
 			document.getElementById("Value"+this.selectedItem).innerHTML = this.CurrentSettingValue;		
 			document.getElementById("Value"+this.selectedItem).className = "guiSettingsTD GuiPage_Setting_UnSelected";
-			document.getElementById(this.selectedItem).className = "guiSettingsTD buttonSelected";
+			document.getElementById(this.selectedItem).className = "guiSettingsTD highlightBackground";
 
 			document.getElementById("GuiPage_Settings").focus();
 			break;	
@@ -1000,7 +1000,7 @@ GuiPage_Settings.bottomKeyDown = function() {
 			document.getElementById("Value"+this.selectedItem).className = "guiSettingsTD GuiPage_Setting_UnSelected";
 			document.getElementById(this.selectedItem).className = "guiSettingsTD GuiPage_Setting_UnSelected";
 			document.getElementById("GuiPage_Settings").focus();
-			GuiMainMenu.requested("GuiPage_Settings",this.selectedItem,"guiSettingsTD buttonSelected");
+			GuiMainMenu.requested("GuiPage_Settings",this.selectedItem,"guiSettingsTD highlightBackground");
 			break;	
 		case tvKey.KEY_INFO:
 			alert ("INFO KEY");

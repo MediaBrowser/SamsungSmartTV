@@ -164,7 +164,7 @@ GuiDisplay_Episodes.updateDisplayedItems = function() {
 //Function sets CSS Properties so show which user is selected
 GuiDisplay_Episodes.updateSelectedItems = function () {
 	Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"EpisodeListSingle buttonSelected","EpisodeListSingle","");
+			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"EpisodeListSingle highlightBackground","EpisodeListSingle","");
 	
 	if (this.selectedItem > -1) {
 		//Update Displayed Image
@@ -260,7 +260,7 @@ GuiDisplay_Episodes.updateSelectedBannerItems = function() {
 	for (var index = 0; index < 2; index++) {	
 		if (this.selectedItem == -1) {
 			if (this.selectedBannerItem == index) {
-				document.getElementById("bannerItem"+index).className = "button buttonSelected";
+				document.getElementById("bannerItem"+index).className = "button highlightBackground";
 			} else {
 				document.getElementById("bannerItem"+index).className = "button";
 			}		
@@ -366,7 +366,7 @@ GuiDisplay_Episodes.keyDown = function() {
 			break;		
 		case tvKey.KEY_BLUE:
 			if (this.selectedItem == -1) {		
-				GuiMusicPlayer.showMusicPlayer("GuiDisplay_Episodes","bannerItem"+this.selectedBannerItem,"button buttonSelected");
+				GuiMusicPlayer.showMusicPlayer("GuiDisplay_Episodes","bannerItem"+this.selectedBannerItem,"button highlightBackground");
 			} else {
 				GuiMusicPlayer.showMusicPlayer("GuiDisplay_Episodes",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
 			}
@@ -480,9 +480,9 @@ GuiDisplay_Episodes.openMenu = function() {
 			this.selectedBannerItem = 0;
 			document.getElementById("bannerItem"+this.selectedBannerItem).className = "button";
 		}
-		GuiMainMenu.requested("GuiDisplay_Episodes","bannerItem"+this.selectedBannerItem,"button buttonSelected");
+		GuiMainMenu.requested("GuiDisplay_Episodes","bannerItem"+this.selectedBannerItem,"button highlightBackground");
 	} else {
-		GuiMainMenu.requested("GuiDisplay_Episodes",this.ItemData.Items[this.selectedItem].Id,"EpisodeListSingle buttonSelected");
+		GuiMainMenu.requested("GuiDisplay_Episodes",this.ItemData.Items[this.selectedItem].Id,"EpisodeListSingle highlightBackground");
 	}
 }
 

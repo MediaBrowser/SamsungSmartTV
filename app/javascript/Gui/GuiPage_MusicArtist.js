@@ -59,7 +59,7 @@ GuiPage_MusicArtist.start = function(title1, url1, selectedItem, topLeftItem) {
 	Support.pageLoadTimes("GuiPage_MusicArtist","RetrievedServerData",false);
 	
 	//Create pageContent
-	var htmlToAdd = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div>";
+	var htmlToAdd = "<div id=bannerSelection class='bannerMenu'></div>";
 	htmlToAdd += "<div id=Center class='SeriesCenter'>";
 	htmlToAdd += 	"<div id=Content></div>";
 	htmlToAdd += "</div>";
@@ -92,9 +92,9 @@ GuiPage_MusicArtist.start = function(title1, url1, selectedItem, topLeftItem) {
 		//Set Banner Items
 		for (var index = 0; index < this.bannerItems.length; index++) {
 			if (index != this.bannerItems.length-1) {
-				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding'>"+this.bannerItems[index].replace(/-/g, ' ')+"</div>";			
+				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem bannerItemPadding'>"+this.bannerItems[index].replace(/-/g, ' ')+"</div>";			
 			} else {
-				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem'>"+this.bannerItems[index].replace(/-/g, ' ')+"</div>";					
+				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem'>"+this.bannerItems[index].replace(/-/g, ' ')+"</div>";					
 			}
 		}
 		
@@ -266,9 +266,9 @@ GuiPage_MusicArtist.keyDown = function() {
 			//Focus the music player
 			if (this.selectedItem == -1) {		
 				if (this.selectedBannerItem == this.bannerItems.length-1) {
-					GuiMusicPlayer.showMusicPlayer("GuiPage_MusicArtist","bannerItem"+this.selectedBannerItem,"guiDisplay_Series-BannerItem BannerSelected");
+					GuiMusicPlayer.showMusicPlayer("GuiPage_MusicArtist","bannerItem"+this.selectedBannerItem,"bannerItem highlightText");
 				} else {
-					GuiMusicPlayer.showMusicPlayer("GuiPage_MusicArtist","bannerItem"+this.selectedBannerItem,"guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding BannerSelected");
+					GuiMusicPlayer.showMusicPlayer("GuiPage_MusicArtist","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlightText");
 				}
 			} else {
 				GuiMusicPlayer.showMusicPlayer("GuiPage_MusicArtist",this.divprepend1 + this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.divprepend1 + this.ItemData.Items[this.selectedItem].Id).className);
@@ -287,7 +287,7 @@ GuiPage_MusicArtist.keyDown = function() {
 GuiPage_MusicArtist.openMenu = function() {
 	if (this.selectedItem == -1) {
 		if (this.selectedBannerItem == -1) {
-			document.getElementById("bannerItem0").class = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding";
+			document.getElementById("bannerItem0").class = "bannerItem bannerItemPadding";
 		}
 		this.selectedItem = 0;
 		this.topLeftItem = 0;
@@ -531,9 +531,9 @@ GuiPage_MusicArtist.bottomKeyDown = function() {
 			//Return added here - deleted in MainMenu if user does return
 			if (this.selectedItem == -1) {		
 				if (this.selectedBannerItem != this.bannerItems.length-1) {
-					document.getElementById("bannerItem"+this.selectedBannerItem).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding";
+					document.getElementById("bannerItem"+this.selectedBannerItem).className = "bannerItem bannerItemPadding";
 				} else {
-					document.getElementById("bannerItem"+this.selectedBannerItem).className = "guiDisplay_Series-BannerItem";
+					document.getElementById("bannerItem"+this.selectedBannerItem).className = "bannerItem";
 				}
 				this.selectedItem = 0;
 				this.topLeftItem = 0;
@@ -574,22 +574,22 @@ GuiPage_MusicArtist.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.bannerItems.length; index++) {
 		if (index == this.selectedBannerItem) {
 			if (index != this.bannerItems.length-1) {
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding BannerSelected";
+				document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding highlightText";
 			} else {
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem BannerSelected";
+				document.getElementById("bannerItem"+index).className = "bannerItem highlightText";
 			}		
 		} else {
 			if (index != this.bannerItems.length-1) {
 				if (this.bannerItems[index] == this.startParams[0]) {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding offWhite";
+					document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding offWhite";
 				} else {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding";
+					document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding";
 				}
 			} else {
 				if (this.bannerItems[index] == this.startParams[0]) {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem offWhite";
+					document.getElementById("bannerItem"+index).className = "bannerItem offWhite";
 				} else {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem";
+					document.getElementById("bannerItem"+index).className = "bannerItem";
 				}
 			}
 		}

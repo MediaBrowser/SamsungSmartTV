@@ -85,7 +85,7 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem,items) {
 	Support.pageLoadTimes("GuiDisplay_Series","RetrievedServerData",false);
 	
 	//Update Padding on pageContent
-	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div>" +
+	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div>" +
 			"<div id=Center class='SeriesCenter'>" +
 				"<div id=Content></div>" +
 			"</div>" +
@@ -167,7 +167,7 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem,items) {
 	}
 
 	//Determine if display is for tv / movies or just a folder
-	if (!(this.currentMediaType=="Movies" || this.currentMediaType=="TV" || this.currentMediaType=="LiveTV")) {
+	if (!(this.currentMediaType=="Movies" || this.currentMediaType=="TV" || this.currentMediaType=="LiveTV" || this.currentMediaType=="Music")) {
 		alert ("Media Folder");
 		this.isAllorFolder = 1;
 		this.bannerItems = []; //NEEDED HERE! 
@@ -200,9 +200,9 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem,items) {
 		if (this.isAllorFolder == 0) {
 			for (var index = 0; index < this.bannerItems.length; index++) {
 				if (index != this.bannerItems.length-1) {
-					document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding'>"+this.bannerItems[index].replace(/-/g, ' ')+"</div>";			
+					document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem bannerItemPadding'>"+this.bannerItems[index].replace(/-/g, ' ')+"</div>";			
 				} else {
-					document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem'>"+this.bannerItems[index].replace(/-/g, ' ')+"</div>";					
+					document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem'>"+this.bannerItems[index].replace(/-/g, ' ')+"</div>";					
 				}
 			}
 		}
@@ -399,22 +399,22 @@ GuiDisplay_Series.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.bannerItems.length; index++) {	
 		if (index == this.selectedBannerItem) {
 			if (index != this.bannerItems.length-1) {
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding BannerSelected";
+				document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding highlightText";
 			} else {
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem BannerSelected";
+				document.getElementById("bannerItem"+index).className = "bannerItem highlightText";
 			}		
 		} else {
 			if (index != this.bannerItems.length-1) {
 				if (this.bannerItems[index] == this.currentView) {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding offWhite";
+					document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding offWhite";
 				} else {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding";
+					document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding";
 				}
 			} else {
 				if (this.bannerItems[index] == this.currentView) {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem offWhite";
+					document.getElementById("bannerItem"+index).className = "bannerItem offWhite";
 				} else {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem";
+					document.getElementById("bannerItem"+index).className = "bannerItem";
 				}
 			}
 		}
@@ -519,9 +519,9 @@ GuiDisplay_Series.keyDown = function() {
 			//Focus the music player
 			if (this.selectedItem == -1) {		
 				if (this.selectedBannerItem == this.bannerItems.length-1) {
-					GuiMusicPlayer.showMusicPlayer("GuiDisplay_Series","bannerItem"+this.selectedBannerItem,"guiDisplay_Series-BannerItem BannerSelected");
+					GuiMusicPlayer.showMusicPlayer("GuiDisplay_Series","bannerItem"+this.selectedBannerItem,"bannerItem highlightText");
 				} else {
-					GuiMusicPlayer.showMusicPlayer("GuiDisplay_Series","bannerItem"+this.selectedBannerItem,"guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding BannerSelected");
+					GuiMusicPlayer.showMusicPlayer("GuiDisplay_Series","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlightText");
 				}
 			} else {
 				GuiMusicPlayer.showMusicPlayer("GuiDisplay_Series",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
@@ -677,11 +677,11 @@ GuiDisplay_Series.playSelectedItem = function () {
 GuiDisplay_Series.openMenu = function() {
 	if (this.selectedItem == -1) { //Banner menu
 		if (this.currentView == "All") {
-			document.getElementById("bannerItem0").class = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding blue";
-			GuiMainMenu.requested("GuiDisplay_Series","bannerItem0","guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding green");
+			document.getElementById("bannerItem0").class = "bannerItem bannerItemPadding offWhite";
+			GuiMainMenu.requested("GuiDisplay_Series","bannerItem0","bannerItem bannerItemPadding highlightText");
 		} else {
-			document.getElementById("bannerItem0").class = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding";
-			GuiMainMenu.requested("GuiDisplay_Series","bannerItem0","guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding green");
+			document.getElementById("bannerItem0").class = "bannerItem bannerItemPadding";
+			GuiMainMenu.requested("GuiDisplay_Series","bannerItem0","bannerItem bannerItemPadding highlightText");
 		}
 	} else if (this.isTvOrMovies == 2) { //Music
 		Support.updateURLHistory("GuiDisplay_Series",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);

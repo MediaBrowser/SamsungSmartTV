@@ -135,7 +135,7 @@ GuiPage_Playlist.updateSelectedItems = function () {
 		//Highlight the selected global item (PlayAll, Shuffle etc.)
 		for (var index = 0; index < this.topMenuItems.length; index++) {
 			if (index == this.selectedItem2) {
-				document.getElementById(this.topMenuItems[index]).className = "guiMusic_Global buttonSelected";
+				document.getElementById(this.topMenuItems[index]).className = "guiMusic_Global highlightBackground";
 			} else {
 				document.getElementById(this.topMenuItems[index]).className = "guiMusic_Global";
 			}
@@ -151,7 +151,7 @@ GuiPage_Playlist.updateSelectedItems = function () {
 			if (index == this.selectedItem) {
 				for (var index2 = 0; index2 < this.playItems.length; index2++) {
 					if (index2 == this.selectedItem2) {
-						document.getElementById(this.playItems[index2]+this.AlbumData.Items[index].Id).className = "guiMusic_TableTd buttonSelected";
+						document.getElementById(this.playItems[index2]+this.AlbumData.Items[index].Id).className = "guiMusic_TableTd highlightBackground";
 					} else {
 						document.getElementById(this.playItems[index2]+this.AlbumData.Items[index].Id).className = "guiMusic_TableTd";
 					}
@@ -237,9 +237,9 @@ GuiPage_Playlist.keyDown = function() {
 			break;			
 		case tvKey.KEY_BLUE:	
 			if (this.selectedItem == -1) {
-				GuiMusicPlayer.showMusicPlayer("GuiPage_Playlist",this.topMenuItems[this.selectedItem2],"guiMusic_Global buttonSelected");
+				GuiMusicPlayer.showMusicPlayer("GuiPage_Playlist",this.topMenuItems[this.selectedItem2],"guiMusic_Global highlightBackground");
 			} else {
-				GuiMusicPlayer.showMusicPlayer("GuiPage_Playlist",this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"guiMusic_TableTd buttonSelected");
+				GuiMusicPlayer.showMusicPlayer("GuiPage_Playlist",this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"guiMusic_TableTd highlightBackground");
 			}
 			break;	
 		case tvKey.KEY_EXIT:
@@ -255,7 +255,7 @@ GuiPage_Playlist.openMenu = function() {
 	if (this.selectedItem == -1) {
 		GuiMainMenu.requested("GuiPage_Playlist",this.topMenuItems[this.selectedItem],"guiMusic_Global green");
 	} else {
-		GuiMainMenu.requested("GuiPage_Playlist",this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"guiMusic_TableTd buttonSelected");
+		GuiMainMenu.requested("GuiPage_Playlist",this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"guiMusic_TableTd highlightBackground");
 	}
 }
 

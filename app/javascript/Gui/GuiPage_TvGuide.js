@@ -45,7 +45,7 @@ GuiPage_TvGuide.start = function(title,url,selectedRow,selectedColumn,topChannel
 	document.getElementById("Counter").innerHTML = "";
 	
 	//Create the banner menu and program details.
-	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div>" +
+	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div>" +
 			"<div id='tvGuide' class='tvGuide'></div>" +
 			"<div id='tvGuideProgramImage' class='tvGuideProgramImage'></div>" +
 			"<div id=tvGuideProgramDetails class='tvGuideProgramDetails'>" +
@@ -220,7 +220,7 @@ GuiPage_TvGuide.updateSelectedItems = function () {
 	if (this.selectedColumn == -1) {
 		for (var rowIndex = 0; rowIndex < this.programGrid.length; rowIndex++) {
 			if (rowIndex == this.selectedRow) {
-				document.getElementById(this.Channels.Items[rowIndex + this.topChannel].Id).className = "tvGuideChannelName buttonSelected";
+				document.getElementById(this.Channels.Items[rowIndex + this.topChannel].Id).className = "tvGuideChannelName highlightBackground";
 			} else {
 				document.getElementById(this.Channels.Items[rowIndex + this.topChannel].Id).className = "tvGuideChannelName tvGuideChannelNameBg";
 			}
@@ -241,7 +241,7 @@ GuiPage_TvGuide.updateSelectedItems = function () {
 			for (var columnIndex = 0; columnIndex < this.programGrid[rowIndex].length; columnIndex++) {	
 				//alert("got here");
 				if (columnIndex == this.selectedColumn && rowIndex == this.selectedRow) {
-					document.getElementById(this.programGrid[rowIndex][columnIndex][1]).className = "tvGuideProgram buttonSelected";
+					document.getElementById(this.programGrid[rowIndex][columnIndex][1]).className = "tvGuideProgram highlightBackground";
 				} else {
 					document.getElementById(this.programGrid[rowIndex][columnIndex][1]).className = "tvGuideProgram tvGuideProgramBg";
 				}
@@ -251,22 +251,22 @@ GuiPage_TvGuide.updateSelectedItems = function () {
 	for (var index = 0; index < this.bannerItems.length; index++) {	
 		if (index == this.selectedBannerItem && this.selectedRow == -1) {
 			if (index != this.bannerItems.length-1) {
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding BannerSelected";
+				document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding highlightText";
 			} else {
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem BannerSelected";
+				document.getElementById("bannerItem"+index).className = "bannerItem highlightText";
 			}		
 		} else {
 			if (index != this.bannerItems.length-1) {
 				if (this.bannerItems[index] == this.currentView) {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding offWhite";
+					document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding offWhite";
 				} else {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding";
+					document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding";
 				}
 			} else {
 				if (this.bannerItems[index] == this.currentView) {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem offWhite";
+					document.getElementById("bannerItem"+index).className = "bannerItem offWhite";
 				} else {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem";
+					document.getElementById("bannerItem"+index).className = "bannerItem";
 				}
 			}
 		}
@@ -397,14 +397,14 @@ GuiPage_TvGuide.keyDown = function() {
 			//Focus the music player
 			if (this.selectedRow == -1) {		
 				if (this.selectedBannerItem == this.bannerItems.length-1) {
-					GuiMusicPlayer.showMusicPlayer("GuiPage_TvGuide","bannerItem"+this.selectedBannerItem,"guiDisplay_Series-BannerItem BannerSelected");
+					GuiMusicPlayer.showMusicPlayer("GuiPage_TvGuide","bannerItem"+this.selectedBannerItem,"bannerItem highlightText");
 				} else {
-					GuiMusicPlayer.showMusicPlayer("GuiPage_TvGuide","bannerItem"+this.selectedBannerItem,"guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding BannerSelected");
+					GuiMusicPlayer.showMusicPlayer("GuiPage_TvGuide","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlightText");
 				}
 			} else if (this.selectedColumn == -1) {
-				GuiMusicPlayer.showMusicPlayer("GuiPage_TvGuide",this.Channels.Items[this.selectedRow + this.topChannel].Id,"tvGuideChannelName buttonSelected");
+				GuiMusicPlayer.showMusicPlayer("GuiPage_TvGuide",this.Channels.Items[this.selectedRow + this.topChannel].Id,"tvGuideChannelName highlightBackground");
 			} else {
-				GuiMusicPlayer.showMusicPlayer("GuiPage_TvGuide",this.programGrid[this.selectedRow][this.selectedColumn][1],"tvGuideProgram buttonSelected");
+				GuiMusicPlayer.showMusicPlayer("GuiPage_TvGuide",this.programGrid[this.selectedRow][this.selectedColumn][1],"tvGuideProgram highlightBackground");
 			}
 			break;		
 		case tvKey.KEY_TOOLS:
@@ -421,11 +421,11 @@ GuiPage_TvGuide.keyDown = function() {
 
 GuiPage_TvGuide.openMenu = function() {
 	if (this.selectedRow == -1) { //Banner menu
-		document.getElementById("bannerItem0").className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding blue";
-		GuiMainMenu.requested("GuiPage_TvGuide","bannerItem0","guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding BannerSelected");
+		document.getElementById("bannerItem0").className = "bannerItem bannerItemPadding offWhite";
+		GuiMainMenu.requested("GuiPage_TvGuide","bannerItem0","bannerItem bannerItemPadding highlightText");
 	} else { //Channel column
 		document.getElementById(this.Channels.Items[this.selectedRow + this.topChannel].Id).className = "tvGuideChannelName tvGuideChannelNameBg";
-		GuiMainMenu.requested("GuiPage_TvGuide",this.Channels.Items[this.selectedRow + this.topChannel].Id,"tvGuideChannelName buttonSelected");
+		GuiMainMenu.requested("GuiPage_TvGuide",this.Channels.Items[this.selectedRow + this.topChannel].Id,"tvGuideChannelName highlightBackground");
 	}
 }
 

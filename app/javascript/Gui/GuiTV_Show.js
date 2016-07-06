@@ -187,7 +187,7 @@ GuiTV_Show.updateDisplayedItems = function() {
 //Function sets CSS Properties so show which user is selected
 GuiTV_Show.updateSelectedItems = function () {
 	Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"ShowListSingle buttonSelected","ShowListSingle","");
+			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"ShowListSingle highlightBackground","ShowListSingle","");
 
 	//Update Displayed Image - Prevent code running on banner items with if below!
 	if (this.selectedItem >= 0) {
@@ -229,7 +229,7 @@ GuiTV_Show.updateSelectedBannerItems = function() {
 	for (var index = 0; index < 2; index++) {	
 		if (this.selectedItem == -1) {
 			if (this.selectedBannerItem == index) {
-				document.getElementById("bannerItem"+index).className = "button buttonSelected";
+				document.getElementById("bannerItem"+index).className = "button highlightBackground";
 			} else {
 				document.getElementById("bannerItem"+index).className = "button";
 			}		
@@ -341,7 +341,7 @@ GuiTV_Show.keyDown = function() {
 			}
 		case tvKey.KEY_BLUE:	
 			if (this.selectedItem == -1) {		
-				GuiMusicPlayer.showMusicPlayer("GuiTV_Show","bannerItem"+this.selectedBannerItem,"button buttonSelected");
+				GuiMusicPlayer.showMusicPlayer("GuiTV_Show","bannerItem"+this.selectedBannerItem,"button highlightBackground");
 			} else {
 				GuiMusicPlayer.showMusicPlayer("GuiTV_Show",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
 			}
@@ -457,9 +457,9 @@ GuiTV_Show.openMenu = function() {
 			this.selectedBannerItem = 0;
 			document.getElementById("bannerItem"+this.selectedBannerItem).className = "button";
 		}
-		GuiMainMenu.requested("GuiTV_Show","bannerItem"+this.selectedBannerItem,"button buttonSelected");
+		GuiMainMenu.requested("GuiTV_Show","bannerItem"+this.selectedBannerItem,"button highlightBackground");
 	} else {
-		GuiMainMenu.requested("GuiTV_Show",this.ItemData.Items[this.selectedItem].Id,"ShowListSingle buttonSelected");
+		GuiMainMenu.requested("GuiTV_Show",this.ItemData.Items[this.selectedItem].Id,"ShowListSingle highlightBackground");
 	}
 }
 
