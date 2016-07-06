@@ -1851,7 +1851,6 @@ input[type="password"]
     margin-right:2px;
     margin-left:2px;
 	text-align:center;
-	background-color:rgba(82,181,75,0.9);
 	border:2px solid black;
 }
 
@@ -1866,7 +1865,6 @@ input[type="password"]
     margin-bottom:2px;
     margin-right:2px;
     margin-left:2px;
-	background-color:rgba(82,181,75,0.9);
 	border:2px solid black;
 }
 
