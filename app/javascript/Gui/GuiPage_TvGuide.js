@@ -122,21 +122,21 @@ GuiPage_TvGuide.updateDisplayedItems = function() {
 	if (finalHour >= 24){finalHour = finalHour -24;}
 	var htmlToAdd =	"<div id='tvGuideTopLine' class='tvGuideTopLine'>";
 	if (minute < 30) {
-		htmlToAdd +=	"<div id='tvGuideDay' class='tvGuideDay'>Today</div>" +
-						"<div class='tvGuideHour'>" + hour + ":00</div>" +
-						"<div class='tvGuideHour'>" + hour + ":30</div>" +
-						"<div class='tvGuideHour'>" + nextHour + ":00</div>" +
-						"<div class='tvGuideHour'>" + nextHour + ":30</div>" +
-						"<div class='tvGuideHour'>" + subsequentHour + ":00</div>" +
-						"<div class='tvGuideHour'>" + subsequentHour + ":30</div>";
+		htmlToAdd +=	"<div id='tvGuideDay' class='tvGuideDay highlightBackground'>Today</div>" +
+						"<div class='tvGuideHour highlightBackground'>" + hour + ":00</div>" +
+						"<div class='tvGuideHour highlightBackground'>" + hour + ":30</div>" +
+						"<div class='tvGuideHour highlightBackground'>" + nextHour + ":00</div>" +
+						"<div class='tvGuideHour highlightBackground'>" + nextHour + ":30</div>" +
+						"<div class='tvGuideHour highlightBackground'>" + subsequentHour + ":00</div>" +
+						"<div class='tvGuideHour highlightBackground'>" + subsequentHour + ":30</div>";
 	} else {
-		htmlToAdd +=	"<div id='tvGuideDay' class='tvGuideDay'>Today</div>" +
-						"<div class='tvGuideHour'>" + hour + ":30</div>" +
-						"<div class='tvGuideHour'>" + nextHour + ":00</div>" +
-						"<div class='tvGuideHour'>" + nextHour + ":30</div>" +
-						"<div class='tvGuideHour'>" + subsequentHour + ":00</div>" +
-						"<div class='tvGuideHour'>" + subsequentHour + ":30</div>" +
-						"<div class='tvGuideHour'>" + finalHour + ":00</div>";
+		htmlToAdd +=	"<div id='tvGuideDay' class='tvGuideDay highlightBackground'>Today</div>" +
+						"<div class='tvGuideHour highlightBackground'>" + hour + ":30</div>" +
+						"<div class='tvGuideHour highlightBackground'>" + nextHour + ":00</div>" +
+						"<div class='tvGuideHour highlightBackground'>" + nextHour + ":30</div>" +
+						"<div class='tvGuideHour highlightBackground'>" + subsequentHour + ":00</div>" +
+						"<div class='tvGuideHour highlightBackground'>" + subsequentHour + ":30</div>" +
+						"<div class='tvGuideHour highlightBackground'>" + finalHour + ":00</div>";
 	}
 	htmlToAdd +=	"</div>";
 	for (var index = 0; index < this.Channels.Items.length - this.topChannel; index++) {
