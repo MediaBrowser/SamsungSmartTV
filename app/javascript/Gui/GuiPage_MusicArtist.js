@@ -14,7 +14,8 @@ var GuiPage_MusicArtist = {
 		
 		timeout : null,
 		
-		bannerItems : ["Album","Album Artist", "Artist"],
+		bannerItems : ["Recent","Frequent","Album","Album Artist","Artist"],
+		
 		selectedBannerItem : 0,
 		
 		MAXCOLUMNCOUNT : 7,
