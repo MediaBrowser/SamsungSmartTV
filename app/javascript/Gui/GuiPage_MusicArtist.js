@@ -71,8 +71,8 @@ GuiPage_MusicArtist.start = function(title1, url1, selectedItem, topLeftItem) {
 	document.getElementById("pageContent").innerHTML = htmlToAdd;
 	
 	//Set banner Styling
-	document.getElementById("bannerSelection").style.paddingTop="20px";
-	document.getElementById("bannerSelection").style.paddingBottom="10px";
+	document.getElementById("bannerSelection").style.paddingTop="25px";
+	document.getElementById("bannerSelection").style.paddingBottom="5px";
 	
 	
 	if (this.ItemData.Items.length > 0) {
