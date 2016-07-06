@@ -43,7 +43,8 @@ GuiDisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 	if (this.ItemData.TotalRecordCount >0){
 		if (this.ItemData.Items[0].Type == "ChannelVideoItem" || 
 				this.ItemData.Items[0].Type == "ChannelAudioItem" || 
-				this.ItemData.Items[0].Type == "Trailer") {
+				this.ItemData.Items[0].Type == "Trailer" ||
+				this.ItemData.Items[0].Type == "AudioPodcast") {
 			GuiDisplay_Series.start(title,url,selectedItem,topLeftItem,this.ItemData);
 			return;
 		}	

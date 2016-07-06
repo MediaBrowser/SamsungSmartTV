@@ -1082,6 +1082,12 @@ input[type="password"]
 	color:#666666;
 }
 
+.bannerItemHome{
+	display: inline-block;
+	font-size: 1.5em;
+	color:#f9f9f9;
+}
+
 .bannerItemPadding{
 	padding-right:60px;
 }

@@ -55,7 +55,7 @@ GuiPage_TvGuide.start = function(title,url,selectedRow,selectedColumn,topChannel
 	
 	//Populate the banner menu.
 	for (var index = 0; index < this.bannerItems.length; index++) {
-		document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "'>"+this.bannerItems[index].replace(/-/g, ' ')+"</div>";
+		document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";
 	}
 	
 	//Load Data

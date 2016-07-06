@@ -26,8 +26,6 @@ GuiPage_HomeOneItem.getMaxDisplay = function() {
 
 GuiPage_HomeOneItem.onFocus = function() {
 	GuiHelper.setControlButtons("Favourite","Watched","Help",GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Exit  ");
-	this.selectedBannerItem = -1;
-	this.updateSelectedBannerItems();
 }
 	
 GuiPage_HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {	
@@ -87,9 +85,9 @@ GuiPage_HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 		//Generate Banner display
 		for (var index = 0; index < this.menuItems.length; index++) {
 			if (index != this.menuItems.length-1) {
-				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem bannerItemPadding'>"+this.menuItems[index].replace(/-/g, ' ')+"</div>";			
+				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItemHome bannerItemPadding'>"+this.menuItems[index].replace(/_/g, ' ')+"</div>";			
 			} else {
-				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem'>"+this.menuItems[index].replace(/-/g, ' ')+"</div>";					
+				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItemHome'>"+this.menuItems[index].replace(/_/g, ' ')+"</div>";					
 			}
 		}
 	
@@ -146,17 +144,17 @@ GuiPage_HomeOneItem.updateSelectedItems = function (bypassCounter) {
 
 GuiPage_HomeOneItem.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.menuItems.length; index++) {
-		if (index == this.selectedBannerItem) {
+		if (index == this.selectedBannerItem && this.selectedItem == -1) {
 			if (index != this.menuItems.length-1) {
-				document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding highlightText";
+				document.getElementById("bannerItem"+index).className = "bannerItemHome bannerItemPadding highlightText";
 			} else {
-				document.getElementById("bannerItem"+index).className = "bannerItem highlightText";
+				document.getElementById("bannerItem"+index).className = "bannerItemHome highlightText";
 			}		
 		} else {
 			if (index != this.menuItems.length-1) {
-				document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding";
+				document.getElementById("bannerItem"+index).className = "bannerItemHome bannerItemPadding offWhite";
 			} else {
-				document.getElementById("bannerItem"+index).className = "bannerItem";
+				document.getElementById("bannerItem"+index).className = "bannerItemHome offWhite";
 			}
 		}
 	}
@@ -264,9 +262,9 @@ GuiPage_HomeOneItem.keyDown = function() {
 		case tvKey.KEY_BLUE:
 			if (this.selectedItem == -1) {		
 				if (this.selectedBannerItem == this.menuItems.length-1) {
-					GuiMusicPlayer.showMusicPlayer("GuiPage_HomeOneItem","bannerItem"+this.selectedBannerItem,"bannerItem highlightText");
+					GuiMusicPlayer.showMusicPlayer("GuiPage_HomeOneItem","bannerItem"+this.selectedBannerItem,"bannerItemHome highlightText");
 				} else {
-					GuiMusicPlayer.showMusicPlayer("GuiPage_HomeOneItem","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlightText");
+					GuiMusicPlayer.showMusicPlayer("GuiPage_HomeOneItem","bannerItem"+this.selectedBannerItem,"bannerItemHome bannerItemPadding highlightText");
 				}
 			} else {
 				GuiMusicPlayer.showMusicPlayer("GuiPage_HomeOneItem",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);			
@@ -301,9 +299,9 @@ GuiPage_HomeOneItem.openMenu = function() {
 	if (this.selectedItem == -1) {
 		Support.updateURLHistory("GuiPage_HomeOneItem",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
 		if (this.selectedBannerItem == this.menuItems.length-1) {
-			GuiMainMenu.requested("GuiPage_HomeOneItem","bannerItem"+this.selectedBannerItem,"bannerItem highlightText");
+			GuiMainMenu.requested("GuiPage_HomeOneItem","bannerItem"+this.selectedBannerItem,"bannerItemHome highlightText");
 		} else {
-			GuiMainMenu.requested("GuiPage_HomeOneItem","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlightText");
+			GuiMainMenu.requested("GuiPage_HomeOneItem","bannerItem"+this.selectedBannerItem,"bannerItemHome bannerItemPadding highlightText");
 		}
 	} else {
 		Support.updateURLHistory("GuiPage_HomeOneItem",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);

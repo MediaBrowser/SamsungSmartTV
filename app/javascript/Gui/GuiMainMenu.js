@@ -45,7 +45,7 @@ GuiMainMenu.start = function() {
 	//Add menu entries
 	var htmlToAdd = "";
 	for (var index = 0; index < this.menuItems.length;index++) {
-		htmlToAdd += "<div id='" + this.menuItems[index] + "' class='menu-item'><div id='menu-Icon' class='menu-icon' style='background-image:url(images/menu/" + this.menuItems[index] + "-46x37.png)'></div>" + this.menuItems[index].replace(/-/g, ' ')+ "</div>";	
+		htmlToAdd += "<div id='" + this.menuItems[index] + "' class='menu-item'><div id='menu-Icon' class='menu-icon' style='background-image:url(images/menu/" + this.menuItems[index] + "-46x37.png)'></div>" + this.menuItems[index].replace(/_/g, ' ')+ "</div>";	
 	}	
 	document.getElementById("menuItems").innerHTML = htmlToAdd;
 	
@@ -110,7 +110,6 @@ GuiMainMenu.requested = function(pageSelected, selectedDivId, selectedDivClass) 
 		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("highlightBackground","");
 		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("highlightText","");
 		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("seriesSelected","");
-		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("highlightBackground","");
 		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("Selected","");
 	}
 		
@@ -264,8 +263,7 @@ GuiMainMenu.processReturnKey = function() {
 		if (this.pageSelected == "GuiMusicPlayer") {
 			GuiMusicPlayer.showMusicPlayer(this.selectedDivId);
 		}
-		alert(this.selectedDivId);
-		alert(this.selectedDivClass);
+
 		//Set Page GUI elements Correct & Set Focus
 		if (this.selectedDivId != null) {
 			if (this.selectedDivClass == "UNDEFINED") {

@@ -4,8 +4,8 @@ var GuiPage_MusicAZ = {
 		topLeftItem : 0,
 		
 		bannerItems : [],
-		tvBannerItems : ["All","Unwatched","Latest","Upcoming", "Genre", "A-Z"],
-		movieBannerItems : ["All","Unwatched","Latest","Genre", "A-Z"],
+		tvBannerItems : ["Series","Latest","Upcoming","Genre","A-Z"],
+		movieBannerItems : ["All","Unwatched","Latest","Genre","A-Z"],
 		musicBannerItems : ["Recent","Frequent","Album","Album Artist", "Artist"],
 		selectedBannerItem : 0,
 		
@@ -53,8 +53,8 @@ GuiPage_MusicAZ.start = function(entryView,selectedItem) {
 	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div><div id=Center class='SeriesCenter'><div id=Content style='padding-top:40px;'></div></div>";
 		
 	//Set banner Styling
-	document.getElementById("bannerSelection").style.paddingTop="20px";
-	document.getElementById("bannerSelection").style.paddingBottom="10px";
+	document.getElementById("bannerSelection").style.paddingTop="25px";
+	document.getElementById("bannerSelection").style.paddingBottom="5px";
 		
 	//Display first XX series
 	this.updateDisplayedItems();
@@ -65,9 +65,9 @@ GuiPage_MusicAZ.start = function(entryView,selectedItem) {
 	//Set Banner Items
 	for (var index = 0; index < this.bannerItems.length; index++) {
 		if (index != this.bannerItems.length-1) {
-			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem bannerItemPadding'>"+this.bannerItems[index].replace(/-/g, ' ')+"</div>";			
+			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem bannerItemPadding'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";			
 		} else {
-			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem'>"+this.bannerItems[index].replace(/-/g, ' ')+"</div>";					
+			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";					
 		}
 	}
 	
@@ -356,14 +356,13 @@ GuiPage_MusicAZ.processTopMenuEnterKey = function() {
 	if (this.selectedItem == -1) {
 		switch (this.bannerItems[this.selectedBannerItem]) {
 		case "All":		
-			if (GuiDisplay_Series.isTvOrMovies == 1) {	
-				var url = Server.getItemTypeURL("&IncludeItemTypes=Movie"+Server.getMoviesViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
-				GuiDisplay_Series.start("All Movies",url,0,0);
-			} else {
-				var url = Server.getItemTypeURL("&IncludeItemTypes=Series"+Server.getTvViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
-				GuiDisplay_Series.start("All TV",url,0,0);
-			}
-		break;
+			var url = Server.getItemTypeURL("&IncludeItemTypes=Movie"+Server.getMoviesViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
+			GuiDisplay_Series.start("All Movies",url,0,0);
+			break;
+		case "Series":
+			var url = Server.getItemTypeURL("&IncludeItemTypes=Series"+Server.getTvViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
+			GuiDisplay_Series.start("All TV",url,0,0);
+			break;
 		case "Unwatched":
 			if (GuiDisplay_Series.isTvOrMovies == 1) {	
 				var url = Server.getItemTypeURL("&IncludeItemTypes=Movie"+Server.getMoviesViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true&Filters=IsUnPlayed");
@@ -372,10 +371,10 @@ GuiPage_MusicAZ.processTopMenuEnterKey = function() {
 				var url = Server.getItemTypeURL("&IncludeItemTypes=Series"+Server.getTvViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&isPlayed=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
 				GuiDisplay_Series.start("Unwatched TV",url,0,0);
 			}
-		break;
+			break;
 		case "Upcoming":
 			GuiTV_Upcoming.start();
-		break;
+			break;
 		case "Latest":		
 			if (GuiDisplay_Series.isTvOrMovies == 1) {
 				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Movie"+Server.getMoviesViewQueryPart()+"&isPlayed=false&IsFolder=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
@@ -387,7 +386,7 @@ GuiPage_MusicAZ.processTopMenuEnterKey = function() {
 				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Audio&Limit=21&fields=SortName,Genres");
 				GuiDisplay_Series.start("Latest Music",url,0,0);
 			}			
-		break;
+			break;
 		case "Genre":
 			if (GuiDisplay_Series.isTvOrMovies == 1) {	
 				var url1 = Server.getCustomURL("/Genres?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Movie"+Server.getMoviesViewQueryPart()+"&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,ItemCounts&userId=" + Server.getUserID());
@@ -396,13 +395,13 @@ GuiPage_MusicAZ.processTopMenuEnterKey = function() {
 				var url1 = Server.getCustomURL("/Genres?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Series"+Server.getTvViewQueryPart()+"&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,ItemCounts&userId=" + Server.getUserID());
 				GuiDisplay_Series.start("Genre TV",url1,0,0);
 			}		
-		break;
+			break;
 		case "Album":	
 		case "Album Artist":	
 		case "Artist":	
 			Support.removeLatestURL(); //Staying on the same page
 			GuiPage_MusicAZ.start(this.bannerItems[this.selectedBannerItem],this.selectedItem);		
-		break;
+			break;
 		case"A-Z":
 			Support.removeLatestURL(); //Staying on the same page
 			if (GuiDisplay_Series.isTvOrMovies == 1) {

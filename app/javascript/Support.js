@@ -372,7 +372,7 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style='background-image:url(images/album.png);border:2px solid black;background-position:center;'><div class=genreItemCount>"+Items[index].RecursiveItemCount+"</div><div class=menuItem>"+ title + "</div></div>";
 				} 
 			//----------------------------------------------------------------------------------------------
-			} else if (Items[index].Type == "ChannelAudioItem"){
+			} else if (Items[index].Type == "ChannelAudioItem" || Items[index].Type == "AudioPodcast"){
 				var title = Items[index].Name;		
 				if (Items[index].ImageTags.Primary) {		
 					var imgsrc = Server.getImageURL(Items[index].Id,"Primary",224,224,Items[index].UserData.PlayCount,false,0);
@@ -980,7 +980,7 @@ Support.generateMainMenu = function() {
 			if (userViews.Items[i].CollectionType == "tvshows") {
 				name = "TV";
 			} else if (userViews.Items[i].CollectionType == "homevideos") {
-				name = "Home-Movies";
+				name = "Home_Movies";
 			} else if (userViews.Items[i].CollectionType == "boxsets") {
 				name = "Collections";
 			} else if (userViews.Items[i].CollectionType == "movies") {
@@ -1013,7 +1013,7 @@ Support.generateMainMenu = function() {
 	if (Main.isLiveTVEnabled() && hasLiveTV.IsEnabled) {
 		for (var index = 0; index < hasLiveTV.EnabledUsers.length; index++) {
 			if (Server.getUserID() == hasLiveTV.EnabledUsers[index]) {
-				menuItems.push("Live-TV");
+				menuItems.push("Live_TV");
 				liveTvAdded = true;
 				break;
 			}
@@ -1029,7 +1029,7 @@ Support.generateMainMenu = function() {
 	
 	if (hasRecordings.TotalRecordCount > 0) {
 		if (!liveTvAdded){
-			menuItems.push("Live-TV");
+			menuItems.push("Live_TV");
 		}
 	}
 	
@@ -1051,7 +1051,7 @@ Support.generateMainMenu = function() {
 	if (hasMediaFolders == null) { return; }
 		
 	if (hasMediaFolders.TotalRecordCount > 0) {
-		menuItems.push("Media-Folders");
+		menuItems.push("Media_Folders");
 	}
 
 	return menuItems;
@@ -1092,7 +1092,7 @@ Support.generateTopMenu = function() {
 	if (hasMediaFolders == null) { return; }
 		
 	if (hasMediaFolders.TotalRecordCount > 0) {
-		menuItems.push("Media-Folders");
+		menuItems.push("Media_Folders");
 	}
 
 	return menuItems;

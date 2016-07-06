@@ -40,9 +40,9 @@ GuiPage_SettingsLog.start = function() {
 	//Create Banner Items
 	for (var index = 0; index < this.bannerItems.length; index++) {
 		if (index != this.bannerItems.length-1) {
-			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem bannerItemPadding'>"+this.bannerItems[index].replace(/-/g, ' ')+"</div>";			
+			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem bannerItemPadding'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";			
 		} else {
-			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem'>"+this.bannerItems[index].replace(/-/g, ' ')+"</div>";					
+			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";					
 		}
 	}
 	
