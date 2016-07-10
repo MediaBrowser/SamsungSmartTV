@@ -495,35 +495,45 @@ Server.DELETE = function(url, item) {
 Server.testConnectionSettings = function (server,fromFile) {	
 	xmlHttp = new XMLHttpRequest();
 	if (xmlHttp) {
-		xmlHttp.open("GET", ("http://" + server + "/emby/System/Info/Public?format=json") , false); //must be false
+		xmlHttp.open("GET", "http://" + server + "/emby/System/Info/Public?format=json" , true);
 		xmlHttp.setRequestHeader("Content-Type", 'application/json');
-		xmlHttp.send(null);
-		
-	    if (xmlHttp.status != 200) {
+		xmlHttp.timeout=5000;
+		xmlHttp.ontimeout=function(){
+			GuiNotifications.setNotification("Your Emby server is taking longer than expected to respond.","Network Error",true);
+			Support.removeSplashScreen();
 	    	if (fromFile == true) {
-	    		GuiNotifications.setNotification("Please check your server is running and try again","Server Error",true);
-		    	GuiPage_Servers.start();
+	    		setTimeout(function(){
+	    			GuiPage_Servers.start();
+	    		}, 2000);
+
 	    	} else {
-	    		GuiNotifications.setNotification("Please try again","Wrong Details",true);
-	    		GuiPage_NewServer.start();
+	    		setTimeout(function(){
+	    			GuiPage_NewServer.start();
+	    		}, 2000);
 	    	}
-	    } else {
-	    	//If server ip changes all saved users and passwords are lost - seems logical
-	    	if (fromFile == false) {
-	    		var json = JSON.parse(xmlHttp.responseText);
-	    		File.saveServerToFile(json.Id,json.ServerName,server); 
-	    	}
-	       	
-	       	//Set Server.serverAddr!
-	       	Server.setServerAddr("http://" + server + "/emby");
-	       		
-	       	//Check Server Version
-	       	if (ServerVersion.checkServerVersion()) {
-	       		GuiUsers.start(true);
-	       	} else {
-	       		ServerVersion.start();
-	       	}
-	    }
+		};
+		xmlHttp.onreadystatechange = function () {
+	        if(xmlHttp.readyState === XMLHttpRequest.DONE && xmlHttp.status === 200) {
+
+		    	if (fromFile == false) {
+		    		var json = JSON.parse(xmlHttp.responseText);
+		    		File.saveServerToFile(json.Id,json.ServerName,server); 
+		    	}
+		       	
+		       	//Set Server.serverAddr!
+		       	Server.setServerAddr("http://" + server + "/emby");
+		       	
+		       	Support.removeSplashScreen();
+		       	
+		       	//Check Server Version
+		       	if (ServerVersion.checkServerVersion()) {
+		       		GuiUsers.start(true);
+		       	} else {
+		       		ServerVersion.start();
+		       	}
+	        };
+	    };
+		xmlHttp.send(null);
 	} else {
 	    alert("Failed to create XHR");
 	}

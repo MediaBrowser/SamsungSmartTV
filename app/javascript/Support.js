@@ -1117,6 +1117,14 @@ Support.getViewUrl = function(viewName) {
 	return this[viewName];
 }
 
+Support.removeSplashScreen = function () {
+	document.getElementById("splashscreen").style.opacity=0;
+	setTimeout(function(){
+		document.getElementById("splashscreen").style.visibility="hidden";
+	}, 1100);
+	FileLog.write("Ready to start. Removing the splash screen.");
+}
+
 //-----------------------------------------------------------------------------------------------------------------------------------------
 Support.processHomePageMenu = function (menuItem) {
 	switch (menuItem) {
@@ -1130,12 +1138,20 @@ Support.processHomePageMenu = function (menuItem) {
 			var title1 = "Continue Watching";
 			var url2 = Support.getViewUrl(File.getUserProperty("View1"));
 			var title2 = File.getUserProperty("View1Name");
+			FileLog.write("HV1 Title: " + title1);
+			FileLog.write("HV1 Url: " + url1);
+			FileLog.write("HV2 Title: " + title2);
+			FileLog.write("HV2 Url: " + url2);
 		} else {
 			var url1 = Support.getViewUrl(File.getUserProperty("View1"));
 			var title1 = File.getUserProperty("View1Name");
+			FileLog.write("HV1 Title: " + title1);
+			FileLog.write("HV1 Url: " + url1);
 			if (File.getUserProperty("View2") != null) {
 				var url2 = Support.getViewUrl(File.getUserProperty("View2"));
 				var title2 = File.getUserProperty("View2Name");
+				FileLog.write("HV2 Title: " + title2);
+				FileLog.write("HV2 Url: " + url2);
 			}
 		}
 		

@@ -99,20 +99,16 @@ Main.onLoad = function()
 	//Turn ON screensaver
 	pluginAPI.setOnScreenSaver();
 	FileLog.write("Screensaver enabled.");
-	
-	window.onShow = Main.initKeys();
-	FileLog.write("Key handlers initialised.");
-	
-	//Set Version Number & initialise clock
-	//document.getElementById("menuVersion").innerHTML = this.version;
 	Support.clock();
-	
+	widgetAPI.sendReadyEvent();
+	window.onShow = Main.initKeys();	
+
 	//Set DeviceID & Device Name
 	var NNaviPlugin = document.getElementById("pluginObjectNNavi");
 	var pluginNetwork = document.getElementById("pluginObjectNetwork");
 	var pluginTV = document.getElementById("pluginObjectTV");
 	FileLog.write("Plugins initialised.");
-	
+
 	var ProductType = pluginNetwork.GetActiveType();
 	FileLog.write("Product type is "+ProductType);
 	var phyConnection = pluginNetwork.CheckPhysicalConnection(ProductType); //returns -1
@@ -125,11 +121,10 @@ Main.onLoad = function()
 	//Get the model year - Used for transcoding
 	if (pluginTV.GetProductCode(0).substring(0,2) == "HT" || pluginTV.GetProductCode(0).substring(0,2) == "BD"){
 		this.modelYear = pluginTV.GetProductCode(0).substring(3,4);
+	} else if (pluginTV.GetProductCode(0).substring(4,6) == "HU") {
+		this.modelYear = "HU";
 	} else {
 		this.modelYear = pluginTV.GetProductCode(0).substring(4,5);
-	}
-	if (this.modelYear == "H" && pluginTV.GetProductCode(0).substring(5,6) > 6){
-		this.modelYear = "HU";
 	}
 	FileLog.write("Model Year is " + this.modelYear);
 	
@@ -195,9 +190,9 @@ Main.onLoad = function()
 	    	}
 	    } else if (fileJson.Servers.length == 1) {
 	    	//If 1 server auto login with that
-	    	FileLog.write("Emby server found.");
+	    	FileLog.write("Emby server name found in settings. Auto-connecting.");
 	    	File.setServerEntry(0);
-	    	Server.testConnectionSettings(fileJson.Servers[0].Path,true); 
+	    	Server.testConnectionSettings(fileJson.Servers[0].Path,true);
 	    } else {
 	    	//No Server Defined - Load GuiPage_IP
 	    	FileLog.write("No server defined. Loading the new server page.");
@@ -206,23 +201,13 @@ Main.onLoad = function()
 	} else {
 		document.getElementById("pageContent").innerHTML = "You have no network connectivity to the TV - Please check the settings on the TV";
 	}
-	widgetAPI.sendReadyEvent();
-	Support.clock();
-
-	setTimeout(function(){
-		document.getElementById("splashscreen").style.opacity=0;
-		setTimeout(function(){
-			document.getElementById("splashscreen").style.visibility="hidden";
-		}, 1100);
-		FileLog.write("Ready to start. Removing the splash screen.");
-	}, 2500);
 };
 
 Main.initKeys = function() {
 	pluginAPI.registKey(tvKey.KEY_TOOLS);
 	pluginAPI.registKey(tvKey.KEY_3D); 
-	return;
-}
+	FileLog.write("Key handlers initialised.");
+};
 
 Main.onUnload = function()
 {
