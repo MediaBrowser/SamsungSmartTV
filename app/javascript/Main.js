@@ -22,6 +22,7 @@ var Main =
 		seriesPosterLargeHeight : 350,
 		
 		forceDeleteSettings : false,
+		highlightColour : 1,
 		
 		enableMusic : true,
 		enableLiveTV : true,

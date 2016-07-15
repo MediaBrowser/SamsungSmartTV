@@ -670,11 +670,16 @@ input[type="password"]
 .ShowListSingleWatched{
 	display:inline-block;
 	float: right;
-	height:50px;
-	width:53px;
-	background-image:url('images/watched.png');
+	width:45px;
+	height:45px;
+	top:1px;
+	right:2px;
+	line-height:45px;
+	text-align:center;
+	border-radius:27px;
 	background-repeat: no-repeat;
     background-position:center;
+    background-size:100%;
 }
 
 .ShowListSingleMissing{
@@ -992,7 +997,7 @@ input[type="password"]
 	height:45px;
 	line-height:45px;
 	text-align:center;
-	background-image:url('images/itemCount.png');
+	border-radius:27px;
 	background-repeat: no-repeat;
     background-position:center;
     background-size:100%;
@@ -1013,29 +1018,18 @@ input[type="password"]
     background-size:100%;
 }
 
-.watchedItem {
-	position:absolute;
-	top:0px;
-	right:0px;
-	width:45px;
-	height:45px;
-	line-height:45px;
-	text-align:center;
-	background-image:url('images/watched.png');
-	background-repeat: no-repeat;
-    background-position:center;
-    background-size:100%;
-}
-
 .moreEpisodesWatchedItem {
 	display:inline-block;
 	float: right;
-	width:38px;
-	height:45px;
+	width:36px;
+	height:36px;
 	text-align:center;
-	background-image:url('images/watchedItemPage.png');
+	border-radius:22px;
+	border: 4px solid transparent;
+	background-clip: content-box;
 	background-repeat: no-repeat;
     background-position:center;
+    background-size:100%;
 }
 
 .moreEpisodesFavouriteItem {
@@ -1347,11 +1341,17 @@ input[type="password"]
 
 .itemPageWatched{
 	display:inline-block;
-	height:36px;
-	width:36px;
-	background-image:url('images/watchedItemPage.png');
+	width:40px;
+	height:40px;
+	line-height:40px;
+	font-size: 0.6em;
+	text-align:center;
+	border-radius:26px;
+	border: 4px solid transparent;
+	background-clip: content-box;
 	background-repeat: no-repeat;
     background-position:center;
+    background-size:100%;
 }
 
 .itemPageFavourite{
@@ -2233,16 +2233,64 @@ input[type="password"]
 	color:#f9f9f9;
 }
 
-.highlightBackground {
+.highlight1Background {
 	background-color:rgba(39,164,54,0.85);
 }
 
-.highlightText {
-	color:#27a436;
+.highlight2Background {
+	background-color:rgba(255,0,0,0.85);
 }
 
-.greenBoarder {
+.highlight3Background {
+	background-color:rgba(15,10,85,0.85);
+}
+
+.highlight4Background {
+	background-color:rgba(43,168,176,0.85);
+}
+
+.highlight5Background {
+	background-color:rgba(106,15,176,0.85);
+}
+
+.highlight1Text {
+	color:rgba(39,164,54,1);
+}
+
+.highlight2Text {
+	color:rgba(255,0,0,1);
+}
+
+.highlight3Text {
+	color:rgba(15,10,85,1);
+}
+
+.highlight4Text {
+	color:rgba(43,168,176,1);
+}
+
+.highlight5Text {
+	color:rgba(106,15,176,1);
+}
+
+.highlight1Boarder {
 	border:3px solid rgba(39,164,54,1);
+}
+
+.highlight2Boarder {
+	border:3px solid rgba(255,0,0,1);
+}
+
+.highlight3Boarder {
+	border:3px solid rgba(15,10,85,1);
+}
+
+.highlight4Boarder {
+	border:3px solid rgba(43,168,176,1);
+}
+
+.highlight5Boarder {
+	border:3px solid rgba(106,15,176,1);
 }
 
 .musicPlaylist {

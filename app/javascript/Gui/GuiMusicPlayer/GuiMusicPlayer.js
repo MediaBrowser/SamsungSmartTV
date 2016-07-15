@@ -60,10 +60,10 @@ GuiMusicPlayer.showMusicPlayer = function(playedFromPage,selectedDivId,selectedD
 				this.selectedDivClass = selectedDivClass;
 			}
 			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("GuiPage_Setting_Changing arrowUpDown","");
-			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("highlightBackground","");
-			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("highlightText","");
+			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("highlight"+Main.highlightColour+"Background","");
+			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("highlight"+Main.highlightColour+"Text","");
 			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("seriesSelected","");
-			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("highlightBackground","");
+			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("highlight"+Main.highlightColour+"Background","");
 			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("Selected","");
 		}
 		
@@ -177,10 +177,10 @@ GuiMusicPlayer.updateSelectedItem = function() {
 			document.getElementById("guiMusicPlayerNowPlaying").style.color = "#27a436";
 			break;*/
 		case 0:
-			document.getElementById("guiMusicPlayerScreenOff").className = "guiMusicPlayerScreenOff highlightBackground";
+			document.getElementById("guiMusicPlayerScreenOff").className = "guiMusicPlayerScreenOff highlight"+Main.highlightColour+"Background";
 			break;
 		default:
-			document.getElementById("guiMusicPlayerNowPlaying").className = "guiMusicPlayerNowPlaying highlightBackground";
+			document.getElementById("guiMusicPlayerNowPlaying").className = "guiMusicPlayerNowPlaying highlight"+Main.highlightColour+"Background";
 			break;
 		}
 }

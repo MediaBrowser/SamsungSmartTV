@@ -267,9 +267,9 @@ GuiPage_MusicArtist.keyDown = function() {
 			//Focus the music player
 			if (this.selectedItem == -1) {		
 				if (this.selectedBannerItem == this.bannerItems.length-1) {
-					GuiMusicPlayer.showMusicPlayer("GuiPage_MusicArtist","bannerItem"+this.selectedBannerItem,"bannerItem highlightText");
+					GuiMusicPlayer.showMusicPlayer("GuiPage_MusicArtist","bannerItem"+this.selectedBannerItem,"bannerItem highlight"+Main.highlightColour+"Text");
 				} else {
-					GuiMusicPlayer.showMusicPlayer("GuiPage_MusicArtist","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlightText");
+					GuiMusicPlayer.showMusicPlayer("GuiPage_MusicArtist","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
 				}
 			} else {
 				GuiMusicPlayer.showMusicPlayer("GuiPage_MusicArtist",this.divprepend1 + this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.divprepend1 + this.ItemData.Items[this.selectedItem].Id).className);
@@ -575,9 +575,9 @@ GuiPage_MusicArtist.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.bannerItems.length; index++) {
 		if (index == this.selectedBannerItem) {
 			if (index != this.bannerItems.length-1) {
-				document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding highlightText";
+				document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text";
 			} else {
-				document.getElementById("bannerItem"+index).className = "bannerItem highlightText";
+				document.getElementById("bannerItem"+index).className = "bannerItem highlight"+Main.highlightColour+"Text";
 			}		
 		} else {
 			if (index != this.bannerItems.length-1) {

@@ -159,9 +159,9 @@ GuiTV_Upcoming.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.bannerItems.length; index++) {	
 		if (index == this.selectedBannerItem) {
 			if (index != this.bannerItems.length-1) {
-				document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding highlightText";
+				document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text";
 			} else {
-				document.getElementById("bannerItem"+index).className = "bannerItem highlightText";
+				document.getElementById("bannerItem"+index).className = "bannerItem highlight"+Main.highlightColour+"Text";
 			}		
 		} else {
 			if (index != this.bannerItems.length-1) {
@@ -346,9 +346,9 @@ GuiTV_Upcoming.keyDown = function()
 		case tvKey.KEY_BLUE:	
 			if (this.selectedItem == -2) {		
 				if (this.selectedBannerItem == this.bannerItems.length-1) {
-					GuiMusicPlayer.showMusicPlayer("GuiTV_Upcoming","bannerItem"+this.selectedBannerItem,"bannerItem highlightText");
+					GuiMusicPlayer.showMusicPlayer("GuiTV_Upcoming","bannerItem"+this.selectedBannerItem,"bannerItem highlight"+Main.highlightColour+"Text");
 				} else {
-					GuiMusicPlayer.showMusicPlayer("GuiTV_Upcoming","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlightText");
+					GuiMusicPlayer.showMusicPlayer("GuiTV_Upcoming","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
 				}
 			} else {
 				GuiMusicPlayer.showMusicPlayer("GuiTV_Upcoming",this.divprepend1 + this.upcomingData[this.selectedDayItem][this.selectedItem].Id,document.getElementById(this.divprepend1 + this.upcomingData[this.selectedDayItem][this.selectedItem].Id).className);
@@ -370,7 +370,7 @@ GuiTV_Upcoming.openMenu = function() {
 		} else {
 			document.getElementById("bannerItem"+this.selectedBannerItem).className = "bannerItem bannerItemPadding";
 		}
-		GuiMainMenu.requested("GuiTV_Upcoming","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlightText");
+		GuiMainMenu.requested("GuiTV_Upcoming","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
 	} else {
 		Support.updateURLHistory("GuiTV_Upcoming",null,null,null,null,this.selectedItem,this.topLeftItem,true);
 		GuiMainMenu.requested("GuiTV_Upcoming",this.divprepend1 + this.upcomingData[this.selectedDayItem][this.selectedItem].Id);

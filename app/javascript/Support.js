@@ -283,7 +283,7 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 				//Add watched and favourite overlays.
 				htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style='background-image:url(" +imgsrc+ ");background-size:contain'><div class=menuProgressBar></div><div class=menuProgressBar_Current style='width:"+progress+"px;'></div>";
 				if (Items[index].UserData.Played) {
-					htmlToAdd += "<div class=genreItemCount>&#10003</div>";	
+					htmlToAdd += "<div class='genreItemCount highlight"+Main.highlightColour+"Background'>&#10003</div>";	
 				}
 				if (Items[index].UserData.IsFavorite) {
 					htmlToAdd += "<div class=favItem></div>";
@@ -322,9 +322,9 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 				}
 				if (Items[index].ImageTags.Primary) {
 					var imgsrc = (File.getUserProperty("LargerView") == true) ? Server.getImageURL(Items[index].Id,"Primary",238,356,0,false,0) : Server.getImageURL(Items[index].Id,"Primary",192,280,0,false,0); 
-					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(" +imgsrc+ ")><div class=genreItemCount>"+itemCount+"</div></div>";	
+					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(" +imgsrc+ ")><div class='genreItemCount highlight"+Main.highlightColour+"Background'>"+itemCount+"</div></div>";	
 				} else {
-					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-color:rgba(0,0,0,0.5);><div class=genreItemCount>"+itemCount+"</div></div>";
+					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-color:rgba(0,0,0,0.5);><div class='genreItemCount highlight"+Main.highlightColour+"Background'>"+itemCount+"</div></div>";
 				}
 			//----------------------------------------------------------------------------------------------
 			} else if (Items[index].Type == "Episode") {
@@ -352,7 +352,7 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 					htmlToAdd += "<div class='"+imageMissingOrUnaired+"'></div>";
 				}
 				if (Items[index].UserData.Played) {
-					htmlToAdd += "<div class=genreItemCount>&#10003</div>";	
+					htmlToAdd += "<div class='genreItemCount highlight"+Main.highlightColour+"Background'>&#10003</div>";	
 				}
 				if (Items[index].UserData.IsFavorite) {
 					htmlToAdd += "<div class=favItem></div>";
@@ -364,12 +364,12 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 				if (Items[index].ImageTags.Primary) {		
 					var imgsrc = Server.getImageURL(Items[index].Id,"Primary",224,224,Items[index].UserData.PlayCount,false,0);
 					if (Items[index].UserData.IsFavorite) {
-						htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(" +imgsrc+ ")><div class=favItem></div><div class=genreItemCount>"+Items[index].RecursiveItemCount+"</div><div class=menuItem>"+ title + "</div></div>";
+						htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(" +imgsrc+ ")><div class=favItem></div><div class='genreItemCount highlight"+Main.highlightColour+"Background'>"+Items[index].RecursiveItemCount+"</div><div class=menuItem>"+ title + "</div></div>";
 					} else {
-						htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(" +imgsrc+ ")><div class=genreItemCount>"+Items[index].RecursiveItemCount+"</div><div class=menuItem>"+ title + "</div></div>";	
+						htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(" +imgsrc+ ")><div class='genreItemCount highlight"+Main.highlightColour+"Background'>"+Items[index].RecursiveItemCount+"</div><div class=menuItem>"+ title + "</div></div>";	
 					}	
 				} else {
-					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style='background-image:url(images/album.png);border:2px solid black;background-position:center;'><div class=genreItemCount>"+Items[index].RecursiveItemCount+"</div><div class=menuItem>"+ title + "</div></div>";
+					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style='background-image:url(images/album.png);border:2px solid black;background-position:center;'><div class='genreItemCount highlight"+Main.highlightColour+"Background'>"+Items[index].RecursiveItemCount+"</div><div class=menuItem>"+ title + "</div></div>";
 				} 
 			//----------------------------------------------------------------------------------------------
 			} else if (Items[index].Type == "ChannelAudioItem" || Items[index].Type == "AudioPodcast"){
@@ -382,7 +382,7 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 						htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(" +imgsrc+ ")></div>";	
 					}	
 				} else {
-					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style='background-image:url(images/album.png);border:2px solid black;background-position:center;'><div class=genreItemCount>"+Items[index].RecursiveItemCount+"</div><div class=menuItem>"+ title + "</div></div>";
+					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style='background-image:url(images/album.png);border:2px solid black;background-position:center;'><div class='genreItemCount highlight"+Main.highlightColour+"Background'>"+Items[index].RecursiveItemCount+"</div><div class=menuItem>"+ title + "</div></div>";
 				} 
 			//----------------------------------------------------------------------------------------------
 			}  else if (Items[index].Type == "MusicArtist"){
@@ -391,9 +391,9 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 				
 				if (Items[index].ImageTags.Primary) {			
 					var imgsrc = Server.getImageURL(Items[index].Id,"Primary",250,500,0,false,0);
-					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(" +imgsrc+ ")><div class=genreItemCount>"+count+"</div><div class=menuItem>"+ title + "</div></div>";	
+					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(" +imgsrc+ ")><div class='genreItemCount highlight"+Main.highlightColour+"Background'>"+count+"</div><div class=menuItem>"+ title + "</div></div>";	
 				} else {
-					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style='background-image:url(images/artist.png);border:2px solid black;background-position:center;'><div class=genreItemCount>"+count+"</div><div class=menuItem>"+ title + "</div></div>";
+					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style='background-image:url(images/artist.png);border:2px solid black;background-position:center;'><div class='genreItemCount highlight"+Main.highlightColour+"Background'>"+count+"</div><div class=menuItem>"+ title + "</div></div>";
 				}
 			//----------------------------------------------------------------------------------------------
 			} else if (Items[index].Type == "Audio"){
@@ -430,9 +430,9 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 				}
 				//Add watched and favourite overlays.
 				if (Items[index].UserData.Played) {
-					htmlToAdd += "<div class=genreItemCount>&#10003</div>";	
+					htmlToAdd += "<div class='genreItemCount highlight"+Main.highlightColour+"Background'>&#10003</div>";	
 				} else if (Items[index].UserData.UnplayedItemCount > 0){
-					htmlToAdd += "<div class=genreItemCount>"+Items[index].UserData.UnplayedItemCount+"</div>";
+					htmlToAdd += "<div class='genreItemCount highlight"+Main.highlightColour+"Background'>"+Items[index].UserData.UnplayedItemCount+"</div>";
 				}
 				if (Items[index].UserData.IsFavorite) {
 					htmlToAdd += "<div class=favItem></div>";
@@ -460,9 +460,9 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 				}
 				//Add watched and favourite overlays.
 				if (Items[index].UserData.Played) {
-					htmlToAdd += "<div class=genreItemCount>&#10003</div>";	
+					htmlToAdd += "<div class='genreItemCount highlight"+Main.highlightColour+"Background'>&#10003</div>";	
 				} else if (Items[index].UserData.UnplayedItemCount > 0){
-					htmlToAdd += "<div class=genreItemCount>"+Items[index].UserData.UnplayedItemCount+"</div>";
+					htmlToAdd += "<div class='genreItemCount highlight"+Main.highlightColour+"Background'>"+Items[index].UserData.UnplayedItemCount+"</div>";
 				}
 				if (Items[index].UserData.IsFavorite) {
 					htmlToAdd += "<div class=favItem></div>";

@@ -151,7 +151,7 @@ GuiTV_Show.updateDisplayedItems = function() {
 			htmlToAdd += "<div id=" + this.ItemData.Items[index].Id + "><div class='ShowListSingleImage' style=background-image:url(images/ShowNoImage.png)></div><div class='ShowListSingleTitle'><div class='ShowListTextOneLine'>"+ this.ItemData.Items[index].Name + "</div></div>";
 		}
 		if (this.ItemData.Items[index].UserData.Played == true) {	
-			htmlToAdd += "<div class='ShowListSingleWatched'></div>";
+			htmlToAdd += "<div class='ShowListSingleWatched highlight"+Main.highlightColour+"Background'>&#10003</div>";
 		}
 		htmlToAdd += "</div>";
 	}
@@ -187,7 +187,7 @@ GuiTV_Show.updateDisplayedItems = function() {
 //Function sets CSS Properties so show which user is selected
 GuiTV_Show.updateSelectedItems = function () {
 	Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"ShowListSingle highlightBackground","ShowListSingle","");
+			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"ShowListSingle highlight"+Main.highlightColour+"Background","ShowListSingle","");
 
 	//Update Displayed Image - Prevent code running on banner items with if below!
 	if (this.selectedItem >= 0) {
@@ -197,9 +197,9 @@ GuiTV_Show.updateSelectedItems = function () {
 			
 				if (this.ItemData.Items[this.selectedItem].UserData.UnplayedItemCount > 0 || this.ItemData.Items[this.selectedItem].LocationType == "Virtual"){
 					//CD136 Removed - Not coded correctly
-					document.getElementById("ShowImage").innerHTML = "<div class='genreItemCount'>" + this.ItemData.Items[this.selectedItem].UserData.UnplayedItemCount + "</div>";
+					document.getElementById("ShowImage").innerHTML = "<div class='genreItemCount highlight"+Main.highlightColour+"Background'>" + this.ItemData.Items[this.selectedItem].UserData.UnplayedItemCount + "</div>";
 				} else {
-					document.getElementById("ShowImage").innerHTML = "<div class='watchedItem'></div>";
+					document.getElementById("ShowImage").innerHTML = "<div class='genreItemCount highlight"+Main.highlightColour+"Background'>&#10003</div>";
 				}			
 		}
 	
@@ -229,7 +229,7 @@ GuiTV_Show.updateSelectedBannerItems = function() {
 	for (var index = 0; index < 2; index++) {	
 		if (this.selectedItem == -1) {
 			if (this.selectedBannerItem == index) {
-				document.getElementById("bannerItem"+index).className = "button highlightBackground";
+				document.getElementById("bannerItem"+index).className = "button highlight"+Main.highlightColour+"Background";
 			} else {
 				document.getElementById("bannerItem"+index).className = "button";
 			}		
@@ -341,7 +341,7 @@ GuiTV_Show.keyDown = function() {
 			}
 		case tvKey.KEY_BLUE:	
 			if (this.selectedItem == -1) {		
-				GuiMusicPlayer.showMusicPlayer("GuiTV_Show","bannerItem"+this.selectedBannerItem,"button highlightBackground");
+				GuiMusicPlayer.showMusicPlayer("GuiTV_Show","bannerItem"+this.selectedBannerItem,"button highlight"+Main.highlightColour+"Background");
 			} else {
 				GuiMusicPlayer.showMusicPlayer("GuiTV_Show",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
 			}
@@ -457,9 +457,9 @@ GuiTV_Show.openMenu = function() {
 			this.selectedBannerItem = 0;
 			document.getElementById("bannerItem"+this.selectedBannerItem).className = "button";
 		}
-		GuiMainMenu.requested("GuiTV_Show","bannerItem"+this.selectedBannerItem,"button highlightBackground");
+		GuiMainMenu.requested("GuiTV_Show","bannerItem"+this.selectedBannerItem,"button highlight"+Main.highlightColour+"Background");
 	} else {
-		GuiMainMenu.requested("GuiTV_Show",this.ItemData.Items[this.selectedItem].Id,"ShowListSingle highlightBackground");
+		GuiMainMenu.requested("GuiTV_Show",this.ItemData.Items[this.selectedItem].Id,"ShowListSingle highlight"+Main.highlightColour+"Background");
 	}
 }
 

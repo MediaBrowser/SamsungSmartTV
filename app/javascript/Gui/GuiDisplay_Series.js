@@ -258,10 +258,10 @@ GuiDisplay_Series.updateSelectedItems = function () {
 	} else {
 		if (File.getUserProperty("LargerView") == true) {
 			Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-					Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"SeriesPortraitLarge Selected greenBoarder","SeriesPortraitLarge","",false,this.totalRecordCount);
+					Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"SeriesPortraitLarge Selected highlight"+Main.highlightColour+"Boarder","SeriesPortraitLarge","",false,this.totalRecordCount);
 		} else {
 			Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-					Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"SeriesPortrait seriesSelected greenBoarder","SeriesPortrait","",false,this.totalRecordCount);
+					Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"SeriesPortrait seriesSelected highlight"+Main.highlightColour+"Boarder","SeriesPortrait","",false,this.totalRecordCount);
 		}
 		
 	}
@@ -403,9 +403,9 @@ GuiDisplay_Series.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.bannerItems.length; index++) {	
 		if (index == this.selectedBannerItem) {
 			if (index != this.bannerItems.length-1) {
-				document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding highlightText";
+				document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text";
 			} else {
-				document.getElementById("bannerItem"+index).className = "bannerItem highlightText";
+				document.getElementById("bannerItem"+index).className = "bannerItem highlight"+Main.highlightColour+"Text";
 			}		
 		} else {
 			if (index != this.bannerItems.length-1) {
@@ -523,9 +523,9 @@ GuiDisplay_Series.keyDown = function() {
 			//Focus the music player
 			if (this.selectedItem == -1) {		
 				if (this.selectedBannerItem == this.bannerItems.length-1) {
-					GuiMusicPlayer.showMusicPlayer("GuiDisplay_Series","bannerItem"+this.selectedBannerItem,"bannerItem highlightText");
+					GuiMusicPlayer.showMusicPlayer("GuiDisplay_Series","bannerItem"+this.selectedBannerItem,"bannerItem highlight"+Main.highlightColour+"Text");
 				} else {
-					GuiMusicPlayer.showMusicPlayer("GuiDisplay_Series","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlightText");
+					GuiMusicPlayer.showMusicPlayer("GuiDisplay_Series","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
 				}
 			} else {
 				GuiMusicPlayer.showMusicPlayer("GuiDisplay_Series",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
@@ -678,10 +678,10 @@ GuiDisplay_Series.openMenu = function() {
 	if (this.selectedItem == -1) { //Banner menu
 		if (this.currentView == "All" || this.currentView == "Series") {
 			document.getElementById("bannerItem0").class = "bannerItem bannerItemPadding offWhite";
-			GuiMainMenu.requested("GuiDisplay_Series","bannerItem0","bannerItem bannerItemPadding highlightText");
+			GuiMainMenu.requested("GuiDisplay_Series","bannerItem0","bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
 		} else {
 			document.getElementById("bannerItem0").class = "bannerItem bannerItemPadding";
-			GuiMainMenu.requested("GuiDisplay_Series","bannerItem0","bannerItem bannerItemPadding highlightText");
+			GuiMainMenu.requested("GuiDisplay_Series","bannerItem0","bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
 		}
 	} else if (this.isTvOrMovies == 2) { //Music
 		Support.updateURLHistory("GuiDisplay_Series",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);

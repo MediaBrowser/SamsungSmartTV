@@ -110,7 +110,7 @@ GuiPage_CastMember.updateDisplayedItems = function() {
 GuiPage_CastMember.updateSelectedItems = function () {
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length); index++){	
 		if (index == this.selectedItem) {
-			document.getElementById(this.ItemData.Items[index].Id).className = "GuiPage_CastMember_ListSingle highlightBackground";
+			document.getElementById(this.ItemData.Items[index].Id).className = "GuiPage_CastMember_ListSingle highlight"+Main.highlightColour+"Background";
 			//Set Background based on Type:
 			switch (this.ItemData.Items[index].Type) {
 			case "Episode":
@@ -208,7 +208,7 @@ GuiPage_CastMember.keyDown = function()
 			widgetAPI.blockNavigation(event);
 			Support.updateURLHistory("GuiPage_CastMember",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
 			document.getElementById(this.ItemData.Items[this.selectedItem].Id).className = "SeasonTitle";
-			GuiMainMenu.requested("GuiPage_CastMember",this.ItemData.Items[this.selectedItem].Id,"EpisodeListSingle highlightBackground");
+			GuiMainMenu.requested("GuiPage_CastMember",this.ItemData.Items[this.selectedItem].Id,"EpisodeListSingle highlight"+Main.highlightColour+"Background");
 			break;	
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY");

@@ -111,10 +111,10 @@ GuiDisplayOneItem.updateSelectedItems = function () {
 	if (this.MAXCOLUMNCOUNT == 3) {
 		//Add Collections Class to add more margin
 		Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-				Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Series Collection Selected","Series Collection","");
+				Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Series Collection Selected highlight"+Main.highlightColour+"Boarder","Series Collection","");
 	} else {
 		Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-				Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Series Selected","Series","");
+				Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Series Selected highlight"+Main.highlightColour+"Boarder","Series","");
 	}
 }
 

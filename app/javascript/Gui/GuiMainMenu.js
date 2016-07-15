@@ -81,9 +81,11 @@ GuiMainMenu.start = function() {
 		}
 	}
 
-
 	//Initialise view URL's
 	Support.initViewUrls();
+	
+	//Set the page highlight colour
+	Main.highlightColour = File.getUserProperty("HighlightColour");
 	
 	//Load Home Page
 	Support.processHomePageMenu("Home");
@@ -107,8 +109,8 @@ GuiMainMenu.requested = function(pageSelected, selectedDivId, selectedDivClass) 
 			this.selectedDivClass = selectedDivClass;
 		}
 		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("GuiPage_Setting_Changing arrowUpDown","");
-		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("highlightBackground","");
-		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("highlightText","");
+		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("highlight"+Main.highlightColour+"Background","");
+		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("highlight"+Main.highlightColour+"Text","");
 		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("seriesSelected","");
 		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("Selected","");
 	}
@@ -128,7 +130,7 @@ GuiMainMenu.requested = function(pageSelected, selectedDivId, selectedDivClass) 
 GuiMainMenu.updateSelectedItems = function () {		
 	for (var index = 0; index < this.menuItems.length; index++){	
 		if (index == this.selectedMainMenuItem) {
-			document.getElementById(this.menuItems[index]).className = "menu-item highlightBackground";		
+			document.getElementById(this.menuItems[index]).className = "menu-item highlight"+Main.highlightColour+"Background";		
 		} else {
 			document.getElementById(this.menuItems[index]).className = "menu-item";
 		}	

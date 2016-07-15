@@ -137,7 +137,7 @@ GuiDisplay_Episodes.updateDisplayedItems = function() {
 			htmlToAdd += "<div class='ShowListSingleFav'></div>";
 		}
 		if (this.ItemData.Items[index].UserData.Played == true) {
-			htmlToAdd += "<div class='ShowListSingleWatched'></div>";
+			htmlToAdd += "<div class='ShowListSingleWatched highlight"+Main.highlightColour+"Background'>&#10003</div>";
 		}
 		if (this.ItemData.Items[index].LocationType == "Virtual"){
 			imageMissingOrUnaired = (Support.FutureDate(this.ItemData.Items[index].PremiereDate) == true) ? "ShowListSingleUnaired" : "ShowListSingleMissing";
@@ -164,7 +164,7 @@ GuiDisplay_Episodes.updateDisplayedItems = function() {
 //Function sets CSS Properties so show which user is selected
 GuiDisplay_Episodes.updateSelectedItems = function () {
 	Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"EpisodeListSingle highlightBackground","EpisodeListSingle","");
+			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"EpisodeListSingle highlight"+Main.highlightColour+"Background","EpisodeListSingle","");
 	
 	if (this.selectedItem > -1) {
 		//Update Displayed Image
@@ -260,7 +260,7 @@ GuiDisplay_Episodes.updateSelectedBannerItems = function() {
 	for (var index = 0; index < 2; index++) {	
 		if (this.selectedItem == -1) {
 			if (this.selectedBannerItem == index) {
-				document.getElementById("bannerItem"+index).className = "button highlightBackground";
+				document.getElementById("bannerItem"+index).className = "button highlight"+Main.highlightColour+"Background";
 			} else {
 				document.getElementById("bannerItem"+index).className = "button";
 			}		
@@ -366,7 +366,7 @@ GuiDisplay_Episodes.keyDown = function() {
 			break;		
 		case tvKey.KEY_BLUE:
 			if (this.selectedItem == -1) {		
-				GuiMusicPlayer.showMusicPlayer("GuiDisplay_Episodes","bannerItem"+this.selectedBannerItem,"button highlightBackground");
+				GuiMusicPlayer.showMusicPlayer("GuiDisplay_Episodes","bannerItem"+this.selectedBannerItem,"button highlight"+Main.highlightColour+"Background");
 			} else {
 				GuiMusicPlayer.showMusicPlayer("GuiDisplay_Episodes",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
 			}
@@ -480,9 +480,9 @@ GuiDisplay_Episodes.openMenu = function() {
 			this.selectedBannerItem = 0;
 			document.getElementById("bannerItem"+this.selectedBannerItem).className = "button";
 		}
-		GuiMainMenu.requested("GuiDisplay_Episodes","bannerItem"+this.selectedBannerItem,"button highlightBackground");
+		GuiMainMenu.requested("GuiDisplay_Episodes","bannerItem"+this.selectedBannerItem,"button highlight"+Main.highlightColour+"Background");
 	} else {
-		GuiMainMenu.requested("GuiDisplay_Episodes",this.ItemData.Items[this.selectedItem].Id,"EpisodeListSingle highlightBackground");
+		GuiMainMenu.requested("GuiDisplay_Episodes",this.ItemData.Items[this.selectedItem].Id,"EpisodeListSingle highlight"+Main.highlightColour+"Background");
 	}
 }
 

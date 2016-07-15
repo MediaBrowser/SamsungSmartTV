@@ -173,16 +173,16 @@ GuiPage_HomeTwoItems.updateDisplayedItems = function() {
 //Function sets CSS Properties so show which user is selected
 GuiPage_HomeTwoItems.updateSelectedItems = function (bypassCounter) {
 	Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"homePagePoster Collection Selected greenBoarder","homePagePoster Collection",this.divprepend1,bypassCounter);
+			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"homePagePoster Collection Selected highlight"+Main.highlightColour+"Boarder","homePagePoster Collection",this.divprepend1,bypassCounter);
 }
 
 GuiPage_HomeTwoItems.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.menuItems.length; index++) {
 		if (index == this.selectedBannerItem && this.selectedItem == -2) {
 			if (index != this.menuItems.length-1) {
-				document.getElementById("bannerItem"+index).className = "bannerItemHome bannerItemPadding highlightText";
+				document.getElementById("bannerItem"+index).className = "bannerItemHome bannerItemPadding highlight"+Main.highlightColour+"Text";
 			} else {
-				document.getElementById("bannerItem"+index).className = "bannerItemHome highlightText";
+				document.getElementById("bannerItem"+index).className = "bannerItemHome highlight"+Main.highlightColour+"Text";
 			}		
 		} else {
 			if (index != this.menuItems.length-1) {
@@ -346,9 +346,9 @@ GuiPage_HomeTwoItems.keyDown = function()
 		case tvKey.KEY_BLUE:
 			if (this.selectedItem == -2) {		
 				if (this.selectedBannerItem == this.menuItems.length-1) {
-					GuiMusicPlayer.showMusicPlayer("GuiPage_HomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome highlightText");
+					GuiMusicPlayer.showMusicPlayer("GuiPage_HomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome highlight"+Main.highlightColour+"Text");
 				} else {
-					GuiMusicPlayer.showMusicPlayer("GuiPage_HomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome bannerItemPadding highlightText");
+					GuiMusicPlayer.showMusicPlayer("GuiPage_HomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome bannerItemPadding highlight"+Main.highlightColour+"Text");
 				}
 			} else {
 				GuiMusicPlayer.showMusicPlayer("GuiPage_HomeTwoItems",this.divprepend1 + this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.divprepend1 + this.ItemData.Items[this.selectedItem].Id).className);			
@@ -365,9 +365,9 @@ GuiPage_HomeTwoItems.openMenu = function() {
 	if (this.selectedItem == -2) {		
 		Support.updateURLHistory("GuiPage_HomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem,this.topLeftItem,true);
 		if (this.selectedBannerItem == this.menuItems.length-1) {
-			GuiMainMenu.requested("GuiPage_HomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome highlightText");
+			GuiMainMenu.requested("GuiPage_HomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome highlight"+Main.highlightColour+"Text");
 		} else {
-			GuiMainMenu.requested("GuiPage_HomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome bannerItemPadding highlightText");
+			GuiMainMenu.requested("GuiPage_HomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome bannerItemPadding highlight"+Main.highlightColour+"Text");
 		}
 	} else {
 		Support.updateURLHistory("GuiPage_HomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem,this.topLeftItem,true);
@@ -414,7 +414,7 @@ GuiPage_HomeTwoItems.updateDisplayedItems2 = function() {
 //Function sets CSS Properties so show which user is selected
 GuiPage_HomeTwoItems.updateSelectedItems2 = function (bypassCounter) {
 	Support.updateSelectedNEW(this.ItemData2.Items,this.selectedItem2,this.topLeftItem2,
-			Math.min(this.topLeftItem2 + this.getMaxDisplayBottom(),this.ItemData2.Items.length),"homePagePoster Collection Selected greenBoarder","homePagePoster Collection",this.divprepend2,bypassCounter);
+			Math.min(this.topLeftItem2 + this.getMaxDisplayBottom(),this.ItemData2.Items.length),"homePagePoster Collection Selected highlight"+Main.highlightColour+"Boarder","homePagePoster Collection",this.divprepend2,bypassCounter);
 }
 
 
