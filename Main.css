@@ -2238,18 +2238,22 @@ input[type="password"]
 }
 
 .highlight2Background {
-	background-color:rgba(255,0,0,0.85);
+	background-color:rgba(140,140,140,0.85);
 }
 
 .highlight3Background {
-	background-color:rgba(15,10,85,0.85);
+	background-color:rgba(255,0,0,0.85);
 }
 
 .highlight4Background {
-	background-color:rgba(43,168,176,0.85);
+	background-color:rgba(15,10,85,0.85);
 }
 
 .highlight5Background {
+	background-color:rgba(43,168,176,0.85);
+}
+
+.highlight6Background {
 	background-color:rgba(106,15,176,0.85);
 }
 
@@ -2258,18 +2262,22 @@ input[type="password"]
 }
 
 .highlight2Text {
-	color:rgba(255,0,0,1);
+	color:rgba(140,140,140,1);
 }
 
 .highlight3Text {
-	color:rgba(15,10,85,1);
+	color:rgba(255,0,0,1);
 }
 
 .highlight4Text {
-	color:rgba(43,168,176,1);
+	color:rgba(15,10,85,1);
 }
 
 .highlight5Text {
+	color:rgba(43,168,176,1);
+}
+
+.highlight6Text {
 	color:rgba(106,15,176,1);
 }
 
@@ -2278,18 +2286,22 @@ input[type="password"]
 }
 
 .highlight2Boarder {
-	border:3px solid rgba(255,0,0,1);
+	border:3px solid rgba(140,140,140,1);
 }
 
 .highlight3Boarder {
-	border:3px solid rgba(15,10,85,1);
+	border:3px solid rgba(255,0,0,1);
 }
 
 .highlight4Boarder {
-	border:3px solid rgba(43,168,176,1);
+	border:3px solid rgba(15,10,85,1);
 }
 
 .highlight5Boarder {
+	border:3px solid rgba(43,168,176,1);
+}
+
+.highlight6Boarder {
 	border:3px solid rgba(106,15,176,1);
 }
 

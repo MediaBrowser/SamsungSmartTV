@@ -80,8 +80,8 @@ var GuiPage_Settings = {
 		ModelOverrideOptions : ["None","SEK-1000","SEK-2000","SEK-2500"],
 		ModelOverrideValues : ["None","SEK1000","SEK2000","SEK2500"],
 
-		HighlightColourOptions : ["Green","Red","Navy","Aqua","Purple"],
-		HighlightColourValues : [1,2,3,4,5]
+		HighlightColourOptions : ["Green","Silver","Red","Navy","Aqua","Purple"],
+		HighlightColourValues : [1,2,3,4,5,6]
 }
 
 GuiPage_Settings.onFocus = function() {
@@ -1059,7 +1059,7 @@ GuiPage_Settings.setOverview = function() {
 		case "HighlightColour":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Highlight colour";
 			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Sets the background and boarder colour of selected items." +
-					"<br><br>Available Choices:<br>&nbsp;<ul style='padding-left:22px'><li>Green</li><li>Red</li><li>Navy</li><li>Aqua</li><li>Purple</li></ul>";
+					"<br><br>Available Choices:<br>&nbsp;<ul style='padding-left:22px'><li>Green</li><li>Silver</li><li>Red</li><li>Navy</li><li>Aqua</li><li>Purple</li></ul>";
 			break;	
 		case "MusicView":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Default Music view";
