@@ -45,7 +45,7 @@ GuiDisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 				this.ItemData.Items[0].Type == "ChannelAudioItem" || 
 				this.ItemData.Items[0].Type == "Trailer" ||
 				this.ItemData.Items[0].Type == "AudioPodcast") {
-			GuiDisplay_Series.start(title,url,selectedItem,topLeftItem,this.ItemData);
+			GuiDisplay_Series.start("All "+this.ItemData.Items[0].Type,url,selectedItem,topLeftItem,this.ItemData);
 			return;
 		}	
 	}

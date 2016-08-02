@@ -34,6 +34,8 @@ var GuiDisplay_Series = {
 GuiDisplay_Series.onFocus = function() {
 	switch (this.currentMediaType) {
 	case "Movies":
+	case "TV":
+	case "Trailer":
 		GuiHelper.setControlButtons("Favourite","Watched","Next Index",GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
 	break;
 	case "LiveTV":
@@ -627,6 +629,7 @@ GuiDisplay_Series.toggleWatchedStatus = function () {
 		var titleArray = this.startParams[0].split(" ");
 		switch (titleArray[1]) {
 		case "Movies":
+		case "Trailer":
 			if (this.ItemData.Items[this.selectedItem].UserData.Played == true) {
 				Server.deleteWatchedStatus(this.ItemData.Items[this.selectedItem].Id);
 				this.ItemData.Items[this.selectedItem].UserData.Played = false;
@@ -634,38 +637,30 @@ GuiDisplay_Series.toggleWatchedStatus = function () {
 				Server.setWatchedStatus(this.ItemData.Items[this.selectedItem].Id);
 				this.ItemData.Items[this.selectedItem].UserData.Played = true;
 			}
-			setTimeout(function(){
-				GuiDisplay_Series.updateDisplayedItems();
-				GuiDisplay_Series.updateSelectedItems();
-			}, 250);
+			GuiDisplay_Series.updateDisplayedItems();
+			GuiDisplay_Series.updateSelectedItems();
 			break;
-	/*	case "TV": //Mark all episodes of all seasons as watched (disabled)
+		case "TV": //Mark all episodes of all seasons as watched
 			if (this.ItemData.Items[this.selectedItem].UserData.Played == true) {
+				Server.deleteWatchedStatus(this.ItemData.Items[this.selectedItem].Id);
 				var urlSeasons = Server.getChildItemsURL(this.ItemData.Items[this.selectedItem].Id,"&IncludeItemTypes=Season&fields=SortName");
 				var seasons = Server.getContent(urlSeasons);
 				for (var s = 0; s < seasons.Items.length; s++){
-					var urlEpisodes = Server.getChildItemsURL(seasons.Items[s].Id,"&IncludeItemTypes=Episode&fields=SortName,Overview");
-					var episodes = Server.getContent(urlEpisodes);
-					for (var e = 0; e < episodes.Items.length; e++){
-						Server.deleteWatchedStatus(episodes.Items[e].Id);
-					}
+					Server.deleteWatchedStatus(seasons.Items[s].Id);
 				}
+				this.ItemData.Items[this.selectedItem].UserData.Played = false;
 			} else {
+				Server.setWatchedStatus(this.ItemData.Items[this.selectedItem].Id);
 				var urlSeasons = Server.getChildItemsURL(this.ItemData.Items[this.selectedItem].Id,"&IncludeItemTypes=Season&fields=SortName");
 				var seasons = Server.getContent(urlSeasons);
 				for (var s = 0; s < seasons.Items.length; s++){
-					var urlEpisodes = Server.getChildItemsURL(seasons.Items[s].Id,"&IncludeItemTypes=Episode&fields=SortName,Overview");
-					var episodes = Server.getContent(urlEpisodes);
-					for (var e = 0; e < episodes.Items.length; e++){
-						Server.setWatchedStatus(episodes.Items[e].Id);
-					}
+					Server.setWatchedStatus(seasons.Items[s].Id);
 				}
+				this.ItemData.Items[this.selectedItem].UserData.Played = true;
 			}
-			setTimeout(function(){
-				GuiDisplay_Series.updateDisplayedItems();
-				GuiDisplay_Series.updateSelectedItems();
-			}, 750);
-			break;*/
+			GuiDisplay_Series.updateDisplayedItems();
+			GuiDisplay_Series.updateSelectedItems();
+			break;
 		}
 	}	
 }
