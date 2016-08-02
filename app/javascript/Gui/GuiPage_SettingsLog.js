@@ -4,7 +4,7 @@ var GuiPage_SettingsLog = {
 		topLeftItem : 0,
 		
 		MAXCOLUMNCOUNT : 1,
-		MAXROWCOUNT : 22,
+		MAXROWCOUNT : 21,
 		
 		bannerItems : ["User Settings","Server Settings","TV Settings","Log","About"],
 }
