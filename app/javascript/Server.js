@@ -593,12 +593,9 @@ Server.getContent = function(url) {
 		xmlHttp.send(null);
 		    
 		if (xmlHttp.status != 200) {
-			FileLog.write("Server NOT 200 - Logout");
+			FileLog.write("Server Error: The HTTP status returned by the server was "+xmlHttp.status);
 			FileLog.write(url);
-			FileLog.write("HTTP Status was "+xmlHttp.status);
-			Server.Logout();
-			GuiNotifications.setNotification("Not 200<br>User: " + Server.getUserName() + "<br>Token: " + Server.getAuthToken(),"Server Error",false);
-			GuiUsers.start(true);
+			GuiNotifications.setNotification("The HTTP status code returned by the server was "+xmlHttp.status+".", "Server Error:");
 			return null;
 		} else {
 			//alert(xmlHttp.responseText);

@@ -343,8 +343,10 @@ input[type="password"]
 	position:absolute;
 	top:390px;
 	left:710px;
+	padding:20px;
 	height:300px;
 	width:500px;
+	color:white;
 	z-index:9999;
 	background-color:#303030;
 	border-radius: 25px;

@@ -41,7 +41,7 @@ GuiPage_HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 	
 	//Load Data
 	this.ItemData = Server.getContent(url);
-	if (this.ItemData == null) { return; }
+	if (this.ItemData == null) { Support.processReturnURLHistory(); }
 	
 	if (title == "Latest TV" || title == "Latest Movies") {
 		this.isLatest = true;
@@ -53,7 +53,7 @@ GuiPage_HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 		title = "Media Folders"
 		var newURL = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&CollapseBoxSetItems=false&fields=SortName");
 		this.ItemData = Server.getContent(newURL);
-		if (this.ItemData == null) { return; }
+		if (this.ItemData == null) { Support.processReturnURLHistory(); }
 	}
 	
 	if (this.ItemData.Items.length > 0) {		

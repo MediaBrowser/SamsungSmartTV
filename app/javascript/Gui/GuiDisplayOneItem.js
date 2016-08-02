@@ -38,7 +38,7 @@ GuiDisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 	
 	//Load Data
 	this.ItemData = Server.getContent(url + "&Limit="+File.getTVProperty("ItemPaging"));
-	if (this.ItemData == null) { return; }
+	if (this.ItemData == null) { Support.processReturnURLHistory(); }
 	//Once we've browsed the channels down to a content folder we should display them using GuiDisplay_Series.
 	if (this.ItemData.TotalRecordCount >0){
 		if (this.ItemData.Items[0].Type == "ChannelVideoItem" || 
@@ -120,7 +120,7 @@ GuiDisplayOneItem.updateSelectedItems = function () {
 
 GuiDisplayOneItem.keyDown = function() {
 	var keyCode = event.keyCode;
-	alert("Key pressed: " + keyCode);
+	alert("GuiDisplayOneItem: Key pressed: " + keyCode);
 
 	if (document.getElementById("Notifications").style.visibility == "") {
 		document.getElementById("Notifications").style.visibility = "hidden";

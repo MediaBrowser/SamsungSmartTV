@@ -102,7 +102,7 @@ GuiMusicPlayer.start = function(title,url,playedFromPage,isQueue,showThemeId,ite
 				if (showThemeId != this.showThemeId) {		
 					var urlTheme = Server.getThemeMedia(itemId);
 					this.ItemData = Server.getContent(urlTheme);
-					if (this.ItemData == null) { return; }
+					if (this.ItemData == null) { Support.processReturnURLHistory(); }
 					
 					if (this.ItemData.ThemeSongsResult.Items.length > 0) {
 						//Play something
@@ -131,7 +131,7 @@ GuiMusicPlayer.start = function(title,url,playedFromPage,isQueue,showThemeId,ite
 	} else {
 		//get info from URL
 		this.ItemData = Server.getContent(url);
-		if (this.ItemData == null) { return; }	
+		if (this.ItemData == null) { Support.processReturnURLHistory(); }	
 			
 		//See if item is to be added to playlist or not - if not reset playlist
 		if (this.Status != "STOPPED" && (this.isThemeMusicPlaying == true || isQueue == false)) {

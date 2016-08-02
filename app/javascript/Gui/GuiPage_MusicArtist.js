@@ -55,7 +55,7 @@ GuiPage_MusicArtist.start = function(title1, url1, selectedItem, topLeftItem) {
 	this.title1 = title1;
 	
 	this.ItemData = Server.getContent(url1 + "&Limit="+File.getTVProperty("ItemPaging"));
-	if (this.ItemData == null) { return; }
+	if (this.ItemData == null) { Support.processReturnURLHistory(); }
 	this.totalRecordCount = this.ItemData.TotalRecordCount;
 	Support.pageLoadTimes("GuiPage_MusicArtist","RetrievedServerData",false);
 	

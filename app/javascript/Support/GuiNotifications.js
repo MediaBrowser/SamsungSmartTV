@@ -7,6 +7,7 @@ GuiNotifications.setNotification = function (Message, Title,alterHeight) {
 	clearInterval(this.timeout);
 	document.getElementById("Notifications").style.visibility = "hidden";
 	document.getElementById("NotificationText").innerHTML = "";
+	document.getElementById("NotificationText").className="notification highlight"+Main.highlightColour+"Boarder";
 	
 	//Code to move based on screen (fix for GuiPage_IP)
 	if (alterHeight == true) {
@@ -41,6 +42,6 @@ GuiNotifications.setNotification = function (Message, Title,alterHeight) {
 		this.timeout = setTimeout(function(){
 			document.getElementById("Notifications").style.visibility = "hidden";
 			document.getElementById("NotificationText").innerHTML = "";
-		}, 6000);
+		}, 5000);
 	}
 }
