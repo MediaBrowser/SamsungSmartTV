@@ -272,7 +272,7 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 			if (Items[index].Type == "Episode") {
 				var title = this.getNameFormat(Items[index].SeriesName, Items[index].ParentIndexNumber, Items[index].Name, Items[index].IndexNumber);		
 				var imgsrc = "";
-				if (Items[index].SeriesThumbImageTag) {
+				if (Items[index].ParentThumbItemId) {
 					title = this.getNameFormat("", Items[index].ParentIndexNumber, Items[index].Name, Items[index].IndexNumber);
 					imgsrc = Server.getImageURL(Items[index].SeriesId,"Thumb",Main.posterWidth,Main.posterHeight,0,false);
 				} else if (Items[index].ImageTags.Primary) {	
@@ -330,7 +330,7 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 			} else if (Items[index].Type == "Episode") {
 				var title = this.getNameFormat(Items[index].SeriesName, Items[index].ParentIndexNumber, Items[index].Name, Items[index].IndexNumber,  Items[index].SeriesStudio?Items[index].SeriesStudio:undefined, Items[index].AirTime?Items[index].AirTime:undefined);				
 				var imageData = "";	
-				if (Items[index].SeriesThumbImageTag) {	
+				if (Items[index].ParentThumbItemId) {	
 					var imgsrc = Server.getImageURL(Items[index].SeriesId,"Thumb",Main.posterWidth,Main.posterHeight,0,Items[index].UserData.Played,0);
 					imageData = "'background-image:url(" +imgsrc+ ");background-size:contain'";
 					title = this.getNameFormat("", Items[index].ParentIndexNumber, Items[index].Name, Items[index].IndexNumber,  Items[index].SeriesStudio?Items[index].SeriesStudio:undefined, Items[index].AirTime?Items[index].AirTime:undefined);
