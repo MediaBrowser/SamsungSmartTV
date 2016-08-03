@@ -112,7 +112,7 @@ GuiUsers.updateDisplayedUsers = function() {
 //Function sets CSS Properties so show which user is selected
 GuiUsers.updateSelectedUser = function () {	
 	Support.updateSelectedNEW(this.UserData,this.selectedUser,this.topLeftItem,
-			Math.min(this.topLeftItem + GuiUsers.getMaxDisplay(),this.UserData.length),"User Selected","User","");
+			Math.min(this.topLeftItem + GuiUsers.getMaxDisplay(),this.UserData.length),"User Selected highlight1Boarder","User","");
 }
 
 //Function executes on the selection of a user - should log user in or generate error message on screen
@@ -223,24 +223,25 @@ GuiUsers.keyDown = function()
 				GuiUsers.updateSelectedUser();
 			} else if (this.selectedRow == 1) {
 				this.isManualEntry = true;
-				document.getElementById("ManualLogin").className = "green";
+				document.getElementById("ManualLogin").className = "highlight1Text";
 				document.getElementById("ChangeServer").className = "offWhite";
 				document.getElementById(this.UserData[this.selectedUser].Id).className = "User"; 
 			} else if (this.selectedRow == 2) {
 				document.getElementById("ManualLogin").className = "offWhite";
-				document.getElementById("ChangeServer").className = "green";
+				document.getElementById("ChangeServer").className = "highlight1Text";
 			}
 			break;
 		case tvKey.KEY_DOWN:
 			this.selectedRow++;
 			if (this.selectedRow == 1) {
 				this.isManualEntry = true;
-				document.getElementById("ManualLogin").className = "green";
+				document.getElementById("ManualLogin").className = "highlight1Text";
 				document.getElementById("ChangeServer").className = "offWhite";
 				document.getElementById(this.UserData[this.selectedUser].Id).className = "User"; 
-			} else if (this.selectedRow == 2) {
+			} else if (this.selectedRow > 1) {
+				this.selectedRow = 2;
 				document.getElementById("ManualLogin").className = "offWhite";
-				document.getElementById("ChangeServer").className = "green";
+				document.getElementById("ChangeServer").className = "highlight1Text";
 			}
 			break;
 		case tvKey.KEY_LEFT:
