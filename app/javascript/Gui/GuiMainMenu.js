@@ -55,8 +55,8 @@ GuiMainMenu.start = function() {
 	htmlToAdd += "<div id=Search class='menu-item'><div id='menu-Icon' class='menu-icon' style='background-image:url(images/menu/Search-46x37.png)'></div>Search</div>";
 	this.menuItems.push("Settings");
 	htmlToAdd += "<div id=Settings class='menu-item'><div id='menu-Icon' class='menu-icon'style='background-image:url(images/menu/Settings-46x37.png)'></div>Settings</div>";
-	this.menuItems.push("Log-Out");
-	htmlToAdd += "<div id=Log-Out class='menu-item'><div id='menu-Icon' class='menu-icon' style='background-image:url(images/menu/Logout-46x37.png)'></div>Log Out</div>";	
+	this.menuItems.push("Log_Out");
+	htmlToAdd += "<div id=Log_Out class='menu-item'><div id='menu-Icon' class='menu-icon' style='background-image:url(images/menu/Logout-46x37.png)'></div>Log Out</div>";	
 	document.getElementById("menuItems").innerHTML += htmlToAdd;
 	
 	//Turn On Screensaver
