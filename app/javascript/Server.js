@@ -497,23 +497,8 @@ Server.testConnectionSettings = function (server,fromFile) {
 	if (xmlHttp) {
 		xmlHttp.open("GET", "http://" + server + "/emby/System/Info/Public?format=json" , true);
 		xmlHttp.setRequestHeader("Content-Type", 'application/json');
-		xmlHttp.timeout=5000;
-		xmlHttp.ontimeout=function(){
-			GuiNotifications.setNotification("Your Emby server is taking longer than expected to respond.","Network Error",true);
-			Support.removeSplashScreen();
-	    	if (fromFile == true) {
-	    		setTimeout(function(){
-	    			GuiPage_Servers.start();
-	    		}, 2000);
-
-	    	} else {
-	    		setTimeout(function(){
-	    			GuiPage_NewServer.start();
-	    		}, 2000);
-	    	}
-		};
 		xmlHttp.onreadystatechange = function () {
-	        if(xmlHttp.readyState === XMLHttpRequest.DONE && xmlHttp.status === 200) {
+	        if(xmlHttp.status === 200) {
 
 		    	if (fromFile == false) {
 		    		var json = JSON.parse(xmlHttp.responseText);
@@ -523,6 +508,7 @@ Server.testConnectionSettings = function (server,fromFile) {
 		       	//Set Server.serverAddr!
 		       	Server.setServerAddr("http://" + server + "/emby");
 		       	
+		       	//Remove the splash screen
 		       	Support.removeSplashScreen();
 		       	
 		       	//Check Server Version
@@ -531,7 +517,33 @@ Server.testConnectionSettings = function (server,fromFile) {
 		       	} else {
 		       		ServerVersion.start();
 		       	}
-	        };
+	        } else if (xmlHttp.status === 0) {
+	        	GuiNotifications.setNotification("Emby server is taking longer than expected to respond.","Network Error "+xmlHttp.status,true);
+				Support.removeSplashScreen();
+		    	if (fromFile == true) {
+		    		setTimeout(function(){
+		    			GuiPage_Servers.start();
+		    		}, 2000);
+
+		    	} else {
+		    		setTimeout(function(){
+		    			GuiPage_NewServer.start();
+		    		}, 2000);
+		    	}
+	        } else {
+	        	GuiNotifications.setNotification("Emby server connection error.","Network Error "+xmlHttp.status,true);
+				Support.removeSplashScreen();
+		    	if (fromFile == true) {
+		    		setTimeout(function(){
+		    			GuiPage_Servers.start();
+		    		}, 2000);
+
+		    	} else {
+		    		setTimeout(function(){
+		    			GuiPage_NewServer.start();
+		    		}, 2000);
+		    	}
+	        }
 	    };
 		xmlHttp.send(null);
 	} else {
