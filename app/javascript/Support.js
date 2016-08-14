@@ -1122,7 +1122,7 @@ Support.removeSplashScreen = function () {
 	setTimeout(function(){
 		document.getElementById("splashscreen").style.visibility="hidden";
 	}, 1100);
-	FileLog.write("Ready to start. Removing the splash screen.");
+	//FileLog.write("Removing the splash screen.");
 }
 
 //-----------------------------------------------------------------------------------------------------------------------------------------

@@ -78,7 +78,7 @@ var GuiUsers_Manual_Input  = function(id) {
     	document.getElementById(id).focus();
     }
     
-    var ime = new IMEShell(id, imeReady,'num');
+    var ime = new IMEShell(id, imeReady,'en');
     ime.setKeypadPos(1300,90);
   
     var installFocusKeyCallbacks = function () {
@@ -113,7 +113,7 @@ var GuiUsers_Manual_Input  = function(id) {
         ime.setKeyFunc(tvKey.KEY_UP, function (keyCode) {
             alert("Up key pressed");  
             if (GuiUsers_Manual.selectedItem == 1) {
-            	//Set IME to Password field
+            	//Set IME to Username field
             	GuiUsers_Manual.selectedItem--;
             	new GuiUsers_Manual_Input("user");
             	document.getElementById("user").focus;

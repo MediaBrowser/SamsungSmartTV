@@ -178,7 +178,7 @@ Server.getImageURL = function(itemId,imagetype,maxwidth,maxheight,unplayedcount,
 				xhr.onload = function(e) {
 				  if (this.status == 200) {
 				    var blob = this.response;
-				    Support.imageCachejson.Images[Support.imageCachejson.Images.length] = {"URL":query,"DataURI":window.URL.createObjectURL(blob)};
+			    	Support.imageCachejson.Images[Support.imageCachejson.Images.length] = {"URL":query,"DataURI":window.URL.createObjectURL(blob)};
 				  }
 				};
 				xhr.send();
@@ -495,55 +495,52 @@ Server.DELETE = function(url, item) {
 Server.testConnectionSettings = function (server,fromFile) {	
 	xmlHttp = new XMLHttpRequest();
 	if (xmlHttp) {
-		xmlHttp.open("GET", "http://" + server + "/emby/System/Info/Public?format=json" , true);
+		xmlHttp.open("GET", "http://" + server + "/emby/System/Info/Public?format=json",false);
 		xmlHttp.setRequestHeader("Content-Type", 'application/json');
 		xmlHttp.onreadystatechange = function () {
-	        if(xmlHttp.status === 200) {
-
-		    	if (fromFile == false) {
-		    		var json = JSON.parse(xmlHttp.responseText);
-		    		File.saveServerToFile(json.Id,json.ServerName,server); 
-		    	}
-		       	
-		       	//Set Server.serverAddr!
-		       	Server.setServerAddr("http://" + server + "/emby");
-		       	
-		       	//Remove the splash screen
-		       	Support.removeSplashScreen();
-		       	
-		       	//Check Server Version
-		       	if (ServerVersion.checkServerVersion()) {
-		       		GuiUsers.start(true);
-		       	} else {
-		       		ServerVersion.start();
-		       	}
-	        } else if (xmlHttp.status === 0) {
-	        	GuiNotifications.setNotification("Emby server is taking longer than expected to respond.","Network Error "+xmlHttp.status,true);
-				Support.removeSplashScreen();
-		    	if (fromFile == true) {
-		    		setTimeout(function(){
-		    			GuiPage_Servers.start();
-		    		}, 2000);
-
-		    	} else {
-		    		setTimeout(function(){
-		    			GuiPage_NewServer.start();
-		    		}, 2000);
-		    	}
-	        } else {
-	        	GuiNotifications.setNotification("Emby server connection error.","Network Error "+xmlHttp.status,true);
-				Support.removeSplashScreen();
-		    	if (fromFile == true) {
-		    		setTimeout(function(){
-		    			GuiPage_Servers.start();
-		    		}, 2000);
-
-		    	} else {
-		    		setTimeout(function(){
-		    			GuiPage_NewServer.start();
-		    		}, 2000);
-		    	}
-	        }
+			GuiNotifications.setNotification("hello","Network Status",true);
+			if (xmlHttp.readyState == 4) {
+		        if(xmlHttp.status === 200) {
+			    	if (fromFile == false) {
+			    		var json = JSON.parse(xmlHttp.responseText);
+			    		File.saveServerToFile(json.Id,json.ServerName,server); 
+			    	}
+			       	//Set Server.serverAddr!
+			       	Server.setServerAddr("http://" + server + "/emby");
+			       	//Check Server Version
+			       	if (ServerVersion.checkServerVersion()) {
+			       		GuiUsers.start(true);
+			       	} else {
+			       		ServerVersion.start();
+			       	}
+		        } else if (xmlHttp.status === 0) {
+		        	GuiNotifications.setNotification("Your Emby server is not responding.","Network Error "+xmlHttp.status,true);
+					Support.removeSplashScreen();
+			    	if (fromFile == true) {
+			    		setTimeout(function(){
+			    			GuiPage_Servers.start();
+			    		}, 3000);
+	
+			    	} else {
+			    		setTimeout(function(){
+			    			GuiPage_NewServer.start();
+			    		}, 3000);
+			    	}
+		        } else {
+		        	GuiNotifications.setNotification("Emby server connection error.","Network Error "+xmlHttp.status,true);
+					Support.removeSplashScreen();
+			    	if (fromFile == true) {
+			    		setTimeout(function(){
+			    			GuiPage_Servers.start();
+			    		}, 3000);
+	
+			    	} else {
+			    		setTimeout(function(){
+			    			GuiPage_NewServer.start();
+			    		}, 3000);
+			    	}
+		        }
+			}
 	    };
 		xmlHttp.send(null);
 	} else {

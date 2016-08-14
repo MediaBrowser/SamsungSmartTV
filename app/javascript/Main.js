@@ -4,7 +4,7 @@ var tvKey = new Common.API.TVKeyValue();
 	
 var Main =
 {
-		version : "v2.2.0f",
+		version : "v2.2.0g",
 		requiredServerVersion : "3.0.5211",
 		requiredDevServerVersion : "3.0.5507.2131",
 		
@@ -84,6 +84,7 @@ Main.setIsScreensaverRunning = function() {
 
 Main.onLoad = function()
 {	
+	//Support.removeSplashScreen();
 	//Setup Logging
 	FileLog.loadFile(false); // doesn't return contents, done to ensure file exists
 	FileLog.write("---------------------------------------------------------------------",true);

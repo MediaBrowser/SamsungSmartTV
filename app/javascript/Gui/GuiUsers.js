@@ -19,6 +19,7 @@ GuiUsers.getMaxDisplay = function() {
 GuiUsers.start = function(runAutoLogin) {
 	alert("Page Enter : GuiUsers");
 	GuiHelper.setControlButtons(null,null,null,null,"Exit  ");
+	Support.removeSplashScreen();
 	
 	//Reset Properties
 	File.setUserEntry(null);
@@ -73,10 +74,12 @@ GuiUsers.start = function(runAutoLogin) {
 		document.getElementById("pageContent").className = "";
 		document.getElementById("pageContent").innerHTML = "<div style='padding-top:100px;text-align:center'>" +
 			"<div id=guiUsers_allusers></div>" +
-			"<div id='guiUsers_pwd' style='visibility:hidden'>" +
-			"<br>Password:    <input id='guiUsers_Password' type='password' size='20'/>" +
-			"<br><span id='guiUsers_rempwd'>Remember Password </span> : <span id='guiUsers_rempwdvalue'>" + this.rememberPassword + "</span>" + 
-	    	"</div><br>" +
+			"<div id='pwdOptions' class='loginOptions'>" +
+				"<div id='guiUsers_pwd' style='visibility:hidden'>" +
+				"<br>Password:    <input id='guiUsers_Password' type='password' size='20'/>" +
+				"<br><span id='guiUsers_rempwd'>Remember Password </span> : <span id='guiUsers_rempwdvalue'>" + this.rememberPassword + "</span>" + 
+				"</div><br>" +
+			"</div>" +
 	    	"<div id='loginOptions' class='loginOptions'>" +
 	    		"<div id='ManualLogin'>Manual Login</div>" +
 	    		"<div id='ChangeServer'>Change Server</div> " +
