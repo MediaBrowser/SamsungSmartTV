@@ -2359,6 +2359,7 @@ input[type="password"]
 
 .playlist {
 	position:relative;
+	font-size:0.95em;
 	margin-top:60px;
 	margin-left:160px;
 	z-index:5;	
