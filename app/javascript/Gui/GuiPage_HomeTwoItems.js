@@ -138,7 +138,7 @@ GuiPage_HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,to
 		
 		//Function to generate random backdrop
 		this.backdropTimeout = setTimeout(function(){
-			var randomImageURL = Server.getItemTypeURL("&SortBy=Random&IncludeItemTypes=Series,Movie&Recursive=true&CollapseBoxSetItems=false&Limit=20");
+			var randomImageURL = Server.getItemTypeURL("&SortBy=Random&IncludeItemTypes=Series,Movie&Recursive=true&CollapseBoxSetItems=false&Limit=20&EnableTotalRecordCount=false");
 			var randomImageData = Server.getContent(randomImageURL);
 			if (randomImageData == null) { return; }
 			

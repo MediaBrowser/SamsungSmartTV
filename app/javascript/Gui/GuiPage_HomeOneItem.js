@@ -100,7 +100,7 @@ GuiPage_HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 
 		//Function to generate random backdrop
 		this.backdropTimeout = setTimeout(function(){
-			var randomImageURL = Server.getItemTypeURL("&SortBy=Random&IncludeItemTypes=Series,Movie&Recursive=true&CollapseBoxSetItems=false&Limit=20");
+			var randomImageURL = Server.getItemTypeURL("&SortBy=Random&IncludeItemTypes=Series,Movie&Recursive=true&CollapseBoxSetItems=false&Limit=20&EnableTotalRecordCount=false");
 			var randomImageData = Server.getContent(randomImageURL);
 			if (randomImageData == null) { return; }
 			
