@@ -1519,7 +1519,7 @@ input[type="password"]
 }
 
 .imageDiskEndPosition {
-	bottom:300px;
+	bottom:295px;
 	-webkit-transform: rotate(0deg);
     transform: rotate(0deg);
 }
@@ -1533,6 +1533,19 @@ input[type="password"]
     background-repeat: no-repeat;
     background-position:center;
     z-index:5;
+}
+
+.videoTrailerContainer {
+	position:absolute;
+	top:35px;
+	left:1080px;
+	height:492px;
+	width:800px;
+	background-repeat: no-repeat;
+    background-position:top right;
+    background-size: 100% 100%;
+    background-image:url('images/trailerBackground.png');
+    z-index:1;
 }
 
 .guiFilm_Title {

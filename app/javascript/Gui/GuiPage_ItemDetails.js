@@ -66,6 +66,7 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem) {
 					<div id='guiTV_Show_Metadata' style='margin-left:-5px;'class='MetaDataSeasonTable'></div> \
 					<div id='guiTV_Show_Overview' class='guiFilm_Overview'></div> \
 			</div> \
+			<div id='trailerContainer' class='videoTrailerContainer'></div> \
 			<div id='imageDisk' class='imageDisk'></div> \
 			<div id='guiTV_Show_Poster' class='guiFilm_Poster'></div>";
 	
@@ -77,7 +78,7 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem) {
 	}
 	
 	//If the item is a trailer from the trailers channel, make the main play button into a Play Trailer button instead.
-	if (this.ItemData.Type == "ChannelVideoItem" && this.ItemData.ChannelName == "Trailers" && this.trailersEnabled){
+	if (this.ItemData.Type == "Trailer" && this.trailersEnabled){
 		this.menuItems.push("guiTV_Episode_Play");
 		document.getElementById("guiTV_Episode_Options").innerHTML += "<div id='guiTV_Episode_Play' class='FilmListSingle'><div class='FilmListSingleImage' style=background-image:url(images/menu/Play-46x37.png)></div><div class='ShowListSingleTitle'><div class='ShowListTextOneLineFilm'>PLAY TRAILER</div></div></div>";
 	} else if (this.ItemData.LocationType != "Virtual") {
@@ -92,6 +93,9 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem) {
 	
 	//Options based on item type
 	if (this.ItemData.Type == "Episode") {
+		
+		//Hide the PiP movie trailer player.
+		document.getElementById("trailerContainer").style.visibility="hidden";
 		
 		//Get episode image
 		if (this.ItemData.ImageTags.Primary) {			
@@ -161,15 +165,18 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem) {
 		
 		//Get trailerItems
 		if (this.ItemData.LocalTrailerCount > 0 && this.trailersEnabled) {
-			
+			document.getElementById("trailerContainer").style.visibility="";
 			var url3 = Server.getCustomURL("/Users/"+Server.getUserID()+"/Items/"+this.ItemData.Id+"/LocalTrailers?format=json");
 			this.trailerItems = Server.getContent(url3);
 			if (this.trailerItems == null) { return; }
 
 			//Trailers are always transcoded. That way they can be remote streams or local files and we don't need to care.
 			this.trailerUrl = Server.getStreamUrl(this.trailerItems[0].Id,this.trailerItems[0].MediaSources[0].Id);
-		} else if (this.ItemData.Type == "ChannelVideoItem" && this.ItemData.ChannelName == "Trailers"){
+		} else if (this.ItemData.Type == "Trailer"){
+			document.getElementById("trailerContainer").style.visibility="";
 			this.trailerUrl = Server.getStreamUrl(this.ItemData.Id,this.ItemData.MediaSources[0].Id);
+		} else {
+			document.getElementById("trailerContainer").style.visibility="hidden";
 		}
 		
 		//Get suggestions
@@ -484,7 +491,7 @@ GuiPage_ItemDetails.keyDown = function()
 					sf.service.VideoPlayer.hide();
 				}
 				//Set the trailer button back to Play
-				if (this.ItemData.Type == "ChannelVideoItem" && this.ItemData.ChannelName == "Trailers"){
+				if (this.ItemData.Type == "Trailer"){
 					document.getElementById("guiTV_Episode_Play").innerHTML = "<div class='FilmListSingleImage' style=background-image:url(images/menu/Play-46x37.png)></div><div class='ShowListSingleTitle'><div class='ShowListTextOneLineFilm'>PLAY TRAILER</div></div>";
 				} else if (this.selectedItem == 0) {
 					document.getElementById("guiTV_Episode_SubOptions").innerHTML = "<div id=0 class='FilmListSingle'><div class='FilmListSingleImage' style=background-image:url(images/menu/Play-46x37.png)></div><div class='ShowListSingleTitle'><div class='ShowListTextOneLineFilm'>PLAY TRAILER</div></div></div>";
@@ -609,7 +616,7 @@ GuiPage_ItemDetails.processSelectedItem = function() {
 	switch (this.menuItems[this.selectedItem]) {
 	case "guiTV_Episode_Play":
 	case "guiTV_Episode_Resume":
-		if (this.ItemData.Type == "ChannelVideoItem" && this.ItemData.ChannelName == "Trailers" && this.trailersEnabled){
+		if (this.ItemData.Type == "Trailer" && this.trailersEnabled){
 			//Trailer playback
 			var htmlToAdd = "";
 		    if (this.trailerState == sf.service.VideoPlayer.STATE_PLAYING || 
@@ -1039,7 +1046,7 @@ GuiPage_ItemDetails.getTrailerEvents = function() {
 		}
 		
 		//Reset the Play Trailer button for channel trailers
-		if (GuiPage_ItemDetails.ItemData.Type == "ChannelVideoItem" && GuiPage_ItemDetails.ItemData.ChannelName == "Trailers" && GuiPage_ItemDetails.trailersEnabled){
+		if (GuiPage_ItemDetails.ItemData.Type == "Trailer" && GuiPage_ItemDetails.trailersEnabled){
 			document.getElementById("guiTV_Episode_Play").innerHTML = "<div class='FilmListSingleImage' style=background-image:url(images/menu/Play-46x37.png)></div><div class='ShowListSingleTitle'><div class='ShowListTextOneLineFilm'>PLAY TRAILER</div></div>";
 		}
 		
@@ -1079,7 +1086,7 @@ GuiPage_ItemDetails.setTrailerKeyHandlers = function() {
 	sf.service.VideoPlayer.setKeyHandler(sf.key.YELLOW, function () {
 		sf.service.VideoPlayer.setFullScreen(false);
 		GuiPage_ItemDetails.updateSelectedItems();
-		if (GuiPage_ItemDetails.ItemData.Type != "ChannelVideoItem"){
+		if (GuiPage_ItemDetails.ItemData.Type != "Trailer"){
 			GuiPage_ItemDetails.updateSelectedItems2();
 		}
 		GuiPage_ItemDetails.updateDisplayedItems2();
@@ -1088,7 +1095,7 @@ GuiPage_ItemDetails.setTrailerKeyHandlers = function() {
 	sf.service.VideoPlayer.setKeyHandler(sf.key.RETURN, function () {
 		sf.service.VideoPlayer.setFullScreen(false);
 		GuiPage_ItemDetails.updateSelectedItems();
-		if (GuiPage_ItemDetails.ItemData.Type != "ChannelVideoItem"){
+		if (GuiPage_ItemDetails.ItemData.Type != "Trailer"){
 			GuiPage_ItemDetails.updateSelectedItems2();
 		}
 		GuiPage_ItemDetails.updateDisplayedItems2();
@@ -1107,12 +1114,12 @@ GuiPage_ItemDetails.setTrailerKeyHandlers = function() {
 		Support.screensaverOn();
 		Support.screensaver();
 		GuiPage_ItemDetails.updateSelectedItems();
-		if (GuiPage_ItemDetails.ItemData.Type != "ChannelVideoItem"){
+		if (GuiPage_ItemDetails.ItemData.Type != "Trailer"){
 			GuiPage_ItemDetails.updateSelectedItems2();
 		}
 		GuiPage_ItemDetails.updateDisplayedItems2();
 		//Reset the Play Trailer button for channel trailers
-		if (GuiPage_ItemDetails.ItemData.Type == "ChannelVideoItem" && GuiPage_ItemDetails.ItemData.ChannelName == "Trailers" && GuiPage_ItemDetails.trailersEnabled){
+		if (GuiPage_ItemDetails.ItemData.Type == "Trailer" && GuiPage_ItemDetails.trailersEnabled){
 			document.getElementById("guiTV_Episode_Play").innerHTML = "<div class='FilmListSingleImage' style=background-image:url(images/menu/Play-46x37.png)></div><div class='ShowListSingleTitle'><div class='ShowListTextOneLineFilm'>PLAY TRAILER</div></div>";
 		}
 		document.getElementById("GuiPage_ItemDetails").focus();
