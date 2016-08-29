@@ -1353,8 +1353,8 @@ input[type="password"]
 	line-height:40px;
 	font-size: 0.6em;
 	text-align:center;
-	border-radius:26px;
-	border: 4px solid transparent;
+	vertical-align:top;
+	border-radius:20px;
 	background-clip: content-box;
 	background-repeat: no-repeat;
     background-position:center;
@@ -1365,6 +1365,7 @@ input[type="password"]
 	display:inline-block;
 	height:36px;
 	width:33px;
+	vertical-align:top;
 	background-image:url('images/favorite-36x33.png');
 	background-repeat: no-repeat;
     background-position:center;
