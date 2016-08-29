@@ -387,14 +387,20 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 			//----------------------------------------------------------------------------------------------
 			}  else if (Items[index].Type == "MusicArtist"){
 				var title = Items[index].Name;		
-				var count = Items[index].SongCount;
+				var count = Items[index].RecursiveItemCount;
 				
 				if (Items[index].ImageTags.Primary) {			
 					var imgsrc = Server.getImageURL(Items[index].Id,"Primary",250,500,0,false,0);
-					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(" +imgsrc+ ")><div class='genreItemCount highlight"+Main.highlightColour+"Background'>"+count+"</div><div class=menuItem>"+ title + "</div></div>";	
+					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(" +imgsrc+ ")>";	
 				} else {
-					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style='background-image:url(images/artist.png);border:2px solid black;background-position:center;'><div class='genreItemCount highlight"+Main.highlightColour+"Background'>"+count+"</div><div class=menuItem>"+ title + "</div></div>";
+					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style='background-image:url(images/artist.png);border:2px solid black;background-position:center;'>";
 				}
+				if (count){
+					htmlToAdd += "<div class='genreItemCount highlight"+Main.highlightColour+"Background'>"+count+"</div><div class=menuItem>"+ title + "</div></div>";
+				} else {
+					htmlToAdd += "<div class=menuItem>"+ title + "</div></div>";
+				}
+				
 			//----------------------------------------------------------------------------------------------
 			} else if (Items[index].Type == "Audio"){
 				var title = Items[index].Name;

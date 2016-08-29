@@ -1097,12 +1097,17 @@ input[type="password"]
 }
 
 .albumArtist-lowerTitle{
+	position:relative;
 	font-size:1.8em;
+	text-align:center;
 	height:30px;
+	padding-top:620px;
+	z-index:5;
 }
 
 .albumArtist-lowerContent{
-	padding-top:1.1em;
+	text-align:center;
+	padding-top:30px;
 	min-width:500px;
 	height:200px;
 }
@@ -1113,7 +1118,7 @@ input[type="password"]
 	top:600px;
 	left:95px;
 	width:1820px;
-	z-index:5
+	z-index:5;
 }
 
 .SeriesTitle {

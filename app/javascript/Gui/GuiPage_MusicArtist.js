@@ -64,10 +64,8 @@ GuiPage_MusicArtist.start = function(title1, url1, selectedItem, topLeftItem) {
 	htmlToAdd += "<div id=Center class='SeriesCenter'>";
 	htmlToAdd += 	"<div id=Content></div>";
 	htmlToAdd += "</div>";
-	htmlToAdd += "<div style='padding-top:650px;text-align:center;'>";
-	htmlToAdd += 	"<p id=lowerTitle class='albumArtist-lowerTitle'></p>";
-	htmlToAdd += 	"<div id=lowerContent class='albumArtist-lowerContent'></div>";
-	htmlToAdd += "</div>";
+	htmlToAdd += "<div id=lowerTitle class='albumArtist-lowerTitle offWhite'></div>";
+	htmlToAdd += "<div id=lowerContent class='albumArtist-lowerContent'></div>";
 	document.getElementById("pageContent").innerHTML = htmlToAdd;
 	
 	//Set banner Styling
