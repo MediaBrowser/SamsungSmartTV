@@ -7,7 +7,7 @@ var GuiPage_Music = {
 		selectedItem2 : 0, //Horizontal
 		
 		MAXCOLUMNCOUNT : 1,
-		MAXROWCOUNT : 13,
+		MAXROWCOUNT : 12,
 		
 		startParams : [],
 		
