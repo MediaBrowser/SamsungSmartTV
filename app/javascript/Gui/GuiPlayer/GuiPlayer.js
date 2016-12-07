@@ -198,6 +198,12 @@ GuiPlayer.setDisplaySize = function() {
 	var aspectRatio = (this.playingMediaSource.MediaStreams[this.playingVideoIndex] === undefined) ? "16:9" : this.playingMediaSource.MediaStreams[this.playingVideoIndex].AspectRatio;
 	if (aspectRatio == "16:9") {
 		this.plugin.SetDisplayArea(0, 0, 960, 540);
+	} else if (aspectRatio == "4:3") {
+		var newResolutionX = Math.round(540 * 4 / 3);
+		var newResolutionY = 540;
+		var centering = Math.round((960 - newResolutionX)/2);
+
+		this.plugin.SetDisplayArea(parseInt(centering), parseInt(0), parseInt(newResolutionX), parseInt(newResolutionY));
 	} else {
 		//Scale Video	
 		var ratioToShrinkX = 960 / this.playingMediaSource.MediaStreams[this.playingVideoIndex].Width;
