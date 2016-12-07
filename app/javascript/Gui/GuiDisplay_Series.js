@@ -117,8 +117,8 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem,items) {
 		break;
 	}
 
-	if (this.ItemData.Items[0].Type == "ChannelAudioItem") {
-		this.currentMediaType = "Music";
+	if (this.ItemData.Items[0].Type == "ChannelAudioItem" || this.ItemData.Items[0].Type == "AudioPodcast") {
+		this.currentMediaType = "AudioPodcast";
 	}
 	alert(this.currentMediaType);
 	
@@ -151,6 +151,13 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem,items) {
 		this.MAXROWCOUNT = 3;
 		this.isTvOrMovies = 2;
 		this.bannerItems = this.musicBannerItems;
+		document.getElementById("SeriesContent").style.top="880px";
+		document.getElementById("SeriesOverview").style.height="0px";
+		break;
+	case "AudioPodcast":
+		this.MAXCOLUMNCOUNT = 7;
+		this.MAXROWCOUNT = 3;
+		this.isTvOrMovies = 2;
 		document.getElementById("SeriesContent").style.top="880px";
 		document.getElementById("SeriesOverview").style.height="0px";
 		break;

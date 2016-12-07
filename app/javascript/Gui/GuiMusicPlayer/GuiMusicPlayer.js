@@ -151,8 +151,8 @@ GuiMusicPlayer.start = function(title,url,playedFromPage,isQueue,showThemeId,ite
 		//If reset this will be true, if not it will be added to queued items
 		if (this.Status == "STOPPED") {
 			this.currentPlayingItem = 0;
-			if (this.queuedItems[this.currentPlayingItem].Type == "ChannelAudioItem") {
-				this.videoURL = Server.getCustomURL("/audio/"+this.queuedItems[this.currentPlayingItem].Id+"/stream.mp3?DeviceId="+Server.getDeviceID()+"&AudioCodec=mp3&AudioBitrate=192000&MaxAudioChannels=2");
+			if (this.queuedItems[this.currentPlayingItem].Type == "AudioPodcast") {
+				this.videoURL = Server.getCustomURL("/audio/"+this.queuedItems[this.currentPlayingItem].Id+"/stream.mp3?DeviceId="+Server.getDeviceID()+"&MediaSourceId="+this.queuedItems[this.currentPlayingItem].MediaSources[0].Id+"&AudioCodec=mp3&AudioBitrate=192000&MaxAudioChannels=2&CopyTimestamps=false&EnableSubtitlesInManifest=false");
 			} else {
 				this.videoURL = Server.getServerAddr() + '/Audio/'+this.queuedItems[this.currentPlayingItem].Id+'/Stream.mp3?static=true&MediaSource='+this.queuedItems[this.currentPlayingItem].MediaSources[0].Id;
 			}
@@ -512,7 +512,7 @@ GuiMusicPlayer.setCurrentTime = function(time){
 		this.currentTime = time;
 		this.updateTimeCount++;
 		
-		if (this.queuedItems[this.currentPlayingItem].Type == "ChannelAudioItem") {
+		if (this.queuedItems[this.currentPlayingItem].Type == "AudioPodcast") {
 			document.getElementById("guiMusicPlayerTime").innerHTML = Support.convertTicksToTimeSingle(this.currentTime);
 		} else {
 			//Update Server every 8 ticks
