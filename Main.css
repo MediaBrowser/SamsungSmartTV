@@ -61,8 +61,8 @@ input[type="password"]
 	background-image: url('images/splash.jpg');
 	background-repeat: no-repeat;
     background-position:center;
-    -webkit-transition: opacity 1s ease-in-out;
-    transition: opacity 1s ease-in-out;
+    -webkit-transition: opacity 1.5s ease-in-out;
+    transition: opacity 1.5s ease-in-out;
 }
 
 .splash_version{ 
@@ -145,7 +145,7 @@ input[type="password"]
 
 .menu-userImage {
 	position: relative;
-	left: 140px; top: 5px;
+	left: 140px; top: 1px;
 	width:70px;
 	height:70px;
 	border-radius: 40px;
@@ -156,7 +156,7 @@ input[type="password"]
 .menu-UserImageContainer {
 	position: relative;
 	width:350px;
-	height:80px;
+	height:72px;
 }
 
 .menu-userName {

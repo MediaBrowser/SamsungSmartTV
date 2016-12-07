@@ -43,6 +43,7 @@ GuiPage_Playlist.start = function(title,url,type,playlistId) { //Type is either 
 	if (this.AlbumData.Items.length > 0) {
 		//Set PageContent
 		document.getElementById("pageContent").className = "";
+		document.getElementById("pageContent").style.fontSize="0.9em";
 		document.getElementById("pageContent").innerHTML = "<div id='playlistTitle' class='playlistTitle'></div> \
 			   <div id='playlistSubtitle' class='playlistSubtitle'></div> \
 			   <div id='playlist' class='playlist'> \

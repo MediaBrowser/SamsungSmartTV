@@ -72,28 +72,47 @@ GuiPage_TvGuide.start = function(title,url,selectedRow,selectedColumn,topChannel
 			}
 		}
 		
-		//Sort Date - %3A is Colon
-		var d = this.guideStartTime;
-		var year = d.getUTCFullYear();
-		var month = d.getUTCMonth()+1;
-		var day = d.getUTCDate();
-		var nextDay = day++;
-		var hour = d.getUTCHours();
-		var min = d.getMinutes();
-		if (min > 29){
-			min = "30";
+		//Set the date range for the guide data request.
+		//Minimum program ending time.
+		var minEnd = this.guideStartTime;
+		var minEndYear = minEnd.getUTCFullYear();
+		var minEndMonth = minEnd.getUTCMonth()+1;
+		var minEndDay = minEnd.getUTCDate();
+		var minEndHour = minEnd.getUTCHours();
+		var minEndMin = minEnd.getMinutes();
+		if (minEndMin >= 30){
+			minEndMin = "30";
 		} else {
-			min = "00";
+			minEndMin = "00";
 		}
-		if (month < 10){month = "0"+month;}
-		if (day < 10){day = "0"+day;}
-		if (nextDay < 10){nextDay = "0"+nextDay;}
-		if (hour < 10){hour = "0"+hour;}
+		if (minEndMonth < 10){minEndMonth = "0"+minEndMonth;}
+		if (minEndDay < 10){minEndDay = "0"+minEndDay;}
+		if (minEndHour < 10){minEndHour = "0"+minEndHour;}
 		
-		var maxStartDate = year + "-" + month + "-" + day + "T"+ hour + "%3A" + min + "%3A59.000Z";
-		var minEndDate =   year + "-" + month + "-" + nextDay + "T"+ hour + "%3A" + min + "%3A01.000Z";
+		var minEndDate =   minEndYear + "-" + minEndMonth + "-" + minEndDay + "T"+ minEndHour + "%3A" + minEndMin + "%3A01.000Z";
+		
+		
+		//Maximum start time. (24hour after the minimum end time).
+		var maxStart = new Date();
+		maxStart.setTime( minEnd.getTime() + 60*60*24*1000 - 60000);
+		var maxStartYear = maxStart.getUTCFullYear();
+		var maxStartMonth = maxStart.getUTCMonth()+1;
+		var maxStartDay = maxStart.getUTCDate();
+		var maxStartHour = maxStart.getUTCHours();
+		var maxStartMin = maxStart.getMinutes();
+		if (maxStartMin >= 29){
+			maxStartMin = "29";
+		} else {
+			maxStartMin = "59";
+		}
+		if (maxStartMonth < 10){maxStartMonth = "0"+maxStartMonth;}
+		if (maxStartDay < 10){maxStartDay = "0"+maxStartDay;}
+		if (maxStartHour < 10){maxStartHour = "0"+maxStartHour;}
+		
+		var maxStartDate = minEndYear + "-" + maxStartMonth + "-" + maxStartDay + "T"+ maxStartHour + "%3A" + maxStartMin + "%3A59.000Z";
 
-		var programsURL = Server.getServerAddr() + "/LiveTv/Programs?UserId=" + Server.getUserID() + "&MaxStartDate="+maxStartDate+"&MinEndDate="+minEndDate+"&channelIds=" + channelIDs + "&ImageTypeLimit=1&EnableImages=false&SortBy=StartDate";
+		//Request the program data.
+		var programsURL = Server.getServerAddr() + "/LiveTv/Programs?UserId=" + Server.getUserID() + "&MaxStartDate="+maxStartDate+"&MinEndDate="+minEndDate+"&channelIds=" + channelIDs + "&ImageTypeLimit=1&EnableImages=false&SortBy=StartDate&EnableTotalRecordCount=false&EnableUserData=false";
 		this.Programs = Server.getContent(programsURL);
 	}
 	if (this.Programs.Items.length > 0) {
@@ -112,7 +131,8 @@ GuiPage_TvGuide.start = function(title,url,selectedRow,selectedColumn,topChannel
 GuiPage_TvGuide.updateDisplayedItems = function() {
 	//Create Table
 	var d = Support.tvGuideStartTime(this.guideStartTime);
-	var hour = d.getUTCHours();
+	var offset = File.getTVProperty("ClockOffset");
+	var hour = d.getHours()+offset;
 	var minute = d.getMinutes();
 	var nextHour = hour+1;
 	if (nextHour >= 24){nextHour = nextHour -24;}
@@ -184,7 +204,16 @@ GuiPage_TvGuide.updateDisplayedItems = function() {
 					} else {
 						htmlToAdd += 	"<div id='tvGuideProgramName' class=tvGuideProgramName>" + this.Programs.Items[programIndex].Name + "</div>";
 					}
-					htmlToAdd +=		"<div id='tvGuideProgramTime' class=tvGuideProgramTime>" + this.Programs.Items[programIndex].StartDate.substring(11,16) + " - " + this.Programs.Items[programIndex].EndDate.substring(11,16) + "</div>" +
+					var startDate = new Date(this.Programs.Items[programIndex].StartDate);
+					var startHours = startDate.getHours()+offset;
+					var startMinutes = startDate.getMinutes();
+					if (startMinutes < 10){startMinutes = "0"+startMinutes;}
+					var endDate = new Date(this.Programs.Items[programIndex].EndDate);
+					var endHours = endDate.getHours()+offset;
+					var endMinutes = endDate.getMinutes();
+					if (endMinutes <10){endMinutes = "0"+endMinutes;}
+					var timeStr = startHours + ":" + startMinutes + " - " + endHours + ":" + endMinutes;
+					htmlToAdd +=		"<div id='tvGuideProgramTime' class=tvGuideProgramTime>" + timeStr + "</div>" +
 										"<div id='tvGuideProgramGenre' class=tvGuideProgramGenre style='" + bgColour + "'></div>";
 					if (this.Programs.Items[programIndex].TimerId){
 						htmlToAdd +=	"<div id='tvGuideProgramScheduled' class=tvGuideProgramScheduled></div>";

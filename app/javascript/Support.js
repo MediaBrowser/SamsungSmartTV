@@ -766,7 +766,7 @@ Support.processSelectedItem = function(page,ItemData,startParams,selectedItem,to
 			break;
 		}
 	} else {
-		alert("Type: "+ItemData.Items[selectedItem].Type);
+		alert("Type: "+ItemData.Items[selectedItem].Type +" MeidaType: "+ItemData.Items[selectedItem].MediaType);
 		switch (ItemData.Items[selectedItem].Type) {
 		case "ManualCollectionsFolder":
 			var url = Server.getChildItemsURL(ItemData.Items[selectedItem].Id,"&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
@@ -1106,7 +1106,7 @@ Support.generateTopMenu = function() {
 
 Support.initViewUrls = function() {
 	alert("Initialising View URL's for this user");
-	this.TVNextUp = Server.getServerAddr() + "/Shows/NextUp?format=json&UserId="+Server.getUserID()+"&IncludeItemTypes=Episode&ExcludeLocationTypes=Virtual&Limit=24&Fields=PrimaryImageAspectRatio,SeriesInfo,DateCreated,SyncInfo,SortName&ImageTypeLimit=1&EnableImageTypes=Primary,Backdrop,Banner,Thumb";
+	this.TVNextUp = Server.getServerAddr() + "/Shows/NextUp?format=json&UserId="+Server.getUserID()+"&IncludeItemTypes=Episode&ExcludeLocationTypes=Virtual&Limit=24&Fields=PrimaryImageAspectRatio,SeriesInfo,DateCreated,SyncInfo,SortName&ImageTypeLimit=1&EnableImageTypes=Primary,Backdrop,Banner,Thumb&EnableTotalRecordCount=false";
 	this.Favourites = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&Filters=IsFavorite&fields=SortName&recursive=true");
 	this.FavouriteMovies = Server.getServerAddr() + "/Users/"+Server.getUserID()+"/Items?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Movie"+Server.getMoviesViewQueryPart()+"&Filters=IsFavorite&Limit=10&Recursive=true&Fields=PrimaryImageAspectRatio,SyncInfo&CollapseBoxSetItems=false&ExcludeLocationTypes=Virtual";
 	this.FavouriteSeries = Server.getServerAddr() + "/Users/"+Server.getUserID()+"/Items?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Series"+Server.getTvViewQueryPart()+"&Filters=IsFavorite&Limit=10&Recursive=true&Fields=PrimaryImageAspectRatio,SyncInfo&CollapseBoxSetItems=false&ExcludeLocationTypes=Virtual";
@@ -1124,10 +1124,12 @@ Support.getViewUrl = function(viewName) {
 }
 
 Support.removeSplashScreen = function () {
-	document.getElementById("splashscreen").style.opacity=0;
 	setTimeout(function(){
-		document.getElementById("splashscreen").style.visibility="hidden";
-	}, 1100);
+		document.getElementById("splashscreen").style.opacity=0;
+		setTimeout(function(){
+			document.getElementById("splashscreen").style.visibility="hidden";
+		}, 1600);
+	}, 2000);
 	//FileLog.write("Removing the splash screen.");
 }
 
