@@ -4,7 +4,7 @@ var tvKey = new Common.API.TVKeyValue();
 	
 var Main =
 {
-		version : "v2.2.0j",
+		version : "v2.2.0k",
 		requiredServerVersion : "3.0.5211",
 		requiredDevServerVersion : "3.0.5507.2131",
 		
@@ -25,7 +25,7 @@ var Main =
 		highlightColour : 1,
 		
 		enableMusic : true,
-		enableLiveTV : true,
+		enableLiveTV : false,
 		enableCollections : true,
 		enableChannels : true,
 		enableImageCache : true,
@@ -124,6 +124,12 @@ Main.onLoad = function()
 	if (pluginTV.GetProductCode(0).substring(0,2) == "HT" || pluginTV.GetProductCode(0).substring(0,2) == "BD"){
 		this.modelYear = pluginTV.GetProductCode(0).substring(3,4);
 	} else if (pluginTV.GetProductCode(0).substring(4,6) == "HU") {
+		this.modelYear = "HU";
+	} else if (pluginTV.GetProductCode(0).substring(4,7) == "H52") {
+		this.modelYear = "F";
+	} else if (pluginTV.GetProductCode(0).substring(4,7) == "J52") {
+		this.modelYear = "H";
+	} else if (pluginTV.GetProductCode(0).substring(4,7) == "K85") {
 		this.modelYear = "HU";
 	} else {
 		this.modelYear = pluginTV.GetProductCode(0).substring(4,5);
