@@ -129,6 +129,8 @@ Main.onLoad = function()
 		this.modelYear = "F";
 	} else if (pluginTV.GetProductCode(0).substring(4,7) == "J52") {
 		this.modelYear = "H";
+	} else if (pluginTV.GetProductCode(0).substring(4,7) == "J62") {
+		this.modelYear = "H";
 	} else if (pluginTV.GetProductCode(0).substring(4,7) == "K85") {
 		this.modelYear = "HU";
 	} else {
