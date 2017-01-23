@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>Emby</title>
 
@@ -58,7 +59,6 @@
 		<script src="app/javascript/Gui/GuiPage_CastMember.js"></script>
 		<script src="app/javascript/Gui/GuiPage_Settings.js"></script>
 		<script src="app/javascript/Gui/GuiPage_SettingsLog.js"></script>
-		<script src="app/javascript/Gui/GuiPage_TvChannel.js"></script>
 		<script src="app/javascript/Gui/GuiPage_TvGuide.js"></script>
 		<script src="app/javascript/Gui/GuiPage_Photos.js"></script>
 		<script src="app/javascript/Gui/GuiPage_PhotoNavigation.js"></script>
@@ -114,16 +114,15 @@
 		<a href="javascript:void(0);" id="GuiPage_HomeOneItem" onkeydown="GuiPage_HomeOneItem.keyDown();" onfocus="GuiPage_HomeOneItem.onFocus();"></a>
 		<a href="javascript:void(0);" id="GuiPage_HomeTwoItems" onkeydown="GuiPage_HomeTwoItems.keyDown();" onfocus="GuiPage_HomeTwoItems.onFocus();"></a>
 		<a href="javascript:void(0);" id="GuiPage_HomeTwoItemsBottom" onkeydown="GuiPage_HomeTwoItems.bottomKeyDown();"></a>	
-		<a href="javascript:void(0);" id="GuiPage_MusicArtist" onkeydown="GuiPage_MusicArtist.keyDown();"></a>
-		<a href="javascript:void(0);" id="GuiPage_MusicArtistBottom" onkeydown="GuiPage_MusicArtist.bottomKeyDown();"></a>	
+		<a href="javascript:void(0);" id="GuiPage_MusicArtist" onkeydown="GuiPage_MusicArtist.keyDown();" onfocus="GuiPage_MusicArtist.onFocus();"></a>
+		<a href="javascript:void(0);" id="GuiPage_MusicArtistBottom" onkeydown="GuiPage_MusicArtist.bottomKeyDown();" onfocus="GuiPage_MusicArtist.onFocus();"></a>
 		<a href="javascript:void(0);" id="GuiPage_Music" onkeydown="GuiPage_Music.keyDown();" onfocus="GuiPage_Music.onFocus();"></a>	
 		<a href="javascript:void(0);" id="GuiPage_MusicAZ" onkeydown="GuiPage_MusicAZ.keyDown();" onfocus="GuiPage_MusicAZ.onFocus();"></a>	
 		<a href="javascript:void(0);" id="GuiPage_CastMember" onkeydown="GuiPage_CastMember.keyDown();"></a>	
 		<a href="javascript:void(0);" id="GuiPage_Settings" onkeydown="GuiPage_Settings.keyDown();" onfocus="GuiPage_Settings.onFocus();"></a>	
 		<a href="javascript:void(0);" id="GuiPage_SettingsBottom" onkeydown="GuiPage_Settings.bottomKeyDown();"></a>
 		<a href="javascript:void(0);" id="GuiPage_SettingsLog" onkeydown="GuiPage_SettingsLog.keyDown();" onfocus="GuiPage_SettingsLog.onFocus();"></a>		
-		<a href="javascript:void(0);" id="GuiPage_TvChannel" onkeydown="GuiPage_TvChannel.keyDown();"></a>
-		<a href="javascript:void(0);" id="GuiPage_TvGuide" onkeydown="GuiPage_TvGuide.keyDown();"></a>
+		<a href="javascript:void(0);" id="GuiPage_TvGuide" onkeydown="GuiPage_TvGuide.keyDown();"onfocus="GuiPage_TvGuide.onFocus();"></a>
 		<a href="javascript:void(0);" id="GuiPage_Photos" onkeydown="GuiPage_Photos.keyDown();" onfocus="GuiPage_Photos.onFocus();"></a>	
 		<a href="javascript:void(0);" id="GuiPage_PhotoNavigation" onkeydown="GuiPage_PhotoNavigation.keyDown();"></a>	
 		<a href="javascript:void(0);" id="GuiPage_Playlist" onkeydown="GuiPage_Playlist.keyDown();"></a>
@@ -180,7 +179,7 @@
 				<div id="guiMusicPlayerDiv" class="guiMusicPlayerDiv" style="visibility:hidden">
 					<div id="guiMusicPlayerTitle" class="guiMusicPlayerTitle"></div>
 					<div id="guiMusicPlayerNowPlaying" class="guiMusicPlayerNowPlaying">Now Playing</div>	
-					<div id="guiMusicPlayerScreenOff" class="guiMusicPlayerScreenOff"> Screen</div>
+					<div id="guiMusicPlayerScreenOff" class="guiMusicPlayerScreenOff">Screen Off</div>
 					<div id="guiMusicPlayerTime"  class="guiMusicPlayerTime"></div>	
 					<div id="guiMusicPlayerPlay" class="guiMusicPlayerPlay"></div>
 					<div id="guiMusicPlayerStop" class="guiMusicPlayerStop"></div>
@@ -210,11 +209,12 @@
 				
 			</div>	
 			<!-- MUST KEEP OUTSIDE OF page div else its hidden during video playback -->	
-			<div id="Notifications" class="notification" style="visibility:hidden">
+			<div id="Notifications" style="visibility:hidden">
 				<div id="NotificationText" class="notificationText"></div>
 			</div>
 			<div id="guiPlayer_Versions_Playables" class="videoVersions" style="visibility:hidden"></div>
 			<div id="guiPlayer_Loading" class="videoLoading" style="visibility:hidden">Loading</div>
+			<div id="loading" class="loading" style="visibility:hidden"></div>
 			
 			<div id="guiPlayer_Osd" style="opacity:0">
 				<div id="guiPlayer_Info" class="videoInfo">

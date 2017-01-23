@@ -14,7 +14,8 @@ var GuiPage_MusicArtist = {
 		
 		timeout : null,
 		
-		bannerItems : ["Album","Album Artist", "Artist"],
+		bannerItems : ["Recent","Frequent","Album","Album Artist","Artist"],
+		
 		selectedBannerItem : 0,
 		
 		MAXCOLUMNCOUNT : 7,
@@ -25,6 +26,9 @@ var GuiPage_MusicArtist = {
 		startParams : []
 }
 
+GuiPage_MusicArtist.onFocus = function() {
+	GuiHelper.setControlButtons(null,null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
+}
 GuiPage_MusicArtist.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
 }
@@ -35,7 +39,6 @@ GuiPage_MusicArtist.getMaxDisplay2 = function() {
 
 GuiPage_MusicArtist.start = function(title1, url1, selectedItem, topLeftItem) {
 	alert("Page Enter : GuiPage_MusicArtist");
-	GuiHelper.setControlButtons(null,null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
 	
 	//Save Start Vars
 	Support.pageLoadTimes("GuiPage_MusicArtist","Start",true);
@@ -52,24 +55,22 @@ GuiPage_MusicArtist.start = function(title1, url1, selectedItem, topLeftItem) {
 	this.title1 = title1;
 	
 	this.ItemData = Server.getContent(url1 + "&Limit="+File.getTVProperty("ItemPaging"));
-	if (this.ItemData == null) { return; }
+	if (this.ItemData == null) { Support.processReturnURLHistory(); }
 	this.totalRecordCount = this.ItemData.TotalRecordCount;
 	Support.pageLoadTimes("GuiPage_MusicArtist","RetrievedServerData",false);
 	
 	//Create pageContent
-	var htmlToAdd = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div>";
+	var htmlToAdd = "<div id=bannerSelection class='bannerMenu'></div>";
 	htmlToAdd += "<div id=Center class='SeriesCenter'>";
 	htmlToAdd += 	"<div id=Content></div>";
 	htmlToAdd += "</div>";
-	htmlToAdd += "<div style='padding-top:650px;text-align:center;'>";
-	htmlToAdd += 	"<p id=lowerTitle class='albumArtist-lowerTitle'></p>";
-	htmlToAdd += 	"<div id=lowerContent class='albumArtist-lowerContent'></div>";
-	htmlToAdd += "</div>";
+	htmlToAdd += "<div id=lowerTitle class='albumArtist-lowerTitle offWhite'></div>";
+	htmlToAdd += "<div id=lowerContent class='albumArtist-lowerContent'></div>";
 	document.getElementById("pageContent").innerHTML = htmlToAdd;
 	
 	//Set banner Styling
-	document.getElementById("bannerSelection").style.paddingTop="20px";
-	document.getElementById("bannerSelection").style.paddingBottom="10px";
+	document.getElementById("bannerSelection").style.paddingTop="25px";
+	document.getElementById("bannerSelection").style.paddingBottom="5px";
 	
 	
 	if (this.ItemData.Items.length > 0) {
@@ -90,9 +91,9 @@ GuiPage_MusicArtist.start = function(title1, url1, selectedItem, topLeftItem) {
 		//Set Banner Items
 		for (var index = 0; index < this.bannerItems.length; index++) {
 			if (index != this.bannerItems.length-1) {
-				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding'>"+this.bannerItems[index].replace(/-/g, ' ').toUpperCase()+"</div>";			
+				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem bannerItemPadding'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";			
 			} else {
-				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem'>"+this.bannerItems[index].replace(/-/g, ' ').toUpperCase()+"</div>";					
+				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";					
 			}
 		}
 		
@@ -260,8 +261,19 @@ GuiPage_MusicArtist.keyDown = function() {
 		case tvKey.KEY_YELLOW:	
 			//Favourites
 			break;		
-		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiPage_MusicArtist");
+		case tvKey.KEY_BLUE:
+			//Focus the music player
+			if (this.selectedItem == -1) {		
+				if (this.selectedBannerItem == this.bannerItems.length-1) {
+					GuiMusicPlayer.showMusicPlayer("GuiPage_MusicArtist","bannerItem"+this.selectedBannerItem,"bannerItem highlight"+Main.highlightColour+"Text");
+				} else {
+					GuiMusicPlayer.showMusicPlayer("GuiPage_MusicArtist","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
+				}
+			} else {
+				GuiMusicPlayer.showMusicPlayer("GuiPage_MusicArtist",this.divprepend1 + this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.divprepend1 + this.ItemData.Items[this.selectedItem].Id).className);
+			}
+			
+			
 			break;	
 		case tvKey.KEY_EXIT:
 			clearTimeout(this.timeout)
@@ -274,7 +286,7 @@ GuiPage_MusicArtist.keyDown = function() {
 GuiPage_MusicArtist.openMenu = function() {
 	if (this.selectedItem == -1) {
 		if (this.selectedBannerItem == -1) {
-			document.getElementById("bannerItem0").class = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding";
+			document.getElementById("bannerItem0").class = "bannerItem bannerItemPadding";
 		}
 		this.selectedItem = 0;
 		this.topLeftItem = 0;
@@ -518,9 +530,9 @@ GuiPage_MusicArtist.bottomKeyDown = function() {
 			//Return added here - deleted in MainMenu if user does return
 			if (this.selectedItem == -1) {		
 				if (this.selectedBannerItem != this.bannerItems.length-1) {
-					document.getElementById("bannerItem"+this.selectedBannerItem).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding";
+					document.getElementById("bannerItem"+this.selectedBannerItem).className = "bannerItem bannerItemPadding";
 				} else {
-					document.getElementById("bannerItem"+this.selectedBannerItem).className = "guiDisplay_Series-BannerItem";
+					document.getElementById("bannerItem"+this.selectedBannerItem).className = "bannerItem";
 				}
 				this.selectedItem = 0;
 				this.topLeftItem = 0;
@@ -546,7 +558,7 @@ GuiPage_MusicArtist.bottomKeyDown = function() {
 			//Favourites
 			break;			
 		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiPage_MusicArtist");	
+			GuiMusicPlayer.showMusicPlayer("GuiPage_MusicArtistBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id,document.getElementById(this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id).className);
 			break;		
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY BOTTOM");
@@ -561,22 +573,22 @@ GuiPage_MusicArtist.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.bannerItems.length; index++) {
 		if (index == this.selectedBannerItem) {
 			if (index != this.bannerItems.length-1) {
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding red";
+				document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text";
 			} else {
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem red";
+				document.getElementById("bannerItem"+index).className = "bannerItem highlight"+Main.highlightColour+"Text";
 			}		
 		} else {
 			if (index != this.bannerItems.length-1) {
 				if (this.bannerItems[index] == this.startParams[0]) {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding blue";
+					document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding offWhite";
 				} else {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding";
+					document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding";
 				}
 			} else {
 				if (this.bannerItems[index] == this.startParams[0]) {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem blue";
+					document.getElementById("bannerItem"+index).className = "bannerItem offWhite";
 				} else {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem";
+					document.getElementById("bannerItem"+index).className = "bannerItem";
 				}
 			}
 		}

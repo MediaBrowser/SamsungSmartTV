@@ -51,7 +51,7 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem) {
 	
 	//Get Server Data
 	this.ItemData = Server.getContent(url);
-	if (this.ItemData == null) { return; }
+	if (this.ItemData == null) { Support.processReturnURLHistory(); }
 	
 	//Set PageContent
 	document.getElementById("pageContent").className = "";
@@ -66,6 +66,7 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem) {
 					<div id='guiTV_Show_Metadata' style='margin-left:-5px;'class='MetaDataSeasonTable'></div> \
 					<div id='guiTV_Show_Overview' class='guiFilm_Overview'></div> \
 			</div> \
+			<div id='trailerContainer' class='videoTrailerContainer'></div> \
 			<div id='imageDisk' class='imageDisk'></div> \
 			<div id='guiTV_Show_Poster' class='guiFilm_Poster'></div>";
 	
@@ -77,7 +78,7 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem) {
 	}
 	
 	//If the item is a trailer from the trailers channel, make the main play button into a Play Trailer button instead.
-	if (this.ItemData.Type == "ChannelVideoItem" && this.ItemData.ChannelName == "Trailers" && this.trailersEnabled){
+	if (this.ItemData.Type == "Trailer" && this.trailersEnabled){
 		this.menuItems.push("guiTV_Episode_Play");
 		document.getElementById("guiTV_Episode_Options").innerHTML += "<div id='guiTV_Episode_Play' class='FilmListSingle'><div class='FilmListSingleImage' style=background-image:url(images/menu/Play-46x37.png)></div><div class='ShowListSingleTitle'><div class='ShowListTextOneLineFilm'>PLAY TRAILER</div></div></div>";
 	} else if (this.ItemData.LocationType != "Virtual") {
@@ -93,6 +94,9 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem) {
 	//Options based on item type
 	if (this.ItemData.Type == "Episode") {
 		
+		//Hide the PiP movie trailer player.
+		document.getElementById("trailerContainer").style.visibility="hidden";
+		
 		//Get episode image
 		if (this.ItemData.ImageTags.Primary) {			
 			var imgsrc = Server.getImageURL(this.ItemData.Id,"Primary",940,360,0,false,0);
@@ -104,7 +108,8 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem) {
 		if (this.SeriesData == null) { return; }
 		
 		//Get Episode Data
-		this.EpisodeData = Server.getContent(Server.getSeasonEpisodesURL(this.ItemData.SeriesId,this.ItemData.SeasonId));
+		var episodesUrl = Server.getChildItemsURL(this.ItemData.SeasonId,"&IncludeItemTypes=Episode&fields=SortName,Overview");
+		this.EpisodeData = Server.getContent(episodesUrl);
 		if (this.EpisodeData == null) { return; }
 		
 		//Browse season episodes
@@ -160,15 +165,18 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem) {
 		
 		//Get trailerItems
 		if (this.ItemData.LocalTrailerCount > 0 && this.trailersEnabled) {
-			
+			document.getElementById("trailerContainer").style.visibility="";
 			var url3 = Server.getCustomURL("/Users/"+Server.getUserID()+"/Items/"+this.ItemData.Id+"/LocalTrailers?format=json");
 			this.trailerItems = Server.getContent(url3);
 			if (this.trailerItems == null) { return; }
 
 			//Trailers are always transcoded. That way they can be remote streams or local files and we don't need to care.
 			this.trailerUrl = Server.getStreamUrl(this.trailerItems[0].Id,this.trailerItems[0].MediaSources[0].Id);
-		} else if (this.ItemData.Type == "ChannelVideoItem" && this.ItemData.ChannelName == "Trailers"){
+		} else if (this.ItemData.Type == "Trailer"){
+			document.getElementById("trailerContainer").style.visibility="";
 			this.trailerUrl = Server.getStreamUrl(this.ItemData.Id,this.ItemData.MediaSources[0].Id);
+		} else {
+			document.getElementById("trailerContainer").style.visibility="hidden";
 		}
 		
 		//Get suggestions
@@ -335,7 +343,7 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem) {
 GuiPage_ItemDetails.updateSelectedItems = function () {
 	for (var index = 0; index < this.menuItems.length; index++){	
 		if (index == this.selectedItem) {
-			document.getElementById(this.menuItems[index]).className = "FilmListSingle EpisodeListSelected";	
+			document.getElementById(this.menuItems[index]).className = "FilmListSingle highlight"+Main.highlightColour+"Background";	
 		} else {	
 			document.getElementById(this.menuItems[index]).className = "FilmListSingle";		
 		}		
@@ -371,6 +379,9 @@ GuiPage_ItemDetails.updateSelectedItems = function () {
 			}
 			if (this.EpisodeData.Items){
 				this.topLeftItem2 = Math.min(Math.max(this.ItemData.IndexNumber -2,0), this.EpisodeData.Items.length -4);
+				if (this.topLeftItem2 < 0){
+					this.topLeftItem2 = 0;
+				}
 			} else {
 				this.topLeftItem2 = 0;
 			}
@@ -381,7 +392,11 @@ GuiPage_ItemDetails.updateSelectedItems = function () {
 		document.getElementById("guiTV_Episode_SubOptions").style.display="";
 		document.getElementById("guiTV_Episode_SubOptionImages").style.display="";
 		if (this.ItemData.Type == "Episode") {
-			this.subMenuItems = this.SeriesData.People; 
+			this.subMenuItems = this.SeriesData.People;
+			if (this.ItemData.People !== undefined){
+				this.subMenuItems.push.apply(this.subMenuItems, this.ItemData.People);
+			}
+			
 		} else {
 			this.subMenuItems = this.ItemData.People;
 		}
@@ -476,7 +491,7 @@ GuiPage_ItemDetails.keyDown = function()
 					sf.service.VideoPlayer.hide();
 				}
 				//Set the trailer button back to Play
-				if (this.ItemData.Type == "ChannelVideoItem" && this.ItemData.ChannelName == "Trailers"){
+				if (this.ItemData.Type == "Trailer"){
 					document.getElementById("guiTV_Episode_Play").innerHTML = "<div class='FilmListSingleImage' style=background-image:url(images/menu/Play-46x37.png)></div><div class='ShowListSingleTitle'><div class='ShowListTextOneLineFilm'>PLAY TRAILER</div></div>";
 				} else if (this.selectedItem == 0) {
 					document.getElementById("guiTV_Episode_SubOptions").innerHTML = "<div id=0 class='FilmListSingle'><div class='FilmListSingleImage' style=background-image:url(images/menu/Play-46x37.png)></div><div class='ShowListSingleTitle'><div class='ShowListTextOneLineFilm'>PLAY TRAILER</div></div></div>";
@@ -541,8 +556,8 @@ GuiPage_ItemDetails.keyDown = function()
 				}
 			}
 			break;
-		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiPage_ItemDetails");
+		case tvKey.KEY_BLUE:
+			GuiMusicPlayer.showMusicPlayer("GuiPage_ItemDetails",this.menuItems[this.selectedItem],document.getElementById(this.menuItems[this.selectedItem]).className);
 			break;	
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY");
@@ -554,9 +569,9 @@ GuiPage_ItemDetails.keyDown = function()
 GuiPage_ItemDetails.updateItemUserStatus = function(item) { //Watched and Favourite status
 	var addSpan = "";
 	if (item.UserData.IsFavorite == true && this.ItemData.UserData.Played == true) {
-		addSpan = "<span class='itemPageFavourite' style='padding-left:20px;'></span><span class='itemPageWatched' style='padding-left:20px;'></span>";
+		addSpan = "<span class='itemPageFavourite' style='padding-left:20px;'></span><span class='itemPageWatched highlight"+Main.highlightColour+"Background'>&#10003</span>";
 	} else if (item.UserData.Played == true) {
-		addSpan = "<span class='itemPageWatched' style='padding-left:20px;'></span>";
+		addSpan = "<span class='itemPageWatched highlight"+Main.highlightColour+"Background'>&#10003</span>";
 	} else if (item.UserData.IsFavorite == true) {
 		addSpan = "<span class='itemPageFavourite' style='padding-left:20px;'></span>";
 	}
@@ -568,7 +583,7 @@ GuiPage_ItemDetails.updateItemUserStatus = function(item) { //Watched and Favour
 GuiPage_ItemDetails.openMenu = function() {
 	Support.updateURLHistory("GuiPage_ItemDetails",this.startParams[0],this.startParams[1],null,null,this.selectedItem,null,true);
 	document.getElementById(this.menuItems[this.selectedItem]).className = "FilmListSingle"; 
-	GuiMainMenu.requested("GuiPage_ItemDetails",this.menuItems[this.selectedItem],"FilmListSingle EpisodeListSelected");
+	GuiMainMenu.requested("GuiPage_ItemDetails",this.menuItems[this.selectedItem],"FilmListSingle highlight"+Main.highlightColour+"Background");
 }
 
 GuiPage_ItemDetails.processLeftKey = function() {
@@ -601,7 +616,7 @@ GuiPage_ItemDetails.processSelectedItem = function() {
 	switch (this.menuItems[this.selectedItem]) {
 	case "guiTV_Episode_Play":
 	case "guiTV_Episode_Resume":
-		if (this.ItemData.Type == "ChannelVideoItem" && this.ItemData.ChannelName == "Trailers" && this.trailersEnabled){
+		if (this.ItemData.Type == "Trailer" && this.trailersEnabled){
 			//Trailer playback
 			var htmlToAdd = "";
 		    if (this.trailerState == sf.service.VideoPlayer.STATE_PLAYING || 
@@ -707,10 +722,14 @@ GuiPage_ItemDetails.updateDisplayedItems2 = function() {
 			}
 			//Add watched and favourite overlays.
 			if (this.subMenuItems[index].UserData.Played) {
-				htmlToAdd2 += "<div class=moreEpisodesWatchedItem style=align:right></div>";	
+				htmlToAdd2 += "<div class='moreEpisodesWatchedItem highlight"+Main.highlightColour+"Background' style=align:right>&#10003</div>";	
 			}
 			if (this.subMenuItems[index].UserData.IsFavorite) {
 				htmlToAdd2 += "<div class=moreEpisodesFavouriteItem></div>";
+			}
+			if (this.subMenuItems[index].LocationType == "Virtual"){
+				imageMissingOrUnaired = (Support.FutureDate(this.subMenuItems[index].PremiereDate) == true) ? "ShowListSingleUnaired" : "ShowListSingleMissing";
+				htmlToAdd2 += "<div class='"+imageMissingOrUnaired+"'></div>";
 			}
 			htmlToAdd2 += "</div>";
 			
@@ -739,13 +758,13 @@ GuiPage_ItemDetails.updateSelectedItems2 = function() {
 	for (var index = this.topLeftItem2; index < Math.min(this.topLeftItem2 + this.getMaxDisplay2(),this.subMenuItems.length);index++) {	
 		if (this.menuItems[this.selectedItem] == "guiTV_Episode_Play") {
 			if (index == this.selectedItem2) {
-					document.getElementById(index).className = "FilmListSingle EpisodeListSelected";
+					document.getElementById(index).className = "FilmListSingle highlight"+Main.highlightColour+"Background";
 			} else {
 					document.getElementById(index).className = "FilmListSingle";
 			}
 		} else {
 			if (index == this.selectedItem2) {
-				document.getElementById(index).className = "FilmListSubSingle EpisodeListSelected";
+				document.getElementById(index).className = "FilmListSubSingle highlight"+Main.highlightColour+"Background";
 			} else {
 				document.getElementById(index).className = "FilmListSubSingle";
 			}
@@ -826,10 +845,10 @@ GuiPage_ItemDetails.subKeyDown = function() {
 			widgetAPI.blockNavigation(event);
 			document.getElementById("Counter").innerHTML = (this.selectedItem + 1) + "/" + this.menuItems.length;
 			if (this.menuItems[this.selectedItem] == "guiTV_Episode_Play") {
-				document.getElementById(this.menuItems[this.selectedItem]).className = "FilmListSingle EpisodeListSelected";
+				document.getElementById(this.menuItems[this.selectedItem]).className = "FilmListSingle highlight"+Main.highlightColour+"Background";
 				document.getElementById(this.selectedItem2).className = "FilmListSingle";
 			} else {
-				document.getElementById(this.menuItems[this.selectedItem]).className = "FilmListSingle EpisodeListSelected";
+				document.getElementById(this.menuItems[this.selectedItem]).className = "FilmListSingle highlight"+Main.highlightColour+"Background";
 				document.getElementById(this.selectedItem2).className = "FilmListSubSingle";
 			}
 			document.getElementById("GuiPage_ItemDetails").focus();
@@ -853,7 +872,7 @@ GuiPage_ItemDetails.subKeyDown = function() {
 				}
 				//If the trailer button is visible when a trailer ends, update it.
 				if (this.selectedItem == 0) { 
-					var htmlToAdd = "<div id=0 class='FilmListSingle EpisodeListSelected'><div class='FilmListSingleImage' style=background-image:url(images/menu/Play-46x37.png)></div><div class='ShowListSingleTitle'><div class='ShowListTextOneLineFilm'>PLAY TRAILER</div></div></div>";
+					var htmlToAdd = "<div id=0 class='FilmListSingle highlight"+Main.highlightColour+"Background'><div class='FilmListSingleImage' style=background-image:url(images/menu/Play-46x37.png)></div><div class='ShowListSingleTitle'><div class='ShowListTextOneLineFilm'>PLAY TRAILER</div></div></div>";
 					document.getElementById("guiTV_Episode_SubOptions").innerHTML = htmlToAdd;
 				}
 				//Turn On Screensaver
@@ -904,13 +923,13 @@ GuiPage_ItemDetails.subKeyDown = function() {
 			}
 			break;
 		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiPage_ItemDetails");
+			GuiMusicPlayer.showMusicPlayer("GuiPage_ItemDetailsSub",this.selectedItem2,document.getElementById(this.selectedItem2).className);
 			break;	
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
 			Support.updateURLHistory("GuiPage_ItemDetails",this.startParams[0],this.startParams[1],null,null,this.selectedItem,null,true);
 			document.getElementById(this.selectedItem2).className = "FilmListSubSingle";
-			GuiMainMenu.requested("GuiPage_ItemDetailsSub",this.selectedItem2,"FilmListSubSingle EpisodeListSelected");
+			GuiMainMenu.requested("GuiPage_ItemDetailsSub",this.selectedItem2,"FilmListSubSingle highlight"+Main.highlightColour+"Background");
 			break;	
 		case tvKey.KEY_INFO:
 			alert ("INFO KEY");
@@ -938,12 +957,12 @@ GuiPage_ItemDetails.processSelectedItem2 = function() {
 			Support.screensaver();
 			//Update buttons
 			GuiHelper.setControlButtons("Favourite","Watched",null,null,"Return");
-			htmlToAdd += "<div id=0 class='FilmListSingle EpisodeListSelected'><div class='FilmListSingleImage' style=background-image:url(images/menu/Play-46x37.png)></div><div class='ShowListSingleTitle'><div class='ShowListTextOneLineFilm'>PLAY TRAILER</div></div></div>";
+			htmlToAdd += "<div id=0 class='FilmListSingle highlight"+Main.highlightColour+"Background'><div class='FilmListSingleImage' style=background-image:url(images/menu/Play-46x37.png)></div><div class='ShowListSingleTitle'><div class='ShowListTextOneLineFilm'>PLAY TRAILER</div></div></div>";
 	    } else {
 	    	this.playTrailer(this.trailerUrl);
 			//Update buttons
 			GuiHelper.setControlButtons("Favourite","Watched","Full Screen",null,"Return");
-			htmlToAdd += "<div id=0 class='FilmListSingle EpisodeListSelected'><div class='FilmListSingleImage' style=background-image:url(images/menu/Stop-46x37.png)></div><div class='ShowListSingleTitle'><div class='ShowListTextOneLineFilm'>STOP TRAILER</div></div></div>";
+			htmlToAdd += "<div id=0 class='FilmListSingle highlight"+Main.highlightColour+"Background'><div class='FilmListSingleImage' style=background-image:url(images/menu/Stop-46x37.png)></div><div class='ShowListSingleTitle'><div class='ShowListTextOneLineFilm'>STOP TRAILER</div></div></div>";
 		}
 	    document.getElementById("guiTV_Episode_SubOptions").innerHTML = htmlToAdd;
 		break;
@@ -1022,12 +1041,12 @@ GuiPage_ItemDetails.getTrailerEvents = function() {
 		//If the trailer button is visible when a trailer ends, update it.
 		if (GuiPage_ItemDetails.selectedItem == 0) { 
 			var htmlToAdd = "";
-			htmlToAdd += "<div id=0 class='FilmListSingle EpisodeListSelected'><div class='FilmListSingleImage' style=background-image:url(images/menu/Play-46x37.png)></div><div class='ShowListSingleTitle'><div class='ShowListTextOneLineFilm'>PLAY TRAILER</div></div></div>";
+			htmlToAdd += "<div id=0 class='FilmListSingle highlight"+Main.highlightColour+"Background'><div class='FilmListSingleImage' style=background-image:url(images/menu/Play-46x37.png)></div><div class='ShowListSingleTitle'><div class='ShowListTextOneLineFilm'>PLAY TRAILER</div></div></div>";
 			document.getElementById("guiTV_Episode_SubOptions").innerHTML = htmlToAdd;
 		}
 		
 		//Reset the Play Trailer button for channel trailers
-		if (GuiPage_ItemDetails.ItemData.Type == "ChannelVideoItem" && GuiPage_ItemDetails.ItemData.ChannelName == "Trailers" && GuiPage_ItemDetails.trailersEnabled){
+		if (GuiPage_ItemDetails.ItemData.Type == "Trailer" && GuiPage_ItemDetails.trailersEnabled){
 			document.getElementById("guiTV_Episode_Play").innerHTML = "<div class='FilmListSingleImage' style=background-image:url(images/menu/Play-46x37.png)></div><div class='ShowListSingleTitle'><div class='ShowListTextOneLineFilm'>PLAY TRAILER</div></div>";
 		}
 		
@@ -1067,7 +1086,7 @@ GuiPage_ItemDetails.setTrailerKeyHandlers = function() {
 	sf.service.VideoPlayer.setKeyHandler(sf.key.YELLOW, function () {
 		sf.service.VideoPlayer.setFullScreen(false);
 		GuiPage_ItemDetails.updateSelectedItems();
-		if (GuiPage_ItemDetails.ItemData.Type != "ChannelVideoItem"){
+		if (GuiPage_ItemDetails.ItemData.Type != "Trailer"){
 			GuiPage_ItemDetails.updateSelectedItems2();
 		}
 		GuiPage_ItemDetails.updateDisplayedItems2();
@@ -1076,7 +1095,7 @@ GuiPage_ItemDetails.setTrailerKeyHandlers = function() {
 	sf.service.VideoPlayer.setKeyHandler(sf.key.RETURN, function () {
 		sf.service.VideoPlayer.setFullScreen(false);
 		GuiPage_ItemDetails.updateSelectedItems();
-		if (GuiPage_ItemDetails.ItemData.Type != "ChannelVideoItem"){
+		if (GuiPage_ItemDetails.ItemData.Type != "Trailer"){
 			GuiPage_ItemDetails.updateSelectedItems2();
 		}
 		GuiPage_ItemDetails.updateDisplayedItems2();
@@ -1095,12 +1114,12 @@ GuiPage_ItemDetails.setTrailerKeyHandlers = function() {
 		Support.screensaverOn();
 		Support.screensaver();
 		GuiPage_ItemDetails.updateSelectedItems();
-		if (GuiPage_ItemDetails.ItemData.Type != "ChannelVideoItem"){
+		if (GuiPage_ItemDetails.ItemData.Type != "Trailer"){
 			GuiPage_ItemDetails.updateSelectedItems2();
 		}
 		GuiPage_ItemDetails.updateDisplayedItems2();
 		//Reset the Play Trailer button for channel trailers
-		if (GuiPage_ItemDetails.ItemData.Type == "ChannelVideoItem" && GuiPage_ItemDetails.ItemData.ChannelName == "Trailers" && GuiPage_ItemDetails.trailersEnabled){
+		if (GuiPage_ItemDetails.ItemData.Type == "Trailer" && GuiPage_ItemDetails.trailersEnabled){
 			document.getElementById("guiTV_Episode_Play").innerHTML = "<div class='FilmListSingleImage' style=background-image:url(images/menu/Play-46x37.png)></div><div class='ShowListSingleTitle'><div class='ShowListTextOneLineFilm'>PLAY TRAILER</div></div>";
 		}
 		document.getElementById("GuiPage_ItemDetails").focus();
@@ -1154,7 +1173,6 @@ GuiPage_ItemDetails.getMediaInfo = function() {
 	//this.ItemData.MediaSources[0].Name is in the format 3D/Resolution/videoCodec/audioCodec. 3D/ is omitted for 2D.
 	var container = this.ItemData.MediaSources[0].Container;
 	var res = this.ItemData.MediaSources[0].Name.split("/");
-	alert("Name: "+this.ItemData.MediaSources[0].Name);
 	var videoCodec = null; var videoRatio = null; var audioCodec = null; var audioChannels = null;
 	
 	var MEDIASTREAMS = this.ItemData.MediaSources[0].MediaStreams;
@@ -1186,7 +1204,6 @@ GuiPage_ItemDetails.getMediaInfo = function() {
 
 GuiPage_ItemDetails.processMediaInfo = function(itemsArray) {
 	var htmlToAdd = "";
-	alert("itemsArray.length: "+itemsArray.length);
 	for (var index = 0; index < itemsArray.length; index++) {
 		switch (itemsArray[index]) {
 		//Container
@@ -1202,6 +1219,10 @@ GuiPage_ItemDetails.processMediaInfo = function(itemsArray) {
 		//VideoCodec	
 		case "h264":
 			htmlToAdd += "<div class='mediaInfo' style=background-image:url(images/MediaInfo/codec_h264.png)></div>";
+			break;
+		case "hevc":
+		case "h265":
+			htmlToAdd += "<div class='mediaInfo' style=background-image:url(images/MediaInfo/codec_h265.png)></div>";
 			break;
 		case "mpeg4":
 			htmlToAdd += "<div class='mediaInfo' style=background-image:url(images/MediaInfo/codec_mpeg4visual.png)></div>";

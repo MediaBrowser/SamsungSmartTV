@@ -1,4 +1,7 @@
 var GuiPage_HomeOneItem = {
+		
+		selectedBannerItem : -1,
+		
 		ItemData : null,
 		ItemIndexData : null,
 		
@@ -38,7 +41,7 @@ GuiPage_HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 	
 	//Load Data
 	this.ItemData = Server.getContent(url);
-	if (this.ItemData == null) { return; }
+	if (this.ItemData == null) { Support.processReturnURLHistory(); }
 	
 	if (title == "Latest TV" || title == "Latest Movies") {
 		this.isLatest = true;
@@ -50,7 +53,7 @@ GuiPage_HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 		title = "Media Folders"
 		var newURL = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&CollapseBoxSetItems=false&fields=SortName");
 		this.ItemData = Server.getContent(newURL);
-		if (this.ItemData == null) { return; }
+		if (this.ItemData == null) { Support.processReturnURLHistory(); }
 	}
 	
 	if (this.ItemData.Items.length > 0) {		
@@ -66,15 +69,15 @@ GuiPage_HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 		}
 		
 		//Set page content
-		document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div><div id=Center class='HomeOneCenter'><p id='title' style='position:relative;font-size:1.4em;z-index:5;'>"+title+"</p><div id=Content></div></div>";			
+		document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div><div id=Center class='HomeOneCenter'><p id='title' style='position:relative;font-size:1.4em;z-index:5;'>"+title+"</p><div id=Content></div></div>";			
 
 		//Set isResume based on title - used in UpdateDisplayedItems
 		this.isResume = (title == "Resume" ||  title == "Continue Watching" ) ? true : false;
 		
 		//If to determine positioning of content
 		document.getElementById("Center").style.top = (this.ItemData.Items.length <= this.MAXCOLUMNCOUNT) ? "180px" : "200px";
-		document.getElementById("Center").style.left = "230px";
-		document.getElementById("Center").style.width = "1500px";
+		document.getElementById("Center").style.left = "170px";
+		document.getElementById("Center").style.width = "1620px";
 
 		//Generate Banner Items - Mreove Home Page
 		this.menuItems = GuiMainMenu.menuItemsHomePages; 
@@ -82,9 +85,9 @@ GuiPage_HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 		//Generate Banner display
 		for (var index = 0; index < this.menuItems.length; index++) {
 			if (index != this.menuItems.length-1) {
-				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding'>"+this.menuItems[index].replace(/-/g, ' ').toUpperCase()+"</div>";			
+				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItemHome bannerItemPadding'>"+this.menuItems[index].replace(/_/g, ' ')+"</div>";			
 			} else {
-				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem'>"+this.menuItems[index].replace(/-/g, ' ').toUpperCase()+"</div>";					
+				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItemHome'>"+this.menuItems[index].replace(/_/g, ' ')+"</div>";					
 			}
 		}
 	
@@ -93,10 +96,11 @@ GuiPage_HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 		
 		//Update Selected Collection CSS
 		this.updateSelectedItems();
+		this.updateSelectedBannerItems();
 
 		//Function to generate random backdrop
 		this.backdropTimeout = setTimeout(function(){
-			var randomImageURL = Server.getItemTypeURL("&SortBy=Random&IncludeItemTypes=Series,Movie&Recursive=true&CollapseBoxSetItems=false&Limit=20");
+			var randomImageURL = Server.getItemTypeURL("&SortBy=Random&IncludeItemTypes=Series,Movie&Recursive=true&CollapseBoxSetItems=false&Limit=20&EnableTotalRecordCount=false");
 			var randomImageData = Server.getContent(randomImageURL);
 			if (randomImageData == null) { return; }
 			
@@ -135,22 +139,22 @@ GuiPage_HomeOneItem.updateDisplayedItems = function() {
 //Function sets CSS Properties so show which user is selected
 GuiPage_HomeOneItem.updateSelectedItems = function (bypassCounter) {
 	Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Series Collection Selected","Series Collection","",bypassCounter);
+			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"homePagePoster Collection Selected highlight"+Main.highlightColour+"Boarder","homePagePoster Collection","",bypassCounter);
 }
 
 GuiPage_HomeOneItem.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.menuItems.length; index++) {
-		if (index == this.selectedBannerItem) {
+		if (index == this.selectedBannerItem && this.selectedItem == -1) {
 			if (index != this.menuItems.length-1) {
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding BannerSelected";
+				document.getElementById("bannerItem"+index).className = "bannerItemHome bannerItemPadding highlight"+Main.highlightColour+"Text";
 			} else {
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem BannerSelected";
+				document.getElementById("bannerItem"+index).className = "bannerItemHome highlight"+Main.highlightColour+"Text";
 			}		
 		} else {
 			if (index != this.menuItems.length-1) {
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding";
+				document.getElementById("bannerItem"+index).className = "bannerItemHome bannerItemPadding offWhite";
 			} else {
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem";
+				document.getElementById("bannerItem"+index).className = "bannerItemHome offWhite";
 			}
 		}
 	}
@@ -255,8 +259,16 @@ GuiPage_HomeOneItem.keyDown = function() {
 	    		}, 200);
 			}
 			break;	
-		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiPage_HomeOneItem");
+		case tvKey.KEY_BLUE:
+			if (this.selectedItem == -1) {		
+				if (this.selectedBannerItem == this.menuItems.length-1) {
+					GuiMusicPlayer.showMusicPlayer("GuiPage_HomeOneItem","bannerItem"+this.selectedBannerItem,"bannerItemHome highlight"+Main.highlightColour+"Text");
+				} else {
+					GuiMusicPlayer.showMusicPlayer("GuiPage_HomeOneItem","bannerItem"+this.selectedBannerItem,"bannerItemHome bannerItemPadding highlight"+Main.highlightColour+"Text");
+				}
+			} else {
+				GuiMusicPlayer.showMusicPlayer("GuiPage_HomeOneItem",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);			
+			}
 			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
@@ -287,9 +299,9 @@ GuiPage_HomeOneItem.openMenu = function() {
 	if (this.selectedItem == -1) {
 		Support.updateURLHistory("GuiPage_HomeOneItem",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
 		if (this.selectedBannerItem == this.menuItems.length-1) {
-			GuiMainMenu.requested("GuiPage_HomeOneItem","bannerItem"+this.selectedBannerItem,"guiDisplay_Series-BannerItem BannerSelected");
+			GuiMainMenu.requested("GuiPage_HomeOneItem","bannerItem"+this.selectedBannerItem,"bannerItemHome highlight"+Main.highlightColour+"Text");
 		} else {
-			GuiMainMenu.requested("GuiPage_HomeOneItem","bannerItem"+this.selectedBannerItem,"guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding BannerSelected");
+			GuiMainMenu.requested("GuiPage_HomeOneItem","bannerItem"+this.selectedBannerItem,"bannerItemHome bannerItemPadding highlight"+Main.highlightColour+"Text");
 		}
 	} else {
 		Support.updateURLHistory("GuiPage_HomeOneItem",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);

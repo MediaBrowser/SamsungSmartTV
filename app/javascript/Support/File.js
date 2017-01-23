@@ -5,29 +5,29 @@ var File = {
 
 File.getServerEntry = function() {
 	return this.ServerEntry;
-}
+};
 
 File.setServerEntry = function(serverEntry) {
 	this.ServerEntry = serverEntry;
-}
+};
 
 File.getUserEntry = function() {
 	return this.UserEntry;
-}
+};
 
 File.setUserEntry = function(userEntry) {
 	this.UserEntry = userEntry;
-}
+};
 
 File.deleteOldSettingsFile = function() {
 	var fileSystemObj = new FileSystem();
 	fileSystemObj.deleteCommonFile(curWidget.id + '/MB3_Settings.xml');
-}
+};
 
 File.deleteSettingsFile = function() {
 	var fileSystemObj = new FileSystem();
 	fileSystemObj.deleteCommonFile(curWidget.id + '/MB3_Settings.json');
-}
+};
 
 File.loadFile = function() {
 	var fileSystemObj = new FileSystem();
@@ -62,7 +62,7 @@ File.checkVersion = function(fileContent) {
 	} else {
 		return fileContent.Version;
 	}
-}
+};
 
 File.saveServerToFile = function(Id,Name,ServerIP) {
 	var fileSystemObj = new FileSystem();
@@ -91,12 +91,11 @@ File.saveServerToFile = function(Id,Name,ServerIP) {
 			}
 		}	
 	}
-}
+};
 
 File.setDefaultServer = function (defaultIndex) {
 	var fileJson = JSON.parse(File.loadFile()); 
 	for (var index = 0; index < fileJson.Servers.length; index++) {
-		alert (index + " " + defaultIndex);
 		if (fileJson.Servers[defaultIndex].Id == fileJson.Servers[index].Id ) {
 			fileJson.Servers[index].Default = true;
 		} else {
@@ -110,8 +109,8 @@ File.setDefaultServer = function (defaultIndex) {
 		openWrite.writeLine(JSON.stringify(fileJson)); 
 		fileSystemObj.closeCommonFile(openWrite); 
 	}
-	GuiNotifications.setNotification(fileJson.Servers[defaultIndex].Name + " is now your default Server and will be logged in autiomatically from now on","Default Server Changed",true);
-}
+	GuiNotifications.setNotification(fileJson.Servers[defaultIndex].Name + " is now your default Server and will be logged in autiomatically from now on.","Default Server Changed",true);
+};
 
 File.deleteServer = function (index) {
 	var fileSystemObj = new FileSystem();
@@ -134,7 +133,7 @@ File.deleteServer = function (index) {
 			GuiPage_Servers.start();
 		}
 	}	
-}
+};
 
 File.addUser = function (UserId, Name, Password, rememberPassword) {
 	var fileSystemObj = new FileSystem();
@@ -156,10 +155,9 @@ File.addUser = function (UserId, Name, Password, rememberPassword) {
 		}
 		if (userFound == false) {
 			this.UserEntry = fileJson.Servers[this.ServerEntry].Users.length;
-			view1 = Server.getServerAddr() + "/Shows/NextUp?format=json&UserId="+Server.getUserID()+"&IncludeItemTypes=Episode&ExcludeLocationTypes=Virtual&Limit=24&Fields=PrimaryImageAspectRatio,SeriesInfo,DateCreated,SyncInfo,SortName&ImageTypeLimit=1&EnableImageTypes=Primary,Backdrop,Banner,Thumb";
-			view2 = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Movie&IsFolder=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
-			
-			fileJson.Servers[this.ServerEntry].Users[this.UserEntry] = {"UserId":UserId,"UserName":Name.toLowerCase(),"Password":Password,"RememberPassword":rememberPassword,"Default":false,"View1":view1,View1Name:"Next Up","View2":view2,View2Name:"Latest Movies"};
+			//view1 = Server.getServerAddr() + "/Shows/NextUp?format=json&UserId="+Server.getUserID()+"&IncludeItemTypes=Episode&ExcludeLocationTypes=Virtual&Limit=24&Fields=PrimaryImageAspectRatio,SeriesInfo,DateCreated,SyncInfo,SortName&ImageTypeLimit=1&EnableImageTypes=Primary,Backdrop,Banner,Thumb";
+			//view2 = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Movie"+Server.getMoviesViewQueryPart()+"&IsFolder=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
+			fileJson.Servers[this.ServerEntry].Users[this.UserEntry] = {"UserId":UserId,"UserName":Name.toLowerCase(),"Password":Password,"RememberPassword":rememberPassword,"Default":false,"HighlightColour":1,"ContinueWatching":true,"View1":"TVNextUp","View1Name":"Next Up","View2":"LatestMovies","View2Name":"Latest Movies"};
 			
 		}
 		
@@ -169,7 +167,7 @@ File.addUser = function (UserId, Name, Password, rememberPassword) {
 			fileSystemObj.closeCommonFile(openWrite); 
 		}
 	}
-}
+};
 
 File.deleteUser = function (index) {
 	var fileSystemObj = new FileSystem();
@@ -186,7 +184,7 @@ File.deleteUser = function (index) {
 			fileSystemObj.closeCommonFile(openWrite); 
 		}
 	}
-}
+};
 
 File.deleteAllUsers = function (index) {
 	var fileSystemObj = new FileSystem();
@@ -203,7 +201,7 @@ File.deleteAllUsers = function (index) {
 			fileSystemObj.closeCommonFile(openWrite); 
 		}
 	}
-}
+};
 
 File.deleteUserPasswords = function () {
 	var fileSystemObj = new FileSystem();
@@ -222,7 +220,7 @@ File.deleteUserPasswords = function () {
 			fileSystemObj.closeCommonFile(openWrite); 
 		}
 	}
-}
+};
 
 File.updateUserSettings = function (altered) {
 	var fileSystemObj = new FileSystem();
@@ -239,7 +237,7 @@ File.updateUserSettings = function (altered) {
 			fileSystemObj.closeCommonFile(openWrite); 
 		}
 	}
-}
+};
 
 
 File.updateServerSettings = function (altered) {
@@ -257,7 +255,7 @@ File.updateServerSettings = function (altered) {
 			fileSystemObj.closeCommonFile(openWrite); 
 		}
 	}
-}
+};
 
 File.writeAll = function (toWrite) {
 	var fileSystemObj = new FileSystem();
@@ -266,7 +264,7 @@ File.writeAll = function (toWrite) {
 		openWrite.writeLine(JSON.stringify(toWrite)); 
 		fileSystemObj.closeCommonFile(openWrite); 
 	}
-}
+};
 
 //---------------------------------------------------------------------------------------------------------------------------------
 //-  GET FUNCTIONS
@@ -294,7 +292,7 @@ File.getUserProperty = function(property) {
 		} 
 		return fileJson.Servers[this.ServerEntry].Users[this.UserEntry][property];	
 	}
-}
+};
 
 File.getTVProperty = function(property) {
 	var fileSystemObj = new FileSystem();
@@ -321,7 +319,7 @@ File.getTVProperty = function(property) {
 		} 
 		return fileJson.TV[property];			
 	}
-}
+};
 
 //---------------------------------------------------------------------------------------------------------------------------------
 //-  SET FUNCTIONS
@@ -344,4 +342,4 @@ File.setUserProperty = function(property,value) {
 		} 
 		return 	
 	}
-}
+};

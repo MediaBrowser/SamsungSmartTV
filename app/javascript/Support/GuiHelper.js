@@ -7,7 +7,6 @@ var GuiHelper = {
 //------------------------------------------------------------------------------------------------
 GuiHelper.toggleHelp = function(helpPage) {
 	this.helpPage = helpPage;
-	alert ("Selected page: " + helpPage + "  -  Set page: " + this.helpPage);
 	if (document.getElementById("GuiImagePlayer_ScreensaverOverlay").style.visibility == ""){
 		document.getElementById("GuiImagePlayer_ScreensaverOverlay").style.visibility = "hidden";
 	}
@@ -136,39 +135,39 @@ GuiHelper.setControlButtons = function(redText,greenText,yellowText,blueText,ret
 	//Calculate an offset value if the label is longer than 5 characters.
 	var redOffset = 0;
 	if (redText != null){ 
-		redOffset = (redText.length > 5) ? (redText.length -5)*20 : 0;
+		redOffset = (redText.length > 5) ? (redText.length *6)+5 : 0;
 	}
 	
 	var greenOffset = 0;
 	if (greenText != null){
-		greenOffset = (greenText.length > 5) ? (greenText.length -5)*20 : 0;
+		greenOffset = (greenText.length > 5) ? (greenText.length *6)+5  : 0;
 	}
 	
 	var yellowOffset = 0;
 	if (yellowText != null){
-		yellowOffset = (yellowText.length > 5) ? (yellowText.length -5)*20 : 0;
+		yellowOffset = (yellowText.length > 5) ? (yellowText.length *6)+5 : 0;
 	}
 	
 	var blueOffset = 0;
 	if (blueText != null){
-		blueOffset = (blueText.length > 5) ? (blueText.length -5)*20 : 0;
+		blueOffset = (blueText.length > 5) ? (blueText.length *6)+5 : 0;
 	}
 	
 	var returnOffset = 0;
 	if (returnText != null){
-		returnOffset = (returnText.length > 5) ? (returnText.length -5)*20 : 0;
+		returnOffset = (returnText.length > 5) ? (returnText.length *6)+5 : 0;
 	}
 	
 	//Add the offset values to item's standard position.
-	var redPos = (redText == null) ? 0 : 570;
+	var redPos = (redText == null) ? 0 : 602;
 	redPos = redPos + redOffset + greenOffset + yellowOffset + blueOffset + returnOffset;
-	var greenPos = (greenText == null) ? 0 : 460;
+	var greenPos = (greenText == null) ? 0 : 468;
 	greenPos = greenPos + greenOffset + yellowOffset + blueOffset + returnOffset;
-	var yellowPos = (yellowText == null) ? 0 : 320;
+	var yellowPos = (yellowText == null) ? 0 : 322;
 	yellowPos = yellowPos + yellowOffset + blueOffset + returnOffset;
-	var bluePos = (blueText == null) ? 0 : 190;
+	var bluePos = (blueText == null) ? 0 : 185;
 	bluePos = bluePos + blueOffset + returnOffset;
-	var returnPos = (returnText == null) ? 0 : 100;
+	var returnPos = (returnText == null) ? 0 : 75;
 	returnPos = returnPos + returnOffset;
 	
 	//This section moves the items right if some are not being displayed.

@@ -756,7 +756,6 @@
 	}
 	
 	var getLanguageName = function(key) {
-		alert("got here");
 		var lang = isoLangs[key];
 		return lang ? lang.name : undefined;
 	}

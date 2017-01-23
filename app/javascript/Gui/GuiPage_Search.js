@@ -81,7 +81,7 @@ GuiPage_Search.updateSelectedItems = function () {
 		if (index == this.selectedItem) {
 			for (var index2 = 0; index2 < this.playItems.length; index2++) {
 				if (index2 == this.selectedItem2) {
-					document.getElementById(this.playItems[index2]+this.ItemData.SearchHints[index].ItemId).className = "guiMusic_TableTd SelectedButton";
+					document.getElementById(this.playItems[index2]+this.ItemData.SearchHints[index].ItemId).className = "guiMusic_TableTd highlight"+Main.highlightColour+"Background";
 				} else {
 					document.getElementById(this.playItems[index2]+this.ItemData.SearchHints[index].ItemId).className = "guiMusic_TableTd";
 				}
@@ -272,7 +272,7 @@ GuiPage_Search.keyDown = function() {
 			//Favourites - May not be needed on this page
 			break;				
 		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiPage_Search");
+			GuiMusicPlayer.showMusicPlayer("GuiPage_Search",this.playItems[this.selectedItem2]+this.ItemData.SearchHints[this.selectedItem].ItemId,"guiMusic_TableTd highlight"+Main.highlightColour+"Background");
 			break;	
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY");
@@ -286,10 +286,10 @@ GuiPage_Search.openMenu = function(hasData) {
 		Support.updateURLHistory("GuiPage_Search",this.startParams[0],this.startParams[1],null,null,0,0,null);
 		
 		for (var index = 0; index<this.playItems.length;index++) {
-			document.getElementById(this.playItems[index]+this.ItemData.SearchHints[this.selectedItem].ItemId).className = "musicTableTd";
+			document.getElementById(this.playItems[index]+this.ItemData.SearchHints[this.selectedItem].ItemId).className = "guiMusic_TableTd";
 		}
 		this.selectedItem2 = 0;
-		GuiMainMenu.requested("GuiPage_Search","Play_"+this.ItemData.SearchHints[this.selectedItem].ItemId,"musicTableTd red");
+		GuiMainMenu.requested("GuiPage_Search",this.playItems[this.selectedItem2]+this.ItemData.SearchHints[this.selectedItem].ItemId,"guiMusic_TableTd highlight"+Main.highlightColour+"Background");
 	} else {
 		Support.updateURLHistory("GuiPage_Search",null,null,null,null,null,null,null);
 		GuiMainMenu.requested("GuiPage_Search","searchInput");

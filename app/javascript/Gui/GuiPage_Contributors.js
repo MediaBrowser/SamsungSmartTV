@@ -15,7 +15,7 @@ GuiPage_Contributors.start = function() {
 	document.getElementById("guiReturnButton").style.visibility = "";
 	document.getElementById("guiReturnButton").innerHTML = "Return";
 	
-	document.getElementById("pageContent").innerHTML = "<div class='EpisodesSeriesInfo'>About:</div><div id=ContentAbout style='font-size:1.1em;' class='guiPage_Settings_Settings'></div>";
+	document.getElementById("pageContent").innerHTML = "<div class='EpisodesSeriesInfo'>About:</div><div id=ContentAbout style='font-size:1em;' class='guiPage_Settings_Settings'></div>";
 	
 	var htmlToAdd = "Emby for Samsung Smart TVs is a free, opensource community driven project. A broad range of Smarthub compatible devices are supported due to the generously donated time and efforts of, among others, the following people.<br>";
 	htmlToAdd += "Feedback on this and other Emby products is gratefully received at emby.media/community.<br><br>"

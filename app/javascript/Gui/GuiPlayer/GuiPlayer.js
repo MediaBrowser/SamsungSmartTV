@@ -93,7 +93,7 @@ GuiPlayer.start = function(title,url,startingPlaybackTick,playedFromPage,isCinem
     	//Enter Cinema Mode?
     	var introsUrl = Server.getItemIntrosUrl(this.VideoData.Id);
     	var intros = Server.getContent(introsUrl);
-    	if (File.getUserProperty("EnableCinemaMode") && intros.TotalRecordCount > 0) {
+    	if (File.getUserProperty("EnableCinemaMode") && intros.TotalRecordCount > 0 && startingPlaybackTick == 0) {
     		FileLog.write("Playback: Switching to Cinema Mode.");
     		//Start again in Cinema Mode.
     		GuiPlayer.start("PlayAll",introsUrl,0,"GuiPage_ItemDetails",true,this.startParams[1]);
@@ -172,21 +172,13 @@ GuiPlayer.startPlayback = function(TranscodeAlg, resumeTicksSamsung) {
 	Server.videoStarted(this.PlayerData.Id,this.playingMediaSource.Id,this.PlayMethod);
     
 	//Update URL with resumeticks
-	if (Main.getModelYear() == "D" && this.PlayMethod != "DirectPlay") {
-		FileLog.write("Playback : D Series Playback OR HTTP - Load URL");
-		var url = this.playingURL + '&StartTimeTicks=' + (resumeTicksSamsung*10000) + '|COMPONENT=HLS';
-		alert ("D Series Playback url : "+url);
-		var position = Math.round(resumeTicksSamsung / 1000);
-	    this.plugin.ResumePlay(url,position); 
-	} else {
-		FileLog.write("Playback : E+ Series Playback - Load URL");
-		var url = this.playingURL + '&StartTimeTicks=' + (resumeTicksSamsung*10000);
-		var position = 0;
-		if (this.PlayMethod == "DirectPlay") {
-			position = Math.round(resumeTicksSamsung / 1000);
-		}
-	    this.plugin.ResumePlay(url,position); 
+	FileLog.write("Playback : E+ Series Playback - Load URL");
+	var url = this.playingURL + '&StartTimeTicks=' + (resumeTicksSamsung*10000);
+	var position = 0;
+	if (this.PlayMethod == "DirectPlay") {
+		position = Math.round(resumeTicksSamsung / 1000);
 	}
+    this.plugin.ResumePlay(url,position); 
 };
 
 GuiPlayer.stopPlayback = function() {
@@ -206,6 +198,12 @@ GuiPlayer.setDisplaySize = function() {
 	var aspectRatio = (this.playingMediaSource.MediaStreams[this.playingVideoIndex] === undefined) ? "16:9" : this.playingMediaSource.MediaStreams[this.playingVideoIndex].AspectRatio;
 	if (aspectRatio == "16:9") {
 		this.plugin.SetDisplayArea(0, 0, 960, 540);
+	} else if (aspectRatio == "4:3") {
+		var newResolutionX = Math.round(540 * 4 / 3);
+		var newResolutionY = 540;
+		var centering = Math.round((960 - newResolutionX)/2);
+
+		this.plugin.SetDisplayArea(parseInt(centering), parseInt(0), parseInt(newResolutionX), parseInt(newResolutionY));
 	} else {
 		//Scale Video	
 		var ratioToShrinkX = 960 / this.playingMediaSource.MediaStreams[this.playingVideoIndex].Width;
@@ -311,7 +309,7 @@ GuiPlayer.handleOnRenderingComplete = function() {
 	if (this.startParams[0] == "PlayAll") {
 	////Call Resume Option - Check playlist first, then AutoPlay property, then return
 		this.PlayerIndex++;
-		if (this.VideoData.Items.length >= this.PlayerIndex) {	
+		if (this.VideoData.Items.length > this.PlayerIndex) {	
 			//Take focus to no input
 			document.getElementById("NoKeyInput").focus();
 			
@@ -415,24 +413,27 @@ GuiPlayer.setCurrentTime = function(time) {
 				document.getElementById("guiPlayer_Subtitles").style.visibility = "";
 			}
 		}
-		this.updateTimeCount++;
-		if (time > 0 && this.setThreeD == false) {
-			//Check 3D & Audio
-		    //Set Samsung Audio Output between DTS or PCM
-		    this.setupAudioConfiguration();
-		    this.setupThreeDConfiguration();			
-		    this.setThreeD = true;
-		}
+		
 		//Update GUIs
-		percentage = (100 * this.currentTime / (this.PlayerData.RunTimeTicks / 10000));	
-		document.getElementById("guiPlayer_Info_ProgressBar_Current").style.width = percentage + "%";	
-		document.getElementById("guiPlayer_Info_Time").innerHTML = Support.convertTicksToTime(this.currentTime, (this.PlayerData.RunTimeTicks / 10000));
-		//Update Server every 8 ticks (Don't want to spam!
-		if (this.updateTimeCount == 8) {
-			this.updateTimeCount = 0;
-
-			//Update Server
-			Server.videoTime(this.PlayerData.Id,this.playingMediaSource.Id,this.currentTime,this.PlayMethod);
+		if (this.PlayerData.Type == "ChannelVideoItem") {
+			document.getElementById("guiPlayer_Info_ProgressBar_Current").style.width = "0%";
+			document.getElementById("guiPlayer_Info_Time").innerHTML = Support.convertTicksToTimeSingle(this.currentTime);
+		} else {
+			if (time > 0 && this.setThreeD == false) {
+				//Check 3D & Audio
+			    //Set Samsung Audio Output between DTS or PCM
+			    this.setupAudioConfiguration();
+			    this.setupThreeDConfiguration();			
+			    this.setThreeD = true;
+			}
+			percentage = (100 * this.currentTime / (this.PlayerData.RunTimeTicks / 10000));	
+			document.getElementById("guiPlayer_Info_ProgressBar_Current").style.width = percentage + "%";
+			document.getElementById("guiPlayer_Info_Time").innerHTML = Support.convertTicksToTime(this.currentTime, (this.PlayerData.RunTimeTicks / 10000));
+			this.updateTimeCount++;
+			if (this.updateTimeCount == 8) {
+				this.updateTimeCount = 0;
+				Server.videoTime(this.PlayerData.Id,this.playingMediaSource.Id,this.currentTime,this.PlayMethod);
+			}
 		}
 	}
 };
@@ -454,6 +455,9 @@ GuiPlayer.onBufferingStart = function() {
 };
 
 GuiPlayer.onBufferingProgress = function(percent) {
+	if (document.getElementById("guiPlayer_Loading").style.visibility == "" && percent > 5){
+		document.getElementById("guiPlayer_Loading").innerHTML = "Buffering " + percent + "%";
+	}
 	FileLog.write("Playback : Buffering " + percent + "%");
 };
 
@@ -469,6 +473,7 @@ GuiPlayer.onBufferingComplete = function() {
 	}
     
     //Hide Loading Screen
+	document.getElementById("guiPlayer_Loading").innerHTML = "Loading";
     document.getElementById("guiPlayer_Loading").style.visibility = "hidden";
     
 	//Setup Volume & Mute Keys

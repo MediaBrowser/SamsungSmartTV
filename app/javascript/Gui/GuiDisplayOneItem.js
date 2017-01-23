@@ -38,17 +38,20 @@ GuiDisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 	
 	//Load Data
 	this.ItemData = Server.getContent(url + "&Limit="+File.getTVProperty("ItemPaging"));
-	if (this.ItemData == null) { return; }
-
+	if (this.ItemData == null) { Support.processReturnURLHistory(); }
 	//Once we've browsed the channels down to a content folder we should display them using GuiDisplay_Series.
-	if (this.ItemData.Items[0].Type == "ChannelVideoItem" || this.ItemData.Items[0].Type == "ChannelAudioItem") {
-		GuiDisplay_Series.start(title,url,selectedItem,topLeftItem,this.ItemData);
-		return;
+	if (this.ItemData.TotalRecordCount >0){
+		if (this.ItemData.Items[0].Type == "ChannelVideoItem" || 
+				this.ItemData.Items[0].Type == "ChannelAudioItem" || 
+				this.ItemData.Items[0].Type == "Trailer" ||
+				this.ItemData.Items[0].Type == "AudioPodcast") {
+			GuiDisplay_Series.start("All "+this.ItemData.Items[0].Type,url,selectedItem,topLeftItem,this.ItemData);
+			return;
+		}	
 	}
 
 	//Setup display width height based on title
 	switch (title) {
-	case "Media Folders":
 	case "Collections":
 	case "Channels":
 		this.MAXCOLUMNCOUNT = 3;
@@ -108,16 +111,16 @@ GuiDisplayOneItem.updateSelectedItems = function () {
 	if (this.MAXCOLUMNCOUNT == 3) {
 		//Add Collections Class to add more margin
 		Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-				Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Series Collection Selected","Series Collection","");
+				Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Series Collection Selected highlight"+Main.highlightColour+"Boarder","Series Collection","");
 	} else {
 		Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-				Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Series Selected","Series","");
+				Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Series Selected highlight"+Main.highlightColour+"Boarder","Series","");
 	}
 }
 
 GuiDisplayOneItem.keyDown = function() {
 	var keyCode = event.keyCode;
-	alert("Key pressed: " + keyCode);
+	alert("GuiDisplayOneItem: Key pressed: " + keyCode);
 
 	if (document.getElementById("Notifications").style.visibility == "") {
 		document.getElementById("Notifications").style.visibility = "hidden";
@@ -187,8 +190,8 @@ GuiDisplayOneItem.keyDown = function() {
 		case tvKey.KEY_YELLOW:	
 			//Favourites - May not be needed on this page
 			break;	
-		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiDisplayOneItem");
+		case tvKey.KEY_BLUE:
+			GuiMusicPlayer.showMusicPlayer("GuiDisplayOneItem",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
 			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);

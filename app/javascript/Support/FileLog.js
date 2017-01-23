@@ -41,6 +41,7 @@ FileLog.write = function (toWrite,noDate) {
 	
 	var writeDate = (noDate == undefined) ? true : false;
 	toWrite = (writeDate == true) ? FileLog.getTimeStamp() + " " + toWrite : toWrite;
+	alert(toWrite);
 	var fileSystemObj = new FileSystem();
 	var openWrite = fileSystemObj.openCommonFile(curWidget.id + '/MB3_Log.txt', 'a+');
 	if (openWrite) {

@@ -24,7 +24,7 @@ GuiPage_NewServer.start = function() {
 	
 	//Set Backdrop
 	Support.fadeImage("images/bg1.jpg");
-	document.getElementById("splashscreen").style.opacity=0;
+	Support.removeSplashScreen();
 
 	//Prepare all input elements for IME
 	GuiPage_NewServer.createInputObjects();
@@ -107,7 +107,7 @@ var GuiPage_NewServer_Input  = function(id,previousId, nextId) {
                 	GuiNotifications.setNotification("Please re-enter your server details.","Incorrect Details",true);
             	} else {
             		document.getElementById("pageContent").focus();                                   
-                    //Timeout required to allow notification command above to be displayed              
+                    //Timeout required to allow notification command above to be displayed
                     setTimeout(function(){Server.testConnectionSettings(host,false);}, 1000);
             	}
             } else {	
@@ -118,7 +118,7 @@ var GuiPage_NewServer_Input  = function(id,previousId, nextId) {
                 
                 var ip = IP1 + '.' +  IP2 + '.' +  IP3 + '.' +  IP4 + ':' + Port;
                 document.getElementById("pageContent").focus();                                   
-                //Timeout required to allow notification command above to be displayed              
+                //Timeout required to allow notification command above to be displayed    
                 setTimeout(function(){Server.testConnectionSettings(ip,false);}, 1000);
                 
             }       
@@ -150,7 +150,9 @@ var GuiPage_NewServer_Input  = function(id,previousId, nextId) {
     	    if (fileJson.Servers.length > 0) {
     	    	document.getElementById("pageContent").focus();  
     	    	GuiPage_Servers.start();
-    	    }
+    	   	} else {
+    			widgetAPI.sendReturnEvent();
+    		}
     	    return false;
         });
         ime.setKeyFunc(tvKey.KEY_EXIT, function (keyCode) {

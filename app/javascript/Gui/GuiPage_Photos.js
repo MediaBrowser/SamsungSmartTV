@@ -37,7 +37,7 @@ GuiPage_Photos.start = function(title,url,selectedItem,topLeftItem) {
 	
 	//Load Data
 	this.ItemData = Server.getContent(url);
-	if (this.ItemData == null) { return; }
+	if (this.ItemData == null) { Support.processReturnURLHistory(); }
 
 	//Set Page Content
 	document.getElementById("pageContent").innerHTML = "<div id='title' class='EpisodesSeriesInfo'>"+title+"</div>" +
@@ -241,7 +241,7 @@ GuiPage_Photos.keyDown = function() {
 			this.updateOneDisplayedItem(this.ItemData.Items[this.selectedItem],this.selectedItem)
 			break;	
 		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiPage_Photos");
+			GuiMusicPlayer.showMusicPlayer("GuiPage_Photos",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
 			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
