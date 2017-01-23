@@ -9,6 +9,11 @@
 	font-size: 27px;
 }
 
+td {
+	color: white;
+	font-size: 27px;
+}
+
 input[type="text"]
 {
     font-size: 1em;
