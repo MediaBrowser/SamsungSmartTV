@@ -4,7 +4,7 @@ var GuiPage_SettingsLog = {
 		topLeftItem : 0,
 		
 		MAXCOLUMNCOUNT : 1,
-		MAXROWCOUNT : 22,
+		MAXROWCOUNT : 20,
 		
 		bannerItems : ["User Settings","Server Settings","TV Settings","Log","About"],
 }
@@ -30,7 +30,7 @@ GuiPage_SettingsLog.start = function() {
 	
 	//Load Settings
 	document.getElementById("pageContent").className = "";
-	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div><div id='guiTV_Show_Title' class='guiPage_Settings_Title'>Log</div>\ \
+	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div><div id='guiTV_Show_Title' class='guiPage_Settings_Title'>Log</div>\ \
 		<div id='guiPage_Settings_Settings' class='guiPage_Settings_Settings'></div>";// +
 		/*"<div id='guiPage_Settings_Overview' class='guiPage_Settings_Overview'>" +
 			"<div id=guiPage_Settings_Overview_Title></div>" +
@@ -40,9 +40,9 @@ GuiPage_SettingsLog.start = function() {
 	//Create Banner Items
 	for (var index = 0; index < this.bannerItems.length; index++) {
 		if (index != this.bannerItems.length-1) {
-			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding'>"+this.bannerItems[index].replace(/-/g, ' ')+"</div>";			
+			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem bannerItemPadding'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";			
 		} else {
-			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem'>"+this.bannerItems[index].replace(/-/g, ' ')+"</div>";					
+			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";					
 		}
 	}
 	
@@ -56,7 +56,7 @@ GuiPage_SettingsLog.start = function() {
 GuiPage_SettingsLog.updateDisplayedItems = function() {
 	var htmlToAdd = "<table>";
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.logArray.length); index++) {
-		htmlToAdd += "<tr><td style='padding-right:5px'>"+(index+1)+"</td><td style='word-wrap:break-word;word-break:break-all;width:1500px;'>" + this.logArray[index] + "</td></tr>";
+		htmlToAdd += "<tr><td style='word-wrap:break-word;word-break:break-all;width:1500px;'>" + this.logArray[index] + "</td></tr>";
 	}
 	document.getElementById("guiPage_Settings_Settings").innerHTML = htmlToAdd + "</table>";
 }
@@ -65,22 +65,22 @@ GuiPage_SettingsLog.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.bannerItems.length; index++) {
 		if (index == this.selectedBannerItem) {
 			if (index != this.bannerItems.length-1) { //Don't put padding on the last one.
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding green";
+				document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text";
 			} else {
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem green";
+				document.getElementById("bannerItem"+index).className = "bannerItem highlight"+Main.highlightColour+"Text";
 			}		
 		} else {
 			if (index != this.bannerItems.length-1) { //Don't put padding on the last one.
 				if (index == 3) {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding blue";
+					document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding offWhite";
 				} else {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding";
+					document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding";
 				}
 			} else {
 				if (index == 3) {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem blue";
+					document.getElementById("bannerItem"+index).className = "bannerItem offWhite";
 				} else {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem";
+					document.getElementById("bannerItem"+index).className = "bannerItem";
 				}
 			}
 		}
@@ -144,7 +144,7 @@ GuiPage_SettingsLog.keyDown = function() {
 			GuiPage_SettingsLog.start(); //relead
 			break;
 		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiPage_SettingsLog");
+			GuiMusicPlayer.showMusicPlayer("GuiPage_SettingsLog","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
 			break;		
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
@@ -185,8 +185,8 @@ GuiPage_SettingsLog.processLeftKey = function() {
 }
 
 GuiPage_SettingsLog.openMenu = function() {
-	document.getElementById("bannerItem0").className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding";
-	GuiMainMenu.requested("GuiPage_SettingsLog","bannerItem0","guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding green");
+	document.getElementById("bannerItem0").className = "bannerItem bannerItemPadding";
+	GuiMainMenu.requested("GuiPage_SettingsLog","bannerItem0","bannerItem bannerItemPadding green");
 }
 
 GuiPage_SettingsLog.processRightKey = function() {

@@ -7,7 +7,7 @@ var GuiTV_Upcoming = {
 		selectedItem : 0,
 		topLeftItem : 0,
 		
-		bannerItems : ["All","Unwatched","Latest","Upcoming","Genre"],
+		bannerItems : ["Series","Latest","Upcoming","Genre","A-Z"],
 		selectedBannerItem : 0,
 		
 		MAXCOLUMNCOUNT : 3,
@@ -67,7 +67,7 @@ GuiTV_Upcoming.start = function() {
 	}
 
 	//Set PageContent
-	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div>" +
+	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div>" +
 			"<div id=Center class='HomeOneCenter'>" + 
 			"<p id='title1' style='position:relative;font-size:1.2em;padding-left:22px;z-index:5;'></p><div id='TopRow' style='margin-bottom:60px'><div id=Content></div></div>" +
 			"<p id='title2' style='position:relative;font-size:1.2em;padding-left:22px;z-index:5;'></p><div id='BottomRow'><div id=Content2></div></div>" +
@@ -83,9 +83,9 @@ GuiTV_Upcoming.start = function() {
 		//Generate Banner display
 		for (var index = 0; index < this.bannerItems.length; index++) {
 			if (index != this.bannerItems.length-1) {
-				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding'>"+this.bannerItems[index].replace(/-/g, ' ').toUpperCase()+"</div>";			
+				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem bannerItemPadding'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";			
 			} else {
-				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem'>"+this.bannerItems[index].replace(/-/g, ' ').toUpperCase()+"</div>";					
+				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";					
 			}
 		}
 		
@@ -159,22 +159,22 @@ GuiTV_Upcoming.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.bannerItems.length; index++) {	
 		if (index == this.selectedBannerItem) {
 			if (index != this.bannerItems.length-1) {
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding red";
+				document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text";
 			} else {
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem red";
+				document.getElementById("bannerItem"+index).className = "bannerItem highlight"+Main.highlightColour+"Text";
 			}		
 		} else {
 			if (index != this.bannerItems.length-1) {
 				if (this.bannerItems[index] == "Upcoming") {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding blue";
+					document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding offWhite";
 				} else {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding";
+					document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding";
 				}
 			} else {
 				if (this.bannerItems[index] == "Upcoming") {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem blue";
+					document.getElementById("bannerItem"+index).className = "bannerItem offWhite";
 				} else {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem";
+					document.getElementById("bannerItem"+index).className = "bannerItem";
 				}
 			}
 		}
@@ -344,7 +344,15 @@ GuiTV_Upcoming.keyDown = function()
 			Support.processReturnURLHistory();
 			break;	
 		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiTV_Upcoming");
+			if (this.selectedItem == -2) {		
+				if (this.selectedBannerItem == this.bannerItems.length-1) {
+					GuiMusicPlayer.showMusicPlayer("GuiTV_Upcoming","bannerItem"+this.selectedBannerItem,"bannerItem highlight"+Main.highlightColour+"Text");
+				} else {
+					GuiMusicPlayer.showMusicPlayer("GuiTV_Upcoming","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
+				}
+			} else {
+				GuiMusicPlayer.showMusicPlayer("GuiTV_Upcoming",this.divprepend1 + this.upcomingData[this.selectedDayItem][this.selectedItem].Id,document.getElementById(this.divprepend1 + this.upcomingData[this.selectedDayItem][this.selectedItem].Id).className);
+			}
 			break;
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY");
@@ -356,13 +364,13 @@ GuiTV_Upcoming.keyDown = function()
 GuiTV_Upcoming.openMenu = function() {
 	if (this.selectedItem == -2) { //Banner menu
 		if (this.selectedBannerItem == this.bannerItems.length-1) {
-			document.getElementById("bannerItem"+this.selectedBannerItem).className = "guiDisplay_Series-BannerItem";
+			document.getElementById("bannerItem"+this.selectedBannerItem).className = "bannerItem";
 		} else if (this.selectedBannerItem == this.bannerItems.length-2) {
-			document.getElementById("bannerItem"+this.selectedBannerItem).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding blue";
+			document.getElementById("bannerItem"+this.selectedBannerItem).className = "bannerItem bannerItemPadding offWhite";
 		} else {
-			document.getElementById("bannerItem"+this.selectedBannerItem).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding";
+			document.getElementById("bannerItem"+this.selectedBannerItem).className = "bannerItem bannerItemPadding";
 		}
-		GuiMainMenu.requested("GuiTV_Upcoming","bannerItem"+this.selectedBannerItem,"guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding green");
+		GuiMainMenu.requested("GuiTV_Upcoming","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
 	} else {
 		Support.updateURLHistory("GuiTV_Upcoming",null,null,null,null,this.selectedItem,this.topLeftItem,true);
 		GuiMainMenu.requested("GuiTV_Upcoming",this.divprepend1 + this.upcomingData[this.selectedDayItem][this.selectedItem].Id);
@@ -504,7 +512,7 @@ GuiTV_Upcoming.bottomKeyDown = function()
 			Support.processReturnURLHistory();
 			break;	
 		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiTV_Upcoming");
+			GuiMusicPlayer.showMusicPlayer("GuiTV_UpcomingBottom",this.divprepend2 + this.upcomingData[this.selectedDayItem][this.selectedItem2].Id,document.getElementById(this.divprepend2 + this.upcomingData[this.selectedDayItem][this.selectedItem2].Id).className);
 			break;	
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY BOTTOM");
@@ -524,12 +532,12 @@ GuiTV_Upcoming.processSelectedItem = function (isBottom) {
 	clearTimeout(this.backdropTimeout);
 	if (this.selectedItem == -2) {
 		switch (this.bannerItems[this.selectedBannerItem]) {
-		case "All":		
-			var url = Server.getItemTypeURL("&IncludeItemTypes=Series&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
+		case "Series":		
+			var url = Server.getItemTypeURL("&IncludeItemTypes=Series"+Server.getTvViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
 			GuiDisplay_Series.start("All TV",url,0,0);
 		break;
 		case "Unwatched":
-			var url = Server.getItemTypeURL("&IncludeItemTypes=Series&SortBy=SortName&SortOrder=Ascending&isPlayed=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
+			var url = Server.getItemTypeURL("&IncludeItemTypes=Series"+Server.getTvViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&isPlayed=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
 			GuiDisplay_Series.start("Unwatched TV",url,0,0);
 		break;
 		case "Latest":		
@@ -538,9 +546,12 @@ GuiTV_Upcoming.processSelectedItem = function (isBottom) {
 					
 		break;
 		case "Genre":
-			var url1 = Server.getCustomURL("/Genres?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Series&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,ItemCounts&userId=" + Server.getUserID());
+			var url1 = Server.getCustomURL("/Genres?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Series"+Server.getTvViewQueryPart()+"&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,ItemCounts&userId=" + Server.getUserID());
 			GuiDisplay_Series.start("Genre TV",url1,0,0);	
 		break;
+		case"A-Z":
+			GuiPage_MusicAZ.start("TV",0);
+			break;
 		}
 	} else {
 		var selectedItem = (isBottom) ? this.selectedItem2 : this.selectedItem;

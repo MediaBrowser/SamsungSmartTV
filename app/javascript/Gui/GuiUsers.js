@@ -19,6 +19,7 @@ GuiUsers.getMaxDisplay = function() {
 GuiUsers.start = function(runAutoLogin) {
 	alert("Page Enter : GuiUsers");
 	GuiHelper.setControlButtons(null,null,null,null,"Exit  ");
+	Support.removeSplashScreen();
 	
 	//Reset Properties
 	File.setUserEntry(null);
@@ -73,10 +74,12 @@ GuiUsers.start = function(runAutoLogin) {
 		document.getElementById("pageContent").className = "";
 		document.getElementById("pageContent").innerHTML = "<div style='padding-top:100px;text-align:center'>" +
 			"<div id=guiUsers_allusers></div>" +
-			"<div id='guiUsers_pwd' style='visibility:hidden'>" +
-			"<br>Password:    <input id='guiUsers_Password' type='password' size='20'/>" +
-			"<br><span id='guiUsers_rempwd'>Remember Password </span> : <span id='guiUsers_rempwdvalue'>" + this.rememberPassword + "</span>" + 
-	    	"</div><br>" +
+			"<div id='pwdOptions' class='loginOptions'>" +
+				"<div id='guiUsers_pwd' style='visibility:hidden'>" +
+				"<br>Password:    <input id='guiUsers_Password' type='password' size='20'/>" +
+				"<br><span id='guiUsers_rempwd'>Remember Password </span> : <span id='guiUsers_rempwdvalue'>" + this.rememberPassword + "</span>" + 
+				"</div><br>" +
+			"</div>" +
 	    	"<div id='loginOptions' class='loginOptions'>" +
 	    		"<div id='ManualLogin'>Manual Login</div>" +
 	    		"<div id='ChangeServer'>Change Server</div> " +
@@ -112,7 +115,7 @@ GuiUsers.updateDisplayedUsers = function() {
 //Function sets CSS Properties so show which user is selected
 GuiUsers.updateSelectedUser = function () {	
 	Support.updateSelectedNEW(this.UserData,this.selectedUser,this.topLeftItem,
-			Math.min(this.topLeftItem + GuiUsers.getMaxDisplay(),this.UserData.length),"User Selected","User","");
+			Math.min(this.topLeftItem + GuiUsers.getMaxDisplay(),this.UserData.length),"User Selected highlight1Boarder","User","");
 }
 
 //Function executes on the selection of a user - should log user in or generate error message on screen
@@ -223,24 +226,25 @@ GuiUsers.keyDown = function()
 				GuiUsers.updateSelectedUser();
 			} else if (this.selectedRow == 1) {
 				this.isManualEntry = true;
-				document.getElementById("ManualLogin").className = "green";
+				document.getElementById("ManualLogin").className = "highlight1Text";
 				document.getElementById("ChangeServer").className = "offWhite";
 				document.getElementById(this.UserData[this.selectedUser].Id).className = "User"; 
 			} else if (this.selectedRow == 2) {
 				document.getElementById("ManualLogin").className = "offWhite";
-				document.getElementById("ChangeServer").className = "green";
+				document.getElementById("ChangeServer").className = "highlight1Text";
 			}
 			break;
 		case tvKey.KEY_DOWN:
 			this.selectedRow++;
 			if (this.selectedRow == 1) {
 				this.isManualEntry = true;
-				document.getElementById("ManualLogin").className = "green";
+				document.getElementById("ManualLogin").className = "highlight1Text";
 				document.getElementById("ChangeServer").className = "offWhite";
 				document.getElementById(this.UserData[this.selectedUser].Id).className = "User"; 
-			} else if (this.selectedRow == 2) {
+			} else if (this.selectedRow > 1) {
+				this.selectedRow = 2;
 				document.getElementById("ManualLogin").className = "offWhite";
-				document.getElementById("ChangeServer").className = "green";
+				document.getElementById("ChangeServer").className = "highlight1Text";
 			}
 			break;
 		case tvKey.KEY_LEFT:

@@ -1,21 +1,16 @@
-@font-face {
-	font-family:Lato-Regular;
-	src:url('fonts/Lato-Regular.ttf');
-}
-
-@font-face {
-	font-family:Lato-Bold;
-	src:url('fonts/Lato-Bold.ttf');
-}
-
 * {
 	padding: 0px;
 	margin: 0px;
 	border: 0px;
- 	font-family:Lato-Regular;
+ 	font-family: 'Open Sans', sans-serif;
 }
 
 .everything{
+	font-size: 27px;
+}
+
+td {
+	color: white;
 	font-size: 27px;
 }
 
@@ -29,6 +24,39 @@ input[type="password"]
     font-size: 1em;
 }
 
+.loading{
+    position:absolute;
+    top:440px;
+    left:860px;
+    height:200px;
+    width:200px;
+    background-repeat: no-repeat;
+    background-position:center;
+    background-size:contain;
+    background-image: url('images/loading.png');
+    -webkit-animation-name: spin;
+    -webkit-animation-duration: 1250ms;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    animation-name: spin;
+    animation-duration: 1250ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    z-index:15;
+}
+@-webkit-keyframes spin {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
+}
+
 .splash{ 
 	position: fixed;
 	top: 0px;
@@ -38,8 +66,8 @@ input[type="password"]
 	background-image: url('images/splash.jpg');
 	background-repeat: no-repeat;
     background-position:center;
-    -webkit-transition: opacity 1s ease-in-out;
-    transition: opacity 1s ease-in-out;
+    -webkit-transition: opacity 1.5s ease-in-out;
+    transition: opacity 1.5s ease-in-out;
 }
 
 .splash_version{ 
@@ -75,7 +103,7 @@ input[type="password"]
     left:0px;
     height:100%;
     width:100%;
-    background-color:rgba(10,10,10,0.45);
+    background-color:rgba(10,10,10,0.7);
     z-index:1;
 }
 
@@ -122,7 +150,7 @@ input[type="password"]
 
 .menu-userImage {
 	position: relative;
-	left: 140px; top: 10px;
+	left: 140px; top: 1px;
 	width:70px;
 	height:70px;
 	border-radius: 40px;
@@ -133,7 +161,7 @@ input[type="password"]
 .menu-UserImageContainer {
 	position: relative;
 	width:350px;
-	height:90px;
+	height:72px;
 }
 
 .menu-userName {
@@ -150,17 +178,6 @@ input[type="password"]
 	line-height: 60px;
 	padding-left: 80px;
 	border-bottom: 2px solid grey;
-}
-
-.menu-itemSelected {
-	position: relative;
-	left: 0px; top: 0px;
-	width: 270px;
-	height: 65px;
-	line-height: 60px;
-	padding-left: 80px;
-	border-bottom: 2px solid grey;
-	background-color:rgba(140,140,140,1);
 }
 
 .menu-icon {
@@ -263,7 +280,7 @@ input[type="password"]
 .YellowButton{
 	position:absolute;
 	bottom:5px;
-	width:150px;
+	width:155px;
 	height:40px;
 	line-height:40px;
 	padding-left:45px;
@@ -331,8 +348,10 @@ input[type="password"]
 	position:absolute;
 	top:390px;
 	left:710px;
+	padding:20px;
 	height:300px;
 	width:500px;
+	color:white;
 	z-index:9999;
 	background-color:#303030;
 	border-radius: 25px;
@@ -646,10 +665,10 @@ input[type="password"]
 
 .ShowListSingleFav{
 	display:inline-block;
-	position:absolute;
-	right:50px;
-	height:38px;
-	width:35px;
+	float: right;
+	top:5px;
+	height:40px;
+	width:38px;
 	background-image:url('images/favorite-36x33.png');
 	background-repeat: no-repeat;
     background-position:center;
@@ -657,21 +676,24 @@ input[type="password"]
 
 .ShowListSingleWatched{
 	display:inline-block;
-	position:absolute;
-	right:0px;
-	height:50px;
-	width:53px;
-	background-image:url('images/watched.png');
+	float: right;
+	width:45px;
+	height:45px;
+	top:1px;
+	right:2px;
+	line-height:45px;
+	text-align:center;
+	border-radius:27px;
 	background-repeat: no-repeat;
     background-position:center;
+    background-size:100%;
 }
 
 .ShowListSingleMissing{
 	display:inline-block;
- 	position:absolute; 
-    right:0px;
-	height:60px;
-	width:140px;
+	float: right;
+	height:45px;
+	width:116px;
 	background-image:url('images/missing.png');
 	background-repeat: no-repeat;
     background-position:center;	
@@ -679,17 +701,12 @@ input[type="password"]
 
 .ShowListSingleUnaired{
 	display:inline-block;
- 	position:absolute; 
-    right:0px;
-	height:60px;
-	width:140px;
+	float: right;
+	height:45px;
+	width:116px;
 	background-image:url('images/unaired.png');
 	background-repeat: no-repeat;
     background-position:center;	
-}
-
-.EpisodeListSelected {
-	background-color:rgba(140,140,140,0.9);
 }
 
 /*----------------------------------------------------------------------------------------------*/
@@ -706,7 +723,7 @@ input[type="password"]
 	position:absolute;
 	top:180px;
 	left: 100px;
-	max-height:840px;
+	max-height:851px;
 	overflow-y:hidden;
 	z-index:5;
 }
@@ -719,15 +736,6 @@ input[type="password"]
 	padding:20px 0px 20px 20px;
 	width:400px;
 	border-radius:10px;
-}
-
-.GuiPage_Setting_Selected {
-	background-color:rgba(140,140,140,1);
-}
-
-.GuiPage_Setting_Changing {
-	background-color:rgba(140,140,140,1);
-	color:red;
 }
 
 .GuiPage_Setting_SubSelected {
@@ -782,7 +790,7 @@ input[type="password"]
     display:inline-block;
     position:relative; 
     margin:8px;
-    border:2px solid transparent;
+    border:3px solid transparent;
     border-radius: 10px;
     white-space:nowrap;
     text-overflow:ellipsis; 
@@ -798,18 +806,35 @@ input[type="password"]
     display:inline-block;
     position:relative; 
     margin:4px;
-	border:2px solid rgba(0,0,0,0.8); 
+	border:3px solid rgba(0,0,0,0.8); 
 	border-radius: 10px;
     white-space:nowrap;
     text-overflow:ellipsis; 
     overflow: hidden; 
     background-repeat: no-repeat;
     background-position:center;
+    background-size:auto 100%;
+}
+
+.homePagePoster {
+	width: 471px;
+    height: 265px;
+    display:inline-block;
+    position:relative; 
+    margin:0px;
+	border:3px solid rgba(0,0,0,0); 
+	border-radius: 0px;
+    white-space:nowrap;
+    text-overflow:ellipsis; 
+    overflow: hidden; 
+    background-repeat: no-repeat;
+    background-position:center;
+    background-size:auto 100%;
 }
 
 .SeriesPortrait {
 	width: 180px;
-    height: 270px;
+    height: 265px;
     display:inline-block;
     vertical-align: middle;
     position:relative; 
@@ -817,31 +842,33 @@ input[type="password"]
     margin-bottom: 6px;
     margin-right: 6px;
     margin-left: 6px;
-    border:2px solid transparent;
-    border-radius: 10px;
+    border:3px solid rgba(0,0,0,0);
+    border-radius: 0px;
     white-space:nowrap;
     text-overflow:ellipsis; 
     overflow: hidden; 
     background-repeat: no-repeat;
     background-position:center;
+    background-size: 100% 100%;
 }
 
 .SeriesPortraitLarge {
 	width: 235px;
-    height: 350px;
+    height: 348px;
     display:inline-block;
     position:relative; 
     margin-top: 0px;
     margin-bottom: 9px;
     margin-right: 8px;
     margin-left: 8px;
-    border:2px solid transparent;
-    border-radius: 10px;
+    border:3px solid rgba(0,0,0,0);
+    border-radius: 0px;
     white-space:nowrap;
     text-overflow:ellipsis; 
     overflow: hidden; 
     background-repeat: no-repeat;
     background-position:center;
+    background-size: 100% 100%;
 }
 
 .Music {
@@ -977,7 +1004,7 @@ input[type="password"]
 	height:45px;
 	line-height:45px;
 	text-align:center;
-	background-image:url('images/itemCount.png');
+	border-radius:27px;
 	background-repeat: no-repeat;
     background-position:center;
     background-size:100%;
@@ -998,38 +1025,25 @@ input[type="password"]
     background-size:100%;
 }
 
-.watchedItem {
-	position:absolute;
-	top:0px;
-	right:0px;
-	width:45px;
-	height:45px;
-	line-height:45px;
+.moreEpisodesWatchedItem {
+	display:inline-block;
+	float: right;
+	width:36px;
+	height:36px;
 	text-align:center;
-	background-image:url('images/watched.png');
+	border-radius:22px;
+	border: 4px solid transparent;
+	background-clip: content-box;
 	background-repeat: no-repeat;
     background-position:center;
     background-size:100%;
 }
 
-.moreEpisodesWatchedItem {
-	position:absolute;
-	top:0px;
-	right:0px;
-	width:36px;
-	height:36px;
-	text-align:center;
-	background-image:url('images/watchedItemPage.png');
-	background-repeat: no-repeat;
-    background-position:center;
-}
-
 .moreEpisodesFavouriteItem {
-	position:absolute;
-	top:40px;
-	right:0px;
-	width:33px;
-	height:36px;
+	display:inline-block;
+	float: right;
+	width:38px;
+	height:43px;
 	text-align:center;
 	background-image:url('images/favorite-36x33.png');
 	background-repeat: no-repeat;
@@ -1046,13 +1060,14 @@ input[type="password"]
 	transform: scale(1.3);
 }
 
-.SelectedButton {
-	background-color:rgba(140,140,140,1);
+.button {
+	padding:20px 20px 20px 20px;
+	border-radius:10px;
 }
 
 /*----------------------------------------------------------------------------------------------*/
 
-.guiDisplay_Series-Banner {
+.bannerMenu {
 	position: absolute;
 	padding-top:25px;
 	padding-bottom:10px;
@@ -1062,15 +1077,23 @@ input[type="password"]
 	z-index:5;
 }
 
-.guiDisplay_Series-BannerItem{
+.bannerItem{
 	display: inline-block;
 	font-size: 1.5em;
-	color:#dad9d9;
+	color:#666666;
 }
 
-.guiDisplay_Series-BannerItemPadding{
+.bannerItemHome{
+	display: inline-block;
+	font-size: 1.5em;
+	color:#f9f9f9;
+}
+
+.bannerItemPadding{
 	padding-right:60px;
 }
+
+/*----------------------------------------------------------------------------------------------*/
 
 .guiDisplay_Series-pageContent{
 	position: absolute;
@@ -1079,12 +1102,17 @@ input[type="password"]
 }
 
 .albumArtist-lowerTitle{
+	position:relative;
 	font-size:1.8em;
+	text-align:center;
 	height:30px;
+	padding-top:620px;
+	z-index:5;
 }
 
 .albumArtist-lowerContent{
-	padding-top:1.1em;
+	text-align:center;
+	padding-top:30px;
 	min-width:500px;
 	height:200px;
 }
@@ -1095,7 +1123,26 @@ input[type="password"]
 	top:600px;
 	left:95px;
 	width:1820px;
-	z-index:5
+	z-index:5;
+}
+
+.SeriesTitle {
+	position:relative;
+	height:40px;
+	font-size:1.6em;
+}
+
+.SeriesSubData {
+	padding-top:5px;
+	color:#2ad;
+	font-size:1.2em;
+}
+
+.SeriesOverview {
+	padding-right:10px;
+	font-size:1.1em;
+	max-height:150px;
+	overflow-y:hidden;
 }
 
 .HomeOneCenter {
@@ -1306,17 +1353,24 @@ input[type="password"]
 
 .itemPageWatched{
 	display:inline-block;
-	height:36px;
-	width:36px;
-	background-image:url('images/watchedItemPage.png');
+	width:40px;
+	height:40px;
+	line-height:40px;
+	font-size: 0.6em;
+	text-align:center;
+	vertical-align:top;
+	border-radius:20px;
+	background-clip: content-box;
 	background-repeat: no-repeat;
     background-position:center;
+    background-size:100%;
 }
 
 .itemPageFavourite{
 	display:inline-block;
 	height:36px;
 	width:33px;
+	vertical-align:top;
 	background-image:url('images/favorite-36x33.png');
 	background-repeat: no-repeat;
     background-position:center;
@@ -1450,6 +1504,7 @@ input[type="password"]
     height: 400px;
     background-repeat: no-repeat;
     background-position:center;
+    background-size: 100% 100%;
     z-index:5;
 }
 
@@ -1469,7 +1524,7 @@ input[type="password"]
 }
 
 .imageDiskEndPosition {
-	bottom:300px;
+	bottom:295px;
 	-webkit-transform: rotate(0deg);
     transform: rotate(0deg);
 }
@@ -1483,6 +1538,19 @@ input[type="password"]
     background-repeat: no-repeat;
     background-position:center;
     z-index:5;
+}
+
+.videoTrailerContainer {
+	position:absolute;
+	top:35px;
+	left:1080px;
+	height:492px;
+	width:800px;
+	background-repeat: no-repeat;
+    background-position:top right;
+    background-size: 100% 100%;
+    background-image:url('images/trailerBackground.png');
+    z-index:1;
 }
 
 .guiFilm_Title {
@@ -1778,7 +1846,228 @@ input[type="password"]
     background-color:rgba(0,0,0,0);
 }
 
-/* ---------------------------------------------------------------------------   */
+/* --------------------------------------------------------------------------- */
+
+.tvGuide {
+	position:absolute;
+	font-size:1em;
+	width:1800px;
+	height:800px;
+	left:60px;
+	top: 90px;
+	z-index:5;
+}
+
+.tvGuideTopLine {
+	position:relative;
+	display:inline-block;
+	vertical-align:top; 
+	width:1800px;
+	height:98px;
+}
+
+.tvGuideDay {
+	position:relative;
+	display:inline-block;
+	vertical-align:top; 
+	height:90px;
+	width:346px;
+    margin-top:2px;
+    margin-bottom:2px;
+    margin-right:2px;
+    margin-left:2px;
+	text-align:center;
+	border:2px solid black;
+}
+
+.tvGuideHour {
+	position:relative;
+	display:inline-block;
+	vertical-align:top;
+	text-align:left;
+	height:90px;
+	width:233px;
+    margin-top:2px;
+    margin-bottom:2px;
+    margin-right:2px;
+    margin-left:2px;
+	border:2px solid black;
+}
+
+.tvGuideChannelLine {
+	position:relative;
+	display:inline-block;
+	vertical-align:top;
+	white-space:nowrap;
+	overflow:hidden;
+	width:1800px;
+	height:98px;
+}
+
+.tvGuideChannelName {
+	position:relative;
+	display:inline-block;
+	vertical-align:top;
+	text-align:left;
+	height:90px;
+	width:346px;
+	line-height:90px;
+    margin-top:2px;
+    margin-bottom:2px;
+    margin-right:2px;
+    margin-left:2px;
+    background-repeat:no-repeat;
+    background-position:right;
+    background-size:contain;
+	border:2px solid black;
+}
+
+.tvGuideChannelNameBg {
+	background-color:rgba(48,48,48,0.9);
+}
+
+.tvGuideProgram {
+	position:relative;
+	display:inline-block;
+	vertical-align:top;
+	white-space:initial;
+	overflow:hidden;
+	height:90px;
+	width:233px;
+    margin-top:2px;
+    margin-bottom:2px;
+    margin-right:2px;
+    margin-left:2px;
+	border:2px solid black;
+}
+
+.tvGuideProgramBg {
+	background-color:rgba(33,33,33,0.9);
+}
+
+.tvGuideProgramName {
+	position:relative;
+	display:inline-block;
+	vertical-align:top;
+	text-align:left;
+	white-space:nowrap;
+	overflow:hidden;
+	height:43px;
+	width:100%;
+}
+
+.tvGuideProgramTime {
+	position:relative;
+	display:inline-block;
+	vertical-align:top;
+	text-align:left;
+	white-space:nowrap;
+	overflow:hidden;
+	height:43px;
+	width:100%;
+}
+
+.tvGuideProgramGenre {
+	position:relative;
+	display:inline-block;
+	vertical-align:top;
+	height:4px;
+	width:100%;
+	background-color:rgba(33,33,33,0.9);
+}
+
+.tvGuideCurrentTime {
+	position:absolute;
+	width:4px;
+	height:104px;
+	left:600px;
+	top:-10px;
+	background-color:rgba(241,44,34,0.6);
+	z-index:5;
+}
+
+.tvGuideProgramDetails {
+	position:absolute;
+	top:880px;
+	left:360px;
+	width:1650px;
+	z-index:5
+}
+
+.tvGuideProgramImage {
+	position:absolute;
+	top:880px;
+	left:60px;
+	height:170px;
+	width:300px;
+	background-repeat:no-repeat;
+    background-position:right;
+    background-size:contain;
+	z-index:5
+}
+
+.tvGuideSubData {
+	position:relative;
+	padding-left:10px;
+	padding-top:5px;
+	width:1490px;
+	color:#fff;
+	font-size:1.4em;
+}
+
+.tvGuideOverview {
+	display: block;
+	padding-left:10px;
+	padding-right:10px;
+	font-size:1.1em;
+	color:#aaa;
+	width:1480px;
+	max-height:80px;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
+
+.tvGuideProgramScheduled {
+	position:absolute;
+	bottom:17px;
+	right:5px;
+	width:24px;
+	height:24px;
+	border-radius:12px;
+	background-color:rgba(255,0,0,0.6);
+}
+
+.tvGuideSeriesScheduled {
+	position:absolute;
+	bottom:17px;
+	right:15px;
+	width:24px;
+	height:24px;
+	border-radius:12px;
+	background-color:rgba(255,0,0,0.4);
+}
+
+.tvGuideSubDataProgramScheduled {
+	position:relative;
+	display:inline-block;
+	width:24px;
+	height:24px;
+	margin-left:10px;
+	border-radius:12px;
+	background-color:rgba(255,0,0,0.6);
+}
+
+.tvGuideSubDataSeriesScheduled {
+	position:relative;
+	display:inline-block;
+	width:24px;
+	height:24px;
+	margin-left:-13px;
+	border-radius:12px;
+	background-color:rgba(255,0,0,0.4);
+}
+
+/* --------------------------------------------------------------------------- */
 
 .guiMusic_Title {
 	position:relative;
@@ -1893,8 +2182,11 @@ input[type="password"]
 .guiMusicPlayerScreenOff {
 	position:absolute;
 	bottom:10px;
-	left:980px;
-	width:120px;
+	left:940px;
+	width:150px;
+	text-align:center;
+	border-radius:10px;
+	padding:5px;
 }
 
 .guiMusicPlayerTime {
@@ -1963,20 +2255,80 @@ input[type="password"]
 	color:#27a436;
 }
 
-.green {
-	color:#27a436;
-}
-
-.BannerSelected {
-	color:#27a436;
-}
-
-.blue {
-	color:#66CCFF;
-}
-
 .offWhite {
 	color:#f9f9f9;
+}
+
+.highlight1Background {
+	background-color:rgba(39,164,54,0.85);
+}
+
+.highlight2Background {
+	background-color:rgba(140,140,140,0.85);
+}
+
+.highlight3Background {
+	background-color:rgba(255,0,0,0.85);
+}
+
+.highlight4Background {
+	background-color:rgba(15,10,85,0.85);
+}
+
+.highlight5Background {
+	background-color:rgba(43,168,176,0.85);
+}
+
+.highlight6Background {
+	background-color:rgba(106,15,176,0.85);
+}
+
+.highlight1Text {
+	color:rgba(39,164,54,1);
+}
+
+.highlight2Text {
+	color:rgba(140,140,140,1);
+}
+
+.highlight3Text {
+	color:rgba(255,0,0,1);
+}
+
+.highlight4Text {
+	color:rgba(15,10,85,1);
+}
+
+.highlight5Text {
+	color:rgba(43,168,176,1);
+}
+
+.highlight6Text {
+	color:rgba(106,15,176,1);
+}
+
+.highlight1Boarder {
+	border:3px solid rgba(39,164,54,1);
+}
+
+.highlight2Boarder {
+	border:3px solid rgba(140,140,140,1);
+}
+
+.highlight3Boarder {
+	border:3px solid rgba(255,0,0,1);
+}
+
+.highlight4Boarder {
+	border:3px solid rgba(15,10,85,1);
+}
+
+.highlight5Boarder {
+	border:3px solid rgba(43,168,176,1);
+}
+
+.highlight6Boarder {
+	border:3px solid rgba(106,15,176,1);
 }
 
 .musicPlaylist {
@@ -2026,6 +2378,7 @@ input[type="password"]
 
 .playlist {
 	position:relative;
+	font-size:0.95em;
 	margin-top:60px;
 	margin-left:160px;
 	z-index:5;	

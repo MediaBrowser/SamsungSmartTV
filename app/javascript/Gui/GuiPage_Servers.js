@@ -27,7 +27,8 @@ GuiPage_Servers.start = function(runAutoLogin) {
 		//Should never happen - Redirect to 
 		GuiPage_NewServer.start();
 	} else {
-		
+       	Support.removeSplashScreen();
+       	
 		//Change Display
 		document.getElementById("pageContent").innerHTML = "<div style='padding-top:60px;text-align:center'> \
 			<div id=GuiPage_Servers_allusers></div></div>" +
@@ -61,7 +62,7 @@ GuiPage_Servers.updateDisplayedUsers = function() {
 //Function sets CSS Properties so show which user is selected
 GuiPage_Servers.updateSelectedUser = function () {	
 	Support.updateSelectedNEW(this.ServerData.Servers,this.selectedItem,this.topLeftItem,
-			Math.min(this.topLeftItem + GuiPage_Servers.getMaxDisplay(),this.ServerData.Servers.length),"User Selected","User","");
+			Math.min(this.topLeftItem + GuiPage_Servers.getMaxDisplay(),this.ServerData.Servers.length),"User Selected highlight1Boarder","User","");
 }
 
 //Function executes on the selection of a user - should log user in or generate error message on screen

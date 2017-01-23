@@ -4,7 +4,7 @@ var tvKey = new Common.API.TVKeyValue();
 	
 var Main =
 {
-		version : "v2.1.3",
+		version : "v2.2.0",
 		requiredServerVersion : "3.0.5211",
 		requiredDevServerVersion : "3.0.5507.2131",
 		
@@ -14,19 +14,20 @@ var Main =
 		height : 1080,
 		backdropWidth : 1920,
 		backdropHeight : 1080,
-		posterWidth : 427,
-		posterHeight : 240,
+		posterWidth : 473,
+		posterHeight : 267,
 		seriesPosterWidth : 180,
 		seriesPosterHeight : 270,
 		seriesPosterLargeWidth : 235,
 		seriesPosterLargeHeight : 350,
 		
 		forceDeleteSettings : false,
+		highlightColour : 1,
 		
 		enableMusic : true,
 		enableLiveTV : false,
 		enableCollections : true,
-		enableChannels : false,
+		enableChannels : true,
 		enableImageCache : true,
 		
 		enableScreensaver : true,
@@ -83,6 +84,7 @@ Main.setIsScreensaverRunning = function() {
 
 Main.onLoad = function()
 {	
+	//Support.removeSplashScreen();
 	//Setup Logging
 	FileLog.loadFile(false); // doesn't return contents, done to ensure file exists
 	FileLog.write("---------------------------------------------------------------------",true);
@@ -99,20 +101,16 @@ Main.onLoad = function()
 	//Turn ON screensaver
 	pluginAPI.setOnScreenSaver();
 	FileLog.write("Screensaver enabled.");
-	
-	window.onShow = Main.initKeys();
-	FileLog.write("Key handlers initialised.");
-	
-	//Set Version Number & initialise clock
-	//document.getElementById("menuVersion").innerHTML = this.version;
 	Support.clock();
-	
+	widgetAPI.sendReadyEvent();
+	window.onShow = Main.initKeys();	
+
 	//Set DeviceID & Device Name
 	var NNaviPlugin = document.getElementById("pluginObjectNNavi");
 	var pluginNetwork = document.getElementById("pluginObjectNetwork");
 	var pluginTV = document.getElementById("pluginObjectTV");
 	FileLog.write("Plugins initialised.");
-	
+
 	var ProductType = pluginNetwork.GetActiveType();
 	FileLog.write("Product type is "+ProductType);
 	var phyConnection = pluginNetwork.CheckPhysicalConnection(ProductType); //returns -1
@@ -125,10 +123,19 @@ Main.onLoad = function()
 	//Get the model year - Used for transcoding
 	if (pluginTV.GetProductCode(0).substring(0,2) == "HT" || pluginTV.GetProductCode(0).substring(0,2) == "BD"){
 		this.modelYear = pluginTV.GetProductCode(0).substring(3,4);
+	} else if (pluginTV.GetProductCode(0).substring(4,6) == "HU") {
+		this.modelYear = "HU";
+	} else if (pluginTV.GetProductCode(0).substring(4,7) == "H52") {
+		this.modelYear = "F";
+	} else if (pluginTV.GetProductCode(0).substring(4,7) == "J52") {
+		this.modelYear = "H";
+	} else if (pluginTV.GetProductCode(0).substring(4,7) == "J62") {
+		this.modelYear = "H";
+	} else if (pluginTV.GetProductCode(0).substring(4,7) == "K85") {
+		this.modelYear = "HU";
 	} else {
 		this.modelYear = pluginTV.GetProductCode(0).substring(4,5);
 	}
-
 	FileLog.write("Model Year is " + this.modelYear);
 	
 	if (phyConnection && http && gateway) {
@@ -158,6 +165,22 @@ Main.onLoad = function()
 	    	} 	File.writeAll(fileJson);
 	    }
 	    
+	    //Allow Evo Kit owners to override the model year.
+	    if (fileJson.TV.ModelOverride != "None") {
+	    	switch(fileJson.TV.ModelOverride){
+	    	case "SEK1000":
+	    		this.modelYear = "F";
+	    		break;
+	    	case "SEK2000":
+	    		this.modelYear = "H";
+	    		break;
+	    	case "SEK2500":
+	    		this.modelYear = "H";
+	    		break;
+	    	}
+	    	FileLog.write("Model Year Override: " + this.modelYear);
+	    }
+	    
 	    //Check if Server exists
 	    if (fileJson.Servers.length > 1) {
 	    	//If no default show user Servers page (Can set default on that page)
@@ -177,9 +200,9 @@ Main.onLoad = function()
 	    	}
 	    } else if (fileJson.Servers.length == 1) {
 	    	//If 1 server auto login with that
-	    	FileLog.write("Emby server found.");
+	    	FileLog.write("Emby server name found in settings. Auto-connecting.");
 	    	File.setServerEntry(0);
-	    	Server.testConnectionSettings(fileJson.Servers[0].Path,true); 
+	    	Server.testConnectionSettings(fileJson.Servers[0].Path,true);
 	    } else {
 	    	//No Server Defined - Load GuiPage_IP
 	    	FileLog.write("No server defined. Loading the new server page.");
@@ -188,24 +211,13 @@ Main.onLoad = function()
 	} else {
 		document.getElementById("pageContent").innerHTML = "You have no network connectivity to the TV - Please check the settings on the TV";
 	}
-	widgetAPI.sendReadyEvent();
-	Support.clock();
-
-	setTimeout(function(){
-		document.getElementById("splashscreen").style.opacity=0;
-		setTimeout(function(){
-			document.getElementById("splashscreen").style.visibility="hidden";
-		}, 1100);
-		FileLog.write("Ready to start. Removing the splash screen.");
-	}, 2500);
 };
 
 Main.initKeys = function() {
 	pluginAPI.registKey(tvKey.KEY_TOOLS);
 	pluginAPI.registKey(tvKey.KEY_3D); 
-	return;
-}
-
+	FileLog.write("Key handlers initialised.");
+};
 
 Main.onUnload = function()
 {

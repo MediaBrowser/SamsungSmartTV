@@ -178,7 +178,7 @@ Server.getImageURL = function(itemId,imagetype,maxwidth,maxheight,unplayedcount,
 				xhr.onload = function(e) {
 				  if (this.status == 200) {
 				    var blob = this.response;
-				    Support.imageCachejson.Images[Support.imageCachejson.Images.length] = {"URL":query,"DataURI":window.URL.createObjectURL(blob)};
+			    	Support.imageCachejson.Images[Support.imageCachejson.Images.length] = {"URL":query,"DataURI":window.URL.createObjectURL(blob)};
 				  }
 				};
 				xhr.send();
@@ -241,11 +241,31 @@ Server.setRequestHeaders = function (xmlHttp,UserId) {
 	return xmlHttp;
 }
 
-Server.getUserViewId = function (collectionType) {
+Server.getMoviesViewQueryPart = function() {
+	var ParentId = Server.getUserViewId("movies", "UserView");
+	
+	if (ParentId == null) { 
+		return "";
+	} else {
+		return "&ParentId="+ParentId;
+	}
+}
+
+Server.getTvViewQueryPart = function() {
+	var ParentId = Server.getUserViewId("tvshows", "UserView");
+	
+	if (ParentId == null) { 
+		return "";
+	} else {
+		return "&ParentId="+ParentId;
+	}
+}
+
+Server.getUserViewId = function (collectionType, Type) {
 	var folderId = null;
 	var userViews = Server.getUserViews();
 	for (var i = 0; i < userViews.Items.length; i++){
-		if (userViews.Items[i].CollectionType == collectionType){
+		if ((Type === undefined || userViews.Items[i].Type == Type) && userViews.Items[i].CollectionType == collectionType){
 			folderId = userViews.Items[i].Id;
 		}
 	}
@@ -443,41 +463,86 @@ Server.removeFromPlaylist = function(playlistId, ids) {
 		xmlHttp.send(null);
 	}
 }
+
+Server.POST = function(url, item) {
+	xmlHttp = new XMLHttpRequest();
+	if (xmlHttp) {
+		xmlHttp.open("POST", url , true); //must be true!
+		xmlHttp = this.setRequestHeaders(xmlHttp);
+		if (item){
+			xmlHttp.send(JSON.stringify(item));
+		} else {
+			xmlHttp.send(null);
+		}
+	}
+}
+
+Server.DELETE = function(url, item) {
+	xmlHttp = new XMLHttpRequest();
+	if (xmlHttp) {
+		xmlHttp.open("DELETE", url , true); //must be true!
+		xmlHttp = this.setRequestHeaders(xmlHttp);
+		if (item){
+			xmlHttp.send(JSON.stringify(item));
+		} else {
+			xmlHttp.send(null);
+		}
+	}
+}
 //------------------------------------------------------------
 //      GuiIP Functions
 //------------------------------------------------------------
 Server.testConnectionSettings = function (server,fromFile) {	
 	xmlHttp = new XMLHttpRequest();
 	if (xmlHttp) {
-		xmlHttp.open("GET", ("http://" + server + "/emby/System/Info/Public?format=json") , false); //must be false
+		xmlHttp.open("GET", "http://" + server + "/emby/System/Info/Public?format=json",false);
 		xmlHttp.setRequestHeader("Content-Type", 'application/json');
+		xmlHttp.onreadystatechange = function () {
+			GuiNotifications.setNotification("hello","Network Status",true);
+			if (xmlHttp.readyState == 4) {
+		        if(xmlHttp.status === 200) {
+			    	if (fromFile == false) {
+			    		var json = JSON.parse(xmlHttp.responseText);
+			    		File.saveServerToFile(json.Id,json.ServerName,server); 
+			    	}
+			       	//Set Server.serverAddr!
+			       	Server.setServerAddr("http://" + server + "/emby");
+			       	//Check Server Version
+			       	if (ServerVersion.checkServerVersion()) {
+			       		GuiUsers.start(true);
+			       	} else {
+			       		ServerVersion.start();
+			       	}
+		        } else if (xmlHttp.status === 0) {
+		        	GuiNotifications.setNotification("Your Emby server is not responding.","Network Error "+xmlHttp.status,true);
+					Support.removeSplashScreen();
+			    	if (fromFile == true) {
+			    		setTimeout(function(){
+			    			GuiPage_Servers.start();
+			    		}, 3000);
+	
+			    	} else {
+			    		setTimeout(function(){
+			    			GuiPage_NewServer.start();
+			    		}, 3000);
+			    	}
+		        } else {
+		        	GuiNotifications.setNotification("Emby server connection error.","Network Error "+xmlHttp.status,true);
+					Support.removeSplashScreen();
+			    	if (fromFile == true) {
+			    		setTimeout(function(){
+			    			GuiPage_Servers.start();
+			    		}, 3000);
+	
+			    	} else {
+			    		setTimeout(function(){
+			    			GuiPage_NewServer.start();
+			    		}, 3000);
+			    	}
+		        }
+			}
+	    };
 		xmlHttp.send(null);
-		
-	    if (xmlHttp.status != 200) {
-	    	if (fromFile == true) {
-	    		GuiNotifications.setNotification("Please check your server is running and try again","Server Error",true);
-		    	GuiPage_Servers.start();
-	    	} else {
-	    		GuiNotifications.setNotification("Please try again","Wrong Details",true);
-	    		GuiPage_NewServer.start();
-	    	}
-	    } else {
-	    	//If server ip changes all saved users and passwords are lost - seems logical
-	    	if (fromFile == false) {
-	    		var json = JSON.parse(xmlHttp.responseText);
-	    		File.saveServerToFile(json.Id,json.ServerName,server); 
-	    	}
-	       	
-	       	//Set Server.serverAddr!
-	       	Server.setServerAddr("http://" + server + "/emby");
-	       		
-	       	//Check Server Version
-	       	if (ServerVersion.checkServerVersion()) {
-	       		GuiUsers.start(true);
-	       	} else {
-	       		ServerVersion.start();
-	       	}
-	    }
 	} else {
 	    alert("Failed to create XHR");
 	}
@@ -537,12 +602,9 @@ Server.getContent = function(url) {
 		xmlHttp.send(null);
 		    
 		if (xmlHttp.status != 200) {
-			FileLog.write("Server NOT 200 - Logout");
+			FileLog.write("Server Error: The HTTP status returned by the server was "+xmlHttp.status);
 			FileLog.write(url);
-			FileLog.write("HTTP Status was "+xmlHttp.status);
-			Server.Logout();
-			GuiNotifications.setNotification("Not 200<br>User: " + Server.getUserName() + "<br>Token: " + Server.getAuthToken(),"Server Error",false);
-			GuiUsers.start(true);
+			GuiNotifications.setNotification("The HTTP status code returned by the server was "+xmlHttp.status+".", "Server Error:");
 			return null;
 		} else {
 			//alert(xmlHttp.responseText);

@@ -24,13 +24,11 @@ GuiPage_CastMember.start = function(title,url,selectedItem,topLeftItem) {
 	this.topLeftItem = topLeftItem;
 	
 	//Load Data
-	alert (url);
 	this.CastData = Server.getContent(url);
 	if (this.CastData == null) { return; }
 	var Itemurl = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&Recursive=true&Limit=100&ExcludeLocationTypes=Virtual&fields=ParentId&Person=" + this.CastData.Name.replace(/ /g, '+'));
-	alert (Itemurl);
 	this.ItemData = Server.getContent(Itemurl);
-	if (this.ItemData == null) { return; }
+	if (this.ItemData == null) { Support.processReturnURLHistory(); }
 	
 	document.getElementById("pageContent").className = "";	
 	document.getElementById("pageContent").innerHTML = "<div id='GuiPage_CastMember_Name' class='GuiPage_CastMember_Name'></div> \
@@ -112,7 +110,7 @@ GuiPage_CastMember.updateDisplayedItems = function() {
 GuiPage_CastMember.updateSelectedItems = function () {
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length); index++){	
 		if (index == this.selectedItem) {
-			document.getElementById(this.ItemData.Items[index].Id).className = "GuiPage_CastMember_ListSingle EpisodeListSelected";
+			document.getElementById(this.ItemData.Items[index].Id).className = "GuiPage_CastMember_ListSingle highlight"+Main.highlightColour+"Background";
 			//Set Background based on Type:
 			switch (this.ItemData.Items[index].Type) {
 			case "Episode":
@@ -203,14 +201,14 @@ GuiPage_CastMember.keyDown = function()
 		case tvKey.KEY_YELLOW:	
 			//Favourites
 			break;	
-		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiPage_CastMember");
+		case tvKey.KEY_BLUE:
+			GuiMusicPlayer.showMusicPlayer("GuiPage_CastMember",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
 			break;	
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
 			Support.updateURLHistory("GuiPage_CastMember",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
 			document.getElementById(this.ItemData.Items[this.selectedItem].Id).className = "SeasonTitle";
-			GuiMainMenu.requested("GuiPage_CastMember",this.ItemData.Items[this.selectedItem].Id,"EpisodeListSingle EpisodeListSelected");
+			GuiMainMenu.requested("GuiPage_CastMember",this.ItemData.Items[this.selectedItem].Id,"EpisodeListSingle highlight"+Main.highlightColour+"Background");
 			break;	
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY");

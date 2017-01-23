@@ -3,8 +3,8 @@ var GuiMainMenu = {
 		menuItemsHomePages : [],
 
 		pageSelected : "",
-		pageSelectedId : 0,
-		pageSelectedClass : "",
+		selectedDivId : 0,
+		selectedDivClass : "",
 		
 		testModeCount : 0,
 		testModeTimeout : null,
@@ -45,7 +45,7 @@ GuiMainMenu.start = function() {
 	//Add menu entries
 	var htmlToAdd = "";
 	for (var index = 0; index < this.menuItems.length;index++) {
-		htmlToAdd += "<div id='" + this.menuItems[index] + "' class='menu-item'><div id='menu-Icon' class='menu-icon' style='background-image:url(images/menu/" + this.menuItems[index] + "-46x37.png)'></div>" + this.menuItems[index].replace(/-/g, ' ')+ "</div>";	
+		htmlToAdd += "<div id='" + this.menuItems[index] + "' class='menu-item'><div id='menu-Icon' class='menu-icon' style='background-image:url(images/menu/" + this.menuItems[index] + "-46x37.png)'></div>" + this.menuItems[index].replace(/_/g, ' ')+ "</div>";	
 	}	
 	document.getElementById("menuItems").innerHTML = htmlToAdd;
 	
@@ -55,38 +55,64 @@ GuiMainMenu.start = function() {
 	htmlToAdd += "<div id=Search class='menu-item'><div id='menu-Icon' class='menu-icon' style='background-image:url(images/menu/Search-46x37.png)'></div>Search</div>";
 	this.menuItems.push("Settings");
 	htmlToAdd += "<div id=Settings class='menu-item'><div id='menu-Icon' class='menu-icon'style='background-image:url(images/menu/Settings-46x37.png)'></div>Settings</div>";
-	this.menuItems.push("Log-Out");
-	htmlToAdd += "<div id=Log-Out class='menu-item'><div id='menu-Icon' class='menu-icon' style='background-image:url(images/menu/Logout-46x37.png)'></div>Log Out</div>";	
+	this.menuItems.push("Log_Out");
+	htmlToAdd += "<div id=Log_Out class='menu-item'><div id='menu-Icon' class='menu-icon' style='background-image:url(images/menu/Logout-46x37.png)'></div>Log Out</div>";	
 	document.getElementById("menuItems").innerHTML += htmlToAdd;
 	
 	//Turn On Screensaver
 	Support.screensaverOn();
 	Support.screensaver();
 	
+	//Validate and update home page URL's
+	//Convert views in http format to viewnames for settings in versions <=2.1.3
+	var url1 = File.getUserProperty("View1");
+	if (url1.substring(0,4) == "http") {
+		alert("Converting View1");
+		File.setUserProperty("View1","TVNextUp");
+		File.setUserProperty("View1Name","Next Up");
+	}
+
+	var url2 = File.getUserProperty("View2");
+	if (url2) {
+		if (url2.substring(0,4) == "http") {
+			alert("Converting View2");
+			File.setUserProperty("View2","LatestMovies");
+			File.setUserProperty("View2Name","Latest Movies");
+		}
+	}
+
+	//Initialise view URL's
+	Support.initViewUrls();
+	
+	//Set the page highlight colour
+	Main.highlightColour = File.getUserProperty("HighlightColour");
+	
 	//Load Home Page
 	Support.processHomePageMenu("Home");
 }
 
 //Entry Point when called from any page displaying the menu
-GuiMainMenu.requested = function(pageSelected, pageSelectedId, pageSelectedClass) {
+GuiMainMenu.requested = function(pageSelected, selectedDivId, selectedDivClass) {
 	//Reset Menus
 	this.selectedMainMenuItem = 0;
 	this.selectedSubMenuItem = 0;
 	
 	//UnSelect Selected Item on whatever page is loaded
 	this.pageSelected = pageSelected;
-	this.pageSelectedId = pageSelectedId;
+	this.selectedDivId = selectedDivId;
 	
 	//Unhighlights the page's selected content
-	if (this.pageSelectedId != null) {
-		if (pageSelectedClass === undefined) {
-			this.pageSelectedClass = "UNDEFINED";
+	if (this.selectedDivId != null) {
+		if (selectedDivClass === undefined) {
+			this.selectedDivClass = "UNDEFINED";
 		} else {
-			this.pageSelectedClass = pageSelectedClass;
+			this.selectedDivClass = selectedDivClass;
 		}
-		alert("pageSelectedId: "+pageSelectedId);
-		document.getElementById(pageSelectedId).className = document.getElementById(pageSelectedId).className.replace("Selected","");
-		document.getElementById(pageSelectedId).className = document.getElementById(pageSelectedId).className.replace("EpisodeListSelected","");
+		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("GuiPage_Setting_Changing arrowUpDown","");
+		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("highlight"+Main.highlightColour+"Background","");
+		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("highlight"+Main.highlightColour+"Text","");
+		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("seriesSelected","");
+		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("Selected","");
 	}
 		
 	//Show Menu
@@ -104,7 +130,7 @@ GuiMainMenu.requested = function(pageSelected, pageSelectedId, pageSelectedClass
 GuiMainMenu.updateSelectedItems = function () {		
 	for (var index = 0; index < this.menuItems.length; index++){	
 		if (index == this.selectedMainMenuItem) {
-			document.getElementById(this.menuItems[index]).className = "menu-itemSelected";		
+			document.getElementById(this.menuItems[index]).className = "menu-item highlight"+Main.highlightColour+"Background";		
 		} else {
 			document.getElementById(this.menuItems[index]).className = "menu-item";
 		}	
@@ -237,15 +263,15 @@ GuiMainMenu.processReturnKey = function() {
 		document.getElementById("page").style.left = "0px";
 		
 		if (this.pageSelected == "GuiMusicPlayer") {
-			GuiMusicPlayer.showMusicPlayer(this.pageSelectedId);
+			GuiMusicPlayer.showMusicPlayer(this.selectedDivId);
 		}
-		
+
 		//Set Page GUI elements Correct & Set Focus
-		if (this.pageSelectedId != null) {
-			if (this.pageSelectedClass == "UNDEFINED") {
-				document.getElementById(this.pageSelectedId).className = document.getElementById(this.pageSelectedId).className + " Selected";		
+		if (this.selectedDivId != null) {
+			if (this.selectedDivClass == "UNDEFINED") {
+				document.getElementById(this.selectedDivId).className = document.getElementById(this.selectedDivId).className + " Selected";		
 			} else {
-				document.getElementById(this.pageSelectedId).className = this.pageSelectedClass;
+				document.getElementById(this.selectedDivId).className = this.selectedDivClass;
 			}
 		}
 		

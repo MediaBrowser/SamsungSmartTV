@@ -38,7 +38,7 @@ GuiDisplay_Episodes.start = function(title,url,selectedItem,topLeftItem) {
 	
 	//Load Data
 	this.ItemData = Server.getContent(url);
-	if (this.ItemData == null) { return; }
+	if (this.ItemData == null) { Support.processReturnURLHistory(); }
 	
 	//Latest Page Fix
 	this.isLatest = false;
@@ -49,7 +49,9 @@ GuiDisplay_Episodes.start = function(title,url,selectedItem,topLeftItem) {
 	
 	if (this.ItemData.Items.length > 0) {
 		
-		document.getElementById("pageContent").innerHTML = "<div id=allOptions class='EpisodesAllOptions'><span id='playAll' style='padding-right:70px'>Play All</span><span id='shuffleAll'>Shuffle All</span></div><div id=Content class='EpisodesList'></div>" +
+		document.getElementById("pageContent").innerHTML = "<div id=allOptions class='EpisodesAllOptions'>" +
+		"<span id='bannerItem0'>Play All</span>" +
+		"<span id='bannerItem1'>Shuffle All</span></div><div id=Content class='EpisodesList'></div>" +
 		"<div id='EpisodesSeriesInfo' class='EpisodesSeriesInfo'></div>" + 
 		"<div id='EpisodesImage' class='EpisodesImage'></div>" + 
 		"<div id='EpisodesInfo' class='EpisodesInfo'>" +
@@ -80,6 +82,7 @@ GuiDisplay_Episodes.start = function(title,url,selectedItem,topLeftItem) {
 	
 		//Display first XX series
 		this.updateDisplayedItems();
+		this.updateSelectedBannerItems();
 			
 		//Update Selected Collection CSS
 		this.updateSelectedItems();	
@@ -134,8 +137,9 @@ GuiDisplay_Episodes.updateDisplayedItems = function() {
 			htmlToAdd += "<div class='ShowListSingleFav'></div>";
 		}
 		if (this.ItemData.Items[index].UserData.Played == true) {
-			htmlToAdd += "<div class='ShowListSingleWatched'></div>";
-		}else if (this.ItemData.Items[index].LocationType == "Virtual"){
+			htmlToAdd += "<div class='ShowListSingleWatched highlight"+Main.highlightColour+"Background'>&#10003</div>";
+		}
+		if (this.ItemData.Items[index].LocationType == "Virtual"){
 			imageMissingOrUnaired = (Support.FutureDate(this.ItemData.Items[index].PremiereDate) == true) ? "ShowListSingleUnaired" : "ShowListSingleMissing";
 			htmlToAdd += "<div class='"+imageMissingOrUnaired+"'></div>";
 		}
@@ -160,7 +164,7 @@ GuiDisplay_Episodes.updateDisplayedItems = function() {
 //Function sets CSS Properties so show which user is selected
 GuiDisplay_Episodes.updateSelectedItems = function () {
 	Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"EpisodeListSingle EpisodeListSelected","EpisodeListSingle","");
+			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"EpisodeListSingle highlight"+Main.highlightColour+"Background","EpisodeListSingle","");
 	
 	if (this.selectedItem > -1) {
 		//Update Displayed Image
@@ -253,17 +257,16 @@ GuiDisplay_Episodes.updateSelectedItems = function () {
 
 
 GuiDisplay_Episodes.updateSelectedBannerItems = function() {
-	if (this.selectedItem == -1) {
-		if (this.selectedBannerItem == 0) {
-			document.getElementById("playAll").style.color = "#27a436";
-			document.getElementById("shuffleAll").style.color = "#f9f9f9";
+	for (var index = 0; index < 2; index++) {	
+		if (this.selectedItem == -1) {
+			if (this.selectedBannerItem == index) {
+				document.getElementById("bannerItem"+index).className = "button highlight"+Main.highlightColour+"Background";
+			} else {
+				document.getElementById("bannerItem"+index).className = "button";
+			}		
 		} else {
-			document.getElementById("playAll").style.color = "#f9f9f9";
-			document.getElementById("shuffleAll").style.color = "#27a436";
+			document.getElementById("bannerItem"+index).className = "button";
 		}
-	} else {
-		document.getElementById("playAll").style.color = "#f9f9f9";
-		document.getElementById("shuffleAll").style.color = "#f9f9f9";
 	}
 }
 
@@ -361,8 +364,12 @@ GuiDisplay_Episodes.keyDown = function() {
 				this.updateSelectedItems();
 			}
 			break;		
-		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiDisplay_Episodes");
+		case tvKey.KEY_BLUE:
+			if (this.selectedItem == -1) {		
+				GuiMusicPlayer.showMusicPlayer("GuiDisplay_Episodes","bannerItem"+this.selectedBannerItem,"button highlight"+Main.highlightColour+"Background");
+			} else {
+				GuiMusicPlayer.showMusicPlayer("GuiDisplay_Episodes",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
+			}
 			break;	
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
@@ -467,25 +474,25 @@ GuiDisplay_Episodes.processChannelUpKey = function() {
 }
 
 GuiDisplay_Episodes.openMenu = function() {
+	Support.updateURLHistory("GuiDisplay_Episodes",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
 	if (this.selectedItem == -1) {
 		if (this.selectedBannerItem == -1) {
 			this.selectedBannerItem = 0;
-			document.getElementById("playAll").style.color = "#f9f9f9";
+			document.getElementById("bannerItem"+this.selectedBannerItem).className = "button";
 		}
-		this.selectedItem = 0;
-		this.topLeftItem = 0;
+		GuiMainMenu.requested("GuiDisplay_Episodes","bannerItem"+this.selectedBannerItem,"button highlight"+Main.highlightColour+"Background");
+	} else {
+		GuiMainMenu.requested("GuiDisplay_Episodes",this.ItemData.Items[this.selectedItem].Id,"EpisodeListSingle highlight"+Main.highlightColour+"Background");
 	}
-	Support.updateURLHistory("GuiDisplay_Episodes",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
-	GuiMainMenu.requested("GuiDisplay_Episodes",this.ItemData.Items[this.selectedItem].Id,"EpisodeListSingle EpisodeListSelected");
 }
 
 GuiDisplay_Episodes.processLeftKey = function() {
 	if (this.selectedItem == -1) {
 		this.selectedBannerItem--;
+		this.updateSelectedBannerItems();
 		if (this.selectedBannerItem == -1) {
 			this.openMenu(); //Going left from the Play All / Shuffle All menu.
 		}
-		this.updateSelectedBannerItems();
 	} else {
 		this.openMenu(); //There's no left/right in the list of episodes, always open the menu.
 	}	

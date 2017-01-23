@@ -21,13 +21,13 @@ var GuiPage_Settings = {
 		CurrentSettingValue : null,
 		
 		//Per Setting Type List of settings, names & defaults
-		Settings : ["Default","ContinueWatching","View1","View2","LargerView","AudioTheme","MusicView","SkipMusicAZ","SkipShow","SeasonLabel","AutoPlay","EnableCinemaMode","ShowDisc","SubtitleSize","SubtitleColour","ImagePlayerImageTime","ScreensaverImages","ScreensaverTimeout","ScreensaverImageTime","ForgetSavedPassword"],
-		SettingsName : ["Default User: ","Continue Watching:","Home View 1: ","Home View 2: ","Show Larger Icons: ", "Play Audio Themes: ", "Default Music View: ", "Skip Music A-Z: ", "Skip TV Show Page: ","Use Alternate Season Label: ","Auto Play Next Episode: ","Enable cinema mode: ","Show Disc Art: ","Subtitle Text Size: ","Subtitle Text Colour: ","Image Player Rotate Speed: ", "Screensaver Image Source: ", "Screensaver Timeout: ", "Screensaver Rotate Speed: ", "Forget Password at Log Out:"],
-		SettingsDefaults : [false,true,"ddddd","aaaaa",false,false,"Album",false,false,false,false,true,true,"50px","white",10000,"Media",300000,10000,false],
+		Settings : ["Default","HighlightColour","ContinueWatching","View1","View2","LargerView","AudioTheme","MusicView","SkipMusicAZ","SkipShow","SeasonLabel","AutoPlay","EnableCinemaMode","ShowDisc","SubtitleSize","SubtitleColour","ImagePlayerImageTime","ScreensaverImages","ScreensaverTimeout","ScreensaverImageTime","ForgetSavedPassword"],
+		SettingsName : ["Default User: ","Highlight Colour: ","Continue Watching: ","Home View 1: ","Home View 2: ","Show Larger Icons: ", "Play Audio Themes: ", "Default Music View: ", "Skip Music A-Z: ", "Skip TV Show Page: ","Use Alternate Season Label: ","Auto Play Next Episode: ","Enable cinema mode: ","Show Disc Art: ","Subtitle Text Size: ","Subtitle Text Colour: ","Image Player Rotate Speed: ", "Screensaver Image Source: ", "Screensaver Timeout: ", "Screensaver Rotate Speed: ", "Forget Password at Log Out:"],
+		SettingsDefaults : [false,1,true,"ddddd","aaaaa",false,false,"Album",false,false,false,false,true,true,"50px","white",10000,"Media",300000,10000,false],
 		
-		TVSettings : ["Bitrate","Dolby","DTS","AACtoDolby","ItemPaging","ClockOffset"],
-		TVSettingsName : ["Max Bitrate: ","Enable Dolby Digital Playback: ","Enable DTS Playback: ","Enable AAC Transcoding to Dolby: ","Item Paging: ","Clock Offset: "],
-		TVSettingsDefaults : [60,false,false,false,150,0],
+		TVSettings : ["Bitrate","Dolby","DTS","AACtoDolby","ItemPaging","ClockOffset","ModelOverride"],
+		TVSettingsName : ["Max Bitrate: ","Enable Dolby Digital Playback: ","Enable DTS Playback: ","Enable AAC Transcoding to Dolby: ","Item Paging: ","Clock Offset: ","Evolution Kit: "],
+		TVSettingsDefaults : [60,false,false,false,150,0,"None"],
 		
 		ServerSettings : ["DisplayMissingEpisodes","DisplayUnairedEpisodes","GroupMovieCollections","DefaultAudioLang","PlayDefaultAudioTrack","DefaultSubtitleLang", "SubtitleMode", "HidePlayedInLatest"],
 		ServerSettingsName : ["Display Missing Episodes: ", "Display Unaired Episodes: ","Group Movies into Collections: ","Default Audio Language: ","Play default audio track regardless of language: ", "Default Subtitle Language: ","Subtitle Mode:","Hide watched content from latest media:"], 
@@ -75,7 +75,13 @@ var GuiPage_Settings = {
 		LanguageValues : ["","eng","fre","ger","spa","ita"],
 		
 		SubtitleModeOptions : ["Default","Only Forced Subtitles", "Always Play Subtitles", "None"],
-		SubtitleModeValues : ["Default","OnlyForced", "Always", "None"]
+		SubtitleModeValues : ["Default","OnlyForced", "Always", "None"],
+
+		ModelOverrideOptions : ["None","SEK-1000","SEK-2000","SEK-2500"],
+		ModelOverrideValues : ["None","SEK1000","SEK2000","SEK2500"],
+
+		HighlightColourOptions : ["Green","Silver","Red","Navy","Aqua","Purple"],
+		HighlightColourValues : [1,2,3,4,5,6]
 }
 
 GuiPage_Settings.onFocus = function() {
@@ -87,23 +93,13 @@ GuiPage_Settings.getMaxDisplay = function() {
 }
 
 GuiPage_Settings.initiateViewValues = function() {
-	TVNextUp = Server.getServerAddr() + "/Shows/NextUp?format=json&UserId="+Server.getUserID()+"&IncludeItemTypes=Episode&ExcludeLocationTypes=Virtual&Limit=24&Fields=PrimaryImageAspectRatio,SeriesInfo,DateCreated,SyncInfo,SortName&ImageTypeLimit=1&EnableImageTypes=Primary,Backdrop,Banner,Thumb";
-	Favourites = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&Filters=IsFavorite&fields=SortName&recursive=true");
-	FavouriteMovies = Server.getServerAddr() + "/Users/"+Server.getUserID()+"/Items?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Movie&Filters=IsFavorite&Limit=10&Recursive=true&Fields=PrimaryImageAspectRatio,SyncInfo&CollapseBoxSetItems=false&ExcludeLocationTypes=Virtual";
-	FavouriteSeries = Server.getServerAddr() + "/Users/"+Server.getUserID()+"/Items?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Series&Filters=IsFavorite&Limit=10&Recursive=true&Fields=PrimaryImageAspectRatio,SyncInfo&CollapseBoxSetItems=false&ExcludeLocationTypes=Virtual";
-	FavouriteEpisodes = Server.getServerAddr() + "/Users/"+Server.getUserID()+"/Items?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Episode&Filters=IsFavorite&Limit=10&Recursive=true&Fields=PrimaryImageAspectRatio,SyncInfo&CollapseBoxSetItems=false&ExcludeLocationTypes=Virtual";
-	SuggestedMovies = Server.getCustomURL("/Movies/Recommendations?format=json&userId="+Server.getUserID()+"&categoryLimit=2&ItemLimit=6&Fields=PrimaryImageAspectRatio,MediaSourceCount,SyncInfo&ImageTypeLimit=1&EnableImageTypes=Primary,Backdrop,Banner,Thumb");
-	MediaFolders = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&CollapseBoxSetItems=false&fields=SortName");
-	LatestTV = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Episode&IsFolder=false&fields=SortName,Overview,Genres,RunTimeTicks");
-	LatestMovies = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Movie&IsFolder=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
-
 	this.View1Options = ["Next Up","All Favourites","Favourite Movies","Favourite Series","Favourite Episodes","Suggested For You","Media Folders","Latest TV","Latest Movies"];
-	this.View1Values = [TVNextUp,Favourites,FavouriteMovies,FavouriteSeries,FavouriteEpisodes,SuggestedMovies,MediaFolders,LatestTV,LatestMovies];
+	this.View1Values = ["TVNextUp","Favourites","FavouriteMovies","FavouriteSeries","FavouriteEpisodes","SuggestedMovies","MediaFolders","LatestTV","LatestMovies"];
 	this.View2Options = ["None","Next Up","All Favourites","Favourite Movies","Favourite Series","Favourite Episodes","Suggested For You","Media Folders","Latest TV","Latest Movies"];
-	this.View2Values = [null,TVNextUp,Favourites,FavouriteMovies,FavouriteSeries,FavouriteEpisodes,SuggestedMovies,MediaFolders,LatestTV,LatestMovies];
+	this.View2Values = [null,"TVNextUp","Favourites","FavouriteMovies","FavouriteSeries","FavouriteEpisodes","SuggestedMovies","MediaFolders","LatestTV","LatestMovies"];
 	
-	this.SettingsDefaults[2] = TVNextUp;
-	this.SettingsDefaults[3] = LatestMovies;
+	this.SettingsDefaults[2] = "TVNextUp";
+	this.SettingsDefaults[3] = "LatestMovies";
 }
 
 GuiPage_Settings.start = function(viewToDisplay) {	
@@ -134,7 +130,7 @@ GuiPage_Settings.start = function(viewToDisplay) {
 	
 	document.getElementById("pageContent").className = "";
 	document.getElementById("pageContent").style.color = "white"; 
-	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='guiDisplay_Series-Banner'></div><div id='guiTV_Show_Title' class='guiPage_Settings_Title'></div>" +
+	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div><div id='guiTV_Show_Title' class='guiPage_Settings_Title'></div>" +
 		"<div id='guiPage_Settings_Settings' class='guiPage_Settings_Settings'></div>" +
 		"<div id='guiPage_Settings_Overview' class='guiPage_Settings_Overview'>" +
 			"<div id=guiPage_Settings_Overview_Title></div>" +
@@ -144,9 +140,9 @@ GuiPage_Settings.start = function(viewToDisplay) {
 	//Create Banner Items
 	for (var index = 0; index < this.bannerItems.length; index++) {
 		if (index != this.bannerItems.length-1) {
-			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding'>"+this.bannerItems[index].replace(/-/g, ' ')+"</div>";			
+			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem bannerItemPadding'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";			
 		} else {
-			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='guiDisplay_Series-BannerItem'>"+this.bannerItems[index].replace(/-/g, ' ')+"</div>";					
+			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";					
 		}
 	}
 
@@ -259,7 +255,14 @@ GuiPage_Settings.updateDisplayedItems = function() {
 				}
 			}
 			break;
-		
+		case "HighlightColour":
+			for (var index2 = 0; index2 < this.HighlightColourValues.length; index2++) {
+				if (this.HighlightColourValues[index2] == this.UserData[this.currentViewSettings[index]]) {
+					Setting = this.HighlightColourOptions[index2];
+					break;
+				}
+			}
+			break;
 		case "MusicView":
 			for (var index2 = 0; index2 < this.MusicViewValues.length; index2++) {
 				if (this.MusicViewValues[index2] == this.UserData[this.currentViewSettings[index]]) {
@@ -313,6 +316,14 @@ GuiPage_Settings.updateDisplayedItems = function() {
 			for (var index2 = 0; index2 < this.ClockOffsetValues.length; index2++) {
 				if (this.ClockOffsetValues[index2] == this.AllData.TV[this.currentViewSettings[index]]) {
 					Setting = this.ClockOffsetOptions[index2];
+					break;
+				}
+			}
+			break;
+		case "ModelOverride":
+			for (var index2 = 0; index2 < this.ModelOverrideValues.length; index2++) {
+				if (this.ModelOverrideValues[index2] == this.AllData.TV[this.currentViewSettings[index]]) {
+					Setting = this.ModelOverrideOptions[index2];
 					break;
 				}
 			}
@@ -422,7 +433,7 @@ GuiPage_Settings.updateDisplayedItems = function() {
 GuiPage_Settings.updateSelectedItems = function() {
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.currentViewSettings.length); index++) {
 		if (index == this.selectedItem) {
-			document.getElementById(index).className = "guiSettingsTD GuiPage_Setting_Selected";
+			document.getElementById(index).className = "guiSettingsTD highlight"+Main.highlightColour+"Background";
 		} else {
 			document.getElementById(index).className = "guiSettingsTD";
 		}
@@ -440,22 +451,22 @@ GuiPage_Settings.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.bannerItems.length; index++) {
 		if (index == this.selectedBannerItem) {
 			if (index != this.bannerItems.length-1) { //Don't put padding on the last one.
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding green";
+				document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text";
 			} else {
-				document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem green";
+				document.getElementById("bannerItem"+index).className = "bannerItem highlight"+Main.highlightColour+"Text";
 			}		
 		} else {
 			if (index != this.bannerItems.length-1) { //Don't put padding on the last one.
 				if (index == this.currentPage) {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding blue";
+					document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding offWhite";
 				} else {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding";
+					document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding";
 				}
 			} else {
 				if (index == this.currentPage) {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem blue";
+					document.getElementById("bannerItem"+index).className = "bannerItem offWhite";
 				} else {
-					document.getElementById("bannerItem"+index).className = "guiDisplay_Series-BannerItem";
+					document.getElementById("bannerItem"+index).className = "bannerItem";
 				}
 			}
 		}
@@ -514,7 +525,7 @@ GuiPage_Settings.processSelectedItem = function() {
 		this.updateSelectedBannerItems();
 	} else {
 		document.getElementById(this.selectedItem).className = "guiSettingsTD GuiPage_Setting_SubSelected";
-		document.getElementById("Value"+this.selectedItem).className = "guiSettingsTD GuiPage_Setting_Changing arrowUpDown";
+		document.getElementById("Value"+this.selectedItem).className = "guiSettingsTD highlight"+Main.highlightColour+"Background arrowUpDown";
 		
 		switch (this.currentViewSettings[this.selectedItem]) {
 		case "Default":
@@ -544,6 +555,9 @@ GuiPage_Settings.processSelectedItem = function() {
 		case "View2":
 			this.CurrentSubSettings = this.View2Options;
 			break;
+		case "HighlightColour":
+			this.CurrentSubSettings = this.HighlightColourOptions;
+			break;
 		case "MusicView":
 			this.CurrentSubSettings = this.MusicViewOptions;
 			break;
@@ -565,6 +579,9 @@ GuiPage_Settings.processSelectedItem = function() {
 			break;	
 		case "ClockOffset":
 			this.CurrentSubSettings = this.ClockOffsetOptions;
+			break;	
+		case "ModelOverride":
+			this.CurrentSubSettings = this.ModelOverrideOptions;
 			break;	
 		case "ItemPaging":
 			this.CurrentSubSettings = this.ItemPagingOptions;
@@ -654,8 +671,16 @@ GuiPage_Settings.keyDown = function() {
 		case tvKey.KEY_YELLOW:	
 			//Favourites - Not needed on this page!
 			break;	
-		case tvKey.KEY_BLUE:	
-			GuiMusicPlayer.showMusicPlayer("GuiPage_Settings");
+		case tvKey.KEY_BLUE:
+			if (this.selectedItem == -1) {		
+				if (this.selectedBannerItem == this.bannerItems.length-1) {
+					GuiMusicPlayer.showMusicPlayer("GuiPage_Settings","bannerItem"+this.selectedBannerItem,"bannerItem highlight"+Main.highlightColour+"Text");
+				} else {
+					GuiMusicPlayer.showMusicPlayer("GuiPage_Settings","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
+				}
+			} else {
+				GuiMusicPlayer.showMusicPlayer("GuiPage_Settings",this.selectedItem,document.getElementById(this.selectedItem).className);
+			}
 			break;		
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
@@ -671,14 +696,14 @@ GuiPage_Settings.keyDown = function() {
 GuiPage_Settings.openMenu = function() {
 	if (this.selectedItem == -1) {
 		if (this.currentPage == 0){
-			document.getElementById("bannerItem0").className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding blue";
+			document.getElementById("bannerItem0").className = "bannerItem bannerItemPadding offWhite";
 		} else {
-			document.getElementById("bannerItem0").className = "guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding";
+			document.getElementById("bannerItem0").className = "bannerItem bannerItemPadding";
 		}
-		GuiMainMenu.requested("GuiPage_Settings","bannerItem0","guiDisplay_Series-BannerItem guiDisplay_Series-BannerItemPadding green");
+		GuiMainMenu.requested("GuiPage_Settings","bannerItem0","bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
 	} else {
 		document.getElementById(this.selectedItem).className = "guiSettingsTD GuiPage_Setting_UnSelected";
-		GuiMainMenu.requested("GuiPage_Settings",this.selectedItem,"guiSettingsTD GuiPage_Setting_Selected");
+		GuiMainMenu.requested("GuiPage_Settings",this.selectedItem,"guiSettingsTD highlight"+Main.highlightColour+"Background");
 	}
 }
 
@@ -797,6 +822,11 @@ GuiPage_Settings.processSelectedSubItem = function() {
 	
 		Support.updateHomePageURLs(this.UserData.View2Name ,this.UserData.View2,this.UserData.View2Name,false);
 		break;
+	case "HighlightColour":
+		this.UserData.HighlightColour = this.HighlightColourValues[this.selectedSubItem];
+		this.CurrentSettingValue = this.HighlightColourOptions[this.selectedSubItem];
+		Main.highlightColour = this.HighlightColourValues[this.selectedSubItem];
+		break;
 	case "MusicView":
 		this.UserData.MusicView = this.MusicViewValues[this.selectedSubItem];
 		this.CurrentSettingValue = this.MusicViewOptions[this.selectedSubItem];
@@ -828,6 +858,10 @@ GuiPage_Settings.processSelectedSubItem = function() {
 	case "ClockOffset":
 		this.AllData.TV.ClockOffset = this.ClockOffsetValues[this.selectedSubItem];
 		this.CurrentSettingValue = this.ClockOffsetOptions[this.selectedSubItem];
+		break;
+	case "ModelOverride":
+		this.AllData.TV.ModelOverride = this.ModelOverrideValues[this.selectedSubItem];
+		this.CurrentSettingValue = this.ModelOverrideOptions[this.selectedSubItem];
 		break;
 	case "Dolby":
 	case "DTS":
@@ -912,7 +946,7 @@ GuiPage_Settings.processSelectedSubItem = function() {
 		
 	document.getElementById("Value"+this.selectedItem).innerHTML = this.CurrentSettingValue;
 	document.getElementById("Value"+this.selectedItem).className = "guiSettingsTD GuiPage_Setting_UnSelected";
-	document.getElementById(this.selectedItem).className = "guiSettingsTD GuiPage_Setting_Selected";
+	document.getElementById(this.selectedItem).className = "guiSettingsTD highlight"+Main.highlightColour+"Background";
 	document.getElementById("GuiPage_Settings").focus();
 }
 
@@ -967,7 +1001,7 @@ GuiPage_Settings.bottomKeyDown = function() {
 			widgetAPI.blockNavigation(event);
 			document.getElementById("Value"+this.selectedItem).innerHTML = this.CurrentSettingValue;		
 			document.getElementById("Value"+this.selectedItem).className = "guiSettingsTD GuiPage_Setting_UnSelected";
-			document.getElementById(this.selectedItem).className = "guiSettingsTD GuiPage_Setting_Selected";
+			document.getElementById(this.selectedItem).className = "guiSettingsTD highlight"+Main.highlightColour+"Background";
 
 			document.getElementById("GuiPage_Settings").focus();
 			break;	
@@ -977,14 +1011,14 @@ GuiPage_Settings.bottomKeyDown = function() {
 			this.processSelectedSubItem();
 			break;
 		case tvKey.KEY_BLUE:	
-			Support.logout();
+			GuiMusicPlayer.showMusicPlayer("GuiPage_SettingsBottom","Value"+this.selectedItem,document.getElementById("Value"+this.selectedItem).className);
 			break;		
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
 			document.getElementById("Value"+this.selectedItem).className = "guiSettingsTD GuiPage_Setting_UnSelected";
 			document.getElementById(this.selectedItem).className = "guiSettingsTD GuiPage_Setting_UnSelected";
 			document.getElementById("GuiPage_Settings").focus();
-			GuiMainMenu.requested("GuiPage_Settings",this.selectedItem,"guiSettingsTD GuiPage_Setting_Selected");
+			GuiMainMenu.requested("GuiPage_Settings",this.selectedItem,"guiSettingsTD highlight"+Main.highlightColour+"Background");
 			break;	
 		case tvKey.KEY_INFO:
 			alert ("INFO KEY");
@@ -1020,6 +1054,11 @@ GuiPage_Settings.setOverview = function() {
 			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Sets the content of the second view on the Home page." +
 					"<br><br>Available Choices:<br>&nbsp;<ul style='padding-left:22px'><li>None</li><li>Next Up</li><li>All Favourites</li><li>Favourite Movies</li><li>Favourite Series</li><li>Favourite Episodes</li><li>Suggested For You</li><li>Media Folders</li><li>Latest TV</li><li>Latest Movies</li></ul>" +
 					"<br><br>Setting this to None will show more content from Home View 1.";
+			break;	
+		case "HighlightColour":
+			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Highlight colour";
+			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Sets the background and boarder colour of selected items." +
+					"<br><br>Available Choices:<br>&nbsp;<ul style='padding-left:22px'><li>Green</li><li>Silver</li><li>Red</li><li>Navy</li><li>Aqua</li><li>Purple</li></ul>";
 			break;	
 		case "MusicView":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Default Music view";
@@ -1087,6 +1126,10 @@ GuiPage_Settings.setOverview = function() {
 		case "ClockOffset":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Clock Offset";
 			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Some devices report their system time incorrectly. Use this option to apply a correction.";
+			break;	
+		case "ModelOverride":
+			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Samsung Evolution Kit";
+			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "If you have purchased a Samsung Evolution Kit to enhance your TV, select the model number to unlock the addition codec support provided.<br><br>Restart the Emby client for the change to take affect.";
 			break;	
 		case "Bitrate":
 			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Max Bitrate";
