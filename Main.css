@@ -1784,6 +1784,8 @@ input[type="password"]
 .videoItemDetailsSubData {
 	font-size:1.2em;
     width: 1470px;
+    max-height:200px;
+    overflow:hidden;
 }
 
 .videoItemDvdArt {
