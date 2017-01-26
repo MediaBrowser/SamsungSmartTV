@@ -123,14 +123,25 @@ Main.onLoad = function()
 	//Get the model year - Used for transcoding
 	if (pluginTV.GetProductCode(0).substring(0,2) == "HT" || pluginTV.GetProductCode(0).substring(0,2) == "BD"){
 		this.modelYear = pluginTV.GetProductCode(0).substring(3,4);
-	} else if (pluginTV.GetProductCode(0).substring(4,6) == "HU") {
-		this.modelYear = "HU";
+
 	} else if (pluginTV.GetProductCode(0).substring(4,7) == "H52") {
 		this.modelYear = "F";
+	} else if (pluginTV.GetProductCode(0).substring(4,7) == "J43") {
+		this.modelYear = "F";
 	} else if (pluginTV.GetProductCode(0).substring(4,7) == "J52") {
-		this.modelYear = "H";
+		this.modelYear = "F";
+	} else if (pluginTV.GetProductCode(0).substring(4,7) == "J53") {
+		this.modelYear = "F";
 	} else if (pluginTV.GetProductCode(0).substring(4,7) == "J62") {
+		this.modelYear = "F";
+	} else if (pluginTV.GetProductCode(0).substring(4,7) == "J55") {
 		this.modelYear = "H";
+	} else if (pluginTV.GetProductCode(0).substring(4,7) == "J63") {
+		this.modelYear = "H";
+	} else if (pluginTV.GetProductCode(0).substring(4,7) == "J64") {
+		this.modelYear = "H";
+	} else if (pluginTV.GetProductCode(0).substring(4,6) == "HU") {
+		this.modelYear = "HU";
 	} else if (pluginTV.GetProductCode(0).substring(4,7) == "K85") {
 		this.modelYear = "HU";
 	} else {
