@@ -117,7 +117,7 @@ GuiMusicPlayer.start = function(title,url,playedFromPage,isQueue,showThemeId,ite
 							this.queuedItems.push(this.ItemData.ThemeSongsResult.Items[index]);
 						}
 						
-						this.videoURL = Server.getServerAddr() + '/Audio/'+this.queuedItems[this.currentPlayingItem].Id+'/Stream.mp3?static=true&MediaSource='+this.queuedItems[this.currentPlayingItem].MediaSources[0].Id;
+						this.videoURL = Server.getServerAddr() + '/Audio/'+this.queuedItems[this.currentPlayingItem].Id+'/Stream.mp3?static=true&MediaSource='+this.queuedItems[this.currentPlayingItem].MediaSources[0].Id + '&api_key=' + Server.getAuthToken();
 						this.updateSelectedItem();
 						//Start Playback
 						this.handlePlayKey();
@@ -152,9 +152,9 @@ GuiMusicPlayer.start = function(title,url,playedFromPage,isQueue,showThemeId,ite
 		if (this.Status == "STOPPED") {
 			this.currentPlayingItem = 0;
 			if (this.queuedItems[this.currentPlayingItem].Type == "AudioPodcast") {
-				this.videoURL = Server.getCustomURL("/audio/"+this.queuedItems[this.currentPlayingItem].Id+"/stream.mp3?DeviceId="+Server.getDeviceID()+"&MediaSourceId="+this.queuedItems[this.currentPlayingItem].MediaSources[0].Id+"&AudioCodec=mp3&AudioBitrate=192000&MaxAudioChannels=2&CopyTimestamps=false&EnableSubtitlesInManifest=false");
+				this.videoURL = Server.getCustomURL("/audio/"+this.queuedItems[this.currentPlayingItem].Id+"/stream.mp3?DeviceId="+Server.getDeviceID()+"&MediaSourceId="+this.queuedItems[this.currentPlayingItem].MediaSources[0].Id+"&AudioCodec=mp3&AudioBitrate=192000&MaxAudioChannels=2&CopyTimestamps=false&EnableSubtitlesInManifest=false&api_key=" + Server.getAuthToken());
 			} else {
-				this.videoURL = Server.getServerAddr() + '/Audio/'+this.queuedItems[this.currentPlayingItem].Id+'/Stream.mp3?static=true&MediaSource='+this.queuedItems[this.currentPlayingItem].MediaSources[0].Id;
+				this.videoURL = Server.getServerAddr() + '/Audio/'+this.queuedItems[this.currentPlayingItem].Id+'/Stream.mp3?static=true&MediaSource='+this.queuedItems[this.currentPlayingItem].MediaSources[0].Id + '&api_key=' + Server.getAuthToken();
 			}
 			
 		    //Update selected Item
@@ -410,7 +410,7 @@ GuiMusicPlayer.handleNextKey = function() {
 		this.returnToPage();
 	} else {
 		//Play Next Item
-		this.videoURL = Server.getServerAddr() + '/Audio/'+this.queuedItems[this.currentPlayingItem].Id+'/Stream.mp3?static=true&MediaSource='+this.queuedItems[this.currentPlayingItem].MediaSources[0].Id;
+		this.videoURL = Server.getServerAddr() + '/Audio/'+this.queuedItems[this.currentPlayingItem].Id+'/Stream.mp3?static=true&MediaSource='+this.queuedItems[this.currentPlayingItem].MediaSources[0].Id + '&api_key=' + Server.getAuthToken();
 		alert ("Next " + this.videoURL);
 		//Start Playback
 		this.handlePlayKey();
