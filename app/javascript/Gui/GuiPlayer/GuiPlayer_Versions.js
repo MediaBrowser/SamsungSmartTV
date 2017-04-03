@@ -20,7 +20,7 @@ var GuiPlayer_Versions = {
 		MediaSelections : [],
 }
 
-GuiPlayer_Versions.start = function(playerData,resumeTicks,playedFromPage) {
+GuiPlayer_Versions.start = function(playerData,resumeTicks,playedFromPage, forceVideoTranscode) {
 	//Reset Vars
 	this.MediaOptions.length = 0;
 	this.MediaPlayback.length = 0;
@@ -59,8 +59,8 @@ GuiPlayer_Versions.start = function(playerData,resumeTicks,playedFromPage) {
 	FileLog.write("Video : Determine Playback of Media Streams");
 	for (var index = 0; index < this.MediaOptions.length; index++) {
 		var result = GuiPlayer_Transcoding.start(this.PlayerData.Id, this.PlayerData.MediaSources[this.MediaOptions[index][0]],this.MediaOptions[index][0],
-			this.MediaOptions[index][1],this.MediaOptions[index][2],this.MediaOptions[index][3],this.MediaOptions[index][4]);
-			FileLog.write("Video : Playback Added")
+			this.MediaOptions[index][1],this.MediaOptions[index][2],this.MediaOptions[index][3],this.MediaOptions[index][4],forceVideoTranscode);
+			FileLog.write("Video : Playback Added");
 			this.MediaPlayback.push(result);	
 	}
 	
