@@ -60,16 +60,15 @@ GuiPlayer_Transcoding.start = function(showId, MediaSource,MediaSourceIndex, vid
 	if (this.isAudio == false) {
 	   streamAudioCodec = (File.getTVProperty("Dolby") && File.getTVProperty("AACtoDolby")) ? "ac3" : "aac";
 	} else {
-	   streamAudioCodec = (File.getTVProperty("Dolby") && File.getTVProperty("AACtoDolby") && fileAudioCodec == "aac") ? "ac3" : fileAudioCodec;
+	   streamAudioCodec = (File.getTVProperty("Dolby") && File.getTVProperty("AACtoDolby") && fileAudioCodec == "aac") ? "ac3" : "aac";
 	}
-	
 	if (this.isVideo && this.isAudio && convertAACtoDolby == false) {
 		if (isFirstAudioIndex == true) {
 			transcodeStatus = "Direct Play";
 			streamparams = '/Stream.'+this.MediaSource.Container+'?static=true&MediaSourceId='+this.MediaSource.Id + '&api_key=' + Server.getAuthToken();
 		} else {			
 			transcodeStatus = "Stream Copy - Audio Not First Track";
-			streamparams = '/Stream.ts?VideoStreamIndex='+this.videoIndex+'&AudioStreamIndex='+this.audioIndex+'&VideoCodec=copy&AudioCodec=copy&MediaSourceId='+this.MediaSource.Id + '&api_key=' + Server.getAuthToken();
+			streamparams = '/Stream.ts?VideoStreamIndex='+this.videoIndex+'&AudioStreamIndex='+this.audioIndex+'&VideoCodec=copy&AudioCodec='+ streamAudioCodec +'&MediaSourceId='+this.MediaSource.Id + '&api_key=' + Server.getAuthToken();
 		}	
 	} else if (this.isVideo == false) {
 		transcodeStatus = "Transcoding Audio & Video";	
