@@ -25,7 +25,7 @@ var Main =
 		highlightColour : 1,
 		
 		enableMusic : true,
-		enableLiveTV : false,
+		enableLiveTV : true,
 		enableCollections : true,
 		enableChannels : true,
 		enableImageCache : true,
