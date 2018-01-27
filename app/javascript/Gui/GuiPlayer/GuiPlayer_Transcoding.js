@@ -72,7 +72,7 @@ GuiPlayer_Transcoding.start = function(showId, MediaSource,MediaSourceIndex, vid
 		}	
 	} else if (this.isVideo == false) {
 		transcodeStatus = "Transcoding Audio & Video";	
-		streamparams = '/Stream.ts?VideoStreamIndex='+this.videoIndex+'&AudioStreamIndex='+this.audioIndex+'&VideoCodec=h264&Profile=high&Level=41&MaxVideoBitDepth=8&MaxWidth=1280&VideoBitrate='+this.bitRateToUse+'&AudioCodec=' + streamAudioCodec +'&AudioBitrate=360000&MaxAudioChannels=6&MediaSourceId='+this.MediaSource.Id + '&api_key=' + Server.getAuthToken();	
+		streamparams = '/Stream.ts?VideoStreamIndex='+this.videoIndex+'&AudioStreamIndex='+this.audioIndex+'&VideoCodec=h264&Profile=high&Level=41&MaxVideoBitDepth=8&MaxWidth=1920&VideoBitrate='+this.bitRateToUse+'&AudioCodec=' + streamAudioCodec +'&AudioBitrate=360000&MaxAudioChannels=6&MediaSourceId='+this.MediaSource.Id + '&api_key=' + Server.getAuthToken();	
 	} else if (this.isVideo == true && (this.isAudio == false || convertAACtoDolby == true)) {
 		transcodeStatus = "Transcoding Audio";	
 		streamparams = '/Stream.ts?VideoStreamIndex='+this.videoIndex+'&AudioStreamIndex='+this.audioIndex+'&VideoCodec=copy&AudioCodec='+ streamAudioCodec +'&audioBitrate=360000&MaxAudioChannels=6&MediaSourceId='+this.MediaSource.Id + '&api_key=' + Server.getAuthToken();
