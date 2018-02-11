@@ -178,11 +178,13 @@ GuiPlayer_Transcoding.checkContainer = function(supportedContainers) {
 GuiPlayer_Transcoding.checkBitRate = function(maxBitRate) {
 	//Get Bitrate from Settings File
 	var maxBitRateSetting = File.getTVProperty("Bitrate")*1024*1024;
+
+    // MCB - Ignore bitrate in file
+    this.bitRateToUse = maxBitRateSetting;
+
 	if (this.MediaSource.MediaStreams[this.videoIndex].BitRate > maxBitRateSetting) {
-		this.bitRateToUse = maxBitRateSetting;
 		return false;
 	} else {
-		this.bitRateToUse = this.MediaSource.MediaStreams[this.videoIndex].BitRate;
 		return true;
 	}
 }
