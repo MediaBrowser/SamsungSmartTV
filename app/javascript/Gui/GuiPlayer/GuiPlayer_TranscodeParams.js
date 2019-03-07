@@ -672,7 +672,7 @@ GuiPlayer_TranscodeParams.getAudioParameters = function(audiocodec) {
 		case "dts":
 			this.audiocodec = true;
 			this.audiocontainer = ["avi","mkv"];
-			this.audiochannels = 6;
+			this.audiochannels = 8;
 			break;
 		case "eac3":	
 			this.audiocodec = true;
