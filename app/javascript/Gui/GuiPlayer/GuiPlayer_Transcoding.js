@@ -91,7 +91,7 @@ GuiPlayer_Transcoding.start = function(showId, MediaSource,MediaSourceIndex, vid
 
 GuiPlayer_Transcoding.checkCodec = function() {
 	var codec = this.MediaSource.MediaStreams[this.videoIndex].Codec.toLowerCase();
-	var codecParams = GuiPlayer_TranscodeParams.getParameters(codec);
+	var codecParams = GuiPlayer_TranscodeParams.getParameters(codec,this.MediaSource.MediaStreams[this.videoIndex].Width);
 	
 	this.isCodec = codecParams[0];
 	this.isContainer = this.checkContainer(codecParams[1]);
