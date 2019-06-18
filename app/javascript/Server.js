@@ -229,9 +229,9 @@ Server.getStreamUrl = function(itemId,mediaSourceId){
 
 Server.setRequestHeaders = function (xmlHttp,UserId) {
 	if (this.UserID == null) {
-		xmlHttp.setRequestHeader("Authorization", "MediaBrowser Client=\"Samsung TV\", Device=\""+this.Device+"\", DeviceId=\""+this.DeviceID+"\", Version=\""+Main.getVersion()+"\", UserId=\""+UserId+"\"");
+		xmlHttp.setRequestHeader("X-Emby-Authorization", "MediaBrowser Client=\"Samsung TV\", Device=\""+this.Device+"\", DeviceId=\""+this.DeviceID+"\", Version=\""+Main.getVersion()+"\", UserId=\""+UserId+"\"");
 	} else {
-		xmlHttp.setRequestHeader("Authorization", "MediaBrowser Client=\"Samsung TV\", Device=\""+this.Device+"\", DeviceId=\""+this.DeviceID+"\", Version=\""+Main.getVersion()+"\", UserId=\""+this.UserID+"\"");
+		xmlHttp.setRequestHeader("X-Emby-Authorization", "MediaBrowser Client=\"Samsung TV\", Device=\""+this.Device+"\", DeviceId=\""+this.DeviceID+"\", Version=\""+Main.getVersion()+"\", UserId=\""+this.UserID+"\"");
 		if (this.AuthenticationToken != null) {
 			xmlHttp.setRequestHeader("X-MediaBrowser-Token", this.AuthenticationToken);		
 		}
@@ -554,7 +554,7 @@ Server.testConnectionSettings = function (server,fromFile) {
 
 Server.Authenticate = function(UserId, UserName, Password) {
 	var url = Server.getServerAddr() + "/Users/AuthenticateByName?format=json";
-    var params =  JSON.stringify({"Username":UserName,"Password":Password});
+    var params =  JSON.stringify({"Username":UserName,"Pw":Password});
     
     var xmlHttp = new XMLHttpRequest();	
     xmlHttp.open( "POST", url , false ); //Authenticate must be false - need response before continuing!
