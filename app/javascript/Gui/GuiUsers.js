@@ -174,6 +174,7 @@ GuiUsers.processSelectedUser = function () {
 			document.getElementById("GuiUsers").focus();
 			new GuiUsers_Input("guiUsers_Password");
 		} else {
+			var password = "";
 			var authenticateSuccess = Server.Authenticate(this.UserData[this.selectedUser].Id, this.UserData[this.selectedUser].Name, password);		
 			if (authenticateSuccess) {
 				//Reset GUI to as new - Not Required as it already is!!
