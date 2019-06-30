@@ -1253,11 +1253,11 @@ Support.enterMusicPage = function(musicView) {
 				GuiDisplay_Series.start("Album Music",url,0,0);
 				break;
 			case "Album Artist":
-				var url = Server.getCustomURL("/Artists/AlbumArtists?format=json&SortBy=SortName&SortOrder=Ascending&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,Genres,ItemCounts&userId=" + Server.getUserID());
+				var url = Server.getCustomURL("/Artists/AlbumArtists?format=json&SortBy=SortName&SortOrder=Ascending&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,Genres&userId=" + Server.getUserID());
 				GuiPage_MusicArtist.start("Album Artist",url,0,0);
 				break;
 			case "Artist":
-				var url = Server.getCustomURL("/Artists?format=json&SortBy=SortName&SortOrder=Ascending&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,Genres,ItemCounts&userId=" + Server.getUserID());
+				var url = Server.getCustomURL("/Artists?format=json&SortBy=SortName&SortOrder=Ascending&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,Genres&userId=" + Server.getUserID());
 				GuiDisplay_Series.start("Artist Music",url,0,0);
 				break;
 			case "Recent":
