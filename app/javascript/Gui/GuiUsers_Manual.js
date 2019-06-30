@@ -33,8 +33,7 @@ GuiUsers_Manual.start = function() {
 }
 
 GuiUsers_Manual.IMEAuthenticate = function(user, password) {
-    var pwdSHA1 = Sha1.hash(password,true);
-    var authenticateSuccess = Server.Authenticate(null, user, pwdSHA1);		
+    var authenticateSuccess = Server.Authenticate(null, user, password);		
     if (authenticateSuccess) {   	
     	document.getElementById("NoKeyInput").focus();
     	
@@ -53,7 +52,7 @@ GuiUsers_Manual.IMEAuthenticate = function(user, password) {
 			alert("Need to add the user to the DB");
 			//Add Username & Password to DB - Save password only if rememberPassword = true
 			if (this.rememberPassword == true) {
-				File.addUser(Server.UserID,user,pwdSHA1,this.rememberPassword);
+				File.addUser(Server.UserID,user,password,this.rememberPassword);
 			} else {
 				File.addUser(Server.UserID,user,"",this.rememberPassword);
 			}
