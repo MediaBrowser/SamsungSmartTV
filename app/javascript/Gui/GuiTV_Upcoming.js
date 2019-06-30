@@ -527,7 +527,7 @@ GuiTV_Upcoming.processSelectedItem = function (isBottom) {
 					
 		break;
 		case "Genre":
-			var url1 = Server.getCustomURL("/Genres?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Series&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,ItemCounts&userId=" + Server.getUserID());
+			var url1 = Server.getCustomURL("/Genres?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Series&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName&userId=" + Server.getUserID());
 			GuiDisplay_Series.start("Genre TV",url1,0,0);	
 		break;
 		}
