@@ -19,7 +19,7 @@ GuiPage_NewServer.start = function() {
 		<input id='port' type='text' size='8'  maxlength='5'/></form> \ \
 		<p style='padding-top:10px;padding-bottom:5px'>OR</p> \
 		<p style='padding-bottom:5px'>Enter your server hostname here without http:// and <br>including : and port number.</p> \
-		<form><input id='host' style='z-index:10;' type='text' size='45' value=''/></form> \
+		<form><input id='host' style='z-index:10;' type='text' size='45' maxlength='40' value=''/></form> \
 		</div>";
 	
 	//Set Backdrop
@@ -76,24 +76,24 @@ GuiPage_NewServer.deleteAllBoxes = function(currentId) {
 //IME Key Handler
 var GuiPage_NewServer_Input  = function(id,previousId, nextId) {   
     var imeReady = function(imeObject) {
-    	installFocusKeyCallbacks(imeObject);   
+    	installFocusKeyCallbacks();   
         GuiPage_NewServer.ready(id);
     }
     
     var ime = new IMEShell(id, imeReady,'en');
     ime.setKeypadPos(680,90);
-    ime.setMode('_num');
     
-    // Each input should have it's own ime 
-    var ime2 = new IMEShell('host', imeReady,'en');
-    ime2.setKeypadPos(1300,90);
-    ime2.setMode('_latin_small');
+    if (id == 'host') {
+    	ime.setMode('_latin_small');
+    } else {
+    	ime.setMode('_num');
+    }
     
     var previousElement = document.getElementById(previousId);
     var nextElement = document.getElementById(nextId);
     
-    var installFocusKeyCallbacks = function (imeObject) {
-    	imeObject.setKeyFunc(tvKey.KEY_ENTER, function (keyCode) {
+    var installFocusKeyCallbacks = function () {
+        ime.setKeyFunc(tvKey.KEY_ENTER, function (keyCode) {
             alert("Enter key pressed");
             
             GuiNotifications.setNotification("Please Wait","Checking Details",true);
@@ -134,28 +134,28 @@ var GuiPage_NewServer_Input  = function(id,previousId, nextId) {
                 
             }       
         });
-    	imeObject.setKeyFunc(tvKey.KEY_LEFT, function (keyCode) {
+        ime.setKeyFunc(tvKey.KEY_LEFT, function (keyCode) {
             previousElement.focus();
             return false;
         });
-    	imeObject.setKeyFunc(tvKey.KEY_RIGHT, function (keyCode) {
+        ime.setKeyFunc(tvKey.KEY_RIGHT, function (keyCode) {
             nextElement.focus();
             return false;
         });
-    	imeObject.setKeyFunc(tvKey.KEY_UP, function (keyCode) {
+        ime.setKeyFunc(tvKey.KEY_UP, function (keyCode) {
         	document.getElementById("1").focus();
             return false;
         });
-    	imeObject.setKeyFunc(tvKey.KEY_DOWN, function (keyCode) {
+        ime.setKeyFunc(tvKey.KEY_DOWN, function (keyCode) {
         	document.getElementById("host").focus();
             return false;
         });
-    	imeObject.setKeyFunc(tvKey.KEY_BLUE, function (keyCode) {
-    		imeObject.setString(""); //Clears the currently focused Input - REQUIRED
+        ime.setKeyFunc(tvKey.KEY_BLUE, function (keyCode) {
+        	ime.setString(""); //Clears the currently focused Input - REQUIRED
         	GuiPage_NewServer.deleteAllBoxes();
             return false;
         });
-    	imeObject.setKeyFunc(tvKey.KEY_RETURN, function (keyCode) {
+        ime.setKeyFunc(tvKey.KEY_RETURN, function (keyCode) {
         	widgetAPI.blockNavigation(event);
         	var fileJson = JSON.parse(File.loadFile());    
     	    if (fileJson.Servers.length > 0) {
@@ -164,7 +164,7 @@ var GuiPage_NewServer_Input  = function(id,previousId, nextId) {
     	    }
     	    return false;
         });
-    	imeObject.setKeyFunc(tvKey.KEY_EXIT, function (keyCode) {
+        ime.setKeyFunc(tvKey.KEY_EXIT, function (keyCode) {
         	widgetAPI.sendExitEvent(); 	
         	return false;
         }); 
