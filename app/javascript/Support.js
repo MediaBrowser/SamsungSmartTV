@@ -277,23 +277,11 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 		} else {
 			//----------------------------------------------------------------------------------------------
 			if (Items[index].Type == "Genre") {	
-				var itemCount = 0;
-				
-				switch (Genre) {
-				case "Movie":
-					itemCount = Items[index].MovieCount;
-					break;
-				case "Series":
-					itemCount = Items[index].SeriesCount;
-					break;
-				default:
-					break;
-				}
 				if (Items[index].ImageTags.Primary) {
 					var imgsrc = (File.getUserProperty("LargerView") == true) ? Server.getImageURL(Items[index].Id,"Primary",119,178,0,false,0) : Server.getImageURL(Items[index].Id,"Primary",96,140,0,false,0); 
-					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(" +imgsrc+ ")><div class=genreItemCount>"+itemCount+"</div></div>";	
+					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-image:url(" +imgsrc+ ")></div>";	
 				} else {
-					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-color:rgba(0,0,0,0.5);><div class=genreItemCount>"+itemCount+"</div></div>";
+					htmlToAdd += "<div id="+ DivIdPrepend + Items[index].Id + " style=background-color:rgba(0,0,0,0.5);></div>";
 				}
 			//----------------------------------------------------------------------------------------------
 			} else if (Items[index].Type == "Episode") {
