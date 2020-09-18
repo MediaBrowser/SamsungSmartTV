@@ -36,8 +36,8 @@ GuiPlayer_Versions.start = function(playerData,resumeTicks,playedFromPage) {
 	FileLog.write("Video : Loading " + this.PlayerData.Name);
 	
 	//Check if HTTP
-	if (this.PlayerData.MediaSources[0].Protocol.toLowerCase() == "http") {
-		FileLog.write("Video : Is HTTP : Generate URL Directly");	
+	if (this.PlayerData.MediaSources[0].Protocol.toLowerCase() == "http" || this.PlayerData.MediaSources[0].Protocol.toLowerCase() == "file") {
+		FileLog.write("Video : Is HTTP or FILE: Generate URL Directly");	
 		
 		var audioCodec = (File.getTVProperty("Dolby") && File.getTVProperty("AACtoDolby")) ? "ac3" : "aac";
 		
