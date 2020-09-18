@@ -44,7 +44,6 @@ GuiDisplay_Episodes.start = function(title,url,selectedItem,topLeftItem) {
 	this.isLatest = false;
 	if (title == "New TV") {
 		this.isLatest = true;
-		this.ItemData.Items = this.ItemData;
 	}
 	
 	if (this.ItemData.Items.length > 0) {
