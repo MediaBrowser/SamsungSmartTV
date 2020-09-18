@@ -991,7 +991,7 @@ Support.processSelectedItem = function(page,ItemData,startParams,selectedItem,to
 		case "Series":
 			//Is Latest Items Screen - If so skip to Episode view of latest episodes
 			if (isLatest) {
-				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&Limit="+ItemData.Items[selectedItem].ChildCount+"&ParentId="+ItemData.Items[selectedItem].Id+"&isPlayed=false&IsFolder=false&GroupItems=false&fields=SortName,Overview,Genres,RunTimeTicks");
+				var url = Server.getCustomURL("/Shows/" + ItemData.Items[selectedItem].Id +  "/Episodes?format=json&userId=" + Server.getUserID() + "&isPlayed=false&IsFolder=false&GroupItems=false&fields=SortName,Overview,Genres,RunTimeTicks");
 				GuiDisplay_Episodes.start("New TV",url,0,0);
 			} else {
 				var url = Server.getItemInfoURL(ItemData.Items[selectedItem].Id,null);
