@@ -41,6 +41,10 @@ GuiPlayer_Transcoding.start = function(showId, MediaSource,MediaSourceIndex, vid
 	this.videoIndex = videoIndex;
 	this.audioIndex = audioIndex;
 	
+	//Get the Streams actual index
+	var videoStreamIndex = this.MediaSource.MediaStreams[this.videoIndex].Index;
+	var audioStreamIndex = this.MediaSource.MediaStreams[this.audioIndex].Index;
+
 	//Check Video & Audio Compatibility
 	this.checkCodec(videoIndex);
 	this.checkAudioCodec(audioIndex);
@@ -68,14 +72,14 @@ GuiPlayer_Transcoding.start = function(showId, MediaSource,MediaSourceIndex, vid
 			streamparams = '/Stream.'+this.MediaSource.Container+'?static=true&MediaSourceId='+this.MediaSource.Id + '&api_key=' + Server.getAuthToken();
 		} else {			
 			transcodeStatus = "Stream Copy - Audio Not First Track";
-			streamparams = '/Stream.ts?VideoStreamIndex='+this.videoIndex+'&AudioStreamIndex='+this.audioIndex+'&VideoCodec=copy&AudioCodec='+ streamAudioCodec +'&MediaSourceId='+this.MediaSource.Id + '&api_key=' + Server.getAuthToken();
+			streamparams = '/master.m3u8?VideoStreamIndex='+videoStreamIndex+'&AudioStreamIndex='+audioStreamIndex+'&VideoCodec=copy&AudioCodec='+ streamAudioCodec + '&SegmentContainer=ts&MinSegments=2&BreakOnNonKeyFrames=True' + '&MediaSourceId='+this.MediaSource.Id + '&api_key=' + Server.getAuthToken();
 		}	
 	} else if (this.isVideo == false) {
 		transcodeStatus = "Transcoding Audio & Video";	
-		streamparams = '/Stream.ts?VideoStreamIndex='+this.videoIndex+'&AudioStreamIndex='+this.audioIndex+'&VideoCodec=h264&Profile=high&Level=41&MaxVideoBitDepth=8&MaxWidth=1920&VideoBitrate='+this.bitRateToUse+'&AudioCodec=' + streamAudioCodec +'&AudioBitrate=360000&MaxAudioChannels=6&MediaSourceId='+this.MediaSource.Id + '&api_key=' + Server.getAuthToken();	
+		streamparams = '/master.m3u8?VideoStreamIndex='+videoStreamIndex+'&AudioStreamIndex='+audioStreamIndex+'&VideoCodec=h264&Profile=high&Level=41&MaxVideoBitDepth=8&MaxWidth=1920&VideoBitrate='+this.bitRateToUse+'&AudioCodec=' + streamAudioCodec +'&AudioBitrate=360000&TranscodingMaxAudioChannels=6'+'&SegmentContainer=ts&MinSegments=2&BreakOnNonKeyFrames=True'+'&MediaSourceId='+this.MediaSource.Id + '&api_key=' + Server.getAuthToken();	
 	} else if (this.isVideo == true && (this.isAudio == false || convertAACtoDolby == true)) {
 		transcodeStatus = "Transcoding Audio";	
-		streamparams = '/Stream.ts?VideoStreamIndex='+this.videoIndex+'&AudioStreamIndex='+this.audioIndex+'&VideoCodec=copy&AudioCodec='+ streamAudioCodec +'&audioBitrate=360000&MaxAudioChannels=6&MediaSourceId='+this.MediaSource.Id + '&api_key=' + Server.getAuthToken();
+		streamparams = '/master.m3u8?VideoStreamIndex='+videoStreamIndex+'&AudioStreamIndex='+audioStreamIndex+'&VideoCodec=copy&AudioCodec='+ streamAudioCodec +'&audioBitrate=360000&TranscodingMaxAudioChannels=6'+'&SegmentContainer=ts&MinSegments=2&BreakOnNonKeyFrames=True'+'&MediaSourceId='+this.MediaSource.Id + '&api_key=' + Server.getAuthToken();
 	}
 	var url = Server.getServerAddr() + '/Videos/' + showId + streamparams + '&DeviceId='+Server.getDeviceID();
 	FileLog.write("Video : Transcode Status : " + transcodeStatus);

@@ -453,6 +453,7 @@ GuiPlayer_TranscodeParams.getAudioParameters = function(audiocodec) {
 			this.audiocontainer = ["asf","avi","mkv","mp4","3gpp","mpg","mpeg","ts","m4v","m2ts","mov","vro","tp","trp","flv","vob","svi","mts","divx"];
 			this.audiochannels = 6;
 			break;
+		case "mpeg":
 		case "mp2":
 			this.audiocodec = true;
 			this.audiocontainer = ["asf","avi","mkv","mp4","3gpp","mpg","mpeg","ts","m4v","m2ts","mov","vro","tp","trp","flv","vob","svi","mts","divx"];
@@ -516,6 +517,7 @@ GuiPlayer_TranscodeParams.getAudioParameters = function(audiocodec) {
 			this.audiocontainer = ["asf","avi","mkv","mp4","3gpp","mpg","mpeg","ts","m4v","m2ts","mov","vro","tp","trp","flv","vob","svi","mts","divx"];
 			this.audiochannels = 6;
 			break;
+		case "mpeg":
 		case "mp2":
 			this.audiocodec = true;
 			this.audiocontainer = ["asf","avi","mkv","mp4","3gpp","mpg","mpeg","ts","m4v","m2ts","mov","vro","tp","trp","flv","vob","svi","mts","divx"];
@@ -579,6 +581,7 @@ GuiPlayer_TranscodeParams.getAudioParameters = function(audiocodec) {
 			this.audiocontainer = ["asf","avi","mkv","mp4","3gpp","mpg","mpeg","ts","m4v","m2ts","mov","vro","tp","trp","flv","vob","svi","mts","divx"];
 			this.audiochannels = 6;
 			break;
+		case "mpeg":
 		case "mp2":
 			this.audiocodec = true;
 			this.audiocontainer = ["asf","avi","mkv","mp4","3gpp","mpg","mpeg","ts","m4v","m2ts","mov","vro","tp","trp","flv","vob","svi","mts","divx"];
@@ -643,6 +646,7 @@ GuiPlayer_TranscodeParams.getAudioParameters = function(audiocodec) {
 			this.audiocontainer = ["asf","avi","mkv","mp4","mpg","mpeg","vro","vob","ts"];
 			this.audiochannels = 6;
 			break;
+		case "mpeg":
 		case "mp2":	
 			this.audiocodec = true;
 			this.audiocontainer = ["asf","avi","mkv","mp4","mpg","mpeg","vro","vob","ts"];
