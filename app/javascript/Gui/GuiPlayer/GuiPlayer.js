@@ -859,6 +859,27 @@ GuiPlayer.checkTranscodeCanSkip = function(newtime) {
 	}
 };
 
+GuiPlayer.newPlaybackPosition = function(startPositionTicks) {
+	document.getElementById("NoKeyInput").focus();
+	this.stopPlayback();
+
+	this.setDisplaySize();
+
+	var url = this.playingURL + '&PlaySessionId=' + this.PlaySessionId;
+
+	//Update URL with startPositionTicks
+	url += '&StartTimeTicks=' + (Math.round(startPositionTicks));
+
+	//Required for HLS streaming
+	if (this.PlayMethod != "DirectPlay") {
+		url += '|COMPONENT=HLS';
+	}
+
+	var position = Math.round(startPositionTicks / 10000000);
+    this.plugin.ResumePlay(url,position);
+    this.updateSubtitleTime(startPositionTicks / 10000,"NewSubs");
+};
+
 GuiPlayer.newSubtitleIndex = function (newSubtitleIndex) {
 	if (newSubtitleIndex == -1 && this.playingSubtitleIndex != null) {
 		//Turn Off Subtitles
