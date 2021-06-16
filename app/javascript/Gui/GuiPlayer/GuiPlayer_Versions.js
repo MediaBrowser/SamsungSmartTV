@@ -4,6 +4,7 @@ var GuiPlayer_Versions = {
 		resumeTicks : 0,
 		playedFromPage : "",
 		previousCounter : "",
+		playbackInfo : null,
 		
 		//Display Details
 		selectedItem : 0,
@@ -32,33 +33,34 @@ GuiPlayer_Versions.start = function(playerData,resumeTicks,playedFromPage) {
 	this.PlayerData = playerData;
 	this.resumeTicks = resumeTicks;
 	this.playedFromPage = playedFromPage;
+	this.playbackInfo = Server.getPlaybackInfo(this.PlayerData.Id);
 
 	FileLog.write("Video : Loading " + this.PlayerData.Name);
 	
 	//Check if HTTP
-	if (this.PlayerData.MediaSources[0].Protocol.toLowerCase() == "http" || this.PlayerData.MediaSources[0].Protocol.toLowerCase() == "file") {
-		FileLog.write("Video : Is HTTP or FILE: Generate URL Directly");	
+	if (this.playbackInfo.MediaSources[0].Protocol.toLowerCase() == "http") {
+		FileLog.write("Video : Is HTTP : Generate URL Directly");	
 		
 		var audioCodec = (File.getTVProperty("Dolby") && File.getTVProperty("AACtoDolby")) ? "ac3" : "aac";
 		
-		var streamparams = '/Stream.ts?VideoCodec=h264&Profile=high&Level=41&MaxVideoBitDepth=8&MaxWidth=1920&VideoBitrate=10000000&AudioCodec='+audioCodec+'&audioBitrate=360000&MaxAudioChannels=6&MediaSourceId='+this.PlayerData.MediaSources[0].Id + '&api_key=' + Server.getAuthToken();	
+		var streamparams = '/master.m3u8?VideoCodec=h264&Profile=high&Level=41&MaxVideoBitDepth=8&MaxWidth=1920&VideoBitrate=10000000&AudioCodec='+audioCodec+'&audioBitrate=360000&TranscodingMaxAudioChannels=6&SegmentContainer=ts&MinSegments=2&BreakOnNonKeyFrames=True&MediaSourceId='+this.playbackInfo.MediaSources[0].Id + '&api_key=' + Server.getAuthToken();	
 		var url = Server.getServerAddr() + '/Videos/' + this.PlayerData.Id + streamparams + '&DeviceId='+Server.getDeviceID();
 		var httpPlayback = [0,url,"Transcode",-1,-1,-1];
 		GuiPlayer.startPlayback(httpPlayback,resumeTicks);
 		return;	
 	}
-		
+
 	//Loop through all media sources and determine which is best
 	
 	FileLog.write("Video : Find Media Streams");
-	for(var index = 0; index < this.PlayerData.MediaSources.length;index++) {
-		this.getMainStreamIndex(this.PlayerData.MediaSources[index],index);
+	for(var index = 0; index < this.playbackInfo.MediaSources.length;index++) {
+		this.getMainStreamIndex(this.playbackInfo.MediaSources[index],index);
 	}
 	
 	//Loop through all options and see if transcode is required, generate URL blah...
 	FileLog.write("Video : Determine Playback of Media Streams");
 	for (var index = 0; index < this.MediaOptions.length; index++) {
-		var result = GuiPlayer_Transcoding.start(this.PlayerData.Id, this.PlayerData.MediaSources[this.MediaOptions[index][0]],this.MediaOptions[index][0],
+		var result = GuiPlayer_Transcoding.start(this.PlayerData.Id, this.playbackInfo.MediaSources[this.MediaOptions[index][0]],this.MediaOptions[index][0],
 			this.MediaOptions[index][1],this.MediaOptions[index][2],this.MediaOptions[index][3],this.MediaOptions[index][4]);
 			FileLog.write("Video : Playback Added")
 			this.MediaPlayback.push(result);	

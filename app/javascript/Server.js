@@ -95,6 +95,15 @@ Server.getChildItemsURL = function(ParentID, SortParams) {
 	}	
 }
 
+Server.getPlaybackInfoURL = function(itemId) {
+	return Server.getServerAddr() + "/Items/" + itemId + "/PlaybackInfo?UserId=" + Server.getUserID();
+}
+
+Server.getPlaybackInfo = function(itemId) {
+	var url = Server.getPlaybackInfoURL(itemId);
+	return Server.getContent(url);
+}
+
 Server.getItemInfoURL = function(ParentID, SortParams) {
 	if (SortParams != null){
 		return  Server.getServerAddr() + "/Users/" + Server.getUserID() + "/Items/"+ParentID+"?format=json" + SortParams;
@@ -221,7 +230,7 @@ Server.getBackgroundImageURL = function(itemId,imagetype,maxwidth,maxheight,unpl
 }
 
 Server.getStreamUrl = function(itemId,mediaSourceId){
-	var streamparams = '/Stream.ts?VideoCodec=h264&Profile=high&Level=41&MaxVideoBitDepth=8&MaxWidth=1920&VideoBitrate=10000000&AudioCodec=aac&audioBitrate=360000&MaxAudioChannels=6&MediaSourceId='+mediaSourceId + '&api_key=' + Server.getAuthToken();	
+	var streamparams = '/master.m3u8?VideoCodec=h264&Profile=high&Level=41&MaxVideoBitDepth=8&MaxWidth=1920&VideoBitrate=10000000&AudioCodec=aac&audioBitrate=360000&TranscodingMaxAudioChannels=6&MediaSourceId='+mediaSourceId + '&api_key=' + Server.getAuthToken();	
 	var streamUrl = Server.getServerAddr() + '/Videos/' + itemId + streamparams + '&DeviceId='+Server.getDeviceID();
 	return streamUrl;
 }
@@ -317,44 +326,44 @@ Server.getSubtitles = function(url) {
 }
 
 
-Server.videoStarted = function(showId,MediaSourceID,PlayMethod) {
+Server.videoStarted = function(showId,MediaSourceID,PlayMethod,PlaySessionId) {
 	var url = this.serverAddr + "/Sessions/Playing";
 	xmlHttp = new XMLHttpRequest();
 	if (xmlHttp) {
-		var contentToPost = '{"QueueableMediaTypes":["Video"],"CanSeek":false,"ItemId":'+showId+',"MediaSourceId":'+MediaSourceID+',"IsPaused":false,"IsMuted":false,"PositionTicks":0,"PlayMethod":'+PlayMethod+'}';
+		var contentToPost = '{"QueueableMediaTypes":["Video"],"CanSeek":false,"ItemId":'+showId+',"PlaySessionId":'+PlaySessionId+',"MediaSourceId":'+MediaSourceID+',"IsPaused":false,"IsMuted":false,"PositionTicks":0,"PlayMethod":'+PlayMethod+'}';
 		xmlHttp.open("POST", url , true); //must be true!
 		xmlHttp = this.setRequestHeaders(xmlHttp);
 		xmlHttp.send(contentToPost);
 	}
 }
 
-Server.videoStopped = function(showId,MediaSourceID,ticks,PlayMethod) {
+Server.videoStopped = function(showId,MediaSourceID,ticks,PlayMethod,PlaySessionId) {
 	var url = this.serverAddr + "/Sessions/Playing/Stopped";
 	xmlHttp = new XMLHttpRequest();
 	if (xmlHttp) {
-		var contentToPost = '{"QueueableMediaTypes":["Video"],"CanSeek":false,"ItemId":'+showId+',"MediaSourceId":'+MediaSourceID+',"IsPaused":false,"IsMuted":false,"PositionTicks":'+(ticks*10000)+',"PlayMethod":'+PlayMethod+'}';
+		var contentToPost = '{"QueueableMediaTypes":["Video"],"CanSeek":false,"ItemId":'+showId+',"PlaySessionId":'+PlaySessionId+',"MediaSourceId":'+MediaSourceID+',"IsPaused":false,"IsMuted":false,"PositionTicks":'+(ticks*10000)+',"PlayMethod":'+PlayMethod+'}';
 		xmlHttp.open("POST", url , true); //must be true!
 		xmlHttp = this.setRequestHeaders(xmlHttp);
 		xmlHttp.send(contentToPost);
 	}	
 }
 
-Server.videoPaused = function(showId,MediaSourceID,ticks,PlayMethod) {
+Server.videoPaused = function(showId,MediaSourceID,ticks,PlayMethod,PlaySessionId) {
 	var url = this.serverAddr + "/Sessions/Playing/Progress";
 	xmlHttp = new XMLHttpRequest();
 	if (xmlHttp) {
-		var contentToPost = '{"QueueableMediaTypes":["Video"],"CanSeek":false,"ItemId":'+showId+',"MediaSourceId":'+MediaSourceID+',"IsPaused":true,"IsMuted":false,"PositionTicks":'+(ticks*10000)+',"PlayMethod":'+PlayMethod+'}';
+		var contentToPost = '{"QueueableMediaTypes":["Video"],"CanSeek":false,"ItemId":'+showId+',"PlaySessionId":'+PlaySessionId+',"MediaSourceId":'+MediaSourceID+',"IsPaused":true,"IsMuted":false,"PositionTicks":'+(ticks*10000)+',"PlayMethod":'+PlayMethod+'}';
 		xmlHttp.open("POST", url , true); //must be true!
 		xmlHttp = this.setRequestHeaders(xmlHttp);
 		xmlHttp.send(contentToPost);
 	}	
 }
 
-Server.videoTime = function(showId,MediaSourceID,ticks,PlayMethod) {
+Server.videoTime = function(showId,MediaSourceID,ticks,PlayMethod,PlaySessionId) {
 	var url = this.serverAddr + "/Sessions/Playing/Progress";
 	xmlHttp = new XMLHttpRequest();
 	if (xmlHttp) {
-		var contentToPost = '{"QueueableMediaTypes":["Video"],"CanSeek":false,"ItemId":'+showId+',"MediaSourceId":'+MediaSourceID+',"IsPaused":false,"IsMuted":false,"PositionTicks":'+(ticks*10000)+',"PlayMethod":'+PlayMethod+'}';
+		var contentToPost = '{"QueueableMediaTypes":["Video"],"CanSeek":false,"ItemId":'+showId+',"PlaySessionId":'+PlaySessionId+',"MediaSourceId":'+MediaSourceID+',"IsPaused":false,"IsMuted":false,"PositionTicks":'+(ticks*10000)+',"PlayMethod":'+PlayMethod+'}';
 		xmlHttp.open("POST", url , true); //must be true!
 		xmlHttp = this.setRequestHeaders(xmlHttp);
 		xmlHttp.send(contentToPost);
