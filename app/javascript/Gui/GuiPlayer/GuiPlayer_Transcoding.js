@@ -27,6 +27,7 @@ var GuiPlayer_Transcoding = {
 		isLevel : null,	
 		isFrameRate : null,
 		isProfile : null,
+		maxFrameRate : null,
 		
 		//All Audio elements
 		isAudioCodec : null,
@@ -76,7 +77,7 @@ GuiPlayer_Transcoding.start = function(showId, MediaSource,MediaSourceIndex, vid
 		}	
 	} else if (this.isVideo == false) {
 		transcodeStatus = "Transcoding Audio & Video";	
-		streamparams = '/master.m3u8?VideoStreamIndex='+videoStreamIndex+'&AudioStreamIndex='+audioStreamIndex+'&VideoCodec=h264&Profile=high&Level=41&MaxVideoBitDepth=8&MaxWidth=1920&VideoBitrate='+this.bitRateToUse+'&AudioCodec=' + streamAudioCodec +'&AudioBitrate=360000&TranscodingMaxAudioChannels=6'+'&SegmentContainer=ts&MinSegments=2&BreakOnNonKeyFrames=True'+'&MediaSourceId='+this.MediaSource.Id + '&api_key=' + Server.getAuthToken();	
+		streamparams = '/master.m3u8?VideoStreamIndex='+videoStreamIndex+'&AudioStreamIndex='+audioStreamIndex+'&VideoCodec=h264&Profile=high&Level=41&MaxVideoBitDepth=8&MaxWidth=1920&VideoBitrate='+this.bitRateToUse+'&MaxFramerate='+this.maxFrameRate+'&AudioCodec=' + streamAudioCodec +'&AudioBitrate=360000&TranscodingMaxAudioChannels=6'+'&SegmentContainer=ts&MinSegments=2&BreakOnNonKeyFrames=True'+'&MediaSourceId='+this.MediaSource.Id + '&api_key=' + Server.getAuthToken();	
 	} else if (this.isVideo == true && (this.isAudio == false || convertAACtoDolby == true)) {
 		transcodeStatus = "Transcoding Audio";	
 		streamparams = '/master.m3u8?VideoStreamIndex='+videoStreamIndex+'&AudioStreamIndex='+audioStreamIndex+'&VideoCodec=copy&AudioCodec='+ streamAudioCodec +'&audioBitrate=360000&TranscodingMaxAudioChannels=6'+'&SegmentContainer=ts&MinSegments=2&BreakOnNonKeyFrames=True'+'&MediaSourceId='+this.MediaSource.Id + '&api_key=' + Server.getAuthToken();
@@ -101,6 +102,7 @@ GuiPlayer_Transcoding.checkCodec = function() {
 	this.isFrameRate = this.checkFrameRate(codecParams[4]);
 	this.isLevel = this.checkLevel(codecParams[5]);
 	this.isProfile = this.checkProfile(codecParams[6]);
+	this.maxFrameRate = codecParams[4] || 30;
 	
 	//Results
 	FileLog.write("Video : Video File Analysis Results");
